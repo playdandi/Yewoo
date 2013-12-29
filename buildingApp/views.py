@@ -8,7 +8,7 @@ def main_html(request):
 
 def resident_info_html(request):
     csrf_token = get_token(request)
-    return render(request, '02_01_resident_info_input.html')
+    return render(request, '02_01_resident.html', {'range' : range(1, 32)})
 
 def save_resident_info(request):
     if request.method == "GET":
@@ -22,8 +22,8 @@ def save_resident_info(request):
 
         resident.buildingName = param['buildingName']
         resident.buildingRoomNumber = param['buildingRoomNumber']
-        resident.inDate = param['inDate']
-        resident.outDate = param['outDate']
+        resident.inDate = param['inDate'].replace('.', '-')
+        resident.outDate = param['outDate'].replace('.', '-')
         resident.leaseType = param['leaseType']
         resident.leaseDeposit = param['leaseDeposit']
         resident.leasePayWay = param['leasePayWay']

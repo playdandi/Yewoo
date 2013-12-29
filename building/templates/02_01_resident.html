@@ -262,8 +262,8 @@
 												<option value="후불">후불</option>
 											</select>
 											<select id="leasePayDate" class="margin0 input-small">
-												{% for i in range(1, 31) %}                         
-  												<option value="{{ i }}">{{ i }}</option>
+												{% for i in range %}                         
+  												<option value="{{ i }}">{{ i }}일</option>
 												{% endfor %}
 											</select>
 											<input id="leaseMoney" type="text" class="margin0 input-medium" placeholder="임대료를 입력하세요." />
@@ -509,7 +509,7 @@
 										</td>
 										<td colspan="7">
 											<div class="must"><strong>차량 번호</strong></div>
-											<input id="carNumber" class="margin0 input-medium" type="text" />
+											<input id="carNumber" class="margin0 input-medium" type="text" placeholder="예시) 13가 5801" />
 										</td>
 										<td colspan="6">
 											<div class="must"><strong>주차 비용</strong></div>
