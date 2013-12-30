@@ -8,7 +8,7 @@ def main_html(request):
 
 def resident_info_html(request):
     csrf_token = get_token(request)
-    return render(request, '02_01_resident.html', {'range' : range(1, 32)})
+    return render(request, '02_01_resident_info.html', {'range' : range(1, 32)})
 
 def save_resident_info(request):
     if request.method == "GET":
