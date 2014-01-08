@@ -82,6 +82,12 @@ function SaveResidentInfo()
 				return;
 		}
 
+		// email 형식 체크
+		if (name == 'residentEmail') {
+			if (!IsEmailRight(data[name]))
+				return;
+		}
+
 		// 그 외 나머지는 필수 영역으로, 빈 칸이 존재하면 안 된다.
 		if (data[name] == '') {
 			alert('빈 칸이 존재합니다.');
@@ -112,7 +118,6 @@ function IsRegNumberRight(name, number)
 
 function IsNumberRight(name, number)
 {
-	console.log(name + ' : ' + number);
 	var re = new RegExp('[0-9]+');
 	if (number.replace(re, '') != '') {
 		alert('숫자만 입력하세요.');
@@ -152,6 +157,16 @@ function IsContactNumberRight(name, number)
 	return true;
 }
 
+function IsEmailRight(email)
+{
+	var form = email.split('@');
+	if (form.length < 2 || form[1].split('.').length < 2) {
+		alert('이메일 형식이 잘못되었습니다.');
+		return false;
+	}
+
+	return true;
+}
 
 var doSaveResidentInfo = function(postData) {
 	var csrftoken = $.cookie('csrftoken');
@@ -164,7 +179,8 @@ var doSaveResidentInfo = function(postData) {
 		url : 'http://14.49.42.190:8080/resident/save/',
 		data : postData,
 		success : function() {
-			alert('ok');
+			alert('성공적으로 입력되었습니다.');
+			$(location).attr('href', 'http://14.49.42.190:8080/resident/info/');
 		},
 		error : function(msg) {
 			alert('error : ' + msg);	
@@ -172,6 +188,104 @@ var doSaveResidentInfo = function(postData) {
 	});
 	
 }
+
+
+function moneyToKorean(deposit)
+{
+	if (!IsNumberRight('leaseDeposit', deposit))
+		return '';
+	if (deposit.length == 0)
+		return '';
+	if (deposit.length > 10)
+		return $('#leaseDeposit2').val();
+	if (deposit.split('')[0] == '0')
+		return '';
+
+	var unit = new Array('', '십', '백', '천', '', '십', '백', '천', '', '십');
+	deposit = deposit.split('');
+
+	var korean = '';
+	var man = false, eok = false;
+	for (var i = 0; i < deposit.length; i++) {
+		if (deposit[i] != '0') {
+			korean += N1To10(deposit[i]) + unit[deposit.length-1-i];
+			if (deposit.length-1-i >= 8)
+				eok = true;
+			if (deposit.length-1-i < 8 && deposit.length-1-i >= 4)
+				man = true;
+		}
+		if (eok && deposit.length-1-i == 8)
+			korean += '억 ';
+		else if (man && deposit.length-1-i == 4)
+			korean += '만 ';
+	}
+
+	return korean;
+}
+
+function N1To10(number)
+{
+	var korean = new Array('', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구');
+	return korean[number];
+}
+
+function setPreviewInfo()
+{
+	var data = {};
+	$('#buildingName_modal').html($('#buildingName').val());
+	$('#buildingRoomNumber_modal').html($('#buildingRoomNumber').val());
+	$('#inOutDate_modal').html($('#inDate').val() + ' ~ ' + $('#outDate').val());
+	$('#leaseType_modal').html($('#leaseType').val());
+	$('#leaseDeposit_modal').html($('#leaseDeposit').val() + ' (' + $('#leaseDeposit2').val() + ')');
+	$('#leasePay_modal').html($('#leasePayWay').val() + ', ' + $('#leasePayDate').val() + '일, ' + $('#leaseMoney').val() + '원');
+	$('#agency_modal').html($('#agency').val() + ' (' + $('#agencyName').val() + ')');
+	$('#checkEGW_modal').html('전기(' + $('#checkE').val() + '), 가스(' + $('#checkG').val() + '), 상하수도(' + $('#checkW').val() + ')');
+	
+	$('#contractorNameGender_modal').html($('#contractorName').val() + ' (' + $('#contractorGender').val() + ')');
+	$('#contractorRegNumber_modal').html($('#contractorRegNumber_1').val() + '-' + $('#contractorRegNumber_2').val());
+	$('#contractorContactNumber1_modal').html($('#contractorContactNumber1_1').val() + '-' + $('#contractorContactNumber1_2').val() + '-' + $('#contractorContactNumber1_3').val());
+	var contractorContactNumber2 = $('#contractorContactNumber2_1').val() + '-' + $('#contractorContactNumber2_2').val() + '-' + $('#contractorContactNumber2_3').val();
+	if (contractorContactNumber2 != '--') {
+		$('#contractorContactNumber2_modal').html(contractorContactNumber2);
+	}
+	$('#contractorAddress_modal').html($('#contractorAddress').val());
+
+
+	$('#residentNameGender_modal').html($('#residentName').val() + ' (' + $('#residentGender').val() + ')');
+	$('#residentRegNumber_modal').html($('#residentRegNumber_1').val() + '-' + $('#residentRegNumber_2').val());
+	$('#relToContractor_modal').html($('#relToContractor').val());
+	$('#residentPeopleNumber_modal').html($('#residentPeopleNumber').val() + ' 명');
+	$('#residentAddress_modal').html($('#residentAddress').val());
+	$('#residentContactNumber1_modal').html($('#residentContactNumber1_1').val() + '-' + $('#residentContactNumber1_2').val() + '-' + $('#residentContactNumber1_3').val());
+	var residentContactNumber2 = $('#residentContactNumber2_1').val() + '-' + $('#residentContactNumber2_2').val() + '-' + $('#residentContactNumber2_3').val();
+	if (residentContactNumber2 != '--') {
+		$('#residentContactNumber2_modal').html(residentContactNumber2);
+	}
+	$('#residentOfficeName_modal').html($('#residentOfficeName').val());
+	$('#residentOfficeLevel_modal').html($('#residentOfficeLevel').val());
+	$('#residentOfficeAddress_modal').html($('#residentOfficeAddress').val());
+	var residentOfficeContactNumber = $('#residentOfficeContactNumber_1').val() + '-' + $('#residentOfficeContactNumber_2').val() + '-' + $('#residentOfficeContactNumber_3').val();
+	if (residentOfficeContactNumber != '--') {
+		$('#residentOfficeContactNumber_modal').html(residentOfficeContactNumber);
+	}
+	$('#residentEmail_modal').html($('#residentEmail').val());
+	
+	if ($(':radio[name="haveCar"]:checked').val() == 'y') {
+		$('#haveCar_modal').html('있음 : 번호(' + $('#carNumber').val().trim() + '), 주차비용(' + $('#parkingFee').val() + '원)');
+	}
+	else {
+		$('#haveCar_modal').html('없음');
+	}
+
+	var sendMsg = $(':radio[name="sendMsg"]:checked').val() == 'y' ? '전달 유' : '전달 무';
+	$('#sendMsg_modal').html(sendMsg);
+	var checkin = $(':radio[name="checkin"]:checked').val() == 'y' ? '입실 확인' : '입실 미확인';
+	var checkout = $(':radio[name="checkout"]:checked').val() == 'y' ? '퇴실 확인' : '퇴실 미확인';
+	$('#checkinout_modal').html(checkin + ', ' + checkout);
+
+	$('#memo_modal').html( $('#memo').val() );
+}
+
 
 /*
 function getCookie(name) {

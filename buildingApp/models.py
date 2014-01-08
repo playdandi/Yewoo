@@ -25,13 +25,14 @@ class ResidentInfo(models.Model):
     contractorRegNumber = models.CharField(max_length=14)
     contractorContactNumber1 = models.CharField(max_length=13)
     contractorContactNumber2 = models.CharField(max_length=13, blank=True)
-    contractorAddress = models.CharField(max_length=100)
+    contractorAddress = models.CharField(max_length=150)
     
     residentName = models.CharField(max_length=10)
     residentGender = models.CharField(max_length=1)
     residentRegNumber = models.CharField(max_length=14)
     relToContractor = models.CharField(max_length=10)
     residentPeopleNumber = models.IntegerField()
+    residentAddress = models.CharField(max_length=150)
     residentContactNumber1 = models.CharField(max_length=13)
     residentContactNumber2 = models.CharField(max_length=13, blank=True)
     residentOfficeName = models.CharField(max_length=20, blank=True)
@@ -48,5 +49,11 @@ class ResidentInfo(models.Model):
     checkout = models.CharField(max_length=1)
 
     memo = models.TextField(blank=True)
+
+    #def __unicode__(self):
+    #    return self.str
+
+    #def __str__(self):
+    #    return unicode(self).encode('utf-8')
 
 

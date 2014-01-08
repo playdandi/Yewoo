@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 	<!-- start: Meta -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Yewoo Housing Management System</title>
 	<!-- end: Meta -->
@@ -52,34 +53,37 @@
     	margin-left: 0px !important;
     	margin-right: 0px !important;
     	margin-top: 0px !important;
-    	margin-bottom: 0px !important;
-    }
-    body {
-		font-size : 0.75em;
-	}
-	.bs {
-		margin-left: 5px;
 		margin-bottom: 0px !important;
-		font-size: 1em;
+	}
+	select {
+		font-family : 'Malgun Gothic' !important;
+	}
+    body {
+		font-size : 0.77em;
+		font-family : 'Malgun Gothic' !important;
+	}
+	input {
+		font-family : 'Malgun Gothic' !important;
 	}
 	::-webkit-input-placeholder {
-		font-size: 0.8em;
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
 	}
 	::-moz-placeholder {
-		font-size: 0.8em;
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
 	}
 	:-moz-placeholder {
-		font-size: 0.8em;
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
 	}
 	:-ms-input-placeholder {
-		font-size: 0.8em;
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
 	}
 	:-input {
-		margin-bottom:0px;
-	}
-	.txtcenter {
-		display: table-cell;
-		vertical-align: middle;
+		margin-bottom:0px !important;
+		font-family : 'Malgun Gothic' !important;
 	}
 	</style>
 		
@@ -140,16 +144,11 @@
 				<div class="nav-collapse sidebar-nav">
 					<ul class="nav nav-tabs nav-stacked main-menu">
 						<li class="nav-header hidden-tablet">주요 메뉴</li>
-						<li><a href="#"><i class="icon-home"></i><span class="hidden-tablet"> 홈으로</span></a></li>
+						<li><a href="/main/"><i class="icon-home"></i><span class="hidden-tablet"> 홈으로</span></a></li>
 						<li><a href="#resident" data-toggle="collapse"><i class="icon-chevron-right"></i><span class="hidden-tablet"> [입주자 관리]</span></a></li>
 						<ul id="resident" class="nav nav-tab nav-stacked main-menu collapse">
-				            <li><a href="#"><i class="icon-hand-right"></i><span class="hidden-tablet"> 입주자 정보 입력</span></a></li>
-							<li><a href="#"><i class="icon-hand-right"></i><span class="hidden-tablet"> 입주자 정보 확인</span></a></li>
-				        </ul>
-				        <li style="margin:0px 0px 0px 0px"><a href="#blah" data-toggle="collapse"><i class="icon-chevron-right"></i><span class="hidden-tablet"> [blah]</span></a></li>
-						<ul id="blah" class="nav nav-stacked collapse">
-				            <li><a href="typography.html"><i class="icon-font"></i><span class="hidden-tablet"> Typography</span></a></li>
-							<li><a href="gallery.html"><i class="icon-picture"></i><span class="hidden-tablet"> Gallery</span></a></li>
+				            <li><a href="/resident/info/"><i class="icon-hand-right"></i><span class="hidden-tablet"> 입주자 정보 입력</span></a></li>
+							<li><a href="/resident/show/"><i class="icon-hand-right"></i><span class="hidden-tablet"> 입주자 정보 확인</span></a></li>
 				        </ul>
 					 </ul>
 			  	</div>
@@ -165,7 +164,7 @@
 			
 			<!-- start: Content -->	
 			<div id="content" class="span10">
-				<div class="span8">
+				<div class="span11">
 					<ul class="breadcrumb">
 						<li>
 							<a href="#">입주자 관리</a> <span class="divider">></span>
@@ -180,7 +179,7 @@
 					<form class="form-inline" onSubmit="return false;">
 						<div class="span8" style="margin-bottom:5px">
 							<input id="searchWord" class="margin0 input-medium" type="text" />
-							<button class="btn btn-small" onclick="search();">검색</button>
+							<button class="btn btn-small" onclick="Search();">검색</button>
 							<button id="detail_btn" class="btn btn-small">상세</button>
 						</div>	
 					</form>
@@ -188,140 +187,144 @@
 				
 				<!-- start: table -->
 				<div id="search_detail" class="row-fluid" style="display:none;">
-					<!--
-					<div class="box span8" style="margin: 0px; padding: 0px">
-						<div class="box-header">
-							<h2><strong>1. 임대 정보 입력</strong></h2>
-						</div>
-						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
-						-->
-						<div class="span8" style="margin:0px 0px 0px 0px; padding:0px 0px 0px 0px">
-							<table class="table table-bordered table-condensed" style="margin-bottom:5px">
-								<colgroup>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-									<col width="5%"></col>
-								</colgroup>
-								<tbody>
-								  	<tr>
-										<td colspan="5">
-											<div class="optional"><strong>건물명</strong></div>
-											<select id="search_buildingName" class="margin0 input-small">
-												<option value="">선택</option>
-												<option value="1번건물">1번건물</option>
-												<option value="2번건물">2번건물</option>
-												<option value="3번건물">3번건물</option>
-												<option value="4번건물">4번건물</option>
-											</select>
-										</td>
-										<td colspan="5">
-											<div class="optional"><strong>호 실</strong></div>
-											<select id="search_buildingRoomNumber" class="margin0 input-small">
-												<option value="">선택</option>
-												<option value="101">101</option>
-												<option value="102">102</option>
-												<option value="103">103</option>
-												<option value="201">201</option>
-												<option value="202">202</option>
-												<option value="203">203</option>
-											</select>
-										</td>
-										<td colspan="5">
-											<div class="optional"><strong>임차인</strong></div>
-											<input id="search_contractorName" type="text" class="margin0 input-small" />
-										</td>
-										<td colspan="5">
-											<div class="optional"><strong>성 별</strong></div>
-											<select id="search_contractorGender" class="margin0 input-small">
-												<option value="남">남</option>
-												<option value="여">여</option>
-											</select>
-										</td>
-									</tr>
-								  	<tr>
-								  		<td colspan="5"> 
-								  			<div class="optional"><strong>보증금</strong></div>
-								  			<input id="search_leaseDeposit" type="text" class="margin0 input-small" />
-								  		</td>
-								  		<td colspan="5"> 
-								  			<div class="optional"><strong>임대료</strong></div>
-								  			<input id="search_leaseMoney" type="text" class="margin0 input-small" />
-								  		</td>
-								  		<td colspan="10"> 
-								  			<div class="optional"><strong>임대 구분</strong></div>
-								  			<select id="search_leaseType" class="margin0 input-small">
-												<option value="월세">월세</option>
-												<option value="전세">전세</option>
-												<option value="매매">매매</option>
-											</select>
-								  		</td>
-								  	</tr>
-								  	<tr>
-								  		<td colspan="11">
-								  			<div class="optional"><strong>임대 기간</strong></div>
-								  			<input id="search_inDate" class="margin0 input-small datepicker" type="text" placeholder="입주일" />
-								  			<input id="search_outDate" class="margin0 input-small datepicker" type="text" placeholder="만료일" disabled="" />
-										</td>
-										<td colspan="3">
-											<div class="optional"><strong>주차 여부</strong></div>
-											<input id="search_isParking" type="checkbox">
-										</td>
-										<td colspan="3">
-											<div class="optional"><strong>공실 여부</strong></div>
-											<input id="search_isEmptyRoom" type="checkbox">
-										</td>
-										<td colspan="3">
-											<div class="optional"><strong>연체 여부</strong></div>
-											<input id="search_isOverdue" type="checkbox">
-										</td>
-									  </tr>
-								</tbody>
-							 </table>
-							 
-							 <div style="text-align:center">
-								<form class="form-inline" onSubmit="return false;">
-									<div style="margin-bottom:5px">
-										<button class="btn btn-small">조회</button>
-										<button class="btn btn-small" onclick="">초기화</button>
-									</div>	
-								</form>
-							 </div>
-						</div>
-						
-						
-						<!--  
+					<div class="span11" style="margin:0px 0px 0px 0px; padding:0px 0px 0px 0px">
+						<table class="table table-bordered table-condensed" style="margin-bottom:5px">
+							<colgroup>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+							</colgroup>
+							<tbody>
+							  	<tr>
+									<td colspan="5">
+										<div class="optional"><strong>건물명</strong></div>
+										<select id="search_buildingName" class="margin0 input-medium">
+											<option value="">선택</option>
+											<option value="루체씨티">루체씨티</option>
+											<option value="1번건물">1번건물</option>
+											<option value="2번건물">2번건물</option>
+											<option value="3번건물">3번건물</option>
+											<option value="4번건물">4번건물</option>
+										</select>
+									</td>
+									<td colspan="5">
+										<div class="optional"><strong>호 실</strong></div>
+										<select id="search_buildingRoomNumber" class="margin0 input-small">
+											<option value="">선택</option>
+											<option value="101">101</option>
+											<option value="102">102</option>
+											<option value="103">103</option>
+											<option value="201">201</option>
+											<option value="202">202</option>
+											<option value="203">203</option>
+										</select>
+									</td>
+									<td colspan="5">
+										<div class="optional"><strong>임차인</strong></div>
+										<input id="search_contractorName" type="text" class="margin0 input-small" />
+									</td>
+									<td colspan="5">
+										<div class="optional"><strong>성 별</strong></div>
+										<select id="search_contractorGender" class="margin0 input-small">
+											<option value="">선택</option>
+											<option value="남">남</option>
+											<option value="여">여</option>
+										</select>
+									</td>
+								</tr>
+							  	<tr>
+							  		<td colspan="5"> 
+							  			<div class="optional"><strong>보증금</strong></div>
+							  			<input id="search_leaseDeposit" type="text" class="margin0 input-small" />
+							  		</td>
+							  		<td colspan="5"> 
+							  			<div class="optional"><strong>임대료</strong></div>
+							  			<input id="search_leaseMoney" type="text" class="margin0 input-small" />
+							  		</td>
+							  		<td colspan="10"> 
+							  			<div class="optional"><strong>임대 구분</strong></div>
+							  			<select id="search_leaseType" class="margin0 input-small">
+											<option value="">전체</option>
+											<option value="월세">월세</option>
+											<option value="전세">전세</option>
+											<option value="매매">매매</option>
+										</select>
+							  		</td>
+							  	</tr>
+							  	<tr>
+							  		<td colspan="8">
+							  			<div class="optional"><strong>임대 기간</strong></div>
+							  			<input id="search_inDate" class="margin0 input-small datepicker" type="text" placeholder="입주일" />
+							  			<input id="search_outDate" class="margin0 input-small datepicker" type="text" placeholder="만료일" disabled="" />
+									</td>
+									<td colspan="4">
+										<div class="optional"><strong>주차 여부</strong></div>
+										<select id="search_isParking" class="margin0 input-small">
+											<option value="">선택</option>
+											<option value="y">예</option>
+											<option value="n">아니요</option>
+										</select>
+									</td>
+									<td colspan="4">
+										<div class="optional"><strong>공실 여부</strong></div>
+										<select id="search_isEmptyRoom" class="margin0 input-small">
+											<option value="">선택</option>
+											<option value="y">예</option>
+											<option value="n">아니요</option>
+										</select>
+									</td>
+									<td colspan="4">
+										<div class="optional"><strong>연체 여부</strong></div>
+										<select id="search_isOverdue" class="margin0 input-small">
+											<option value="">선택</option>
+											<option value="y">예</option>
+											<option value="n">아니요</option>
+										</select>
+									</td>
+								  </tr>
+							</tbody>
+						 </table>
+						 
+						 <div style="text-align:center">
+							<form class="form-inline" onSubmit="return false;">
+								<div style="margin-bottom:5px">
+									<button class="btn btn-small" onclick="SearchDetail();">조회</button>
+									<button class="btn btn-small">초기화</button>
+								</div>	
+							</form>
+						 </div>
 					</div>
-				-->
 				</div>
-				
-				<div class="row-fluid">
-					<div class="box span8" style="margin: 0px; padding: 0px">
+
+				<!-- 검색 결과 나타내기 -->
+				<div id="search_result" class="row-fluid" style="display:none;">
+					<div class="box span11" style="margin: 0px; padding: 0px">
 						<div class="box-header">
 							<h2><strong>입주자 정보 확인</strong></h2>
 						</div>
 						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8; font-size : 0.95em">
-							<table class="table table-bordered table-condensed">
+							<table class="table table-bordered table-condensed table-hover">
 								<thead>
 									<tr>
-										<th width="5%"><input id="result_checkall" type="checkbox"></th>
-										<th width="10%">건물명</th>
+										<!--<th width="5%"><input id="result_checkall" type="checkbox"></th>-->
+										<th width="15%">건물명</th>
 										<th width="7%">호실</th>
 										<th width="7%">이름</th>
 										<th width="7%">성별</th>
@@ -333,77 +336,24 @@
 										<th width="8%">연체</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="search_result_content">
+									<!--
+									{% for res in result %}
 								  	<tr class="white">
-								  		<td>
-								  			<input name="result_check" type="checkbox">
-										</td>
-										<td>
-											루체씨티
-										</td>
-										<td>
-											301호
-										</td>
-										<td>
-											김현성
-										</td>
-										<td>
-											남
-										</td>
-										<td>
-											월세
-										</td>
-										<td>
-											7,000
-										</td>
-										<td>
-											10
-										</td>
-										<td>
-											2013.09.08
-										</td>
-										<td>
-											2013.12.08
-										</td>
-										<td>
-											0
-										</td>
-									</tr>	
-									<tr class="white">
-								  		<td>
-								  			<input name="result_check" type="checkbox">
-										</td>
-										<td>
-											<strong>루체씨티</strong>
-										</td>
-										<td>
-											<strong>301호</strong>
-										</td>
-										<td>
-											<strong>김현성</strong>
-										</td>
-										<td>
-											<strong>남</strong>
-										</td>
-										<td>
-											<strong>월세</strong>
-										</td>
-										<td>
-											<strong>7,000</strong>
-										</td>
-										<td>
-											<strong>10</strong>
-										</td>
-										<td>
-											<strong>2013.09.08</strong>
-										</td>
-										<td>
-											<strong>2013.12.08</strong>
-										</td>
-										<td>
-											<strong>0</strong>
-										</td>
-									</tr>				
+										<td><input name="result_check" type="checkbox"></td>
+										<td>{{ res.buildingName }}</td>
+										<td>{{ res.buildingRoomNumber }}</td>
+										<td>{{ res.contractorName }}</td>
+										<td>{{ res.contractorGender }}</td>
+										<td>{{ res.leaseType }}</td>
+										<td>{{ res.leaseDeposit }}</td>
+										<td>{{ res.leaseMoney }}</td>
+										<td>{{ res.inDate }}</td>
+										<td>{{ res.outDate }}</td>
+										<td></td><td>{{ res.연체 }}</td
+									</tr>
+									{% endfor %}
+									-->
 								</tbody>
 							 </table>  
 						</div>
@@ -484,7 +434,7 @@
 	
 		<script src="{{ STATIC_URL }}bootstrap/js/custom.js"></script>
 
-		<script src="{{ STATIC_URL }}js/02_01_resident_info.js"></script>
+		<script src="{{ STATIC_URL }}js/02_02_resident_show.js"></script>
 		
 		<script type="text/javascript" language="JavaScript">
 			$(document).ready(function(){
@@ -545,6 +495,14 @@
 						$(this).attr('checked', chk);
 					});
 				});
+/*
+				$('tr').click(function() {
+					var pa = $(this).parent();
+					var id = $(this).parent().find('id');
+					alert(pa);
+					alert(id);
+					});
+*/
 			});			
 		</script>
 		<!-- end: JavaScript-->

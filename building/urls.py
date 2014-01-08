@@ -13,6 +13,9 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^main/$', main_html),
-    url(r'^resident/$', resident_info_html),
+    url(r'^resident/info/$', resident_info_html),
+    url(r'^resident/show/(?P<uid>\d+)/$', show_detail_resident_info),
+    url(r'^resident/show/$', resident_show_html),
     url(r'^resident/save/$', save_resident_info),
+    url(r'^resident/search/$', show_resident_info),
 )
