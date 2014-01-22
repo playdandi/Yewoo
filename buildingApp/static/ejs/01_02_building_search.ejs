@@ -1,0 +1,22 @@
+<% for (i = 0; i < result.length; i++) { %>
+<% var r = result[i]; %>
+<% var type = (r.type == 0) ? '임대 건물' : '주상 복합'; %>
+<% var floor = (r.floorFrom < 0) ? '지하 '+(-r.floorFrom)+'층' : '지상 '+r.floorFrom+'층'; %>
+<% floor += ' ~ '; %>
+<% floor += (r.floorTo < 0) ? '지하 '+(-r.floorTo)+'층' : '지상 '+r.floorTo+'층'; %>
+<tr id="<%= r.id %>" class="white showDetail">
+	<td style="text-align:center; background-color:<%= color.number %>"><%= r.number %></td>
+	<td style="text-align:center; background-color:<%= color.name %>"><%= r.name %></td>
+	<td style="text-align:center; background-color:<%= color.type %>"><%= type %></td>
+	<td style="text-align:center; background-color:<%= color.manager %>"><%= r.manager %></td>
+	<td style="text-align:center; background-color:<%= color.floor %>"><%= floor %></td>
+	<td style="text-align:center; background-color:<%= color.numRoom %>"><%= r.numRoom %></td>
+	<td style="text-align:center; background-color:<%= color.numParking %>"><%= r.numParking %></td>
+</tr>
+<% } %>
+
+<% if (result.length == 0) { %>
+<tr class="white">
+	<td colspan="10">검색 결과가 없습니다.</td>
+</tr>
+<% } %>

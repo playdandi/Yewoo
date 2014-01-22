@@ -157,6 +157,12 @@
 					<ul class="nav nav-tabs nav-stacked main-menu">
 						<li class="nav-header hidden-tablet">주요 메뉴</li>
 						<li><a href="/main/"><i class="icon-home"></i><span class="hidden-tablet"> 홈으로</span></a></li>
+						<li><a href="#building" data-toggle="collapse"><i class="icon-chevron-right"></i><span class="hidden-tablet"> [건물 관리]</span></a></li>
+						<ul id="building" class="nav nav-tab nav-stacked main-menu collapse" style="margin-bottom:-1px">
+				            <li><a href="/building/register/"><i class="icon-hand-right"></i><span class="hidden-tablet"> 건물 정보 등록</span></a></li>
+							<li><a href="/building/search/building/"><i class="icon-hand-right"></i><span class="hidden-tablet"> 등록 건물 정보 확인</span></a></li>
+							<li><a href="/building/search/rooms/"><i class="icon-hand-right"></i><span class="hidden-tablet"> 등록 호수 정보 확인</span></a></li>
+				        </ul>
 						<li><a href="#resident" data-toggle="collapse"><i class="icon-chevron-right"></i><span class="hidden-tablet"> [입주자 관리]</span></a></li>
 						<ul id="resident" class="nav nav-tab nav-stacked main-menu collapse">
 				            <li><a href="/resident/info/"><i class="icon-hand-right"></i><span class="hidden-tablet"> 입주자 정보 입력</span></a></li>
@@ -228,27 +234,17 @@
 								  	<tr>
 										<td colspan="7">
 											<div class="must" style="margin-right:26px"><strong>건물명</strong></div>
-											<!--동적으로 db에서 데이터 들고와야 함 -->
-											<!--<select id="buildingName" style="line-height:0px" id="selectError" class="margin0 input-medium" data-rel="chosen">-->
 											<select id="buildingName" class="margin0" style="width:150px">
 												<option value="">선택</option>
-												<option value="루체씨티">루체씨티</option>
-												<option value="2번건물">2번건물</option>
-												<option value="3번건물">3번건물</option>
-												<option value="4번건물">4번건물</option>
+												{% for b in building_name_id %}
+												<option value="b{{ b.id }}">{{ b.name }}</option>
+												{% endfor %}
 									  		</select>
 								  		</td>
 										<td colspan="4">
 											<div class="must"><strong>호    실</strong></div>
-											<!-- 위 '건물명'을 셀렉트할 때, db에서 동적 데이터 들고와야 함 -->
-											<select id="buildingRoomNumber" class="margin0 width2">
+											<select id="buildingRoomNumber" class="margin0" style="width:85px" disabled>
 												<option value="">선택</option>
-												<option value="101">101</option>
-												<option value="102">102</option>
-												<option value="103">103</option>
-												<option value="201">201</option>
-												<option value="202">202</option>
-												<option value="203">203</option>
 									  		</select>
 								  		</td>
 										<td colspan="9">
@@ -296,9 +292,23 @@
 										</td>
 										<td colspan="9">
 											<div class="must"><strong>입주 검침</strong></div>
-											<input id="checkE" type="text" class="margin0 width3" placeholder="전기" />
-											<input id="checkG" type="text" class="margin0 width3" placeholder="가스" />
-											<input id="checkW" type="text" class="margin0 width3" placeholder="상하수도" />
+											<select id="checkType" class="margin0" style="width:82px; font-size:0.8em">
+												<option value="0">일반</option>
+												<option value="1">원격검침1</option>
+												<option value="2">원격검침2</option>
+											</select>
+											<input id="checkE" type="text" class="margin0" style="width:29px" placeholder="전기" />
+											<span id="checkStatus_0_2">
+												<input id="checkG" type="text" class="margin0" style="width:29px" placeholder="가스" />
+												<input id="checkW" type="text" class="margin0" style="width:45px" placeholder="상하수도" />
+											</span>
+											<span id="checkStatus_1" style="display:none">
+												<input id="checkHWG" type="text" class="margin0" style="width:29px" placeholder="온수" />
+												<input id="checkHG" type="text" class="margin0" style="width:29px" placeholder="난방" />
+												<input id="checkHWW" type="text" class="margin0" style="width:29px" placeholder="온수" />
+												<input id="checkHW" type="text" class="margin0" style="width:29px" placeholder="난방" />
+												<a href="#" title="전기, 온수(가스), 난방(가스), 온수(수도), 난방(수도)" data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a>
+											</span>
 										</td>
 									  </tr>
 								</tbody>
@@ -632,7 +642,12 @@
 					</div>
 				</div>
 				
-				
+				<div>
+					<div class="span8 btn-group" style="margin-bottom:20px">
+						<button class="btn btn-small btn-setting" onclick="setPreviewInfo();">미리보기</button>
+						<button class="btn btn-small btn-inverse" onclick="SaveResidentInfo();">저장하기</button>
+					</div>
+				</div>
 				<!-- end: table -->
 			</div>
 			<!-- end: Content -->
@@ -712,7 +727,9 @@
 									</td>
 									<td colspan="9">
 										<div class="must"><strong>입주 검침</strong></div>
-										<div id="checkEGW_modal" class="margin0"></div>
+										<div id="checkType_modal" class="margin0" style="float:left; margin-right:10px"></div>
+										<div id="checkEHWHW_modal" class="margin0" style="float:left; margin-left:10px"></div>
+										<div id="checkEGW_modal" class="margin0" style="float:left"></div>
 									</td>
 								  </tr>
 							</tbody>
@@ -1025,7 +1042,15 @@
 				setInterval(f_income, 5000);
 				setInterval(f_sales, 5000);
 				setInterval(live_notifications_center, 5000);
-				*/
+				 */
+
+				$('#buildingName').change(function() {
+					if ($(this).val() == '')
+						$('#buildingRoomNumber').attr('disabled', true);
+					else {
+						getBuildingRooms($(this).val(), 'buildingRoomNumber');
+					}
+				});
 				
 				$('#inDate').change(function() {
 					var mdy = $('#inDate').val().split('/');
@@ -1043,6 +1068,26 @@
 					{
 						alert('만료일은 입주일 이후의 날짜만 입력 가능합니다.');
 						$('#outDate').val('');
+					}
+				});
+
+				// 검침 내용 바꾸기
+				$('#checkType').change(function() {
+					if ($('#checkType').val() == '1') {
+						$('#checkStatus_0_2').hide();
+						$('#checkStatus_1').show();
+						$('#checkE').val('');
+						$('#checkHWG').val('');
+						$('#checkHG').val('');
+						$('#checkHWW').val('');
+						$('#checkHW').val('');
+					}
+					else {
+						$('#checkStatus_0_2').show();
+						$('#checkStatus_1').hide();
+						$('#checkE').val('');
+						$('#checkG').val('');
+						$('#checkW').val('');
 					}
 				});
 

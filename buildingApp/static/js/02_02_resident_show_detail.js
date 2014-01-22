@@ -1,4 +1,61 @@
-function SaveResidentInfo()
+var resident_id; 
+
+function Revise(done)
+{
+	if (done) {
+		if (!confirm('수정하시겠습니까?'))
+			return;
+		else
+			if (!UpdateResidentInfo())
+				return;
+	}
+
+	isRevising = !done;
+	if (!done) { // 수정 시작
+		$('#reviseStart').hide();
+		$('#reviseDone').show();
+	}
+	else { // 완료버튼 클릭
+		$('#reviseStart').show();
+		$('#reviseDone').hide();
+	}
+
+	// disabled / enabled
+	var names = new Array('buildingName', 'buildingRoomNumber', 'inDate', 'outDate', 'leaseType', 'leaseDeposit', 'leasePayWay',
+		'leasePayDate', 'leaseMoney', 'agency', 'agencyName', 'checkType', 'checkE', 'checkG', 'checkW', 'checkHWG', 'checkHG', 'checkHWW', 'checkHW',
+		'contractorName', 'contractorGender', 'contractorRegNumber_1', 'contractorRegNumber_2', 'contractorContactNumber1_1',
+		'contractorContactNumber1_2', 'contractorContactNumber1_3', 'contractorContactNumber2_1', 'contractorContactNumber2_2',
+		'contractorContactNumber2_3', 'contractorAddress', 'residentName', 'residentGender', 'residentRegNumber_1',
+		'residentRegNumber_2', 'relToContractor', 'residentPeopleNumber', 'residentAddress', 'residentContactNumber1_1',
+		'residentContactNumber1_2', 'residentContactNumber1_3', 'residentContactNumber2_1', 'residentContactNumber2_2',
+		'residentContactNumber2_3', 'residentOfficeName', 'residentOfficeLevel', 'residentOfficeAddress',
+		'residentOfficeContactNumber_1', 'residentOfficeContactNumber_2', 'residentOfficeContactNumber_3',
+		'residentEmail', 'carNumber', 'parkingFee', 'sendMsg', 'checkin', 'checkout', 'checkoutWhy', 'checkoutDate', 'memo');
+	for (i = 0; i < names.length; i++) {
+		$('#'+names[i]).attr('disabled', done);
+	}
+	if (!done) { // 수정할 때 disabled/enabled 잘 고려해야 할 사항들
+		$('#haveCarY').attr('disabled', done);
+		$('#haveCarN').attr('disabled', done);
+		$('#sendMsgY').attr('disabled', done);
+		$('#sendMsgN').attr('disabled', done);
+		$('#checkinY').attr('disabled', done);
+		$('#checkinN').attr('disabled', done);
+		$('#checkoutY').attr('disabled', done);
+		$('#checkoutN').attr('disabled', done);
+	}
+
+	if (!done && $(':radio[name="haveCar"]:checked').val() == 'y') {
+		$('#carNumber').attr('disabled', 'false');
+		$('#parkingFee').attr('disabled', 'false');
+	}
+	else {
+		$('#carNumber').attr('disabled', 'true');
+		$('#parkingFee').attr('disabled', 'true');
+	}
+}
+
+function UpdateResidentInfo()
 {
 	var data = {};
 	data['buildingName'] = $('#buildingName').val().replace('b', '');
@@ -51,6 +108,10 @@ function SaveResidentInfo()
 	data['sendMsg'] = $(':radio[name="sendMsg"]:checked').val();
 	data['checkin'] = $(':radio[name="checkin"]:checked').val();
 	data['checkout'] = $(':radio[name="checkout"]:checked').val();
+	if (data['checkout'] == 'y') {
+		data['checkoutWhy'] == $('#checkoutWhy').val();
+		data['checkoutDate'] == $('#checkoutDate').val();
+	}
 	data['memo'] = $('#memo').val();
 	
 	// check
@@ -60,13 +121,13 @@ function SaveResidentInfo()
 			name == 'residentContactNumber1' || name == 'residentContactNumber2' ||
 			name == 'residentOfficeContactNumber') {
 			if (!IsContactNumberRight(name, data[name]))
-				return;
+				return false;
 			continue;
 		}
 		// 주민번호 확인
 		if (name == 'contractorRegNumber' || name == 'residentRegNumber') {
 			if (!IsRegNumberRight(name, data[name]))
-				return;
+				return false;
 			continue;
 		}
 
@@ -86,25 +147,25 @@ function SaveResidentInfo()
 			name == 'checkE' || name == 'checkG' || name == 'checkW' || name == 'checkHWG' || name == 'checkHG' ||
 			name == 'checkHWW' || name == 'checkHW' || name == 'residentPeopleNumber') {
 			if (!IsNumberRight(name, data[name]))
-				return;
+				return false;
 		}
 
 		// email 형식 체크
 		if (name == 'residentEmail') {
 			if (!IsEmailRight(data[name]))
-				return;
+				return false;
 		}
 
 		// 그 외 나머지는 필수 영역으로, 빈 칸이 존재하면 안 된다.
 		if (data[name] == '') {
 			alert('빈 칸이 존재합니다.');
 			$('#'+name).focus();
-			return;
+			return false;
 		}
 	}
 
-	if (confirm('저장하시겠습니까? (미리보기로 꼭 확인해주세요)'))
-		doSaveResidentInfo(data);
+//	if (confirm('저장하시겠습니까? (미리보기로 꼭 확인해주세요)'))
+	doUpdateResidentInfo(data);
 }
 
 function IsRegNumberRight(name, number)
@@ -174,18 +235,18 @@ function IsEmailRight(email)
 	return true;
 }
 
-var doSaveResidentInfo = function(postData) {
+var doUpdateResidentInfo = function(postData) {
 	var csrftoken = $.cookie('csrftoken');
 	postData['csrfmiddlewaretoken'] = csrftoken; 
-	postData['type'] = 'save';
-
+	postData['type'] = 'update';
+	postData['uid'] = resident_id;
 	$.ajax({
 		type : 'POST',
 		url : 'http://14.49.42.190:8080/resident/save/',
 		data : postData,
 		success : function() {
 			alert('성공적으로 입력되었습니다.');
-			$(location).attr('href', 'http://14.49.42.190:8080/resident/info/');
+			$(location).attr('href', 'http://14.49.42.190:8080/resident/show/'+resident_id+'/');
 		},
 		error : function(msg) {
 			alert('error : ' + msg);	
@@ -233,90 +294,3 @@ function N1To10(number)
 	var korean = new Array('', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구');
 	return korean[number];
 }
-
-function setPreviewInfo()
-{
-	var data = {};
-	$('#buildingName_modal').html($('#buildingName option:selected').text());
-	var roomNumber = Number($('#buildingRoomNumber').val());
-	if (roomNumber < 0)
-		roomNumber = String(roomNumber).replace('-', 'B ');
-	$('#buildingRoomNumber_modal').html(roomNumber);
-	$('#inOutDate_modal').html($('#inDate').val() + ' ~ ' + $('#outDate').val());
-	$('#leaseType_modal').html($('#leaseType').val());
-	$('#leaseDeposit_modal').html($('#leaseDeposit').val() + ' (' + $('#leaseDeposit2').val() + ')');
-	$('#leasePay_modal').html($('#leasePayWay').val() + ', ' + $('#leasePayDate').val() + '일, ' + $('#leaseMoney').val() + '원');
-	$('#agency_modal').html($('#agency').val() + ' (' + $('#agencyName').val() + ')');
-	$('#checkType_modal').html('[' + $('#checkType option:selected').text() + ']  ');
-	if ($('#checkType').val() == '1') { // 원격검침1
-		$('#checkEHWHW_modal').html('전기(' + $('#checkE').val() + '), 온수가스(' + $('#checkHWG').val() + '), 난방가스(' + $('#checkHG').val() + '), 온수수도(' + $('#checkHWW').val() + '), 난방수도(' + $('#checkHW').val() + ')');
-		$('#checkEGW_modal').html('');
-	}
-	else {
-		$('#checkEHWHW_modal').html('');
-		$('#checkEGW_modal').html('전기(' + $('#checkE').val() + '), 가스(' + $('#checkG').val() + '), 상하수도(' + $('#checkW').val() + ')');
-	}
-	
-	$('#contractorNameGender_modal').html($('#contractorName').val() + ' (' + $('#contractorGender').val() + ')');
-	$('#contractorRegNumber_modal').html($('#contractorRegNumber_1').val() + '-' + $('#contractorRegNumber_2').val());
-	$('#contractorContactNumber1_modal').html($('#contractorContactNumber1_1').val() + '-' + $('#contractorContactNumber1_2').val() + '-' + $('#contractorContactNumber1_3').val());
-	var contractorContactNumber2 = $('#contractorContactNumber2_1').val() + '-' + $('#contractorContactNumber2_2').val() + '-' + $('#contractorContactNumber2_3').val();
-	if (contractorContactNumber2 != '--') {
-		$('#contractorContactNumber2_modal').html(contractorContactNumber2);
-	}
-	$('#contractorAddress_modal').html($('#contractorAddress').val());
-
-
-	$('#residentNameGender_modal').html($('#residentName').val() + ' (' + $('#residentGender').val() + ')');
-	$('#residentRegNumber_modal').html($('#residentRegNumber_1').val() + '-' + $('#residentRegNumber_2').val());
-	$('#relToContractor_modal').html($('#relToContractor').val());
-	$('#residentPeopleNumber_modal').html($('#residentPeopleNumber').val() + ' 명');
-	$('#residentAddress_modal').html($('#residentAddress').val());
-	$('#residentContactNumber1_modal').html($('#residentContactNumber1_1').val() + '-' + $('#residentContactNumber1_2').val() + '-' + $('#residentContactNumber1_3').val());
-	var residentContactNumber2 = $('#residentContactNumber2_1').val() + '-' + $('#residentContactNumber2_2').val() + '-' + $('#residentContactNumber2_3').val();
-	if (residentContactNumber2 != '--') {
-		$('#residentContactNumber2_modal').html(residentContactNumber2);
-	}
-	$('#residentOfficeName_modal').html($('#residentOfficeName').val());
-	$('#residentOfficeLevel_modal').html($('#residentOfficeLevel').val());
-	$('#residentOfficeAddress_modal').html($('#residentOfficeAddress').val());
-	var residentOfficeContactNumber = $('#residentOfficeContactNumber_1').val() + '-' + $('#residentOfficeContactNumber_2').val() + '-' + $('#residentOfficeContactNumber_3').val();
-	if (residentOfficeContactNumber != '--') {
-		$('#residentOfficeContactNumber_modal').html(residentOfficeContactNumber);
-	}
-	$('#residentEmail_modal').html($('#residentEmail').val());
-	
-	if ($(':radio[name="haveCar"]:checked').val() == 'y') {
-		$('#haveCar_modal').html('있음 : 번호(' + $('#carNumber').val().trim() + '), 주차비용(' + $('#parkingFee').val() + '원)');
-	}
-	else {
-		$('#haveCar_modal').html('없음');
-	}
-
-	var sendMsg = $(':radio[name="sendMsg"]:checked').val() == 'y' ? '전달 유' : '전달 무';
-	$('#sendMsg_modal').html(sendMsg);
-	var checkin = $(':radio[name="checkin"]:checked').val() == 'y' ? '입실 확인' : '입실 미확인';
-	var checkout = $(':radio[name="checkout"]:checked').val() == 'y' ? '퇴실 확인' : '퇴실 미확인';
-	$('#checkinout_modal').html(checkin + ', ' + checkout);
-
-	$('#memo_modal').html( $('#memo').val() );
-}
-
-
-/*
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-*/

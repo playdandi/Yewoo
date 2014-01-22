@@ -1,3 +1,23 @@
+function SearchAll()
+{
+	var data = {};
+	data['type'] = 2;
+	data['buildingName'] = '';
+	data['buildingNameKor'] = '';
+	data['buildingRoomNumber'] = '';
+	data['contractorName'] = '';
+	data['contractorGender'] = '';
+	data['leaseDeposit'] = '';
+	data['leaseMoney'] = '';
+	data['leaseType'] = '';
+	data['inDate'] = '';
+	data['outDate'] = '';
+	data['isParking'] = '';
+	data['isEmptyRoom'] = '';
+	data['isOverdue'] = '';
+	doAjax(2, data);
+}
+
 function Search()
 {
 	// 건물명, 호실, 임차인 항목에서만 검색하는 부분.
@@ -41,7 +61,7 @@ function Color(type, postData, name, result)
 {
 	// 전체 키워드로 검색했을 시, 3가지를 비교해서 색깔을 정한다.
 	if (type == 0) {
-		if (name == 'buildingName' || name == 'buildingRoomNumber' || name == 'contractorName') {
+		if (name == 'buildingNameKor' || name == 'buildingRoomNumber' || name == 'contractorName') {
 			if (result == postData['keyword'])
 				return ' style="background-color:#ffa07a"';
 		}
@@ -72,8 +92,11 @@ var doAjax = function(type, postData) {
 				var r = result[i];
 				html += '<tr id="' + r.id + '" class="white showDetail">';
 				//html += '<td><input name="result_check" type="checkbox"></td>';
-				html += '<td' + Color(type, postData, 'buildingName', r.buildingName) + '>' + r.buildingName + '</td>';
-				html += '<td' + Color(type, postData, 'buildingRoomNumber', r.buildingRoomNumber) + '>' + r.buildingRoomNumber + '</td>';
+				html += '<td' + Color(type, postData, 'buildingNameKor', r.buildingNameKor) + '>' + r.buildingNameKor + '</td>';
+				roomNumber = r.buildingRoomNumber;
+				if (r.buildingRoomNumber < 0)
+					roomNumber = 'B ' + (-r.buildingRoomNumber);
+				html += '<td' + Color(type, postData, 'buildingRoomNumber', roomNumber) + '>' + roomNumber + '</td>';
 				html += '<td' + Color(type, postData, 'contractorName', r.contractorName) + '>' + r.contractorName + '</td>';
 				html += '<td' + Color(type, postData, 'contractorGender', null) + '>' + r.contractorGender + '</td>';
 				html += '<td' + Color(type, postData, 'leaseType', null) + '>' + r.leaseType + '</td>';
@@ -89,6 +112,9 @@ var doAjax = function(type, postData) {
 				html += '<td colspan=10">검색 결과가 없습니다.</td>';
 				html += '</tr>';
 			}
+
+			//var template = new EJS({url : '/static/ejs/01_02_building_search.ejs'}).render({'result' : result, 'color' : color});
+			//$('#search_result_content').html(template);
 
 			$('#search_result_content').html(html);
 
@@ -116,7 +142,7 @@ function IsNumberRight(name, number)
 	return true;
 }
 
-
+/*
 function moneyToKorean(deposit)
 {
 	if (!IsNumberRight('leaseDeposit', deposit))
@@ -155,7 +181,42 @@ function N1To10(number)
 	var korean = new Array('', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구');
 	return korean[number];
 }
+*/
+/*
+function getBuildingRooms(b_id)
+{
+	b_id = b_id.replace('b', '');
+	doAjax_buildingRoom(b_id);
+}
 
+var doAjax_buildingRoom = function(id) {
+	var csrftoken = $.cookie('csrftoken');
+	var postData = {};
+	postData['csrfmiddlewaretoken'] = csrftoken; 
+	postData['id'] = id;
+
+	$.ajax({
+		type : 'POST',
+		url : 'http://14.49.42.190:8080/building/getrooms/',
+		data : postData,
+		success : function(rooms) {
+			$('#buildingRoomNumber').find('option').each(function() {
+				$(this).remove();
+			});
+
+			$('#buildingRoomNumber').append('<option value="">선택</option>');
+			for (i = 0; i < rooms.length; i++) {
+				$('#buildingRoomNumber').append('<option value="'+rooms[i]+'">' + rooms[i]+'호' + '</option>');
+			}
+
+			$('#buildingRoomNumber').attr('disabled', false);
+		},
+		error : function(msg) {
+			alert('다시 시도해주세요...');	
+		},
+	});
+}
+*/
 /*function SaveResidentInfo()
 {
 	var data = {};

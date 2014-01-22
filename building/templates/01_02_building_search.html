@@ -20,122 +20,6 @@
 	<link href="{{ STATIC_URL }}bootstrap/css/datepicker.css" rel="stylesheet">
 	<!-- end: CSS -->
 
-	<!-- start: JavaScript-->
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery-1.9.1.min.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery-migrate-1.0.0.min.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery-ui-1.10.0.custom.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/bootstrap.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cookie.js"></script>
-	
-		<script src='{{ STATIC_URL }}bootstrap/js/fullcalendar.min.js'></script>
-	
-		<script src='{{ STATIC_URL }}bootstrap/js/jquery.dataTables.min.js'></script>
-
-		<script src="{{ STATIC_URL }}bootstrap/js/excanvas.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.min.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.pie.min.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.stack.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.resize.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.chosen.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uniform.min.js"></script>
-		
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cleditor.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.noty.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.elfinder.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.raty.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.iphone.toggle.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uploadify-3.1.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.gritter.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.imagesloaded.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.masonry.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/custom.js"></script>
-
-		<script src="{{ STATIC_URL }}js/02_02_resident_show.js"></script>
-		<script src="{{ STATIC_URL }}js/common.js"></script>
-		
-		<script type="text/javascript" language="JavaScript">
-			$(document).ready(function(){
-				/*
-				setTimeout("message_welcome1()",5000);
-				setTimeout("message_welcome2()",10000);	
-				setTimeout("message_welcome3()",15000);
-				setInterval(f_visits, 100);
-				setInterval(f_members, 2000);
-				setInterval(f_income, 5000);
-				setInterval(f_sales, 5000);
-				setInterval(live_notifications_center, 5000);
-				*/
-				$('#search_buildingName').change(function() {
-					if ($(this).val() == '')
-						$('#search_buildingRoomNumber').attr('disabled', true);
-					else {
-						getBuildingRooms($(this).val(), 'search_buildingRoomNumber');
-					}
-				});
-				
-				$('#search_inDate').change(function() {
-					var mdy = $('#search_inDate').val().split('/');
-					$('#search_inDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
-					$('#search_outDate').attr('disabled', false);
-				});
-				
-				$('#search_outDate').change(function() {
-					var mdy = $('#search_outDate').val().split('/');
-					$('#search_outDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
-					var mdyin = $('#search_inDate').val().split('.');
-					if (mdyin[0] > mdy[2] ||
-						(mdyin[0] == mdy[2] && mdyin[1] > mdy[0]) ||
-						(mdyin[0] == mdy[2] && mdyin[1] == mdy[0] && mdyin[2] > mdy[1]))
-					{
-						alert('만료일은 입주일 이후의 날짜만 입력 가능합니다.');
-						$('#search_outDate').val('');
-					}
-				});
-					
-				// 상세 버튼
-				$('#detail_btn').click(function() {
-					if ($('#search_detail').css('display') == 'none')
-						$('#search_detail').show();
-					else
-						$('#search_detail').hide(); 
-				});
-
-				// 주차 유무
-				$(':radio[name="haveCar"]').click(function() {
-					if ($(this).val() == 'y') {
-						$('#carNumber').attr('disabled', false);
-						$('#parkingFee').attr('disabled', false);
-					}
-					else {
-						$('#carNumber').val('');
-						$('#carNumber').attr('disabled', true);
-						$('#parkingFee').attr('disabled', true);
-					}
-				});
-				
-				$('#result_checkall').click(function() {
-					var chk = $(this).is(':checked');				
-					$('input[name=result_check]:checkbox').each(function() {
-						$(this).attr('checked', chk);
-					});
-				});
-
-				SearchAll();
-			});			
-		</script>
 	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]
 	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -289,10 +173,10 @@
 				<div class="span11">
 					<ul class="breadcrumb">
 						<li>
-							<a href="#">입주자 관리</a> <span class="divider">></span>
+							<a href="#">건물 관리</a> <span class="divider">></span>
 						</li>
 						<li>
-							<a href="#">입주자 정보 확인</a>
+							<a href="#">등록 건물 정보 확인</a>
 						</li>
 					</ul>
 				</div>
@@ -336,85 +220,90 @@
 							</colgroup>
 							<tbody>
 							  	<tr>
-									<td colspan="5">
-										<div class="optional"><strong>건물명</strong></div>
-										<select id="search_buildingName" class="margin0 input-medium">
+									<td colspan="6">
+										<div class="optional" style="margin-right:27px"><strong>건물명</strong></div>
+										<select id="search_name" class="margin0" style="width:130px">
 											<option value="">선택</option>
-											{% for b in building %}
-											<option value="{{ b.id }}">{{ b.name }}</option>
+											{% for b in buildings %}
+											<option value="{{ b.name }}">{{ b.name }}</option>
 											{% endfor %}
 										</select>
 									</td>
 									<td colspan="5">
-										<div class="optional"><strong>호 실</strong></div>
-										<select id="search_buildingRoomNumber" class="margin0 input-small" disabled>
+										<div class="optional" style="margin-right:27px"><strong>건물 번호</strong></div>
+										<select id="search_number" class="margin0" style="width:90px">
 											<option value="">선택</option>
-											
+											{% for b in buildings %}
+											<option value="{{ b.number }}">No.{{ b.number }}</option>
+											{% endfor %}
 										</select>
 									</td>
 									<td colspan="5">
-										<div class="optional"><strong>임차인</strong></div>
-										<input id="search_contractorName" type="text" class="margin0 input-small" />
-									</td>
-									<td colspan="5">
-										<div class="optional"><strong>성 별</strong></div>
-										<select id="search_contractorGender" class="margin0 input-small">
+										<div class="optional" style="margin-right:27px"><strong>건물 형식</strong></div>
+										<select id="search_type" class="margin0" style="width:120px">
 											<option value="">선택</option>
-											<option value="남">남</option>
-											<option value="여">여</option>
+											<option value="0">임대 건물</option>
+											<option value="1">주상 복합</option>
 										</select>
+									</td>
+									<td colspan="4">
+										<div class="optional" style="margin-right:27px"><strong>담당자</strong></div>
+										<input id="search_manager" type="text" class="margin0" style="width:90px" />
 									</td>
 								</tr>
 							  	<tr>
-							  		<td colspan="5"> 
-							  			<div class="optional"><strong>보증금</strong></div>
-							  			<input id="search_leaseDeposit" type="text" class="margin0 input-small" />
-							  		</td>
-							  		<td colspan="5"> 
-							  			<div class="optional"><strong>임대료</strong></div>
-							  			<input id="search_leaseMoney" type="text" class="margin0 input-small" />
-							  		</td>
 							  		<td colspan="10"> 
-							  			<div class="optional"><strong>임대 구분</strong></div>
-							  			<select id="search_leaseType" class="margin0 input-small">
-											<option value="">전체</option>
-											<option value="월세">월세</option>
-											<option value="전세">전세</option>
-											<option value="매매">매매</option>
+										<div class="optional"><strong>건물 층수</strong></div>
+										<select id="search_startFloor" class="margin0" style="width:80px">
+											<option value="">선택</option>
+											<option value="지하">지하</option>
+											<option value="지상">지상</option>
+										</select>
+										<select id="search_startFloorNumber" class="margin0" style="width:80px">
+											<option value="">선택</option>
+											{% for i in range|slice:":10" %}
+											<option value="{{ i }}">{{ i }}층</option>
+											{% endfor %}
+										</select>
+										<span class="margin0">~</span>
+										<select id="search_endFloor" class="margin0" style="width:80px">
+											<option value="">선택</option>
+											<option value="지하">지하</option>
+											<option value="지상">지상</option>
+										</select>
+										<select id="search_endFloorNumber" class="margin0" style="width:80px">
+											<option value="">선택</option>
+											{% for i in range|slice:":10" %}
+											<option value="{{ i }}">{{ i }}층</option>
+											{% endfor %}
+										</select>
+							  		</td>
+							  		<td colspan="6"> 
+										<div class="optional"><strong>방 개수</strong></div>
+										<select id="search_numRoomStart" class="margin0" style="width:80px">
+											<option value="">선택</option>
+											{% for i in range %}
+											<option value="{{ i }}">{{ i }}개</option>
+											{% endfor %}
+										</select>
+										<span class="margin0">~</span>
+										<select id="search_numRoomEnd" class="margin0" style="width:80px">
+											<option value="">선택</option>
+											{% for i in range %}
+											<option value="{{ i }}">{{ i }}개</option>
+											{% endfor %}
+										</select>
+									</td>
+							  		<td colspan="4"> 
+							  			<div class="optional"><strong>주차 여부</strong></div>
+							  			<select id="search_parkingNum" class="margin0" style="width:90px">
+											<option value="">선택</option>
+											{% for i in range %}
+											<option value="{{ i }}">{{ i }}면</option>
+											{% endfor %}
 										</select>
 							  		</td>
 							  	</tr>
-							  	<tr>
-							  		<td colspan="8">
-							  			<div class="optional"><strong>임대 기간</strong></div>
-							  			<input id="search_inDate" class="margin0 input-small datepicker" type="text" placeholder="입주일" />
-							  			<input id="search_outDate" class="margin0 input-small datepicker" type="text" placeholder="만료일" disabled="" />
-									</td>
-									<td colspan="4">
-										<div class="optional"><strong>주차 여부</strong></div>
-										<select id="search_isParking" class="margin0 input-small">
-											<option value="">선택</option>
-											<option value="y">예</option>
-											<option value="n">아니요</option>
-										</select>
-									</td>
-									<td colspan="4">
-										<div class="optional"><strong>공실 여부</strong></div>
-										<select id="search_isEmptyRoom" class="margin0 input-small">
-											<option value="">선택</option>
-											<option value="y">예</option>
-											<option value="n">아니요</option>
-										</select>
-									</td>
-									<td colspan="4">
-										<div class="optional"><strong>연체 여부</strong></div>
-										<select id="search_isOverdue" class="margin0 input-small">
-											<option value="">선택</option>
-											<option value="y">예</option>
-											<option value="n">아니요</option>
-										</select>
-									</td>
-								  </tr>
 							</tbody>
 						 </table>
 						 
@@ -422,7 +311,7 @@
 							<form class="form-inline" onSubmit="return false;">
 								<div style="margin-bottom:5px">
 									<button class="btn btn-small" onclick="SearchDetail();">조회</button>
-									<button class="btn btn-small">초기화</button>
+									<button class="btn btn-small" onclick="InitSearchDetail();">초기화</button>
 								</div>	
 							</form>
 						 </div>
@@ -431,25 +320,22 @@
 
 				<!-- 검색 결과 나타내기 -->
 				<div id="search_result" class="row-fluid" style="display:none;">
-					<div class="box span11" style="margin: 0px; padding: 0px">
+					<div class="box span11" style="margin:0px; padding:0px; margin-top:20px">
 						<div class="box-header">
-							<h2><strong>입주자 정보 확인</strong></h2>
+							<h2><strong>등록 건물 확인</strong></h2>
 						</div>
 						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8; font-size : 0.95em">
 							<table class="table table-bordered table-condensed table-hover">
 								<thead>
 									<tr>
 										<!--<th width="5%"><input id="result_checkall" type="checkbox"></th>-->
+										<th width="8%" style="text-align:center">No.</th>
 										<th width="15%" style="text-align:center">건물명</th>
-										<th width="7%" style="text-align:center">호실</th>
-										<th width="7%" style="text-align:center">이름</th>
-										<th width="7%" style="text-align:center">성별</th>
-										<th width="10%" style="text-align:center">임대구분</th>
-										<th width="8%" style="text-align:center">보증금</th>
-										<th width="8%" style="text-align:center">임대료</th>
-										<th width="15%" style="text-align:center">입주일</th>
-										<th width="15%" style="text-align:center">만료일</th>
-										<th width="8%" style="text-align:center">연체</th>
+										<th width="15%" style="text-align:center">건물 형식</th>
+										<th width="15%" style="text-align:center">담당자</th>
+										<th width="25%" style="text-align:center">건물 층수</th>
+										<th width="11%" style="text-align:center">방 개수</th>
+										<th width="11%" style="text-align:center">주차 여부</th>
 									</tr>
 								</thead>
 								<tbody id="search_result_content">
@@ -490,6 +376,87 @@
 			
 </div><!--/.fluid-container-->
 
+	<!-- start: JavaScript-->
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-1.9.1.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-migrate-1.0.0.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-ui-1.10.0.custom.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/bootstrap.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cookie.js"></script>
+	
+		<script src='{{ STATIC_URL }}bootstrap/js/fullcalendar.min.js'></script>
+	
+		<script src='{{ STATIC_URL }}bootstrap/js/jquery.dataTables.min.js'></script>
+
+		<script src="{{ STATIC_URL }}bootstrap/js/excanvas.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.pie.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.stack.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.resize.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.chosen.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uniform.min.js"></script>
+		
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cleditor.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.noty.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.elfinder.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.raty.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.iphone.toggle.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uploadify-3.1.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.gritter.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.imagesloaded.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.masonry.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/custom.js"></script>
+
+		<script src="{{ STATIC_URL }}ejs/ejs.js"></script>
+		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
+		<script src="{{ STATIC_URL }}ejs/view.js"></script>
+
+		<script src="{{ STATIC_URL }}js/01_02_building_search.js"></script>
+		
+		<script type="text/javascript" language="JavaScript">
+			$(document).ready(function(){
+				/*
+				setTimeout("message_welcome1()",5000);
+				setTimeout("message_welcome2()",10000);	
+				setTimeout("message_welcome3()",15000);
+				setInterval(f_visits, 100);
+				setInterval(f_members, 2000);
+				setInterval(f_income, 5000);
+				setInterval(f_sales, 5000);
+				setInterval(live_notifications_center, 5000);
+				*/
+					
+				// 상세 버튼
+				$('#detail_btn').click(function() {
+					if ($('#search_detail').css('display') == 'none')
+						$('#search_detail').show();
+					else
+						$('#search_detail').hide(); 
+				});
+
+				
+				$('#result_checkall').click(function() {
+					var chk = $(this).is(':checked');				
+					$('input[name=result_check]:checkbox').each(function() {
+						$(this).attr('checked', chk);
+					});
+				});
+				
+				SearchAll();
+			});			
+		</script>
 		<!-- end: JavaScript-->
 	
 </body>
