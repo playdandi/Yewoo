@@ -1,0 +1,30 @@
+#sidebar-collapse {
+	border-bottom: 0px solid #e0e0e0;
+	background-color: #f3f3f3;
+	text-align: center;
+	padding: 3px 0;
+	position: relative;
+}
+
+#sidebar-collapse > [class*="icon-"] {
+	display: inline-block;
+	cursor: pointer;
+	font-size: 14px;
+	color: #aaaaaa;
+	border: 1px solid #bbbbbb;
+	padding: 1px 1px 1px 1px;
+	line-height: 18px;
+	border-radius: 20px;
+	background-color: #ffffff;
+	position: relative;
+}
+#sidebar-collapse:before {
+	content: "";
+	display: inline-block;
+	height: 0;
+	border-top: 2px solid #e0e0e0;
+	position: absolute;
+	left: 2px;
+	right: 2px;
+	top: 13px;
+}

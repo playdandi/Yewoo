@@ -17,6 +17,7 @@
 	<link id="base-style" href="{{ STATIC_URL }}bootstrap/css/style.css" rel="stylesheet">
 	<link id="base-style-responsive" href="{{ STATIC_URL }}bootstrap/css/style-responsive.css" rel="stylesheet">
 	<link href="{{ STATIC_URL }}bootstrap/css/datepicker.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}css/common.css" rel="stylesheet">
 	<!-- end: CSS -->
 
 
@@ -72,6 +73,9 @@
 		
 		<script type="text/javascript" language="JavaScript">
 			$(document).ready(function(){
+				// show sidebar
+				show_sidebar();
+
 				$('#tabmenu a').click(function(e) {
 					e.preventDefault();
 					$(this).tab('show');
@@ -240,28 +244,12 @@
 	
 	<div class="container-fluid">
 		<div class="row-fluid">
-						
-			<div class="span2 main-menu-span">
-				<div class="nav-collapse sidebar-nav">
-					<ul class="nav nav-tabs nav-stacked main-menu">
-						<li class="nav-header hidden-tablet">주요 메뉴</li>
-						<li><a href="/main/"><i class="icon-home"></i><span class="hidden-tablet"> 홈으로</span></a></li>
-						<li><a href="#building" data-toggle="collapse"><i class="icon-chevron-right"></i><span class="hidden-tablet"> [건물 관리]</span></a></li>
-						<ul id="building" class="nav nav-tab nav-stacked main-menu collapse" style="margin-bottom:-1px">
-				            <li><a href="/building/register/"><i class="icon-hand-right"></i><span class="hidden-tablet"> 건물 정보 등록</span></a></li>
-							<li><a href="/building/search/building/"><i class="icon-hand-right"></i><span class="hidden-tablet"> 등록 건물 정보 확인</span></a></li>
-							<li><a href="/building/search/rooms/"><i class="icon-hand-right"></i><span class="hidden-tablet"> 등록 호수 정보 확인</span></a></li>
-				        </ul>
-						<li><a href="#resident" data-toggle="collapse"><i class="icon-chevron-right"></i><span class="hidden-tablet"> [입주자 관리]</span></a></li>
-						<ul id="resident" class="nav nav-tab nav-stacked main-menu collapse">
-				            <li><a href="/resident/info/"><i class="icon-hand-right"></i><span class="hidden-tablet"> 입주자 정보 입력</span></a></li>
-							<li><a href="/resident/show/"><i class="icon-hand-right"></i><span class="hidden-tablet"> 입주자 정보 확인</span></a></li>
-				        </ul>
-					 </ul>
-			  	</div>
+
+			<!-- Sidebar -->
+			<div id="sidebar">
 			</div>
-			<!-- end: Main Menu -->
-				
+			<!-- end: Sidebar -->
+						
 			<noscript>
 				<div class="alert alert-block span10">
 					<h4 class="alert-heading">Warning!</h4>

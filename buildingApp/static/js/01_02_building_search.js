@@ -86,26 +86,6 @@ function InitSearchDetail()
 	$('#search_parkingNum').val('');
 }
 
-/*
-function Color(type, postData, name, result)
-{
-	// 전체 키워드로 검색했을 시, 3가지를 비교해서 색깔을 정한다.
-	if (type == 0) {
-		if (name == 'buildingName' || name == 'buildingRoomNumber' || name == 'contractorName') {
-			if (result == postData['keyword'])
-				return ' style="background-color:#ffa07a"';
-		}
-		return '';
-	}
-
-	else {
-		// 상세검색 중 빈칸은 흰색바탕, 나머지는 특정 색.
-		if (postData[name] == '')
-			return '';
-		return ' style="background-color:#ffa07a"';
-	}
-}
-*/
 
 var doAjax = function(type, postData) {
 	var csrftoken = $.cookie('csrftoken');
