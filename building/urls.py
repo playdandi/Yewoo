@@ -27,4 +27,6 @@ urlpatterns = patterns('',
     url(r'^resident/show/$', resident_show_html),
     url(r'^resident/save/$', save_resident_info),
     url(r'^resident/search/$', show_resident_info),
+
+    url(r'^lease/show/$', electricity_show_html),
 )

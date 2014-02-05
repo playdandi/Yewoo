@@ -569,7 +569,13 @@ def toJSON(objs, status=200):
 
 
 
-
+def electricity_show_html(request):
+    csrf_token = get_token(request)
+    building = BuildingInfo.objects.all()
+    building_name_id = []
+    for b in building:
+        building_name_id.append({'name' : b.name, 'id' : b.id})
+    return render(request, '03_01_electricity_show.html', {'building' : building_name_id})
 
 
 
