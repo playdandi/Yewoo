@@ -8,6 +8,7 @@ function getContents()
 
 	var template = new EJS({url : '/static/ejs/03_01_electricity_show.ejs'}).render();
 	$('#contents').html(template);
+	$('#contents_modal').html(template);
 }
 
 

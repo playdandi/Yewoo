@@ -235,8 +235,8 @@
 								</td>
 								<td width="14%">
 									<div>
-										<button class="btn btn-small btn-setting" onclick="">조회</button>
-										<button class="btn btn-small btn-setting" onclick="">초기화</button>
+										<button class="btn btn-small" onclick="">조회</button>
+										<button class="btn btn-small" onclick="">초기화</button>
 									</div>
 								</td>
 							</tr>
@@ -327,7 +327,7 @@
 									<option value="10">10층</option>
 								</select>
 								<button class="btn btn-small btn-setting">미리보기</button>
-								<button class="btn btn-small btn-setting">출력</button>
+								<button class="btn btn-small">출력</button>
 							</div>
 						</div>
 						<div id="contents" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
@@ -346,320 +346,88 @@
 	<div class="modal hide fade" id="myModal">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">×</button>
-			<h3>입력 정보 미리보기</h3>
+			<h3>임대 비용(전기 요금)확인</h3>
 		</div>
 		<div class="modal-body">
 			<div class="row-fluid">
-				<div class="box span12" style="margin:0px; padding: 0px">
-					<div class="box-header" style="margin: 0px 0px 0px 0px; padding-top: 0px">
-						<h3><strong>1. 임대 정보 입력</strong></h3>
-					</div>
+				<div class="box span12" style="margin:0px 0px 5px 0px; padding: 0px">
 					<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
-						<table class="table table-bordered table-condensed">
-							<colgroup>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-							</colgroup>
-							<tbody>
-								<tr>
-									<td colspan="7">
-										<div class="must" style="margin-right:26px"><strong>건물명</strong></div>
-										<div id="buildingName_modal" class="margin0"></div>
-									</td>
-									<td colspan="4">
-										<div class="must"><strong>호    실</strong></div>
-										<div id="buildingRoomNumber_modal" class="margin0"></div>
-									</td>
-									<td colspan="9">
-										<div class="must" style="margin-right:26px"><strong>입주일</strong></div>
-										<div id="inOutDate_modal" class="margin0"></div>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="4"> 
-										<div class="must"><strong>임대 구분</strong></div>
-										<div id="leaseType_modal" class="margin0"></div>
-									</td>
-									<td colspan="7">
-										<div class="must"><strong>보증금</strong></div>
-										<div id="leaseDeposit_modal" class="margin0"></div>
-									</td>
-									<td colspan="9">
-										<div class="must" style="margin-right:26px"><strong>임대료</strong></div>
-										<div id="leasePay_modal" class="margin0"></div>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="11">
-										<div class="must"><strong>중개 정보</strong></div>
-										<div id="agency_modal" class="margin0"></div>
-									</td>
-									<td colspan="9">
-										<div class="must"><strong>입주 검침</strong></div>
-										<div id="checkType_modal" class="margin0" style="float:left; margin-right:10px"></div>
-										<div id="checkEHWHW_modal" class="margin0" style="float:left; margin-left:10px"></div>
-										<div id="checkEGW_modal" class="margin0" style="float:left"></div>
-									</td>
-								  </tr>
-							</tbody>
+						<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+							<tr style="background-color:#dbdbd2">
+								<td width="60%" colspan="6">
+									<div style="font-size:0.8em">건물명/기간</div>
+									<div><h3>No.1 루체시티 1 / 2014.01 / 전기 요금</h3></div>
+								</td>
+								<td width="40%" colspan="5">
+									<div style="font-size:0.8em">재실 현황</div>
+									<div><h3>총 62실, 재실 20실</h3></div>
+								</td>
+							</tr>
+							<tr>
+								<th width="10%" style="text-align:center">사용량</th>
+								<th width="10%" style="text-align:center">수정 사용량</th>
+								<th width="10%" style="text-align:center">기본 요금</th>
+								<th width="10%" style="text-align:center">TV 수신료</th>
+								<th width="10%" style="text-align:center">사용 요금</th>
+								<th width="10%" style="text-align:center">부가 요금</th>
+								<th width="8%" style="text-align:center">전체</th>
+								<th width="8%" style="text-align:center">입주</th>
+								<th width="8%" style="text-align:center">전세</th>
+								<th width="8%" style="text-align:center">월세</th>
+								<th width="8%" style="text-align:center">공실</th>
+							</tr>
+							<tr>
+								<td width="10%" style="text-align:center">120</th>
+								<td width="10%" style="text-align:center">123</th>
+								<td width="10%" style="text-align:center">총 3,409,000</th>
+								<td width="10%" style="text-align:center">총 1,230,000</th>
+								<td width="10%" style="text-align:center">총 3,409,000</th>
+								<td width="10%" style="text-align:center">총 3,409,000</th>
+								<td width="8%" style="text-align:center">62</th>
+								<td width="8%" style="text-align:center">20</th>
+								<td width="8%" style="text-align:center">10</th>
+								<td width="8%" style="text-align:center">10</th>
+								<td width="8%" style="text-align:center">42</th>
+							</tr>
 						 </table>  
 					</div>
 				</div>
 			</div>
-			
+
+			<!-- 전기요금 첨부파일-->
 			<div class="row-fluid">
-				<div class="box span12" style="margin:0px; padding: 0px">
-					<div class="box-header" style="margin: 0px 0px 0px 0px; padding-top: 0px">
-						<h3><strong>2. 임대 계약자</strong></h3>
+				<div class="box span12" style="margin:0px 0px 5px 0px; padding: 0px">
+					<div class="box-header">
+						<h2><strong>전기요금 첨부파일</strong></h2>
 					</div>
-					<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
-						<table class="table table-bordered table-condensed">
-							<colgroup>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-							</colgroup>
-							<tbody>
-								<tr>
-									<td colspan="10">
-										<div class="must" style="margin-right:33px"><strong>성명</strong></div>
-										<div id="contractorNameGender_modal" class="margin0"></div>
-									</td>
-									<td colspan="10">
-										<div class="must"><strong>주민등록번호</strong></div>
-										<div id="contractorRegNumber_modal" class="margin0"></div>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="10">
-										<div class="must"><strong>연락처 1</strong></div>
-										<div id="contractorContactNumber1_modal" class="margin0"></div>
-									</td>
-									<td colspan="10">
-										<div class="optional" style="margin-right:38px"><strong>연락처 2</strong></div>
-										<div id="contractorContactNumber2_modal" class="margin0"></div>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="20">
-										<div class="must" style="margin-right:29px"><strong>주 소</strong></div>
-										<div id="contractorAddress_modal" class="margin0"></div>
-									</td>
-								</tr>
-							</tbody>
-						 </table>  
+					<div class="box-content" style="padding: 3px 3px 3px 3px; background-color:#f8f8f8">
+						<div style="text-align:center">
+							<input id="" type="text" class="span12 margin0" style="" value="14_002_2013년 루체시티 1 공과금 계산 프로그램 - 전기" disabled />
+						</div>
 					</div>
 				</div>
 			</div>
-			
+
+			<!-- 전체 전기 요금 내역 -->
 			<div class="row-fluid">
-				<div class="box span12" style="margin:0px; padding: 0px">
-					<div class="box-header" style="margin: 0px 0px 0px 0px; padding-top: 0px">
-						<h3><strong>3. 실 거주자</strong></h3>
+				<div class="box span12" style="margin: 0px; padding: 0px">
+					<div class="box-header">
+						<div style="float:left; text-align:left">
+							<h2><strong>전체 전기 요금 내역</strong></h2>
+						</div>
+						<div style="text-align:right">
+							<button class="btn btn-small">출력</button>
+						</div>
 					</div>
-					<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
-						<table class="table table-bordered table-condensed">
-							<colgroup>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-							</colgroup>
-							<tbody>
-								<tr>
-									<td colspan="10">
-										<div class="must" style="margin-right:65px"><strong>성명</strong></div>
-										<div id="residentNameGender_modal" class="margin0"></div>
-									</td>
-									<td colspan="10">
-										<div class="must"><strong>주민등록번호</strong></div>
-										<div id="residentRegNumber_modal" class="margin0"></div>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="5">
-										<div class="must"><strong>계약자와 관계</strong></div>
-										<div id="relToContractor_modal" class="margin0"></div>
-									</td>
-									<td colspan="5">
-										<div class="must"><strong>실 거주자 수</strong></div>
-										<div id="residentPeopleNumber_modal" class="margin0"></div>
-									</td>
-									<td colspan="10">
-										<div class="must" style="margin-right:60px"><strong>주소</strong></div>
-										<div id="residentAddress_modal" class="margin0"></div>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="10">
-										<div class="must" style="margin-right:42px"><strong>연락처 1</strong></div>
-										<div id="residentContactNumber1_modal" class="margin0"></div>
-									</td>
-									<td colspan="10">
-										<div class="optional" style="margin-right:37px"><strong>연락처 2</strong></div>
-										<div id="residentContactNumber2_modal" class="margin0"></div>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="10">
-										<div class="optional" style="margin-right:51px"><strong>직장명</strong></div>
-										<div id="residentOfficeName_modal" class="margin0"></div>
-									</td>
-									<td colspan="10">
-										<div class="optional" style="margin-right:55px"><strong>직 급</strong></div>
-										<div id="residentOfficeLevel_modal" class="margin0"></div>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="20">
-										<div class="optional" style="margin-right:37px"><strong>직장주소</strong></div>
-										<div id="residentOfficeAddress_modal" class="margin0"></div>
-									</td>
-								</tr>									
-								<tr>
-									<td colspan="10">
-										<div class="optional" style="margin-right:24px"><strong>직장연락처</strong></div>
-										<div id="residentOfficeContactNumber_modal" class="margin0"></div>
-									</td>
-									<td colspan="10">
-										<div class="must" style="margin-right:47px"><strong>E-mail</strong></div>
-										<div id="residentEmail_modal" class="margin0"></div>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="20">
-										<div class="must" style="margin-right:33px"><strong>주차 유무</strong></div>
-										<div id="haveCar_modal" class="margin0"></div>
-									</td>
-								</tr>					
-							</tbody>
-						 </table>  
-					</div>
-				</div>
-			</div>
-			
-			<div class="row-fluid">
-				<div class="box span12" style="margin:0px; padding: 0px">
-					<div class="box-header" style="margin: 0px 0px 0px 0px; padding-top: 0px">
-						<h3><strong>4. 전달 유무</strong></h3>
-					</div>
-					<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
-						<table class="table table-bordered table-condensed">
-							<colgroup>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-							</colgroup>
-							<tbody>
-								<tr>
-									<td colspan="8">
-										<div class="must"><strong>중요사항 설명서</strong></div>
-										<div id="sendMsg_modal" class="margin0"></div>
-									</td>
-									<td colspan="12">
-										<div class="must"><strong>품목체크리스트</strong></div>
-										<div id="checkinout_modal" class="margin0"></div>
-									</td>
-								</tr>			
-							</tbody>
-						 </table>  
-					</div>
-				</div>
-			</div>
-			<div class="row-fluid">
-				<div class="box span12" style="margin:0px; padding:0px">
-					<div class="box-header" style="margin: 0px 0px 0px 0px; padding-top: 0px">
-						<h2><strong>5. 기타</strong></h2>
-					</div>
-					<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
-						<table class="table table-bordered table-condensed">
-							<colgroup>
-								<col width="100%"></col>
-							</colgroup>
-							<tbody>
-							  	<tr>
-									<td>
-										<div id="memo_modal" class="margin0"></div>
-									</td>
-								</tr>			
-							</tbody>
-						 </table>  
+					<div id="contents_modal" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+						<!-- ejs template으로 db내용을 불러온다. -->
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="modal-footer">
+		<!--<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">닫기</a>
-			<!--<a href="#" class="btn btn-primary">Save changes</a>-->
-		</div>
+		</div>-->
 	</div>
 	
 	<div class="clearfix"></div>
