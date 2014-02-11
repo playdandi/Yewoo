@@ -1,71 +1,16 @@
-function showLeaseInfo()
-{
-	var year = Number($('#search_year').val());
-	var month = Number($('#search_month').val());
-	var building_id = Number($('#search_building').val().replace('b', ''));
-	var room_num = $('#search_room_num').val());
-	var type = $('#search_type').val();
-
-	if (year == '' || month == '' || building_id == '' || room_num == '') {
-		alert ('비어 있는 칸이 있습니다.');
-		return;
-	}
-
-	//if (type == '0') // 임대
-	//	showLeaseInfoAjax('', year, month, building_id, room_num);
-	//else if (type == '1') // 고지
-	//	showLeaseInfoAjax('', year, month, building_id, room_num);
-	if (type == '2') // 전기
-		showLeaseInfoAjax('electricity', year, month, building_id, room_num);
-	else if (type == '3') // 가스
-		showLeaseInfoAjax('gas', year, month, building_id, room_num);
-	else if (type == '4') // 수도
-		showLeaseInfoAjax('water', year, month, building_id, room_num);
-}
-
-
-var showLeaseInfoAjax = function(type, year, month, b_id, r_num) {
-	var csrftoken = $.cookie('csrftoken');
-	postData['csrfmiddlewaretoken'] = csrftoken;
-	postData['year'] = year;
-	postData['month'] = month;
-	postData['building_id'] = b_id;
-	postData['room_num'] = (r_num != '') ? Number(r_num) : '';
-
-	$.ajax({
-		type : 'POST',
-		url : 'http://14.49.42.190:14541/lease/show/'+type+'/',
-		data : postData,
-		success : function(result) {
-			//$('#search_result').show();
-			//var color = {};
-
-			//var template = new EJS({url : '/static/ejs/01_02_building_search.ejs'}).render({'result' : result, 'color' : color});
-			//$('#search_result_content').html(template);
-
-			/*$('.showDetail').click(function() {
-				var id = $(this).attr('id');
-				$(location).attr('href', 'http://14.49.42.190:8080/building/contents/'+id);
-			});*/
-		},
-		error : function(msg) {
-			alert('다시 시도해 주세요...');
-		},
-	});
-	
-}
-
 function getContents()
 {
 	//var year = $('#').val();
 	//var month = $('#').val();
 
 	// db에서 정보 뽑고
+	
 
-	var template = new EJS({url : '/static/ejs/03_01_electricity_show.ejs'}).render();
+	var template = new EJS({url : '/static/ejs/03_01_water_show.ejs'}).render();
 	$('#contents').html(template);
 	$('#contents_modal').html(template);
 }
+
 
 
 /*

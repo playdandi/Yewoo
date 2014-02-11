@@ -568,14 +568,63 @@ def toJSON(objs, status=200):
     return HttpResponse(j, status=status, content_type='application/json; charset=utf-8')
 
 
+################################################
+#################### Chap.3 ####################
+################################################
 
 def electricity_show_html(request):
+    if request.method == "POST":
+        yy = int(request.POST.get('year'))
+        mm = int(request.POST.get('month'))
+        b_id = int(request.POST.get('building_id'))
+        r_num = request.POST.get('room_num')
+        if r_num != '':
+            r_num = int(r_num)
+
+        # 01. get resident_ID list by b_id & r_num
+        resident_IDs = []
+        if r_num == '':
+            resident_IDs = ResidentInfo.objects.filter(buildingName = b_id).order_by('id').values('id')
+        else:
+            resident_IDs = ResidentInfo.objects.filter(buildingName = b_id, buildingRoomNumber = r_num).order_by('id').values('id')
+        
+        # 02. get electricity info. by year & month & resident_IDs
+        electricity = ElectricityInfo.objects.filter(year = yy, month = mm, resident_id__in = resident_IDs).order_by('resident_id')
+
+        ### assert : resident_IDs & electricity lists have EXACTLY same number of elements.
+
+        # 03. join two lists (make one final list)
+        result = []
+        for r in resident_IDs:
+            temp = {r}
+            for e in electricity:
+                if int(e.resident_id) == int(r):
+                    temp = dict(temp.items() + e.items())
+                    break
+            result.append(temp)
+
+        # 04. done
+        csrf_token = get_token(request)
+        building = BuildingInfo.objects.all()
+        building_name_id = []
+        for b in building:
+            building_name_id.append({'name' : b.name, 'id' : b.id})
+
+        return render(request, '03_01_electricity_show.html', {'building_name_id' : building_name_id, 'result' : result})
+
+def gas_show_html(request):
     csrf_token = get_token(request)
     building = BuildingInfo.objects.all()
     building_name_id = []
     for b in building:
         building_name_id.append({'name' : b.name, 'id' : b.id})
-    return render(request, '03_01_electricity_show.html', {'building_name_id' : building_name_id})
+    return render(request, '03_01_gas_show.html', {'building_name_id' : building_name_id})
 
-
+def water_show_html(request):
+    csrf_token = get_token(request)
+    building = BuildingInfo.objects.all()
+    building_name_id = []
+    for b in building:
+        building_name_id.append({'name' : b.name, 'id' : b.id})
+    return render(request, '03_01_water_show.html', {'building_name_id' : building_name_id})
 
