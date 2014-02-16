@@ -11,9 +11,7 @@ function showLeaseInfo()
 		return;
 	}
 
-	//if (type == '0') // 임대
-	//	showLeaseInfoAjax('', year, month, building_id, room_num);
-	//else if (type == '1') // 고지
+	//if (type == '1') // 고지
 	//	showLeaseInfoAjax('', year, month, building_id, room_num);
 	if (type == '2') // 전기
 		showLeaseInfoAjax('electricity', year, month, building_id, room_num);
@@ -62,7 +60,7 @@ function getContents()
 
 	// db에서 정보 뽑고
 
-	var template = new EJS({url : '/static/ejs/03_01_electricity_show.ejs'}).render();
+	var template = new EJS({url : '/static/ejs/03_02_water_input.ejs'}).render();
 	$('#contents').html(template);
 	$('#contents_modal').html(template);
 }

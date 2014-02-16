@@ -102,93 +102,139 @@ function show_sidebar()
 	});
 }
 
-/*
 
 
-function changeSidebar()
+// excel file upload
+var excel_type;
+var excel_year;
+var excel_month;
+var excel_building_id;
+
+function setExcelInfo()
 {
-	if (!flipped) { // F->T (접는다)
-		var html = '';
-		html += '<div class="main-menu-span" style="width:45px">';
-		html += '<div class="nav-collapse sidebar-nav">';
+	// type
+	if ($('#search_type').val() == '2') excel_type = 'electricity';
+	else if ($('#search_type').val() == '3') excel_type = 'gas';
+	else excel_type = 'water';
 
-		html += '<ul class="nav nav-tabs nav-stacked main-menu" style="margin-bottom:0px">';
-		html += '<li class="nav-header hidden-tablet" style="padding:3px 10px">메뉴</li>';
-		html += '<li><a href="/main/"><i class="icon-align-justify"></i></a></li>';
-		html += '<li><a href="#" id="building" rel="popover"><i class="icon-home"></i></a></li>';
-		html += '<li><a href="#" id="resident" rel="popover"><i class="icon-user"></i></a></li>';
+	// year, month
+	excel_year = $('#search_year').val();
+	excel_month = $('#search_month').val();
 
-		html += '</ul>';
-		html += '</div>';
-		html += '<div id="sidebar-collapse">';
-		html += '<i class="icon-forward"></i>';
-		html += '</div>';
-		html += '</div>';
-
-		$('#qweqwe').html(html);
-
-		$('#content').removeClass('span10');
-		$('#content').addClass('span11');
-	}
-
-	else { // 펼친다
-		var html = '';
-		html += '<div class="span2 main-menu-span">';
-		html += '<div class="nav-collapse sidebar-nav">';
-		html += '<ul class="nav nav-tabs nav-stacked main-menu" style="margin-bottom:0px">';
-		html += '<li class="nav-header hidden-tablet">주요 메뉴</li>';
-		html += '<li><a href="/main/"><i class="icon-align-justify"></i><span class="hidden-tablet"> 홈으로</span></a></li>';
-		html += '<li><a href="#building" data-toggle="collapse"><i class="icon-home"></i><span class="hidden-tablet"> [건물 관리]</span></a></li>';
-		html += '<ul id="building" class="nav nav-tab nav-stacked main-menu collapse" style="margin-bottom:-1px">';
-	    html += '<li><a href="/building/register/"><i class="icon-hand-right"></i><span class="hidden-tablet"> 건물 정보 등록</span></a></li>';
-		html += '<li><a href="/building/search/building/"><i class="icon-hand-right"></i><span class="hidden-tablet"> 등록 건물 정보 확인</span></a></li>';
-		html += '<li><a href="/building/search/rooms/"><i class="icon-hand-right"></i><span class="hidden-tablet"> 등록 호수 정보 확인</span></a></li>';
-	    html += '</ul>';
-		html += '<li><a href="#resident" data-toggle="collapse"><i class="icon-user"></i><span class="hidden-tablet"> [입주자 관리]</span></a></li>';
-		html += '<ul id="resident" class="nav nav-tab nav-stacked main-menu collapse" style="margin-bottom:-1px">';
-		html += '<li><a href="/resident/info/"><i class="icon-hand-right"></i><span class="hidden-tablet"> 입주자 정보 입력</span></a></li>';
-		html += '<li><a href="/resident/show/"><i class="icon-hand-right"></i><span class="hidden-tablet"> 입주자 정보 확인</span></a></li>';
-		html += '</ul>';
-		html += '</ul>';
-		html += '</div>';
-
-		html += '<div id="sidebar-collapse">';
-		html += '<i class="icon-backward"></i>';
-		html += '</div>';
-		html += '</div>';
-
-		$('#qweqwe').html(html);
-		$('#content').removeClass('span11');
-		$('#content').addClass('span10');
-	}
-
-	flipped = !flipped;
-	
-	$('#sidebar-collapse').on('click', function() {
-		changeSidebar();
-	});
-
-	// sidebar popover for detail
-	$('#building').popover({
-		html : 'true',
-		placement : 'right',
-		title : '[건물 관리]',
-		content : '<ul class="nav nav-tab main-menu" style="margin-bottom:-1px"><li><a href="/building/register/"><i class="icon-hand-right" style="margin-right:5px"></i>건물 정보 등록</a></li><li><a href="/building/search/building/"><i class="icon-hand-right" style="margin-right:5px"></i>등록 건물 정보 확인</a></li><li><a href="/building/search/rooms/"><i class="icon-hand-right" style="margin-right:5px"></i>등록 호수 정보 확인</a></li></ul>'
-	});
-
-	$('#resident').popover({
-		html : 'true',
-		placement : 'right',
-		title : '[입주자 관리]',
-		content : '<ul class="nav nav-tab main-menu" style="margin-bottom:-1px"><li><a href="/resident/info/"><i class="icon-hand-right" style="margin-right:5px"></i>입주자 정보 입력</a></li><li><a href="/resident/show/"><i class="icon-hand-right" style="margin-right:5px"></i>입주자 정보 확인</a></li></ul>'
-	});
-
-	// popover를 열 때, 다른 모든 popover를 끈다. (중복되지 않기 위하여)
-	$('#building').on('click', function() {
-		$('#resident').popover('hide');
-	});
-	$('#resident').on('click', function() {
-		$('#building').popover('hide');
-	});
+	// building
+	excel_building_id = $('#search_building').val().replace('b', '').trim();
 }
-*/
+
+$('input[id=fileInput]').change(function() {
+	var fname = $(this).val().split('\\')[2].trim();
+	var temp = fname.split('.');
+	var ext = temp[temp.length-1];
+	if (ext != 'xls' && ext != 'xlsx') {
+		alert('엑셀 파일만 첨부 가능합니다.');
+		return;
+	}
+
+	$('#filename').val(fname);
+	$('#filename_modal').val(fname);
+});
+
+function saveExcelFile(fromPreview)
+{
+	// error check
+	if ($('#filename').val().trim() == '') {
+		alert('년/월/파일명을 다시 확인해 주세요');
+		return;
+	}
+
+	var formData = new FormData();
+	
+	// csrftoken	
+	var csrftoken = $.cookie('csrftoken');
+	formData.append('csrfmiddlewaretoken', csrftoken);
+
+	// file
+	var fileInput;
+    if (!fromPreview)
+		fileInput = document.getElementsByName('file');
+	else
+		fileInput = document.getElementsByName('file_modal');
+	var file = fileInput[0].files[0];
+	formData.append("file", file);
+
+	formData.append('type', excel_type);
+	formData.append('year', excel_year);
+	formData.append('month', excel_month);
+	formData.append('building_id', excel_building_id);
+	formData.append('filename', $('#filename').val().trim());
+
+	// send
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", "/lease/input/upload/", true);
+	xhr.send(formData);
+
+	// callback
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4) {
+			if (xhr.status == 200)
+				alert('성공적으로 저장되었습니다.');
+			else
+				alert('다시 시도해 주세요...');
+		}
+	};
+
+	//xhr.onprogress = function(e) {
+
+	//};
+}
+
+function deleteExcelFile(fromPreview)
+{
+	var fileInput;
+    if (!fromPreview)
+		fileInput = document.getElementsByName('file');
+	else
+		fileInput = document.getElementsByName('file_modal');
+
+	var formData = new FormData();
+
+	// csrftoken	
+	var csrftoken = $.cookie('csrftoken');
+	formData.append('csrfmiddlewaretoken', csrftoken);
+
+	// excel file id
+	//var excelFile_id = ;
+	formData.append('excelFile_id', excelFile_id);
+
+	/*
+	// error check
+	if ($('#search_year').val() == '' || $('#search_month').val() == '' || $('#filename').val() == '') {
+		alert('년/월/파일명을 다시 확인해 주세요');
+		return;
+	}
+	삭제할 파일이 없습니다.
+	*/
+
+	// send
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", "/lease/input/delete/", true);
+	xhr.send(formData);
+
+	// callback
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4) {
+			if (xhr.status == 200)
+				alert('성공적으로 삭제되었습니다.');
+			else
+				alert('다시 시도해 주세요...');
+		}
+	};
+
+	//xhr.onprogress = function(e) {
+
+	//};
+}
+
+
+
+
+

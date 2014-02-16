@@ -89,11 +89,17 @@ class BuildingFloor(models.Model):
     parkingNum = models.IntegerField(blank=True, null=True)
 
 
+class ExcelFiles(models.Model):
+    type = models.CharField(max_length=11)
+    building = models.ForeignKey('BuildingInfo')
+    year = models.IntegerField()
+    month = models.IntegerField()
+    filename = models.CharField(max_length=150)
+
 class ElectricityInfo(models.Model):
     resident = models.ForeignKey('ResidentInfo')
     year = models.IntegerField()
     month = models.IntegerField()
-    xlsFile = models.CharField(max_length=150, blank=True, null=True)
     useDay = models.DateField()
     checkDay = models.DateField()
     checkCapacity = models.IntegerField()
@@ -108,7 +114,6 @@ class GasInfo(models.Model):
     resident = models.ForeignKey('ResidentInfo')
     year = models.IntegerField()
     month = models.IntegerField()
-    xlsFile = models.CharField(max_length=150, blank=True, null=True)
     useDay = models.DateField()
     monthlyFee = models.IntegerField()
     noticeCapacity = models.IntegerField()
@@ -124,7 +129,7 @@ class WaterInfo(models.Model):
     resident = models.ForeignKey('ResidentInfo')
     year = models.IntegerField()
     month = models.IntegerField()
-    xlsFile = models.CharField(max_length=150, blank=True, null=True)
+    #xlsFile = models.FileField(upload_to='water', max_length=150, blank=True, null=True)
     checkDay = models.DateField()
     checkCapacity = models.IntegerField()
     usageCapacity = models.IntegerField()

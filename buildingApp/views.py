@@ -7,7 +7,8 @@ from django.middleware.csrf import get_token
 from django.db.models import Q
 import json
 from buildingApp.models import *
-
+from django.conf import settings
+import os
 
 def main_html(request):
     return render(request, 'main.html')
@@ -571,7 +572,7 @@ def toJSON(objs, status=200):
 ################################################
 #################### Chap.3 ####################
 ################################################
-
+'''
 def electricity_show_html(request):
     if request.method == "POST":
         yy = int(request.POST.get('year'))
@@ -611,6 +612,14 @@ def electricity_show_html(request):
             building_name_id.append({'name' : b.name, 'id' : b.id})
 
         return render(request, '03_01_electricity_show.html', {'building_name_id' : building_name_id, 'result' : result})
+'''
+def electricity_show_html(request):
+    csrf_token = get_token(request)
+    building = BuildingInfo.objects.all()
+    building_name_id = []
+    for b in building:
+        building_name_id.append({'name' : b.name, 'id' : b.id})
+    return render(request, '03_01_electricity_show.html', {'building_name_id' : building_name_id})
 
 def gas_show_html(request):
     csrf_token = get_token(request)
@@ -627,4 +636,81 @@ def water_show_html(request):
     for b in building:
         building_name_id.append({'name' : b.name, 'id' : b.id})
     return render(request, '03_01_water_show.html', {'building_name_id' : building_name_id})
+
+
+def excel_file_upload(request):
+    if request.method == 'POST':
+        if 'file' in request.FILES:
+            # save the info. into DB
+            fileInfo = None
+            building_info = BuildingInfo.objects.get(id = request.POST['building_id'])
+            try:
+                fileInfo = ExcelFiles.objects.get(type = request.POST['type'], building = building_info.id, year = int(request.POST['year']), month = int(request.POST['month']))
+                os.remove(os.path.join(settings.MEDIA_ROOT, request.POST['type']) + '/' + fileInfo.filename)
+            except:
+                fileInfo = ExcelFiles()
+                print('new fileInfo')
+            fileInfo.type = request.POST['type']
+            fileInfo.building = building_info
+            fileInfo.year = int(request.POST['year'])
+            fileInfo.month = int(request.POST['month'])
+            fileInfo.filename = request.POST['filename']
+            fileInfo.save()
+
+            # save excel file
+            file = request.FILES['file']
+            filename = file._name
+            fp = open('%s/%s/%s' % (settings.MEDIA_ROOT, request.POST['type'], filename), 'wb')
+            for chunk in file.chunks():
+                fp.write(chunk)
+            fp.close()
+
+            return HttpResponse('file upload - SUCCESS')
+        return HttpResponse('file upload - NO FILE')
+    return HttpResponse('file upload - NOT POST')
+
+def excel_file_delete(request):
+    if request.method == 'POST':
+        fileInfo = ExcelFiles.objects.get(id = int(request.POST['excelFile_id']))
+        # delete the actual excel file
+        os.remove(os.path.join(settings.MEDIA_ROOT, fileInfo.type) + '/' + fileInfo.filename)
+        # delete the info. in DB
+        fileInfo.delete()
+
+        return HttpResponse('file delete - SUCCESS')
+    return HttpResponse('file delete - NOT POST')
+
+def electricity_input_html(request):
+    csrf_token = get_token(request)
+    building = BuildingInfo.objects.all()
+    building_name_id = []
+    for b in building:
+        building_name_id.append({'name' : b.name, 'id' : b.id})
+    # get excel file
+    # ...
+    return render(request, '03_02_electricity_input.html', {'building_name_id' : building_name_id})
+
+def gas_input_html(request):
+    csrf_token = get_token(request)
+    building = BuildingInfo.objects.all()
+    building_name_id = []
+    for b in building:
+        building_name_id.append({'name' : b.name, 'id' : b.id})
+    # get excel file
+    # ...
+    return render(request, '03_02_gas_input.html', {'building_name_id' : building_name_id})
+
+def water_input_html(request):
+    csrf_token = get_token(request)
+    building = BuildingInfo.objects.all()
+    building_name_id = []
+    for b in building:
+        building_name_id.append({'name' : b.name, 'id' : b.id})
+    # get excel file
+    # ...
+    return render(request, '03_02_water_input.html', {'building_name_id' : building_name_id})
+
+
+
+
 

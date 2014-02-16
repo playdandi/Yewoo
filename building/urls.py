@@ -31,4 +31,10 @@ urlpatterns = patterns('',
     url(r'^lease/show/electricity/$', electricity_show_html),
     url(r'^lease/show/gas/$', gas_show_html),
     url(r'^lease/show/water/$', water_show_html),
+    url(r'^lease/input/upload/$', excel_file_upload),
+    url(r'^lease/input/delete/$', excel_file_delete),
+    url(r'^lease/input/electricity/$', electricity_input_html),
+    url(r'^lease/input/gas/$', gas_input_html),
+    url(r'^lease/input/water/$', water_input_html),
+
 )
