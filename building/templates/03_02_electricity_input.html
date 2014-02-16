@@ -170,7 +170,7 @@
 				<div class="span11">
 					<ul class="breadcrumb">
 						<li>
-							<a href="#">임대 내역 확인</a>
+							<a href="#">임대 비용 입력</a>
 						</li>
 					</ul>
 				</div>
@@ -182,8 +182,7 @@
 							<tr>
 								<td width="17%">
 									<div style="margin-right:5px; float:left">내역 분류</div>
-									<select id="" class="margin0" style="width:100px">
-										<option value="0">임대 내역</option>
+									<select id="search_type" class="margin0" style="width:100px">
 										<option value="1">고지 내역</option>
 										<option value="2" selected>전기 요금</option>
 										<option value="3">가스 요금</option>
@@ -192,7 +191,7 @@
 								</td>
 								<td width="17%">
 									<div style="margin-right:5px; float:left">건물명</div>
-									<select id="" class="margin0" style="width:120px">
+									<select id="search_building" class="margin0" style="width:120px">
 										{% for b in building_name_id %}
 										<option value="b{{ b.id }}">{{ b.name }}</option>
 										{% endfor %}
@@ -200,14 +199,14 @@
 								</td>
 								<td width="18%">
 									<div style="margin-right:5px; float:left">내역일</div>
-									<select id="" class="margin0" style="width:70px">
+									<select id="search_year" class="margin0" style="width:70px">
 										<option value="">년도</option>
 										<option value="2013">2013</option>
 										<option value="2014">2014</option>
 										<option value="2015">2015</option>
 										<option value="2016">2016</option>
 									</select>
-									<select id="" class="margin0" style="width:55px">
+									<select id="search_month" class="margin0" style="width:55px">
 										<option value="">월</option>
 										<option value="1">01</option>
 										<option value="2">02</option>
@@ -244,11 +243,11 @@
 					</div>
 				</div>
 
-				<!-- 전기 요금 현황 -->
+				<!-- 임대 비용(전기 요금) 입력 -->
 				<div class="row-fluid">
 					<div class="span11">
 						<div style="border:1px solid #000000; background-color:#dbdbd2; padding:7px 10px 7px 10px; font-size:1.1em; margin:10px 0px 10px 0px">
-							<strong>전기 요금 현황</strong>
+							<strong>임대 비용(전기 요금) 입력</strong>
 						</div>
 					</div>
 
@@ -312,15 +311,20 @@
 					</div>
 				</div>
 
-				<!-- 전기요금 첨부파일-->
+				<!-- 전기요금 파일 업로드-->
 				<div class="row-fluid">
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
 						<div class="box-header">
-							<h2><strong>전기요금 첨부파일</strong></h2>
+							<h2><strong>전기요금 파일 업로드</strong></h2>
 						</div>
 						<div class="box-content" style="padding: 3px 3px 3px 3px; background-color:#f8f8f8">
-							<div style="text-align:center">
-								<input id="" type="text" class="span12 margin0" style="" value="14_002_2013년 루체시티 1 공과금 계산 프로그램 - 전기" disabled />
+							<div>
+								<input id="fileInput" type="file" name="file" style="display:none" />
+								<button class="btn btn-danger btn-small" onclick="$('input[id=fileInput]').click();">파일첨부</button>
+								<input id="filename" type="text" class="span6 margin0" placeholder="파일명" disabled />
+								<button class="btn btn-small" onclick="deleteExcelFile(false);">삭제</button>
+								<button class="btn btn-small" onclick="saveExcelFile(false);">저장</button>
+								<button class="btn btn-danger btn-small btn-setting">미리보기</button>
 							</div>
 						</div>
 					</div>
@@ -342,8 +346,6 @@
 									<option value="3">3층</option>
 									<option value="10">10층</option>
 								</select>
-								<button class="btn btn-small btn-setting">미리보기</button>
-								<button class="btn btn-small btn-inverse">출력</button>
 							</div>
 						</div>
 						<div id="contents" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
@@ -426,15 +428,19 @@
 				</div>
 			</div>
 
-			<!-- 전기요금 첨부파일-->
+			<!-- 전기요금 파일 업로드-->
 			<div class="row-fluid">
 				<div class="box span12" style="margin:0px 0px 5px 0px; padding: 0px">
 					<div class="box-header">
-						<h2><strong>전기요금 첨부파일</strong></h2>
+						<h2><strong>전기요금 파일 업로드</strong></h2>
 					</div>
 					<div class="box-content" style="padding: 3px 3px 3px 3px; background-color:#f8f8f8">
-						<div style="text-align:center">
-							<input id="" type="text" class="span12 margin0" style="" value="14_002_2013년 루체시티 1 공과금 계산 프로그램 - 전기" disabled />
+						<div>
+							<input id="fileInput_modal" type="file" name="file_modal" style="display:none" />
+							<button class="btn btn-danger btn-small" onclick="$('input[id=fileInput]').click();">파일첨부</button>
+							<input id="filename_modal" type="text" class="span6 margin0" placeholder="파일명" disabled />
+							<button class="btn btn-small" onclick="deleteExcelFile(true);">삭제</button>
+							<button class="btn btn-small" onclick="saveExcelFile(true);">저장</button>
 						</div>
 					</div>
 				</div>
@@ -519,7 +525,7 @@
 		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
 
-		<script src="{{ STATIC_URL }}js/03_01_electricity_show.js"></script>
+		<script src="{{ STATIC_URL }}js/03_02_electricity_input.js"></script>
 		<script src="{{ STATIC_URL }}js/common.js"></script>
 		
 		<script type="text/javascript" language="JavaScript">
@@ -557,6 +563,9 @@
 
 				// ejs template 불러오기
 				getContents();
+
+				// excel related func.
+				setExcelInfo();
 			});			
 		</script>
 		<!-- end: JavaScript-->
