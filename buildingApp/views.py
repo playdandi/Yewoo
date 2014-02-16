@@ -572,6 +572,14 @@ def toJSON(objs, status=200):
 #################### Chap.3 ####################
 ################################################
 
+def lease_show_html(request):
+    csrf_token = get_token(request)
+    building = BuildingInfo.objects.all()
+    building_name_id = []
+    for b in building:
+        building_name_id.append({'name' : b.name, 'id' : b.id})
+    return render(request, '03_01_lease_show.html', {'building_name_id' : building_name_id})
+
 def electricity_show_html(request):
     if request.method == "POST":
         yy = int(request.POST.get('year'))
