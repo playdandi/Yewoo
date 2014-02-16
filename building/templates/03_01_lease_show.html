@@ -338,7 +338,7 @@
 	<div class="modal hide fade" id="myModal">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">×</button>
-			<h3>임대 비용(수도 요금)확인</h3>
+			<h3>임대 내역 확인</h3>
 		</div>
 		<div class="modal-body">
 			<div class="row-fluid">
@@ -346,10 +346,9 @@
 					<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 						<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 							<colgroup>
-								<col width="8%">
 								<col width="10%">
-								<col width="12%">
-								<col width="10%">
+								<col width="17%">
+								<col width="13%">
 								<col width="10%">
 								<col width="10%">
 								<col width="10%">
@@ -360,9 +359,9 @@
 								<col width="6%">
 							</colgroup>
 							<tr style="background-color:#dbdbd2">
-								<td colspan="7">
+								<td colspan="6">
 									<div style="font-size:0.8em">건물명/기간</div>
-									<div><h3>No.1 루체시티 1 / 2014.01 / 수도 요금</h3></div>
+									<div><h3>No.1 루체시티 1 / 2014.01 / 임대 내역</h3></div>
 								</td>
 								<td colspan="5">
 									<div style="font-size:0.8em">재실 현황</div>
@@ -370,13 +369,12 @@
 								</td>
 							</tr>
 							<tr>
-								<th style="text-align:center">사용량</th>
-								<th style="text-align:center">수정 사용량</th>
-								<th style="text-align:center">적용 기본 요금</th>
-								<th style="text-align:center">상하수도요금</th>
-								<th style="text-align:center">하수도요금</th>
-								<th style="text-align:center">물부담금</th>
-								<th style="text-align:center">부과요금</th>
+								<th style="text-align:center">가격</th>
+								<th style="text-align:center">보증금</th>
+								<th style="text-align:center">임대료</th>
+								<th style="text-align:center">관리비</th>
+								<th style="text-align:center">주차비</th>
+								<th style="text-align:center">부가세</th>
 								<th style="text-align:center">전체</th>
 								<th style="text-align:center">입주</th>
 								<th style="text-align:center">전세</th>
@@ -384,13 +382,12 @@
 								<th style="text-align:center">공실</th>
 							</tr>
 							<tr>
-								<td style="text-align:center">120</th>
-								<td style="text-align:center">123</th>
-								<td style="text-align:center">총 3,409,000</th>
-								<td style="text-align:center">총 30,000</th>
-								<td style="text-align:center">총 33,000</th>
-								<td style="text-align:center">총 590,000</th>
-								<td style="text-align:center">총 3,409,000</th>
+								<td style="text-align:center">총 8,500</th>
+								<td style="text-align:center">총 1,211,000,000</th>
+								<td style="text-align:center">총 3,390,000</th>
+								<td style="text-align:center">30,000</th>
+								<td style="text-align:center">30,000</th>
+								<td style="text-align:center">30,000</th>
 								<td style="text-align:center">62</th>
 								<td style="text-align:center">20</th>
 								<td style="text-align:center">10</th>
@@ -402,26 +399,12 @@
 				</div>
 			</div>
 
-			<!-- 수도요금 첨부파일-->
-			<div class="row-fluid">
-				<div class="box span12" style="margin:0px 0px 5px 0px; padding: 0px">
-					<div class="box-header">
-						<h2><strong>수도요금 첨부파일</strong></h2>
-					</div>
-					<div class="box-content" style="padding: 3px 3px 3px 3px; background-color:#f8f8f8">
-						<div style="text-align:center">
-							<input id="" type="text" class="span12 margin0" style="" value="14_002_2013년 루체시티 1 공과금 계산 프로그램 - 수도" disabled />
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- 전체 수도 요금 내역 -->
+			<!-- 전체 임대 내역 -->
 			<div class="row-fluid">
 				<div class="box span12" style="margin: 0px; padding: 0px">
 					<div class="box-header">
 						<div style="float:left; text-align:left">
-							<h2><strong>전체 수도 요금 내역</strong></h2>
+							<h2><strong>전체 임대 내역</strong></h2>
 						</div>
 						<div style="text-align:right">
 							<button class="btn btn-small btn-inverse">출력</button>
@@ -495,7 +478,7 @@
 		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
 
-		<script src="{{ STATIC_URL }}js/03_01_water_show.js"></script>
+		<script src="{{ STATIC_URL }}js/03_01_lease_show.js"></script>
 		<script src="{{ STATIC_URL }}js/common.js"></script>
 		
 		<script type="text/javascript" language="JavaScript">
