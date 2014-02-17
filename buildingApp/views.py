@@ -607,9 +607,13 @@ def setPostData(request):
 def lease_show_html(request):
     return render(request, '03_01_lease_show.html', setPostData(request))
 
-
 def lease_notice_detail_show_html(request):
     return render(request, '03_01_lease_notice_detail_show.html')
+
+def notice_show_html(request):
+    return render(request, '03_01_notice_show.html', setPostData(request))
+
+
 '''
 def electricity_show_html(request):
     if request.method == "POST":
