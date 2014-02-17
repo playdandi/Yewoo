@@ -5,54 +5,47 @@ function showLeaseInfo()
 	var building_id = Number($('#search_building').val().replace('b', ''));
 	var room_num = $('#search_room_num').val();
 	var type = $('#search_type').val();
+	var type_text;
+	if (type == '0') type_text = 'lease';
+	else if (type == '1') type_text = 'notice';
+	else if (type == '2') type_text = 'electricity';
+	else if (type == '3') type_text = 'gas';
+	else type_text = 'water';
 
-	if (year == '' || month == '' || building_id == '' || room_num == '') {
+	alert(building_id + '/' + year + '/' + month);
+	if (year == '' || month == '' || building_id == '') {
 		alert ('비어 있는 칸이 있습니다.');
 		return;
 	}
 
-	//if (type == '0') // 임대
-	//	showLeaseInfoAjax('', year, month, building_id, room_num);
-	//else if (type == '1') // 고지
-	//	showLeaseInfoAjax('', year, month, building_id, room_num);
-	if (type == '2') // 전기
-		showLeaseInfoAjax('electricity', year, month, building_id, room_num);
-	else if (type == '3') // 가스
-		showLeaseInfoAjax('gas', year, month, building_id, room_num);
-	else if (type == '4') // 수도
-		showLeaseInfoAjax('water', year, month, building_id, room_num);
-}
+	var form = document.createElement('form');
+	form.setAttribute('method', 'POST');
+	form.setAttribute('action', '/lease/show/'+type_text+'/');
+	document.body.appendChild(form);
 
+	var f_year = document.createElement('input');
+	f_year.name = 'year';
+	f_year.value = year;
+	form.appendChild(f_year);
 
-var showLeaseInfoAjax = function(type, year, month, b_id, r_num) {
-	var csrftoken = $.cookie('csrftoken');
-	postData['csrfmiddlewaretoken'] = csrftoken;
-	postData['year'] = year;
-	postData['month'] = month;
-	postData['building_id'] = b_id;
-	postData['room_num'] = (r_num != '') ? Number(r_num) : '';
+	var f_month = document.createElement('input');
+	f_month.name = 'month';
+	f_month.value = month;
+	form.appendChild(f_month);
 
-	$.ajax({
-		type : 'POST',
-		url : 'http://14.49.42.190:14541/lease/show/'+type+'/',
-		data : postData,
-		success : function(result) {
-			//$('#search_result').show();
-			//var color = {};
+	var f_bid = document.createElement('input');
+	f_bid.name = 'building_id';
+	f_bid.value = building_id;
+	form.appendChild(f_bid);
 
-			//var template = new EJS({url : '/static/ejs/01_02_building_search.ejs'}).render({'result' : result, 'color' : color});
-			//$('#search_result_content').html(template);
+	var csrf = document.createElement('input');
+	csrf.type = 'hidden';
+	csrf.name = 'csrfmiddlewaretoken';
+	csrf.value = $.cookie('csrftoken');
+	form.appendChild(csrf);
 
-			/*$('.showDetail').click(function() {
-				var id = $(this).attr('id');
-				$(location).attr('href', 'http://14.49.42.190:8080/building/contents/'+id);
-			});*/
-		},
-		error : function(msg) {
-			alert('다시 시도해 주세요...');
-		},
-	});
-	
+	//postData['room_num'] = (r_num != '') ? Number(r_num) : '';
+	form.submit();
 }
 
 function getContents()

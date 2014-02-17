@@ -572,13 +572,40 @@ def toJSON(objs, status=200):
 ################################################
 #################### Chap.3 ####################
 ################################################
-def lease_show_html(request):
-    csrf_token = get_token(request)
+
+def setPostData(request):
+    param = {}
+    if request.method == 'GET':
+        print('get')
+        import datetime
+        ym = datetime.datetime.now()
+        param['search_year'] = int(ym.year)
+        param['search_month'] = int(ym.month)
+        param['search_building_id'] = 1
+    elif request.method == 'POST':
+        print('post')
+        param['search_year'] = int(request.POST['year'])
+        param['search_month'] = int(request.POST['month'])
+        param['search_building_id'] = request.POST['building_id']
+    
     building = BuildingInfo.objects.all()
     building_name_id = []
     for b in building:
         building_name_id.append({'name' : b.name, 'id' : b.id})
-    return render(request, '03_01_lease_show.html', {'building_name_id' : building_name_id})
+    param['building_name_id'] = building_name_id
+    search_year_list = []
+    for i in range(2013, 2017):
+        search_year_list.append(i)
+    search_month_list = []
+    for i in range(1, 13):
+        search_month_list.append(i)
+    param['search_year_list'] = search_year_list
+    param['search_month_list'] = search_month_list
+
+    return param
+
+def lease_show_html(request):
+    return render(request, '03_01_lease_show.html', setPostData(request))
 
 '''
 def electricity_show_html(request):
@@ -622,28 +649,13 @@ def electricity_show_html(request):
         return render(request, '03_01_electricity_show.html', {'building_name_id' : building_name_id, 'result' : result})
 '''
 def electricity_show_html(request):
-    csrf_token = get_token(request)
-    building = BuildingInfo.objects.all()
-    building_name_id = []
-    for b in building:
-        building_name_id.append({'name' : b.name, 'id' : b.id})
-    return render(request, '03_01_electricity_show.html', {'building_name_id' : building_name_id})
+    return render(request, '03_01_electricity_show.html', setPostData(request))
 
 def gas_show_html(request):
-    csrf_token = get_token(request)
-    building = BuildingInfo.objects.all()
-    building_name_id = []
-    for b in building:
-        building_name_id.append({'name' : b.name, 'id' : b.id})
-    return render(request, '03_01_gas_show.html', {'building_name_id' : building_name_id})
+    return render(request, '03_01_gas_show.html', setPostData(request))
 
 def water_show_html(request):
-    csrf_token = get_token(request)
-    building = BuildingInfo.objects.all()
-    building_name_id = []
-    for b in building:
-        building_name_id.append({'name' : b.name, 'id' : b.id})
-    return render(request, '03_01_water_show.html', {'building_name_id' : building_name_id})
+    return render(request, '03_01_water_show.html', setPostData(request))
 
 
 def excel_file_upload(request):
