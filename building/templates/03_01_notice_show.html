@@ -430,22 +430,8 @@
 				<!-- 고지 내역 정보 -->
 				<div class="box span12" style="margin:5px 0px 5px 0px; padding: 0px">
 					<div class="box-header">
-						<div style="float:left; text-align:left">
+						<div>
 							<h2><strong>고지 내역 정보</strong></h2>
-						</div>
-						<div style="text-align:right">
-							<select id="notice_year" class="margin0" style="width:80px">
-								{% for y in notice_year_list %}
-								<option value="{{ y }}" {% if y == notice_year %}selected{% endif %}>{{ y }}</option>
-								{% endfor %}
-							</select>
-							<select id="notice_month" class="margin0" style="width:50px">
-								{% for m in notice_month_list %}
-								<option value="{{ m }}" {% if m == notice_month %}selected{% endif %}>{% if m < 10 %}0{% endif %}{{ m }}</option>
-								{% endfor %}
-							</select>
-							<button class="btn btn-small">조회</button>
-							<button class="btn btn-small">초기화</button>
 						</div>
 					</div>
 					<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">

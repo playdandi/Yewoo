@@ -68,6 +68,12 @@ function getContents()
 	var template = new EJS({url : '/static/ejs/03_01_lease_show.ejs'}).render();
 	$('#contents').html(template);
 	$('#contents_modal').html(template);
+	
+	$('.showDetail').click(function() {
+		//var id = $(this).attr('id');
+		// 나중에 수정해야 함
+		$(location).attr('href', 'http://14.49.42.190:8080/lease/show/leaseNotice/' + '1/101/');
+	});
 }
 
 
