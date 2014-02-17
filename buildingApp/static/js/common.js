@@ -126,17 +126,12 @@ function setExcelInfo()
 }
 
 $('input[id=fileInput]').change(function() {
+	// explorer에서는 change가 두번 실행되는 것 같아 예외처리 if문 걸었음...
 	var fname = $(this).val();
 	if (fname == '')
 		return;
 	
 	fname = fname.split('\\')[2].trim();
-	var temp = fname.split('.');
-	var ext = temp[temp.length-1];
-	if (ext != 'xls' && ext != 'xlsx') {
-		alert('엑셀 파일만 첨부 가능합니다.');
-		return;
-	}
 
 	$('#filename').val(fname);
 	$('#filename_modal').val(fname);
@@ -146,8 +141,16 @@ function saveExcelFile(fromPreview)
 {
 	// error check
 	if ($('#filename').val().trim() == '') {
-		alert('년/월/파일명을 다시 확인해 주세요');
+		alert('파일을 선택해 주세요');
 		return;
+	}
+	else {
+		var temp = $('#filename').val().trim().split('.');
+		var ext = temp[temp.length-1];
+		if (ext != 'xls' && ext != 'xlsx') {
+			alert('엑셀 파일만 첨부 가능합니다. (확장자가 xls 또는 xlsx)');
+			return;
+		}
 	}
 
 	var formData = new FormData();
