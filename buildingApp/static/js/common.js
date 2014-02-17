@@ -126,7 +126,11 @@ function setExcelInfo()
 }
 
 $('input[id=fileInput]').change(function() {
-	var fname = $(this).val().split('\\')[2].trim();
+	var fname = $(this).val();
+	if (fname == '')
+		return;
+	
+	fname = fname.split('\\')[2].trim();
 	var temp = fname.split('.');
 	var ext = temp[temp.length-1];
 	if (ext != 'xls' && ext != 'xlsx') {
