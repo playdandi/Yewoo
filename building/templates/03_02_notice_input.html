@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<!-- start: Meta -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Yewoo Housing Management System</title>
+	<!-- end: Meta -->
+	
+	<!-- start: Mobile Specific -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- end: Mobile Specific -->
+
+	<!-- start: CSS -->
+	<link id="bootstrap-style" href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link id="base-style" href="{{ STATIC_URL }}bootstrap/css/style.css" rel="stylesheet">
+	<link id="base-style-responsive" href="{{ STATIC_URL }}bootstrap/css/style-responsive.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}bootstrap/css/datepicker.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}css/common.css" rel="stylesheet">
+	<!-- end: CSS -->
+
+	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	[endif]-->
+
+	<!-- start: Favicon -->
+	<link rel="shortcut icon" href="img/favicon.ico">
+	<!-- end: Favicon -->
+	
+	<style>
+    table {
+    	table-layout: fixed;
+    }
+    table th, table td {
+    	overflow: hidden;
+    }
+    .must {
+    	color: red;
+    	float: left;
+		margin-right: 10px;
+    }
+    .optional {
+    	color: black;
+    	float: left;
+    	margin-right: 10px;
+    }
+    .margin0 {
+    	margin-left: 0px !important;
+    	margin-right: 0px !important;
+    	margin-top: 0px !important;
+    	margin-bottom: 0px !important;
+	}
+	.width4 {
+		width: 95px;
+	}
+	.width3 {
+		width: 80px;
+	}
+	.width2 {
+		width: 70px;
+	}
+	select {
+		font-family : 'Malgun Gothic' !important;
+	}
+    body {
+		font-size : 0.77em;
+		font-family : 'Malgun Gothic' !important;
+	}
+	input {
+		font-family : 'Malgun Gothic' !important;
+	}
+	::-webkit-input-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	::-moz-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	:-moz-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	:-ms-input-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	:-input {
+		margin-bottom:0px !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	#myModal {
+		top : 10%;
+		width : 80%;
+		margin : 0px 0px 0px 0px;
+		padding : 0px 0px 0px 0px;
+		left : 10%;
+	}
+	</style>
+		
+</head>
+
+<body>
+	<!-- start: Header -->
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<a class="brand" href="index.html"> <img alt="Optimus Dashboard" src="{{ STATIC_URL }}bootstrap/img/logo20.png" /> <span>Optimus Dashboard</span></a>
+								
+				<!-- start: Header Menu -->
+				<div class="btn-group pull-right" >
+					<a class="btn" href="#">
+						<i class="icon-warning-sign"></i><span class="hidden-phone hidden-tablet"> notifications</span> <span class="label label-important hidden-phone">2</span> <span class="label label-success hidden-phone">11</span>
+					</a>
+					<a class="btn" href="#">
+						<i class="icon-tasks"></i><span class="hidden-phone hidden-tablet"> tasks</span> <span class="label label-warning hidden-phone">17</span>
+					</a>
+					<a class="btn" href="#">
+						<i class="icon-envelope"></i><span class="hidden-phone hidden-tablet"> messages</span> <span class="label label-success hidden-phone">9</span>
+					</a>
+					<a class="btn" href="#">
+						<i class="icon-wrench"></i><span class="hidden-phone hidden-tablet"> settings</span>
+					</a>
+					<!-- start: User Dropdown -->
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+						<i class="icon-user"></i><span class="hidden-phone hidden-tablet"> admin</span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="#">Profile</a></li>
+						<li class="divider"></li>
+						<li><a href="login.html">Logout</a></li>
+					</ul>
+					<!-- end: User Dropdown -->
+				</div>
+				<!-- end: Header Menu -->
+				
+			</div>
+		</div>
+	</div>
+	
+	<div id="under-header">
+	</div>
+	<!-- start: Header -->
+	
+	<div class="container-fluid">
+		<div class="row-fluid">
+						
+			<!-- Sidebar -->
+			<div id="sidebar">
+			</div>
+			<!-- end: Sidebar -->
+				
+			<noscript>
+				<div class="alert alert-block span10">
+					<h4 class="alert-heading">Warning!</h4>
+					<p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
+				</div>
+			</noscript>
+			
+			<!-- start: Content -->	
+			<div id="content" class="span10">
+				<div class="span11">
+					<ul class="breadcrumb">
+						<li>
+							<a href="#">고지 내역 관리</a>
+						</li>
+					</ul>
+				</div>
+				
+				<!-- 검색 필터링 -->
+				<div class="row-fluid">
+					<div class="span11">
+						<table class="table table-condensed" style="margin-bottom:0px">
+							<tr>
+								<td width="17%">
+									<div style="margin-right:5px; float:left">내역 분류</div>
+									<select id="search_type" class="margin0" style="width:100px">
+										<option value="0">임대 내역</option>
+										<option value="1" selected>고지 입력</option>
+										<option value="2">전기 요금</option>
+										<option value="3">가스 요금</option>
+										<option value="4">수도 요금</option>
+									</select>
+								</td>
+								<td width="17%">
+									<div style="margin-right:5px; float:left">건물명</div>
+									<select id="search_building" class="margin0" style="width:120px">
+										{% for b in building_name_id %}
+										<option value="b{{ b.id }}" {% if search_building_id == b.id %}selected{% endif %}>{{ b.name }}</option>
+										{% endfor %}
+									</select>
+								</td>
+								<td width="18%">
+									<div style="margin-right:5px; float:left">내역일</div>
+									<select id="search_year" class="margin0" style="width:70px">
+										<option value="">년도</option>
+										{% for y in search_year_list %}
+										<option value="{{ y }}" {% if y == search_year %}selected{% endif %}>{{ y }}</option>
+										{% endfor %}
+									</select>
+									<select id="search_month" class="margin0" style="width:55px">
+										<option value="">월</option>
+										{% for m in search_month_list %}
+										<option value="{{ m }}" {% if m == search_month %}selected{% endif %}>{% if m < 10 %}0{% endif %}{{ m }}</option>
+										{% endfor %}
+									</select>
+								</td>
+								<td width="13%">
+									<div style="margin-right:5px; float:left">호수</div>
+									<select id="search_room_num" class="margin0" style="width:70px">
+										<option value="">전체</option>
+									</select>
+								</td>
+								<td width="10%">
+									<div style="margin-right:5px; float:left">공실여부</div>
+									<input id="search_isEmpty" type="checkbox">
+								</td>
+								<td width="14%">
+									<div>
+										<button class="btn btn-small" onclick="showLeaseInfo();">조회</button>
+										<button class="btn btn-small" onclick="InitForm();">초기화</button>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+				<!-- 임대 내역 현황 -->
+				<div class="row-fluid">
+					<div class="span11">
+						<div style="border:1px solid #000000; background-color:#dbdbd2; padding:7px 10px 7px 10px; font-size:1.1em; margin:10px 0px 10px 0px">
+							<strong>고지 내역 현황</strong>
+						</div>
+					</div>
+
+					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
+						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+								<colgroup>
+									<col width="10%">
+									<col width="17%">
+									<col width="13%">
+									<col width="10%">
+									<col width="10%">
+									<col width="10%">
+									<col width="6%">
+									<col width="6%">
+									<col width="6%">
+									<col width="6%">
+									<col width="6%">
+								</colgroup>
+								<tr style="background-color:#dbdbd2">
+									<td colspan="6">
+										<div style="font-size:0.8em">건물명/기간</div>
+										<div><h3>No.1 루체시티 1 / 2014.01 / (예정) 고지 내역</h3></div>
+									</td>
+									<td colspan="5">
+										<div style="font-size:0.8em">재실 현황</div>
+										<div><h3>총 62실, 재실 20실</h3></div>
+									</td>
+								</tr>
+								<tr>
+									<th style="text-align:center">가격</th>
+									<th style="text-align:center">보증금</th>
+									<th style="text-align:center">임대료</th>
+									<th style="text-align:center">관리비</th>
+									<th style="text-align:center">주차비</th>
+									<th style="text-align:center">부가세</th>
+									<th style="text-align:center">전체</th>
+									<th style="text-align:center">입주</th>
+									<th style="text-align:center">전세</th>
+									<th style="text-align:center">월세</th>
+									<th style="text-align:center">공실</th>
+								</tr>
+								<tr>
+									<td style="text-align:center">총 8,500</th>
+									<td style="text-align:center">총 1,211,000,000</th>
+									<td style="text-align:center">총 3,390,000</th>
+									<td style="text-align:center">30,000</th>
+									<td style="text-align:center">30,000</th>
+									<td style="text-align:center">30,000</th>
+									<td style="text-align:center">62</th>
+									<td style="text-align:center">20</th>
+									<td style="text-align:center">10</th>
+									<td style="text-align:center">10</th>
+									<td style="text-align:center">42</th>
+								</tr>
+							 </table>  
+						</div>
+					</div>
+				</div>
+
+				<!-- 전체 임대 내역 -->
+				<div class="row-fluid">
+					<div class="box span11" style="margin: 0px; padding: 0px">
+						<div class="box-header">
+							<div style="float:left; text-align:left">
+								<h2><strong>전체 예정 고지 내역</strong></h2>
+							</div>
+							<div style="text-align:right">
+								<span>| <strong>오름 순</strong> | 내림 순 | 금액 순 | 연체 |</span>
+							</div>
+						</div>
+						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed" style="margin: 0px">
+								<colgroup>
+									<col width="10%">
+									<col width="12%">
+									<col width="12%">
+
+									<col width="10%">
+									<col width="8%">
+									<col width="8%">
+
+									<col width="14%">
+									<col width="14%">
+									<col width="12%">
+								</colgroup>
+								<tr>
+									<th style="text-align:center">내역 분류</th>
+									<td style="text-align:center">전체 고지<label style="display: inline-block"><input type="radio" name="show_range" value="all" checked></label></td>
+									<td style="text-align:center">상세 고지<label style="display: inline-block"><input type="radio" name="show_range" value="part"></label></td>
+
+									<th style="text-align:center">출력 선택</th>
+									<td style="text-align:center">전체<label style="display: inline-block"><input type="radio" name="print_range" value="all" checked></label></td>
+									<td style="text-align:center">선택<label style="display: inline-block"><input type="radio" name="print_range" value="part"></label></td>
+									
+									<th style="text-align:center">전체 고지 0개 출력</th>
+									<th style="text-align:center">상세 고지 0개 출력</th>
+									<td style="text-align:center"><button class="btn btn-small btn-inverse">출력</button></td>
+								</tr>
+							</table>
+						</div>
+						<div id="contents" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<!-- ejs template으로 db내용을 불러온다. -->
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!-- end: Content -->
+		</div>
+	</div>
+	
+	
+	<!-- 미리보기 (미리보기 버튼 눌렀을 때 보이는 큰 팝업창) -->
+	<div class="modal hide fade" id="myModal">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">×</button>
+			<h3>고지 내역 현황</h3>
+		</div>
+		<div class="modal-body">
+			<div class="row-fluid">
+				<div class="box span12" style="margin:0px 0px 5px 0px; padding: 0px">
+					<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
+						<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+							<colgroup>
+								<col width="10%">
+								<col width="17%">
+								<col width="13%">
+								<col width="10%">
+								<col width="10%">
+								<col width="10%">
+								<col width="6%">
+								<col width="6%">
+								<col width="6%">
+								<col width="6%">
+								<col width="6%">
+							</colgroup>
+							<tr style="background-color:#dbdbd2">
+								<td colspan="6">
+									<div style="font-size:0.8em">건물명/기간</div>
+									<div><h3>No.1 루체시티 1 / 2014.01 / 임대 내역</h3></div>
+								</td>
+								<td colspan="5">
+									<div style="font-size:0.8em">재실 현황</div>
+									<div><h3>총 62실, 재실 20실</h3></div>
+								</td>
+							</tr>
+							<tr>
+								<th style="text-align:center">가격</th>
+								<th style="text-align:center">보증금</th>
+								<th style="text-align:center">임대료</th>
+								<th style="text-align:center">관리비</th>
+								<th style="text-align:center">주차비</th>
+								<th style="text-align:center">부가세</th>
+								<th style="text-align:center">전체</th>
+								<th style="text-align:center">입주</th>
+								<th style="text-align:center">전세</th>
+								<th style="text-align:center">월세</th>
+								<th style="text-align:center">공실</th>
+							</tr>
+							<tr>
+								<td style="text-align:center">총 8,500</th>
+								<td style="text-align:center">총 1,211,000,000</th>
+								<td style="text-align:center">총 3,390,000</th>
+								<td style="text-align:center">30,000</th>
+								<td style="text-align:center">30,000</th>
+								<td style="text-align:center">30,000</th>
+								<td style="text-align:center">62</th>
+								<td style="text-align:center">20</th>
+								<td style="text-align:center">10</th>
+								<td style="text-align:center">10</th>
+								<td style="text-align:center">42</th>
+							</tr>
+						 </table>  
+					</div>
+				</div>
+			</div>
+
+			<!-- 전체 고지 내역 -->
+			<div class="row-fluid">
+				<div class="box span12" style="margin: 0px; padding: 0px">
+					<div class="box-header">
+						<div style="float:left; text-align:left">
+							<h2><strong>전체 예정 고지 내역</strong></h2>
+						</div>
+						<div style="text-align:right">
+							<span>| <strong>오름 순</strong> | 내림 순 | 금액 순 | 연체 |</span>
+						</div>
+					</div>
+					<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+						<table class="table table-bordered table-condensed" style="margin: 0px">
+							<colgroup>
+								<col width="10%">
+								<col width="12%">
+								<col width="12%">
+
+								<col width="10%">
+								<col width="8%">
+								<col width="8%">
+
+								<col width="14%">
+								<col width="14%">
+								<col width="12%">
+							</colgroup>
+							<tr>
+								<th style="text-align:center">내역 분류</th>
+								<td style="text-align:center">전체 고지<label style="display: inline-block"><input type="radio" name="show_range" value="all"></label></td>
+								<td style="text-align:center">상세 고지<label style="display: inline-block"><input type="radio" name="show_range" value="part"></label></td>
+
+								<th style="text-align:center">출력 선택</th>
+								<td style="text-align:center">전체<label style="display: inline-block"><input type="radio" name="print_range" value="all"></label></td>
+								<td style="text-align:center">선택<label style="display: inline-block"><input type="radio" name="print_range" value="part"></label></td>
+								
+								<td style="text-align:center">전체 고지 0개 출력</td>
+								<td style="text-align:center">상세 고지 0개 출력</td>
+								<td style="text-align:center"><button class="btn btn-small btn-inverse">출력</button></td>
+							</tr>
+						</table>
+					</div>
+					<div id="contents_modal" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+						<!-- ejs template으로 db내용을 불러온다. -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">닫기</a>
+		</div>-->
+	</div>
+	
+	<div class="clearfix"></div>
+	<hr>
+	
+	<footer>
+		<p class="pull-left">&copy; <a href="" target="_blank">creativeLabs</a> 2013</p>
+		<p class="pull-right">Powered by: <a href="#">Optimus Dashboard</a></p>
+	</footer>
+			
+</div><!--/.fluid-container-->
+
+	<!-- start: JavaScript-->
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-1.9.1.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-migrate-1.0.0.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-ui-1.10.0.custom.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/bootstrap.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cookie.js"></script>
+	
+		<script src='{{ STATIC_URL }}bootstrap/js/fullcalendar.min.js'></script>
+	
+		<script src='{{ STATIC_URL }}bootstrap/js/jquery.dataTables.min.js'></script>
+
+		<script src="{{ STATIC_URL }}bootstrap/js/excanvas.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.pie.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.stack.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.resize.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.chosen.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uniform.min.js"></script>
+		
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cleditor.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.noty.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.elfinder.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.raty.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.iphone.toggle.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uploadify-3.1.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.gritter.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.imagesloaded.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.masonry.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/custom.js"></script>
+
+		<script src="{{ STATIC_URL }}ejs/ejs.js"></script>
+		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
+		<script src="{{ STATIC_URL }}ejs/view.js"></script>
+
+		<script src="{{ STATIC_URL }}js/03_01_notice_show.js"></script>
+		<script src="{{ STATIC_URL }}js/common.js"></script>
+		
+		<script type="text/javascript" language="JavaScript">
+			$(document).ready(function(){
+				// show sidebar
+				show_sidebar();
+
+				// 건물을 하나 선택할 때, 그 건물에 속한 '호수' 전체 불러오기
+				$('#buildingName').change(function() {
+					if ($(this).val() == '')
+						$('#buildingRoomNumber').attr('disabled', true);
+					else {
+						getBuildingRooms($(this).val(), 'buildingRoomNumber');
+					}
+				});
+				
+				$('#inDate').change(function() {
+					var mdy = $('#inDate').val().split('/');
+					$('#inDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
+					$('#outDate').attr('disabled', false);
+				});
+				
+				$('#outDate').change(function() {
+					var mdy = $('#outDate').val().split('/');
+					$('#outDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
+					var mdyin = $('#inDate').val().split('.');
+					if (mdyin[0] > mdy[2] ||
+						(mdyin[0] == mdy[2] && mdyin[1] > mdy[0]) ||
+						(mdyin[0] == mdy[2] && mdyin[1] == mdy[0] && mdyin[2] > mdy[1]))
+					{
+						alert('만료일은 입주일 이후의 날짜만 입력 가능합니다.');
+						$('#outDate').val('');
+					}
+				});
+
+				// ejs template 불러오기
+				getContents();
+			});			
+		</script>
+		<!-- end: JavaScript-->
+	
+</body>
+</html>
