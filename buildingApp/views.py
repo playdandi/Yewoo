@@ -586,7 +586,7 @@ def setPostData(request):
         print('post')
         param['search_year'] = int(request.POST['year'])
         param['search_month'] = int(request.POST['month'])
-        param['search_building_id'] = request.POST['building_id']
+        param['search_building_id'] = int(request.POST['building_id'])
     
     building = BuildingInfo.objects.all()
     building_name_id = []
@@ -606,6 +606,13 @@ def setPostData(request):
 
 def lease_show_html(request):
     return render(request, '03_01_lease_show.html', setPostData(request))
+
+def lease_notice_detail_show_html(request, bid, rnum):
+    return render(request, '03_01_lease_notice_detail_show.html')
+
+def notice_show_html(request):
+    return render(request, '03_01_notice_show.html', setPostData(request))
+
 
 '''
 def electricity_show_html(request):
@@ -700,27 +707,17 @@ def excel_file_delete(request):
         return HttpResponse('file delete - SUCCESS')
     return HttpResponse('file delete - NOT POST')
 
+def notice_input_html(request):
+    return render(request, '03_02_notice_input.html', setPostData(request))
+
 def electricity_input_html(request):
-    csrf_token = get_token(request)
-    building = BuildingInfo.objects.all()
-    building_name_id = []
-    for b in building:
-        building_name_id.append({'name' : b.name, 'id' : b.id})
-    # get excel file
-    # ...
-    return render(request, '03_02_electricity_input.html', {'building_name_id' : building_name_id})
+    return render(request, '03_02_electricity_input.html', setPostData(request))
 
 def gas_input_html(request):
-    csrf_token = get_token(request)
-    building = BuildingInfo.objects.all()
-    building_name_id = []
-    for b in building:
-        building_name_id.append({'name' : b.name, 'id' : b.id})
-    # get excel file
-    # ...
-    return render(request, '03_02_gas_input.html', {'building_name_id' : building_name_id})
+    return render(request, '03_02_gas_input.html', setPostData(request))
 
 def water_input_html(request):
+    '''
     csrf_token = get_token(request)
     building = BuildingInfo.objects.all()
     building_name_id = []
@@ -729,6 +726,8 @@ def water_input_html(request):
     # get excel file
     # ...
     return render(request, '03_02_water_input.html', {'building_name_id' : building_name_id})
+    '''
+    return render(request, '03_02_water_input.html', setPostData(request))
 
 
 

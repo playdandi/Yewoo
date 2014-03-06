@@ -77,7 +77,7 @@ function show_sidebar()
 			html : 'true',
 			placement : 'right',
 			title : '[임대 (내역) 관리]',
-			content : '<ul class="nav nav-tab main-menu" style="margin-bottom:-1px"><li><a href="/lease/show/lease"><i class="icon-hand-right" style="margin-right:5px"></i>임대 내역 관리 (확인)</a></li><li><a href="#"><i class="icon-hand-right" style="margin-right:5px"></i>고지 내역 관리 (입력)</a></li><li><a href="#"><i class="icon-hand-right" style="margin-right:5px"></i>납부 내역 관리 (입력)</a></li></ul>'
+			content : '<ul class="nav nav-tab main-menu" style="margin-bottom:-1px"><li><a href="/lease/show/lease"><i class="icon-hand-right" style="margin-right:5px"></i>임대 내역 관리 (확인)</a></li><li><a href="/lease/input/notice"><i class="icon-hand-right" style="margin-right:5px"></i>고지 내역 관리 (입력)</a></li><li><a href="#"><i class="icon-hand-right" style="margin-right:5px"></i>납부 내역 관리 (입력)</a></li></ul>'
 		});
 
 		// popover를 열 때, 다른 모든 popover를 끈다. (중복되지 않기 위하여)
@@ -126,13 +126,12 @@ function setExcelInfo()
 }
 
 $('input[id=fileInput]').change(function() {
-	var fname = $(this).val().split('\\')[2].trim();
-	var temp = fname.split('.');
-	var ext = temp[temp.length-1];
-	if (ext != 'xls' && ext != 'xlsx') {
-		alert('엑셀 파일만 첨부 가능합니다.');
+	// explorer에서는 change가 두번 실행되는 것 같아 예외처리 if문 걸었음...
+	var fname = $(this).val();
+	if (fname == '')
 		return;
-	}
+	
+	fname = fname.split('\\')[2].trim();
 
 	$('#filename').val(fname);
 	$('#filename_modal').val(fname);
@@ -142,8 +141,16 @@ function saveExcelFile(fromPreview)
 {
 	// error check
 	if ($('#filename').val().trim() == '') {
-		alert('년/월/파일명을 다시 확인해 주세요');
+		alert('파일을 선택해 주세요');
 		return;
+	}
+	else {
+		var temp = $('#filename').val().trim().split('.');
+		var ext = temp[temp.length-1];
+		if (ext != 'xls' && ext != 'xlsx') {
+			alert('엑셀 파일만 첨부 가능합니다. (확장자가 xls 또는 xlsx)');
+			return;
+		}
 	}
 
 	var formData = new FormData();

@@ -170,7 +170,7 @@
 				<div class="span11">
 					<ul class="breadcrumb">
 						<li>
-							<a href="#">임대 내역 확인</a>
+							<a href="#">고지 내역 관리</a>
 						</li>
 					</ul>
 				</div>
@@ -183,9 +183,8 @@
 								<td width="17%">
 									<div style="margin-right:5px; float:left">내역 분류</div>
 									<select id="search_type" class="margin0" style="width:100px">
-										<option value="0">임대 내역</option>
-										<option value="1">고지 내역</option>
-										<option value="2" selected>전기 요금</option>
+										<option value="1" selected>고지 입력</option>
+										<option value="2">전기 요금</option>
 										<option value="3">가스 요금</option>
 										<option value="4">수도 요금</option>
 									</select>
@@ -234,11 +233,11 @@
 					</div>
 				</div>
 
-				<!-- 전기 요금 현황 -->
+				<!-- 임대 내역 현황 -->
 				<div class="row-fluid">
 					<div class="span11">
 						<div style="border:1px solid #000000; background-color:#dbdbd2; padding:7px 10px 7px 10px; font-size:1.1em; margin:10px 0px 10px 0px">
-							<strong>전기 요금 현황</strong>
+							<strong>고지 내역 현황</strong>
 						</div>
 					</div>
 
@@ -246,10 +245,9 @@
 						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 								<colgroup>
-									<col width="8%">
 									<col width="10%">
-									<col width="10%">
-									<col width="12%">
+									<col width="17%">
+									<col width="13%">
 									<col width="10%">
 									<col width="10%">
 									<col width="10%">
@@ -260,9 +258,9 @@
 									<col width="6%">
 								</colgroup>
 								<tr style="background-color:#dbdbd2">
-									<td colspan="7">
+									<td colspan="6">
 										<div style="font-size:0.8em">건물명/기간</div>
-										<div><h3>No.1 루체시티 1 / 2014.01 / 전기 요금</h3></div>
+										<div><h3>No.1 루체시티 1 / 2014.01 / (예정) 고지 내역</h3></div>
 									</td>
 									<td colspan="5">
 										<div style="font-size:0.8em">재실 현황</div>
@@ -270,13 +268,12 @@
 									</td>
 								</tr>
 								<tr>
-									<th style="text-align:center">사용량</th>
-									<th style="text-align:center">수정 사용량</th>
-									<th style="text-align:center">기본 요금</th>
-									<th style="text-align:center">적용 기본 요금</th>
-									<th style="text-align:center">TV 수신료</th>
-									<th style="text-align:center">사용 요금</th>
-									<th style="text-align:center">부가 요금</th>
+									<th style="text-align:center">가격</th>
+									<th style="text-align:center">보증금</th>
+									<th style="text-align:center">임대료</th>
+									<th style="text-align:center">관리비</th>
+									<th style="text-align:center">주차비</th>
+									<th style="text-align:center">부가세</th>
 									<th style="text-align:center">전체</th>
 									<th style="text-align:center">입주</th>
 									<th style="text-align:center">전세</th>
@@ -284,13 +281,12 @@
 									<th style="text-align:center">공실</th>
 								</tr>
 								<tr>
-									<td style="text-align:center">120</td>
-									<td style="text-align:center">123</td>
-									<td style="text-align:center">총 3,409,000</td>
-									<td style="text-align:center">총 3,409,000</td>
-									<td style="text-align:center">총 1,230,000</td>
-									<td style="text-align:center">총 3,409,000</td>
-									<td style="text-align:center">총 3,409,000</td>
+									<td style="text-align:center">총 8,500</td>
+									<td style="text-align:center">총 1,211,000,000</td>
+									<td style="text-align:center">총 3,390,000</td>
+									<td style="text-align:center">30,000</td>
+									<td style="text-align:center">30,000</td>
+									<td style="text-align:center">30,000</td>
 									<td style="text-align:center">62</td>
 									<td style="text-align:center">20</td>
 									<td style="text-align:center">10</td>
@@ -302,39 +298,46 @@
 					</div>
 				</div>
 
-				<!-- 전기요금 첨부파일-->
-				<div class="row-fluid">
-					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
-						<div class="box-header">
-							<h2><strong>전기요금 첨부파일</strong></h2>
-						</div>
-						<div class="box-content" style="padding: 3px 3px 3px 3px; background-color:#f8f8f8">
-							<div style="text-align:center">
-								<input id="" type="text" class="span12 margin0" style="" value="14_002_2013년 루체시티 1 공과금 계산 프로그램 - 전기" disabled />
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<!-- 전체 전기 요금 내역 -->
+				<!-- 전체 임대 내역 -->
 				<div class="row-fluid">
 					<div class="box span11" style="margin: 0px; padding: 0px">
 						<div class="box-header">
 							<div style="float:left; text-align:left">
-								<h2><strong>전체 전기 요금 내역</strong></h2>
+								<h2><strong>전체 예정 고지 내역</strong></h2>
 							</div>
 							<div style="text-align:right">
-								<strong>층별 보기</strong>
-								<select id="" class="margin0" style="width:70px">
-									<option value="">전체</option>
-									<option value="1">1층</option>
-									<option value="2">2층</option>
-									<option value="3">3층</option>
-									<option value="10">10층</option>
-								</select>
-								<button class="btn btn-small btn-setting">미리보기</button>
-								<button class="btn btn-small btn-inverse">출력</button>
+								<span>| <strong>오름 순</strong> | 내림 순 | 금액 순 | 연체 |</span>
 							</div>
+						</div>
+						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed" style="margin: 0px">
+								<colgroup>
+									<col width="10%">
+									<col width="12%">
+									<col width="12%">
+
+									<col width="10%">
+									<col width="8%">
+									<col width="8%">
+
+									<col width="14%">
+									<col width="14%">
+									<col width="12%">
+								</colgroup>
+								<tr>
+									<th style="text-align:center">내역 분류</th>
+									<td style="text-align:center">전체 고지<label style="display: inline-block"><input type="radio" name="show_range" value="all" checked></label></td>
+									<td style="text-align:center">상세 고지<label style="display: inline-block"><input type="radio" name="show_range" value="part"></label></td>
+
+									<th style="text-align:center">출력 선택</th>
+									<td style="text-align:center">전체<label style="display: inline-block"><input type="radio" name="print_range" value="all" checked></label></td>
+									<td style="text-align:center">선택<label style="display: inline-block"><input type="radio" name="print_range" value="part"></label></td>
+									
+									<th style="text-align:center">전체 고지 0개 출력</th>
+									<th style="text-align:center">상세 고지 0개 출력</th>
+									<td style="text-align:center"><button class="btn btn-small btn-inverse">출력</button></td>
+								</tr>
+							</table>
 						</div>
 						<div id="contents" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 							<!-- ejs template으로 db내용을 불러온다. -->
@@ -352,7 +355,7 @@
 	<div class="modal hide fade" id="myModal">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">×</button>
-			<h3>임대 비용(전기 요금)확인</h3>
+			<h3>고지 내역 현황</h3>
 		</div>
 		<div class="modal-body">
 			<div class="row-fluid">
@@ -360,10 +363,9 @@
 					<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 						<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 							<colgroup>
-								<col width="8%">
 								<col width="10%">
-								<col width="10%">
-								<col width="12%">
+								<col width="17%">
+								<col width="13%">
 								<col width="10%">
 								<col width="10%">
 								<col width="10%">
@@ -374,9 +376,9 @@
 								<col width="6%">
 							</colgroup>
 							<tr style="background-color:#dbdbd2">
-								<td colspan="7">
+								<td colspan="6">
 									<div style="font-size:0.8em">건물명/기간</div>
-									<div><h3>No.1 루체시티 1 / 2014.01 / 전기 요금</h3></div>
+									<div><h3>No.1 루체시티 1 / 2014.01 / 임대 내역</h3></div>
 								</td>
 								<td colspan="5">
 									<div style="font-size:0.8em">재실 현황</div>
@@ -384,13 +386,12 @@
 								</td>
 							</tr>
 							<tr>
-								<th style="text-align:center">사용량</th>
-								<th style="text-align:center">수정 사용량</th>
-								<th style="text-align:center">기본 요금</th>
-								<th style="text-align:center">적용 기본 요금</th>
-								<th style="text-align:center">TV 수신료</th>
-								<th style="text-align:center">사용 요금</th>
-								<th style="text-align:center">부가 요금</th>
+								<th style="text-align:center">가격</th>
+								<th style="text-align:center">보증금</th>
+								<th style="text-align:center">임대료</th>
+								<th style="text-align:center">관리비</th>
+								<th style="text-align:center">주차비</th>
+								<th style="text-align:center">부가세</th>
 								<th style="text-align:center">전체</th>
 								<th style="text-align:center">입주</th>
 								<th style="text-align:center">전세</th>
@@ -398,13 +399,12 @@
 								<th style="text-align:center">공실</th>
 							</tr>
 							<tr>
-								<td style="text-align:center">120</td>
-								<td style="text-align:center">123</td>
-								<td style="text-align:center">총 3,409,000</td>
-								<td style="text-align:center">총 3,409,000</td>
-								<td style="text-align:center">총 1,230,000</td>
-								<td style="text-align:center">총 3,409,000</td>
-								<td style="text-align:center">총 3,409,000</td>
+								<td style="text-align:center">총 8,500</td>
+								<td style="text-align:center">총 1,211,000,000</td>
+								<td style="text-align:center">총 3,390,000</td>
+								<td style="text-align:center">30,000</td>
+								<td style="text-align:center">30,000</td>
+								<td style="text-align:center">30,000</td>
 								<td style="text-align:center">62</td>
 								<td style="text-align:center">20</td>
 								<td style="text-align:center">10</td>
@@ -416,30 +416,46 @@
 				</div>
 			</div>
 
-			<!-- 전기요금 첨부파일-->
-			<div class="row-fluid">
-				<div class="box span12" style="margin:0px 0px 5px 0px; padding: 0px">
-					<div class="box-header">
-						<h2><strong>전기요금 첨부파일</strong></h2>
-					</div>
-					<div class="box-content" style="padding: 3px 3px 3px 3px; background-color:#f8f8f8">
-						<div style="text-align:center">
-							<input id="" type="text" class="span12 margin0" style="" value="14_002_2013년 루체시티 1 공과금 계산 프로그램 - 전기" disabled />
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- 전체 전기 요금 내역 -->
+			<!-- 전체 고지 내역 -->
 			<div class="row-fluid">
 				<div class="box span12" style="margin: 0px; padding: 0px">
 					<div class="box-header">
 						<div style="float:left; text-align:left">
-							<h2><strong>전체 전기 요금 내역</strong></h2>
+							<h2><strong>전체 예정 고지 내역</strong></h2>
 						</div>
 						<div style="text-align:right">
-							<button class="btn btn-small btn-inverse">출력</button>
+							<span>| <strong>오름 순</strong> | 내림 순 | 금액 순 | 연체 |</span>
 						</div>
+					</div>
+					<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+						<table class="table table-bordered table-condensed" style="margin: 0px">
+							<colgroup>
+								<col width="10%">
+								<col width="12%">
+								<col width="12%">
+
+								<col width="10%">
+								<col width="8%">
+								<col width="8%">
+
+								<col width="14%">
+								<col width="14%">
+								<col width="12%">
+							</colgroup>
+							<tr>
+								<th style="text-align:center">내역 분류</th>
+								<td style="text-align:center">전체 고지<label style="display: inline-block"><input type="radio" name="show_range" value="all"></label></td>
+								<td style="text-align:center">상세 고지<label style="display: inline-block"><input type="radio" name="show_range" value="part"></label></td>
+
+								<th style="text-align:center">출력 선택</th>
+								<td style="text-align:center">전체<label style="display: inline-block"><input type="radio" name="print_range" value="all"></label></td>
+								<td style="text-align:center">선택<label style="display: inline-block"><input type="radio" name="print_range" value="part"></label></td>
+								
+								<td style="text-align:center">전체 고지 0개 출력</td>
+								<td style="text-align:center">상세 고지 0개 출력</td>
+								<td style="text-align:center"><button class="btn btn-small btn-inverse">출력</button></td>
+							</tr>
+						</table>
 					</div>
 					<div id="contents_modal" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 						<!-- ejs template으로 db내용을 불러온다. -->
@@ -509,7 +525,7 @@
 		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
 
-		<script src="{{ STATIC_URL }}js/03_01_electricity_show.js"></script>
+		<script src="{{ STATIC_URL }}js/03_02_notice_input.js"></script>
 		<script src="{{ STATIC_URL }}js/common.js"></script>
 		
 		<script type="text/javascript" language="JavaScript">

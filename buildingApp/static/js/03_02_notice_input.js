@@ -19,7 +19,7 @@ function showLeaseInfo()
 
 	var form = document.createElement('form');
 	form.setAttribute('method', 'POST');
-	form.setAttribute('action', '/lease/show/'+type_text+'/');
+	form.setAttribute('action', '/lease/input/'+type_text+'/');
 	document.body.appendChild(form);
 
 	var f_year = document.createElement('input');
@@ -65,15 +65,9 @@ function getContents()
 	// db에서 정보 뽑고
 	
 
-	var template = new EJS({url : '/static/ejs/03_01_lease_show.ejs'}).render();
+	var template = new EJS({url : '/static/ejs/03_02_notice_input.ejs'}).render();
 	$('#contents').html(template);
 	$('#contents_modal').html(template);
-	
-	$('.showDetail').click(function() {
-		//var id = $(this).attr('id');
-		// 나중에 수정해야 함
-		$(location).attr('href', 'http://14.49.42.190:8080/lease/show/leaseNotice/' + '1/101/');
-	});
 }
 
 
