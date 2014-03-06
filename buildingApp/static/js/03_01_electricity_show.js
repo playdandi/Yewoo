@@ -12,13 +12,14 @@ function showLeaseInfo()
 	else if (type == '3') type_text = 'gas';
 	else type_text = 'water';
 
-	alert(building_id + '/' + year + '/' + month);
+	//alert(building_id + '/' + year + '/' + month);
 	if (year == '' || month == '' || building_id == '') {
 		alert ('비어 있는 칸이 있습니다.');
 		return;
 	}
 
 	var form = document.createElement('form');
+	form.setAttribute('display', 'none');
 	form.setAttribute('method', 'POST');
 	form.setAttribute('action', '/lease/show/'+type_text+'/');
 	document.body.appendChild(form);
