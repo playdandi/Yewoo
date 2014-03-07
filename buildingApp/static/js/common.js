@@ -135,7 +135,78 @@ $('input[id=fileInput]').change(function() {
 
 	$('#filename').val(fname);
 	$('#filename_modal').val(fname);
+
+	// xls copy로 parse하기
+	var fileInput = document.getElementsByName('file');
+	
+	var files = fileInput[0].files;
+	for (var i = 0 ; i < files.length ; i++){
+		console.log("filename: " + files[i].name);
+		console.log('type : ' + files[i].type);
+		console.log('size : ' + files[i].size + ' bytes');
+	}
+	
+	var temp = fname.split('.');
+	var ext = temp[temp.length-1];
+	var result;
+	if (ext == 'xls')
+		result = handleXLS(files);
+	else if (ext == 'xlsx')
+		result = handleXLSX(files);
+	else {
+		alert('엑셀 파일만 첨부 가능합니다. (확장자가 xls 또는 xlsx)');
+		return;
+	}
+
 });
+
+function excelParser(result)
+{
+	// 파일에서 얻은 csv 결과로 적절히 parse.
+	var res = result.split('\n');
+	
+	// 기본 정보 (년, 월, 건물명, 파일종류)
+	var basic = res[0].split(',');
+	var year = basic[0].replace('년','').trim();
+	var month = basic[1].replace('월','').trim();
+	var b_name = basic[2].trim();
+	var type = basic[3].trim();
+	//console.log(year + ',' +month + ' : ' + b_name + ','+type);
+
+	// 각종 에러 체크
+	if (curType != type) {
+		alert(curType + ' 요금 입력 페이지인데 ' + type + ' 요금 엑셀 파일을 들고 왔습니다...');
+		return;
+	}
+	if (curYear != year || curMonth != month) {
+		alert('년/월이 맞지 않습니다.');
+		return;
+	}
+	/*if (curBName != b_name) {
+		alert(curBName + ' 건물 정보를 입력해야 하는데 ' + b_name + ' 건물의 엑셀 파일을 들고 왔습니다...');
+		return;
+	}*/
+	
+	// 항목명
+	var columnName = res[1].split(',');
+	for (i = 0 ; i < columnName.length ; i++) {
+		if (columnName[i].trim() == '')
+			break;
+		console.log(columnName[i].trim());
+	}
+
+	// 실제 data
+	for (i = 2; i < res.length; i++) {
+		var content = res[i].split(',');
+		var str = '';
+		for (j = 0; j < content.length; j++) {
+			if (content[j].trim() == '')
+				break;
+			str += content[j].trim() + ', ';
+		}
+		console.log(str);
+	}
+}
 
 function saveExcelFile(fromPreview)
 {
@@ -241,6 +312,10 @@ function deleteExcelFile(fromPreview)
 	//};
 }
 
+var curType;
+var curBName;
+var curYear;
+var curMonth;
 
 
 

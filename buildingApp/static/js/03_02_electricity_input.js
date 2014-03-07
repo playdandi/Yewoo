@@ -69,6 +69,16 @@ function getContents()
 	$('#contents_modal').html(template);
 }
 
+function setCurInfo()
+{
+	curType = $('#search_type option:selected').text().replace('요금', '').trim();
+	curBName = $('#search_building option:selected').text();
+	curYear = $('#search_year').val();
+	curMonth = $('#search_month').val();
+	//alert(curType + ',' + curBName + ',' + curYear + ',' + curMonth);
+}
+
+
 
 /*
 function SearchAll()

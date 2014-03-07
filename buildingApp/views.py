@@ -730,6 +730,3 @@ def water_input_html(request):
     return render(request, '03_02_water_input.html', setPostData(request))
 
 
-
-
-

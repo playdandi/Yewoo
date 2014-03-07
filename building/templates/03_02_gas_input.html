@@ -518,6 +518,13 @@
 		<script src="{{ STATIC_URL }}js/03_02_gas_input.js"></script>
 		<script src="{{ STATIC_URL }}js/common.js"></script>
 		
+		<script src="{{ STATIC_URL }}xls/jszip.js"></script>
+		<script src="{{ STATIC_URL }}xls/xlsx.js"></script>
+		<script src="{{ STATIC_URL }}xls/xls.js"></script>
+		<script src="{{ STATIC_URL }}xls/shim.js"></script>
+		<script src="{{ STATIC_URL }}xls/xlsx_func.js"></script>
+		<script src="{{ STATIC_URL }}xls/xls_func.js"></script>
+
 		<script type="text/javascript" language="JavaScript">
 			$(document).ready(function(){
 				// show sidebar
@@ -556,6 +563,8 @@
 
 				// excel related func.
 				setExcelInfo();
+
+				setCurInfo();
 			});			
 		</script>
 		<!-- end: JavaScript-->
