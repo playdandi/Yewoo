@@ -70,6 +70,12 @@ function getContents()
 	$('#contents_reason').html(template);
 }
 
+function showModifyForm()
+{
+	$('#detail_input_closed').hide();
+	$('#detail_input_show').show();
+}
+
 function saveChangedInfo()
 {
 	// 저장 후....

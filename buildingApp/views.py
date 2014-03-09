@@ -735,5 +735,8 @@ def water_input_html(request):
 
 ##### 03_03 : payment #####
 
+def payment_input_html(request):
+    return render(request, '03_03_payment.html', setPostData(request))
+
 def payment_detail_html(request):
     return render(request, '03_03_payment_detail.html', setPostData(request))

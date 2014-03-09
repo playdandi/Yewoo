@@ -63,51 +63,10 @@ function getContents()
 	//var month = $('#').val();
 
 	// db에서 정보 뽑고
-	
-	var template = new EJS({url : '/static/ejs/03_02_notice_detail_input.ejs'}).render();
-	$('#contents_list').html(template);
-	var template = new EJS({url : '/static/ejs/03_02_notice_detail_reason.ejs'}).render();
-	$('#contents_reason').html(template);
+
+	var template = new EJS({url : '/static/ejs/03_03_payment.ejs'}).render();
+	$('#contents').html(template);
 }
-
-function showModifyForm()
-{
-	$('#detail_input_closed').hide();
-	$('#detail_input_show').show();
-}
-
-
-$('#c1').keyup(function() { changeCharge(1); });
-$('#c2').keyup(function() { changeCharge(2); });
-$('#c3').keyup(function() { changeCharge(3); });
-$('#c4').keyup(function() { changeCharge(4); });
-$('#c5').keyup(function() { changeCharge(5); });
-$('#c6').keyup(function() { changeCharge(6); });
-$('#c7').keyup(function() { changeCharge(7); });
-$('#c8').keyup(function() { changeCharge(8); });
-$('#c9').keyup(function() { changeCharge(9); });
-
-function changeCharge(num)
-{
-	var before = Number($('#before'+num).text().split(',').join('').trim());
-
-	var variation = $('#c'+num).val().split(',').join('').trim();
-	if (variation == '')
-		variation = '0';
-	var value = variation.match(/[0-9]/g).join('');
-
-	$('#after'+num).html(before+Number(value));
-}
-
-function saveChangedInfo()
-{
-	// 저장 후....
-	
-	if(confirm('저장되었습니다.\n고지(입력) 현황 화면(이전화면)으로 돌아가시겠습니까?')) {
-	}
-}
-
-
 
 
 

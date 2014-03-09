@@ -1,0 +1,73 @@
+<% var w = new Array(5,5,5,5,5,5,5,5,5,6,6,6,6,6,5,5,5,5,5); %>
+<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+	<colgroup>
+	<% for (i = 0 ; i < w.length; i++) { %>
+		<col width="<%= w[i] %>%">
+	<% } %>
+	</colgroup>
+	<tr>
+		<th rowspan="2" style="text-align:center">납부(입금)</th>
+		<th rowspan="2" style="text-align:center">호수</th>
+		<th rowspan="2" style="text-align:center">입주자</th>
+		<th rowspan="2" style="text-align:center">년도/월</th>
+		<th rowspan="2" style="text-align:center">회차</th>
+		<th rowspan="2" style="text-align:center">합계금액</th>
+		<th rowspan="2" style="text-align:center">납부(입금)일</th>
+		<th colspan="6" style="text-align:center">납부처리</th>
+		<th colspan="4" style="text-align:center">연체내역</th>
+		<th rowspan="2" style="text-align:center">상세납부입력</th>
+		<th rowspan="2" style="text-align:center">납부내역확인</th>
+	</tr>
+	<tr>
+		<th colspan="2" style="text-align:center">추가납부</th>
+		<th style="text-align:center">입금액</th>
+		<th style="text-align:center">미납액</th>
+		<th style="text-align:center">입금일</th>
+		<th style="text-align:center">빠른입력</th>
+		<th colspan="2" style="text-align:center">이번달</th>
+		<th colspan="2" style="text-align:center">다음달</th>
+	</tr>
+	<% for (i = 0; i < 4; i++) { %>
+	<tr>
+		<td><input type="checkbox" /></td>
+		<td>101</td>
+		<td>김호근</td>
+		<td>2014.02</td>
+		<td>10</td>
+		<td>300,000</td>
+		<% if (i < 2) { %>
+		<td><input id="" type="text" class="margin0 span12 fontmini" style="color:green" value="2014.03.01" /></td>
+		<td>완납</td>
+		<td>없음</td>
+		<td>300,000</td>
+		<td>0</td>
+		<td><input id="" type="text" class="margin0 span12 fontmini" style="color:green" value="2014.03.01" /></td>
+		<td><button class="btn btn-mini">입력</button></td>
+		<% } else { %>
+		<td><input id="" type="text" class="margin0 span12 fontmini" style="color:red" value="2014.03.01" /></td>
+		<td>납부</td>
+		<td>2회</td>
+		<td><input id="" type="text" class="margin0 span12 fontmini" style="color:red" value="100,000" /></td>
+		<td><input id="" type="text" class="margin0 span12 fontmini" style="color:red" value="50,000" /></td>
+		<td><input id="" type="text" class="margin0 span12 fontmini" style="color:red" value="2014.03.02" /></td>
+		<td><button class="btn btn-danger btn-mini">입력</button></td>
+		<% } %>
+		<td>2월</td>
+		<td>0회</td>
+		<td>3월</td>
+		<td>0회</td>
+		<% if (i < 2) { %>
+		<td><button class="btn btn-mini">입력</button></td>
+		<% } else { %>
+		<td><button class="btn btn-danger btn-mini">입력</button></td>
+		<% } %>
+		<td><button class="btn btn-mini">확인</button></td>
+	</tr>
+	<% } %>
+ </table>  
+
+
+
+
+
+
