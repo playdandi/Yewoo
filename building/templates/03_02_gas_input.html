@@ -235,12 +235,13 @@
 
 				<!-- 임대 비용(가스 요금) 입력 -->
 				<div class="row-fluid">
+					<!--
 					<div class="span11">
 						<div style="border:1px solid #000000; background-color:#dbdbd2; padding:7px 10px 7px 10px; font-size:1.1em; margin:10px 0px 10px 0px">
 							<strong>임대 비용(가스 요금) 입력</strong>
 						</div>
 					</div>
-
+					-->
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
 						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
@@ -307,15 +308,30 @@
 						<div class="box-header">
 							<h2><strong>가스요금 파일 업로드</strong></h2>
 						</div>
-						<div class="box-content" style="padding: 3px 3px 3px 3px; background-color:#f8f8f8">
-							<div>
-								<input id="fileInput" type="file" name="file" style="display:none" />
-								<button class="btn btn-danger btn-small" onclick="$('input[id=fileInput]').click();">파일첨부</button>
-								<input id="filename" type="text" class="span6 margin0" placeholder="파일명" disabled />
-								<button class="btn btn-small" onclick="deleteExcelFile(false);">삭제</button>
-								<button class="btn btn-small" onclick="saveExcelFile(false);">저장</button>
-								<button class="btn btn-danger btn-small btn-setting">미리보기</button>
-							</div>
+						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+								<tr>
+									<td width="10%" style="vertical-align:middle">업로드 확인</td>
+									<td width="23%">
+										<div>
+											업로드 날짜
+											<input id="uploadDate" type="text" class="margin0 input-small datepicker" placeholder="날짜를 입력하세요." />
+											<a href="#" title="파일을 업로드하는 날짜를 선택하세요." data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a>
+										</div>
+									</td>
+									<td width="55%">
+										<div>
+											<input id="fileInput" type="file" name="file" style="display:none" />
+											<button class="btn btn-danger btn-small" onclick="$('input[id=fileInput]').click();">파일첨부</button>
+											<input id="filename" type="text" class="span7 margin0" placeholder="파일명" disabled />
+											<button class="btn btn-small" onclick="deleteExcelFile(false);">삭제</button>
+											<button class="btn btn-small" onclick="saveExcelFile(false);">저장</button>
+										</div>
+									</td>
+									<td width="5%" style="vertical-align:middle">이력</td>
+									<td width="7%"><button class="btn btn-small" onclick="">보기</button>
+								</tr>
+							</table>
 						</div>
 					</div>
 				</div>
@@ -336,6 +352,8 @@
 									<option value="3">3층</option>
 									<option value="10">10층</option>
 								</select>
+								<button class="btn btn-danger btn-small btn-setting">미리보기</button>
+								<button class="btn btn-inverse btn-small">출력</button>
 							</div>
 						</div>
 						<div id="contents" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
@@ -424,14 +442,27 @@
 					<div class="box-header">
 						<h2><strong>가스요금 파일 업로드</strong></h2>
 					</div>
-					<div class="box-content" style="padding: 3px 3px 3px 3px; background-color:#f8f8f8">
-						<div>
-							<input id="fileInput_modal" type="file" name="file_modal" style="display:none" />
-							<button class="btn btn-danger btn-small" onclick="$('input[id=fileInput]').click();">파일첨부</button>
-							<input id="filename_modal" type="text" class="span6 margin0" placeholder="파일명" disabled />
-							<button class="btn btn-small" onclick="deleteExcelFile(true);">삭제</button>
-							<button class="btn btn-small" onclick="saveExcelFile(true);">저장</button>
-						</div>
+					<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+						<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+							<tr>
+								<td width="23%">
+									<div>
+										업로드 날짜
+										<input id="uploadDate_modal" type="text" class="margin0 input-small datepicker" placeholder="날짜를 입력하세요." />
+										<a href="#" title="파일을 업로드하는 날짜를 선택하세요." data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a>
+									</div>
+								</td>
+								<td width="77%">
+									<div>
+										<input id="fileInput_modal" type="file" name="file" style="display:none" />
+										<button class="btn btn-danger btn-small" onclick="$('input[id=fileInput]').click();">파일첨부</button>
+										<input id="filename_modal" type="text" class="span9 margin0" placeholder="파일명" disabled />
+										<button class="btn btn-small" onclick="deleteExcelFile(false);">삭제</button>
+										<button class="btn btn-small" onclick="saveExcelFile(false);">저장</button>
+									</div>
+								</td>
+							</tr>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -539,23 +570,16 @@
 					}
 				});
 				
-				$('#inDate').change(function() {
-					var mdy = $('#inDate').val().split('/');
-					$('#inDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
-					$('#outDate').attr('disabled', false);
+				// 업로드 날짜 datepicker
+				$('#uploadDate').change(function() {
+					var mdy = $('#uploadDate').val().split('/');
+					$('#uploadDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
+					$('#uploadDate_modal').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
 				});
-				
-				$('#outDate').change(function() {
-					var mdy = $('#outDate').val().split('/');
-					$('#outDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
-					var mdyin = $('#inDate').val().split('.');
-					if (mdyin[0] > mdy[2] ||
-						(mdyin[0] == mdy[2] && mdyin[1] > mdy[0]) ||
-						(mdyin[0] == mdy[2] && mdyin[1] == mdy[0] && mdyin[2] > mdy[1]))
-					{
-						alert('만료일은 입주일 이후의 날짜만 입력 가능합니다.');
-						$('#outDate').val('');
-					}
+				$('#uploadDate_modal').change(function() {
+					var mdy = $('#uploadDate_modal').val().split('/');
+					$('#uploadDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
+					$('#uploadDate_modal').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
 				});
 
 				// ejs template 불러오기

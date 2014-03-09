@@ -236,12 +236,13 @@
 
 				<!-- 전기 요금 현황 -->
 				<div class="row-fluid">
+					<!--
 					<div class="span11">
 						<div style="border:1px solid #000000; background-color:#dbdbd2; padding:7px 10px 7px 10px; font-size:1.1em; margin:10px 0px 10px 0px">
 							<strong>전기 요금 현황</strong>
 						</div>
 					</div>
-
+					-->
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
 						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
@@ -308,10 +309,25 @@
 						<div class="box-header">
 							<h2><strong>전기요금 첨부파일</strong></h2>
 						</div>
-						<div class="box-content" style="padding: 3px 3px 3px 3px; background-color:#f8f8f8">
-							<div style="text-align:center">
-								<input id="" type="text" class="span12 margin0" style="" value="14_002_2013년 루체시티 1 공과금 계산 프로그램 - 전기" disabled />
-							</div>
+						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+								<tr>
+									<td width="10%" style="vertical-align:middle">업로드 확인</td>
+									<td width="23%">
+										<div>
+											업로드 날짜
+											<input id="uploadDate" type="text" class="margin0 input-small" disabled />
+											<a href="#" title="현재 파일이 업로드 된 날짜입니다." data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a>
+										</div>
+									</td>
+									<td width="7%" style="vertical-align:middle">파일명</td>
+									<td width="60%">
+										<div>
+											<input id="filename" type="text" class="span12 margin0" placeholder="파일명" disabled />
+										</div>
+									</td>
+								</tr>
+							</table>
 						</div>
 					</div>
 				</div>
@@ -332,7 +348,7 @@
 									<option value="3">3층</option>
 									<option value="10">10층</option>
 								</select>
-								<button class="btn btn-small btn-setting">미리보기</button>
+								<button class="btn btn-small btn-setting btn-danger">미리보기</button>
 								<button class="btn btn-small btn-inverse">출력</button>
 							</div>
 						</div>
@@ -422,10 +438,25 @@
 					<div class="box-header">
 						<h2><strong>전기요금 첨부파일</strong></h2>
 					</div>
-					<div class="box-content" style="padding: 3px 3px 3px 3px; background-color:#f8f8f8">
-						<div style="text-align:center">
-							<input id="" type="text" class="span12 margin0" style="" value="14_002_2013년 루체시티 1 공과금 계산 프로그램 - 전기" disabled />
-						</div>
+					<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+						<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+							<tr>
+								<td width="10%" style="vertical-align:middle">업로드 확인</td>
+								<td width="23%">
+									<div>
+										업로드 날짜
+										<input id="uploadDate_modal" type="text" class="margin0 input-small" disabled />
+										<a href="#" title="현재 파일이 업로드 된 날짜입니다." data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a>
+									</div>
+								</td>
+								<td width="7%" style="vertical-align:middle">파일명</td>
+								<td width="60%">
+									<div>
+										<input id="filename_modal" type="text" class="span12 margin0" placeholder="파일명" disabled />
+									</div>
+								</td>
+							</tr>
+						</table>
 					</div>
 				</div>
 			</div>

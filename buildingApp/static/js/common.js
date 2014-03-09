@@ -133,8 +133,8 @@ $('input[id=fileInput]').change(function() {
 	
 	fname = fname.split('\\')[2].trim();
 
-	$('#filename').val(fname);
-	$('#filename_modal').val(fname);
+	//$('#filename').val(fname);
+	//$('#filename_modal').val(fname);
 
 	// xls copy로 parse하기
 	var fileInput = document.getElementsByName('file');
@@ -163,7 +163,16 @@ $('input[id=fileInput]').change(function() {
 function excelParser(result)
 {
 	// 파일에서 얻은 csv 결과로 적절히 parse.
-	var res = result.split('\n');
+	// 예기치 못한 공백 라인도 data에 포함될 경우가 있는데, 이는 아래의 for문에서 체크를 통해 배제한다.
+	result = result.split('\n');
+	var res = [];
+	res.push(result[0]);
+	res.push(result[1]);
+	for (i = 2; i < result.length; i++) {
+		if (result[i].split(',').join('').trim().length == 0)
+			continue;
+		res.push(result[i]);
+	}
 	
 	// 기본 정보 (년, 월, 건물명, 파일종류)
 	var basic = res[0].split(',');
@@ -171,7 +180,6 @@ function excelParser(result)
 	var month = basic[1].replace('월','').trim();
 	var b_name = basic[2].trim();
 	var type = basic[3].trim();
-	//console.log(year + ',' +month + ' : ' + b_name + ','+type);
 
 	// 각종 에러 체크
 	if (curType != type) {
@@ -187,6 +195,11 @@ function excelParser(result)
 		return;
 	}*/
 	
+	// input text box에 파일명 입력
+	$('#filename').val(fname);
+	$('#filename_modal').val(fname);
+	
+	/*
 	// 항목명
 	var columnName = res[1].split(',');
 	for (i = 0 ; i < columnName.length ; i++) {
@@ -194,11 +207,12 @@ function excelParser(result)
 			break;
 		console.log(columnName[i].trim());
 	}
-
 	// 실제 data
 	for (i = 2; i < res.length; i++) {
 		var content = res[i].split(',');
 		var str = '';
+		//console.log((i-2) + '(th) : ' + content.length);
+		console.log(content.join('').trim().length);
 		for (j = 0; j < content.length; j++) {
 			if (content[j].trim() == '')
 				break;
@@ -206,6 +220,18 @@ function excelParser(result)
 		}
 		console.log(str);
 	}
+	*/
+	
+	var template;
+	if (curType == '전기')
+		template = new EJS({url : '/static/ejs/03_02_electricity_excel.ejs'}).render({'result' : res});
+	else if (curType == '가스')
+		template = new EJS({url : '/static/ejs/03_02_gas_excel.ejs'}).render({'result' : res});
+	else if (curType == '수도')
+		template = new EJS({url : '/static/ejs/03_02_water_excel.ejs'}).render({'result' : res});
+	$('#contents_modal').html(template);
+
+	alert('엑셀 파일 데이터 로드 성공!\n미리보기를 통해 내용을 확인하세요.');
 }
 
 function saveExcelFile(fromPreview)

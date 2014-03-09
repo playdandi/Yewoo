@@ -1,0 +1,17 @@
+<% var w = new Array(5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6); %>
+<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+	<tr>
+	<% var column = result[1].split(','); %>
+	<% for (i = 0; i < column.length; i++) { %>
+	<th width="<%= w[i] %>%" style="text-align:center"><%= column[i].trim() %></th>
+	<% } %>
+	</tr>
+	<% for (i = 2; i < result.length; i++) { %>
+	<% var data = result[i].split(','); %>
+	<tr>
+		<% for (j = 0; j < data.length; j++) { %>
+		<td style="text-align:center"><%= data[j].trim() %></td>
+		<% } %>
+	</tr>
+	<% } %>
+</table>
