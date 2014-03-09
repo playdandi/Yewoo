@@ -1,0 +1,20 @@
+<% var res = new Array({'date' : '2014.02', 'title' : '2회 수정', 'content' : '(예) 관리비 상승으로 10,000원 추가됨'},
+					{'date' : '2014.02', 'title' : '1회 수정', 'content' : '(예) 연체료 금액 추가됨'}); %>
+<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+	<tr>
+		<th width="5%">NO.</th>
+		<th width="10%">항목</th>
+		<th width="10%">항목</th>
+		<th width="65%">내용</th>
+		<th width="10%">시간</th>
+	</tr>
+	<% for (i = 0; i < res.length; i++) { %>
+	<tr>
+		<td><%= i+1 %></td>
+		<td><%= res[i].date %></td>
+		<td><%= res[i].title %></td>
+		<td><%= res[i].content %></td>
+		<td></td>
+	</tr>
+	<% } %>
+</table>

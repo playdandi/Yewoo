@@ -1,0 +1,59 @@
+<% var w = new Array(5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,5,5,5); %>
+<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+	<colgroup>
+	<% for (i = 0 ; i < w.length; i++) { %>
+		<col width="<%= w[i] %>%">
+	<% } %>
+	</colgroup>
+	<tr>
+		<th rowspan="2" style="text-align:center">항목선택</th>
+		<th rowspan="2" style="text-align:center">연체내역</th>
+		<th rowspan="2" colspan="2" style="text-align:center">추가납부</th>
+		<th rowspan="2" style="text-align:center">년도/월</th>
+		<th rowspan="2" style="text-align:center">회차</th>
+		<th rowspan="2" style="text-align:center">임대료관리비</th>
+		<th rowspan="2" style="text-align:center">공과금</th>
+		<th rowspan="2" style="text-align:center">연체료</th>
+		<th rowspan="2" style="text-align:center">기타금액</th>
+		<th rowspan="2" style="text-align:center">합계금액</th>
+		<th colspan="2" style="text-align:center">납부일</th>
+		<th colspan="3" style="text-align:center">미납 처리 사항</th>
+		<th rowspan="2" style="text-align:center">처리상태</th>
+		<th rowspan="2" style="text-align:center">미납처리입력</th>
+	</tr>
+	<tr>
+		<th style="text-align:center">예정일</th>
+		<th style="text-align:center">입금일</th>
+		<th style="text-align:center">입금액</th>
+		<th style="text-align:center">미납액</th>
+		<th style="text-align:center">처리일자</th>
+	</tr>
+	<% for (i = 2; i >= 0; i--) { %>
+	<tr>
+		<td><input type="checkbox" /></td>
+		<td>미납 <%= i %>회</td>
+		<td>납부</td>
+		<td>2회</td>
+		<td>2014.02</td>
+		<td>10</td>
+		<td>100,000</td>
+		<td>100,000</td>
+		<td>250,000</td>
+		<td>250,000</td>
+		<td>450,000</td>
+		<td style="color:blue">2014.02.28</td>
+		<td style="color:red">2014.03.02</td>
+		<td>100,000</td>
+		<td style="color:red">50,000</td>
+		<td>2014.03.02</td>
+		<td>처리</td>
+		<td><button class="btn btn-mini">입력</button></td>
+	</tr>
+	<% } %>
+ </table>  
+
+
+
+
+
+

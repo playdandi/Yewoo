@@ -1,0 +1,64 @@
+<% var w = new Array(5,6,6,6,6,6,5,5,5,5,5,5,5,5,5,5,5,5,5); %>
+<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+	<colgroup>
+	<% for (i = 0 ; i < w.length; i++) { %>
+		<col width="<%= w[i] %>%">
+	<% } %>
+	</colgroup>
+	<tr style="background-color:#dbdbd2">
+		<td colspan="20">
+			<input id="" class="margin0" type="text" style="text-align:center; width:70px" value="2014.02" disabled />
+			<input id="" class="margin0" type="text" style="text-align:center; width:50px" value="3회차" disabled />
+		</td>
+	</tr>
+	<tr>
+		<th rowspan="2">항목선택</th>
+		<th rowspan="2">입력수정</th>
+		<th colspan="4">임대료 및 관리비</th>
+		<th colspan="3">공과금</th>
+		<th rowspan="2">미납액<a href="#" title="미납 금액은 이전 달에 미납 처리 입력 후, 다음달 고지입력으로 넘어오게 됩니다." date-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a></th>
+		<th colspan="2">연체료</th>
+		<th rowspan="2">기타금액</th>
+		<th rowspan="2">변동금액</th>
+		<th rowspan="2">합계금액</th>
+		<th colspan="2">고지처리사항<a href="#" title="고지 확인이 안 된 경우, 고지일 표시가 되지 않습니다." date-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a></th>
+		<th rowspan="2">처리상태</th>
+		<th rowspan="2">변동사항입력</th>
+	</tr>
+	<tr>
+		<th>임대료</th>
+		<th>관리비</th>
+		<th>부가세</th>
+		<th>주차비</th>
+		<th>전기</th>
+		<th>수도</th>
+		<th>가스</th>
+		<th>연체료</th>
+		<th>회차</th>
+		<th>입력일</th>
+		<th>고지일</th>
+	</tr>
+	<% for (i = 2; i >= 0; i--) { %>
+	<tr>
+		<td><input type="checkbox" /></td>
+		<td>수정 <%= i %>회</td>
+		<td>100,000</td>
+		<td>100,000</td>
+		<td>250,000</td>
+		<td>50,000</td>
+		<td>100,000</td>
+		<td>250,000</td>
+		<td>450,000</td>
+		<td>450,000</td>
+		<td>450,000</td>
+		<td>2회</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td style="color:blue">2014.02.28</td>
+		<td style="color:red">2014.03.01</td>
+		<td>미처리</td>
+		<td><button class="btn btn-mini">입력</button></td>
+	</tr>
+	<% } %>
+ </table>  
