@@ -183,7 +183,8 @@
 								<td width="17%">
 									<div style="margin-right:5px; float:left">내역 분류</div>
 									<select id="search_type" class="margin0" style="width:100px">
-										<option value="1" selected>고지 입력</option>
+										<option value="0">입력 현황</option>
+										<option value="1" selected>고지 현황</option>
 										<option value="2">전기 요금</option>
 										<option value="3">가스 요금</option>
 										<option value="4">수도 요금</option>
@@ -233,14 +234,8 @@
 					</div>
 				</div>
 
-				<!-- 임대 내역 현황 -->
+				<!-- 고지 내역 현황 -->
 				<div class="row-fluid">
-					<div class="span11">
-						<div style="border:1px solid #000000; background-color:#dbdbd2; padding:7px 10px 7px 10px; font-size:1.1em; margin:10px 0px 10px 0px">
-							<strong>고지 내역 현황</strong>
-						</div>
-					</div>
-
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
 						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
@@ -260,83 +255,62 @@
 								<tr style="background-color:#dbdbd2">
 									<td colspan="6">
 										<div style="font-size:0.8em">건물명/기간</div>
-										<div><h3>No.1 루체시티 1 / 2014.01 / (예정) 고지 내역</h3></div>
+										<div><h3>No.1 루체시티 1 / 2014.01 / 고지 입력 현황</h3></div>
 									</td>
 									<td colspan="5">
-										<div style="font-size:0.8em">재실 현황</div>
-										<div><h3>총 62실, 재실 20실</h3></div>
+										<div style="font-size:0.8em">고지 현황</div>
+										<div><h3>총 40개, 현재 22개 완료, 미완료 18개</h3></div>
 									</td>
-								</tr>
-								<tr>
-									<th style="text-align:center">가격</th>
-									<th style="text-align:center">보증금</th>
-									<th style="text-align:center">임대료</th>
-									<th style="text-align:center">관리비</th>
-									<th style="text-align:center">주차비</th>
-									<th style="text-align:center">부가세</th>
-									<th style="text-align:center">전체</th>
-									<th style="text-align:center">입주</th>
-									<th style="text-align:center">전세</th>
-									<th style="text-align:center">월세</th>
-									<th style="text-align:center">공실</th>
-								</tr>
-								<tr>
-									<td style="text-align:center">총 8,500</td>
-									<td style="text-align:center">총 1,211,000,000</td>
-									<td style="text-align:center">총 3,390,000</td>
-									<td style="text-align:center">30,000</td>
-									<td style="text-align:center">30,000</td>
-									<td style="text-align:center">30,000</td>
-									<td style="text-align:center">62</td>
-									<td style="text-align:center">20</td>
-									<td style="text-align:center">10</td>
-									<td style="text-align:center">10</td>
-									<td style="text-align:center">42</td>
 								</tr>
 							 </table>  
 						</div>
 					</div>
 				</div>
 
-				<!-- 전체 임대 내역 -->
+				<!-- 전체 고지 내역 -->
 				<div class="row-fluid">
 					<div class="box span11" style="margin: 0px; padding: 0px">
 						<div class="box-header">
 							<div style="float:left; text-align:left">
-								<h2><strong>전체 예정 고지 내역</strong></h2>
-							</div>
-							<div style="text-align:right">
-								<span>| <strong>오름 순</strong> | 내림 순 | 금액 순 | 연체 |</span>
+								<h2><strong>고지 현황</strong></h2>
 							</div>
 						</div>
 						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed" style="margin: 0px">
 								<colgroup>
-									<col width="10%">
-									<col width="12%">
-									<col width="12%">
-
-									<col width="10%">
 									<col width="8%">
-									<col width="8%">
-
-									<col width="14%">
-									<col width="14%">
-									<col width="12%">
+									<col width="24%">
+									<col width="26%">
+									<col width="26%">
+									<col width="6%">
+									<col width="10%">
 								</colgroup>
 								<tr>
-									<th style="text-align:center">내역 분류</th>
-									<td style="text-align:center">전체 고지<label style="display: inline-block"><input type="radio" name="show_range" value="all" checked></label></td>
-									<td style="text-align:center">상세 고지<label style="display: inline-block"><input type="radio" name="show_range" value="part"></label></td>
-
-									<th style="text-align:center">출력 선택</th>
-									<td style="text-align:center">전체<label style="display: inline-block"><input type="radio" name="print_range" value="all" checked></label></td>
-									<td style="text-align:center">선택<label style="display: inline-block"><input type="radio" name="print_range" value="part"></label></td>
-									
-									<th style="text-align:center">전체 고지 0개 출력</th>
-									<th style="text-align:center">상세 고지 0개 출력</th>
-									<td style="text-align:center"><button class="btn btn-small btn-inverse">출력</button></td>
+									<th style="text-align:center">고지 확인</th>
+									<th style="text-align:center">고지 완료일
+                                                                                <input id="uploadDate" type="text" class="margin0 input-small datepicker" placeholder="날짜를 입력하세요." />
+                                                                                <a href="#" title="고지 완료일을 선택하세요." data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a></th>
+									<th style="text-align:center">당일 완료 : 총 <font style="color:red">20</font>개, 오늘 <font style="color:red">12</font>개</th>
+									<th style="text-align:center">전체 완료 : 총 <font style="color:red">40</font>개, 누적 <font style="color:red">40</font>개</th>
+									<th style="text-align:center">이력</th>
+									<td style="text-align:center"><button class="btn btn-small btn-inverse">보기</button></td>
 								</tr>
+								<tr>
+                                                                        <th colspan="5">
+                                                                                <div style="float:left; text-align:left">
+                                                                                        <span>입력 현황</span>
+                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="all" checked></label>전체
+                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="complete"></label>완료
+                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="notcomplete"></label>미완료
+                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="select"></label>선택
+                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="detail_all"></label>상세 내역(전체)
+                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="detail_part"></label>상세 내역(선택)
+                                                                                </div>
+                                                                        </th>
+									<th style="text-align:center">
+	                                                                        <button class="btn btn-small btn-inverse">출력</button>
+									</th>
+                                                                </tr>
 							</table>
 						</div>
 						<div id="contents" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
@@ -355,110 +329,132 @@
 	<div class="modal hide fade" id="myModal">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">×</button>
-			<h3>고지 내역 현황</h3>
+			<h3>고지 내역 상세 확인</h3>
 		</div>
 		<div class="modal-body">
 			<div class="row-fluid">
+				<!-- 임대 내역 정보 -->
 				<div class="box span12" style="margin:0px 0px 5px 0px; padding: 0px">
+					<div class="box-header">
+						<div style="margin-right:5px">
+							<h2><strong>임대 내역 정보</strong></h2>
+						</div>
+					</div>
 					<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 						<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 							<colgroup>
-								<col width="10%">
-								<col width="17%">
-								<col width="13%">
-								<col width="10%">
-								<col width="10%">
-								<col width="10%">
 								<col width="6%">
-								<col width="6%">
-								<col width="6%">
-								<col width="6%">
+								<col width="4%">
+								<col width="12%">
+								<col width="12%">
+								<col width="9%">
+								<col width="9%">
+								<col width="8%">
+								<col width="8%">
+								<col width="9%">
+								<col width="9%">
+								<col width="8%">
 								<col width="6%">
 							</colgroup>
 							<tr style="background-color:#dbdbd2">
-								<td colspan="6">
-									<div style="font-size:0.8em">건물명/기간</div>
-									<div><h3>No.1 루체시티 1 / 2014.01 / 임대 내역</h3></div>
+								<td colspan="4" style="border-right-style:solid">
+									<div style="font-size:0.8em">건물명/호수</div>
+									<div><h3 style="color:red">No.1 루체시티 1 / 101호</h3></div>
 								</td>
-								<td colspan="5">
-									<div style="font-size:0.8em">재실 현황</div>
-									<div><h3>총 62실, 재실 20실</h3></div>
+								<td colspan="4" style="border-right-style:solid">
+									<div style="font-size:0.8em">계약 평수</div>
+									<div><h3 style="color:red">6.5/21.2m<sup>2</sup></h3></div>
+								</td>
+								<td colspan="4">
+									<div style="font-size:0.8em">보증금/월세</div>
+									<div><h3 style="color:red">5,500/25만원</h3></div>
 								</td>
 							</tr>
 							<tr>
+								<th style="text-align:center" colspan="2">입주자</th>
+								<th style="text-align:center">계약일</th>
+								<th style="text-align:center; border-right-style:solid">만료일</th>
 								<th style="text-align:center">가격</th>
 								<th style="text-align:center">보증금</th>
 								<th style="text-align:center">임대료</th>
+								<th style="text-align:center; border-right-style:solid">임대료</th>
 								<th style="text-align:center">관리비</th>
 								<th style="text-align:center">주차비</th>
 								<th style="text-align:center">부가세</th>
-								<th style="text-align:center">전체</th>
-								<th style="text-align:center">입주</th>
-								<th style="text-align:center">전세</th>
-								<th style="text-align:center">월세</th>
-								<th style="text-align:center">공실</th>
+								<th style="text-align:center">재실</th>
 							</tr>
 							<tr>
-								<td style="text-align:center">총 8,500</td>
-								<td style="text-align:center">총 1,211,000,000</td>
-								<td style="text-align:center">총 3,390,000</td>
-								<td style="text-align:center">30,000</td>
-								<td style="text-align:center">30,000</td>
-								<td style="text-align:center">30,000</td>
-								<td style="text-align:center">62</td>
-								<td style="text-align:center">20</td>
-								<td style="text-align:center">10</td>
-								<td style="text-align:center">10</td>
-								<td style="text-align:center">42</td>
+								<td style="text-align:center">김현성</th>
+								<td style="text-align:center">남</th>
+								<td style="text-align:center">2012.01.04</th>
+								<td style="text-align:center; border-right-style:solid">2013.01.03</th>
+								<td style="text-align:center">8,500</th>
+								<td style="text-align:center">5,500</th>
+								<td style="text-align:center">15</th>
+								<td style="text-align:center; border-right-style:solid">선불</th>
+								<td style="text-align:center">50,000</th>
+								<td style="text-align:center">30,000</th>
+								<td style="text-align:center">-</th>
+								<td style="text-align:center">재실</th>
 							</tr>
 						 </table>  
 					</div>
 				</div>
-			</div>
-
-			<!-- 전체 고지 내역 -->
-			<div class="row-fluid">
-				<div class="box span12" style="margin: 0px; padding: 0px">
+				<!-- 고지 내역 정보 -->
+				<div class="box span12" style="margin:5px 0px 5px 0px; padding: 0px">
 					<div class="box-header">
-						<div style="float:left; text-align:left">
-							<h2><strong>전체 예정 고지 내역</strong></h2>
-						</div>
-						<div style="text-align:right">
-							<span>| <strong>오름 순</strong> | 내림 순 | 금액 순 | 연체 |</span>
+						<div>
+							<h2><strong>고지 내역 정보</strong></h2>
 						</div>
 					</div>
-					<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
-						<table class="table table-bordered table-condensed" style="margin: 0px">
+					<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
+						<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 							<colgroup>
-								<col width="10%">
-								<col width="12%">
-								<col width="12%">
-
-								<col width="10%">
 								<col width="8%">
 								<col width="8%">
-
-								<col width="14%">
-								<col width="14%">
-								<col width="12%">
+								<col width="8%">
+								<col width="8%">
+								<col width="8%">
+								<col width="8%">
+								<col width="26%">
+								<col width="26%">
 							</colgroup>
-							<tr>
-								<th style="text-align:center">내역 분류</th>
-								<td style="text-align:center">전체 고지<label style="display: inline-block"><input type="radio" name="show_range" value="all"></label></td>
-								<td style="text-align:center">상세 고지<label style="display: inline-block"><input type="radio" name="show_range" value="part"></label></td>
-
-								<th style="text-align:center">출력 선택</th>
-								<td style="text-align:center">전체<label style="display: inline-block"><input type="radio" name="print_range" value="all"></label></td>
-								<td style="text-align:center">선택<label style="display: inline-block"><input type="radio" name="print_range" value="part"></label></td>
-								
-								<td style="text-align:center">전체 고지 0개 출력</td>
-								<td style="text-align:center">상세 고지 0개 출력</td>
-								<td style="text-align:center"><button class="btn btn-small btn-inverse">출력</button></td>
+							<tr style="background-color:#dbdbd2">
+								<td colspan="6" style="border-right-style:solid">
+									<div style="font-size:0.8em">년도/월/합계 금액</div>
+									<div style="float:left"><h3 style="color:red">2014 / 01</h3></div>
+									<div style="text-align:right"><h3 style="color:red">380,000원</h3></div>
+								</td>
+								<td style="border-right-style:solid">
+									<div style="font-size:0.8em">연체료</div>
+									<div><h3 style="color:red">0원</h3></div>
+								</td>
+								<td>
+									<div style="font-size:0.8em">추가 비용</div>
+									<div><h3 style="color:red">0원</h3></div>
+								</td>
 							</tr>
-						</table>
-					</div>
-					<div id="contents_modal" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
-						<!-- ejs template으로 db내용을 불러온다. -->
+							<tr>
+								<th style="text-align:center">납부기한</th>
+								<th style="text-align:center">임대료</th>
+								<th style="text-align:center">관리비</th>
+								<th style="text-align:center">주차비</th>
+								<th style="text-align:center">공과금</th>
+								<th style="text-align:center; border-right-style:solid">연체료</th>
+								<th style="text-align:center; border-right-style:solid">임대 연체</th>
+								<th style="text-align:center">추가 비용</th>
+							</tr>
+							<tr>
+								<td style="text-align:center">매월 28일</th>
+								<td style="text-align:center">250,000</th>
+								<td style="text-align:center">50,000</th>
+								<td style="text-align:center">30,000</th>
+								<td style="text-align:center">50,000</th>
+								<td style="text-align:center; border-right-style:solid">0</th>
+								<td style="text-align:center; border-right-style:solid"></th>
+								<td style="text-align:center"></th>
+							</tr>
+						 </table>  
 					</div>
 				</div>
 			</div>
@@ -519,8 +515,6 @@
 	
 		<script src="{{ STATIC_URL }}bootstrap/js/jquery.masonry.min.js"></script>
 	
-		<script src="{{ STATIC_URL }}bootstrap/js/custom.js"></script>
-
 		<script src="{{ STATIC_URL }}ejs/ejs.js"></script>
 		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
@@ -565,6 +559,8 @@
 				getContents();
 			});			
 		</script>
+
+		<script src="{{ STATIC_URL }}bootstrap/js/custom.js"></script>
 		<!-- end: JavaScript-->
 	
 </body>
