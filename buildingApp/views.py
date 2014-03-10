@@ -710,6 +710,9 @@ def excel_file_delete(request):
 def notice_input_html(request):
     return render(request, '03_02_notice_input.html', setPostData(request))
 
+def notice_detail_input_html(request):
+    return render(request, '03_02_notice_detail_input.html', setPostData(request))
+
 def electricity_input_html(request):
     return render(request, '03_02_electricity_input.html', setPostData(request))
 
@@ -730,3 +733,10 @@ def water_input_html(request):
     return render(request, '03_02_water_input.html', setPostData(request))
 
 
+##### 03_03 : payment #####
+
+def payment_input_html(request):
+    return render(request, '03_03_payment.html', setPostData(request))
+
+def payment_detail_html(request):
+    return render(request, '03_03_payment_detail.html', setPostData(request))
