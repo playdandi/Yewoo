@@ -50,7 +50,7 @@
 		<td><input id="" type="text" class="margin0 span12 fontmini" style="color:red" value="100,000" /></td>
 		<td><input id="" type="text" class="margin0 span12 fontmini" style="color:red" value="50,000" /></td>
 		<td><input id="" type="text" class="margin0 span12 fontmini" style="color:red" value="2014.03.02" /></td>
-		<td><button class="btn btn-danger btn-mini">입력</button></td>
+		<td><button class="btn btn-danger btn-mini showDetail" onclick="showDetail(1);">입력</button></td>
 		<% } %>
 		<td>2월</td>
 		<td>0회</td>
@@ -59,7 +59,7 @@
 		<% if (i < 2) { %>
 		<td><button class="btn btn-mini">입력</button></td>
 		<% } else { %>
-		<td><button class="btn btn-danger btn-mini">입력</button></td>
+		<td><button class="btn btn-danger btn-mini showDetail" onclick="showDetail(1);">입력</button></td>
 		<% } %>
 		<td><button class="btn btn-mini">확인</button></td>
 	</tr>

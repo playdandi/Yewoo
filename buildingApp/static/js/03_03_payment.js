@@ -66,9 +66,17 @@ function getContents()
 
 	var template = new EJS({url : '/static/ejs/03_03_payment.ejs'}).render();
 	$('#contents').html(template);
+	
+	$('.showDetail').click(function() {
+		$(location).attr('href', '/lease/payment/detail/');
+
+	});
 }
 
-
+function showDetail(tab)
+{
+	$(location).attr('href', '/lease/payment/detail/');
+}
 
 
 
