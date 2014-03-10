@@ -236,11 +236,6 @@
 
 				<!-- 임대 내역 현황 -->
 				<div class="row-fluid">
-					<div class="span11">
-						<div style="border:1px solid #000000; background-color:#dbdbd2; padding:7px 10px 7px 10px; font-size:1.1em; margin:10px 0px 10px 0px">
-							<strong>임대 내역 현황</strong>
-						</div>
-					</div>
 
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
 						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
@@ -306,11 +301,24 @@
 							<div style="float:left; text-align:left">
 								<h2><strong>전체 임대 내역</strong></h2>
 							</div>
-							<div style="text-align:right">
-								| <strong>최근 내역 순</strong> | 납부비용 |
-								<button class="btn btn-small btn-setting">미리보기</button>
-								<button class="btn btn-small btn-inverse">출력</button>
-							</div>
+						</div>
+						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed" style="margin: 0px">
+								<tr>
+									<th>
+										<div style="float:left; text-align:left">
+											<span>입력 현황</span>
+											<label style="display: inline-block"><input type="radio" name="show_range" value="all" checked></label>전체
+											<label style="display: inline-block"><input type="radio" name="show_range" value="detail_all"></label>상세 내역(전체)
+											<label style="display: inline-block"><input type="radio" name="show_range" value="detail_part"></label>상세 내역(선택)
+										</div>
+										<div style="text-align:right">
+											<button class="btn btn-small btn-setting">미리보기</button>
+											<button class="btn btn-small btn-inverse">출력</button>
+										</div>
+									</th>
+								</tr>
+							</table>
 						</div>
 						<div id="contents" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 							<!-- ejs template으로 db내용을 불러온다. -->
