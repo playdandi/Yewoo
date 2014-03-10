@@ -707,6 +707,9 @@ def excel_file_delete(request):
         return HttpResponse('file delete - SUCCESS')
     return HttpResponse('file delete - NOT POST')
 
+def check_input_html(request):
+    return render(request, '03_02_check_input.html', setPostData(request))
+
 def notice_input_html(request):
     return render(request, '03_02_notice_input.html', setPostData(request))
 

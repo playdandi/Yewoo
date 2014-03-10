@@ -64,10 +64,25 @@ function getContents()
 
 	// db에서 정보 뽑고
 	
-
-	var template = new EJS({url : '/static/ejs/03_02_notice_input.ejs'}).render();
+	var template = new EJS({url : '/static/ejs/03_02_check_input.ejs'}).render();
 	$('#contents').html(template);
 	$('#contents_modal').html(template);
+
+	// 상세보기 버튼일 경우 상세화면으로 들어가지 않도록 하자.	
+	$('.detailBtn').focusin(function() {
+		detail_btn_clicked = true;
+	});
+	// template에서 상세화면 들어가는 class 설정
+	$('.showDetail').click(function() {
+		//var id = $(this).attr('id');
+		// 나중에 수정해야 함
+		if (detail_btn_clicked) {
+			detail_btn_clicked = false;
+			return;
+		}
+		$(location).attr('href', 'http://14.49.42.190:8080/lease/show/leaseNotice/' + '1/101/');
+	});
+
 }
 
-
+var detail_btn_clicked = false;
