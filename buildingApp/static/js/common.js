@@ -125,9 +125,10 @@ function setExcelInfo()
 	excel_building_id = $('#search_building').val().replace('b', '').trim();
 }
 
+var fname;
 $('input[id=fileInput]').change(function() {
 	// explorer에서는 change가 두번 실행되는 것 같아 예외처리 if문 걸었음...
-	var fname = $(this).val();
+	fname = $(this).val();
 	if (fname == '')
 		return;
 	

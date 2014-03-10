@@ -67,7 +67,19 @@ function getContents()
 
 	var template = new EJS({url : '/static/ejs/03_02_notice_input.ejs'}).render();
 	$('#contents').html(template);
-	$('#contents_modal').html(template);
+	//$('#contents_modal').html(template);
+	
+	$('.showDetail').click(function() {
+		//var id = $(this).attr('id');
+		// 나중에 수정해야 함
+		/*
+		if (detail_btn_clicked) {
+			detail_btn_clicked = false;
+			return;
+		}
+		*/
+		$(location).attr('href', '/lease/input/notice/detail/');
+	});
 }
 
 
