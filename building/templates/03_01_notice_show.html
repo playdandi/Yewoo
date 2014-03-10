@@ -170,7 +170,7 @@
 				<div class="span11">
 					<ul class="breadcrumb">
 						<li>
-							<a href="#">임대 내역 확인</a>
+							<a href="#">임대 내역 관리</a>
 						</li>
 					</ul>
 				</div>
@@ -236,12 +236,6 @@
 
 				<!-- 고지 내역 현황 -->
 				<div class="row-fluid">
-					<div class="span11">
-						<div style="border:1px solid #000000; background-color:#dbdbd2; padding:7px 10px 7px 10px; font-size:1.1em; margin:10px 0px 10px 0px">
-							<strong>고지 내역 현황</strong>
-						</div>
-					</div>
-
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
 						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
@@ -261,11 +255,11 @@
 								<tr style="background-color:#dbdbd2">
 									<td colspan="6">
 										<div style="font-size:0.8em">건물명/기간</div>
-										<div><h3>No.1 루체시티 1 / 2014.01 / 고지 내역</h3></div>
+										<div><h3>No.1 루체시티 1 / 2014.01 / 최종고지 현황</h3></div>
 									</td>
 									<td colspan="5">
-										<div style="font-size:0.8em">재실 현황</div>
-										<div><h3>총 62실, 재실 20실</h3></div>
+										<div style="font-size:0.8em">최종 고지 현황</div>
+										<div><h3>총 40개, 현재 40개 완료, 미완료 0개</h3></div>
 									</td>
 								</tr>
 								<tr>
@@ -304,40 +298,38 @@
 					<div class="box span11" style="margin: 0px; padding: 0px">
 						<div class="box-header">
 							<div style="float:left; text-align:left">
-								<h2><strong>전체 고지 내역</strong></h2>
-							</div>
-							<div style="text-align:right">
-								<span>| <strong>오름 순</strong> | 내림 순 | 금액 순 | 연체 |</span>
+								<h2><strong>최종 고지 현황</strong></h2>
 							</div>
 						</div>
 						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed" style="margin: 0px">
 								<colgroup>
+									<col width="28%">
+									<col width="28%">
+									<col width="28%">
+									<col width="6%">
 									<col width="10%">
-									<col width="12%">
-									<col width="12%">
-
-									<col width="10%">
-									<col width="8%">
-									<col width="8%">
-
-									<col width="14%">
-									<col width="14%">
-									<col width="12%">
 								</colgroup>
 								<tr>
-									<th style="text-align:center">내역 분류</th>
-									<td style="text-align:center">전체 고지<label style="display: inline-block"><input type="radio" name="show_range" value="all" checked></label></td>
-									<td style="text-align:center">상세 고지<label style="display: inline-block"><input type="radio" name="show_range" value="part"></label></td>
-
-									<th style="text-align:center">출력 선택</th>
-									<td style="text-align:center">전체<label style="display: inline-block"><input type="radio" name="print_range" value="all" checked></label></td>
-									<td style="text-align:center">선택<label style="display: inline-block"><input type="radio" name="print_range" value="part"></label></td>
-									
-									<th style="text-align:center">전체 고지 0개 출력</th>
-									<th style="text-align:center">상세 고지 0개 출력</th>
-									<td style="text-align:center"><button class="btn btn-small btn-inverse">출력</button></td>
+									<th style="text-align:center">현재 재실 현황 : 총 <font style="color:red">60</font>실, 현재 <font style="color:red">40</font>실</th>
+									<th style="text-align:center">당일 완료 : 총 <font style="color:red">20</font>개, 오늘 <font style="color:red">12</font>개</th>
+									<th style="text-align:center">전체 완료 : 총 <font style="color:red">40</font>개, 누적 <font style="color:red">40</font>개</th>
+									<th style="text-align:center">이력</th>
+									<td style="text-align:center"><button class="btn btn-small btn-inverse">보기</button></td>
 								</tr>
+								<tr>
+                                                                        <th colspan="4">
+                                                                                <div style="float:left; text-align:left">
+                                                                                        <span>입력 현황</span>
+                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="all" checked></label>전체
+                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="detail_all"></label>상세 내역(전체)
+                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="detail_part"></label>상세 내역(선택)
+                                                                                </div>
+                                                                        </th>
+									<th style="text-align:center">
+	                                                                        <button class="btn btn-small btn-inverse">출력</button>
+									</th>
+                                                                </tr>
 							</table>
 						</div>
 						<div id="contents" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
