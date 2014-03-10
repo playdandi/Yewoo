@@ -6,7 +6,7 @@ function showLeaseInfo()
 	var room_num = $('#search_room_num').val();
 	var type = $('#search_type').val();
 	var type_text;
-	if (type == '0') type_text = 'lease';
+	if (type == '0') type_text = 'check';
 	else if (type == '1') type_text = 'notice';
 	else if (type == '2') type_text = 'electricity';
 	else if (type == '3') type_text = 'gas';
@@ -19,7 +19,7 @@ function showLeaseInfo()
 
 	var form = document.createElement('form');
 	form.setAttribute('method', 'POST');
-	form.setAttribute('action', '/lease/show/'+type_text+'/');
+	form.setAttribute('action', '/lease/input/'+type_text+'/');
 	document.body.appendChild(form);
 
 	var f_year = document.createElement('input');
