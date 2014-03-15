@@ -102,7 +102,9 @@ function show_sidebar()
 	});
 }
 
-
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 
 // excel file upload
 var excel_type;
@@ -161,6 +163,9 @@ $('input[id=fileInput]').change(function() {
 
 });
 
+var parsed_result;
+var parsed_column;
+var parsed_length_each;
 function excelParser(result)
 {
 	// 파일에서 얻은 csv 결과로 적절히 parse.
@@ -168,11 +173,36 @@ function excelParser(result)
 	result = result.split('\n');
 	var res = [];
 	res.push(result[0]);
+	/*
+	var pos = result[1].length-1;
+	for (i = pos; i >= 0; i--) {
+		if (result[1][i] != ',') {
+			pos = i;
+			break;
+		}
+	}
+	result[1] = result[1].slice(0, pos+1);
+	alert(result[1]);
 	res.push(result[1]);
 	for (i = 2; i < result.length; i++) {
 		if (result[i].split(',').join('').trim().length == 0)
 			continue;
+
 		res.push(result[i]);
+	}
+	*/
+
+	for (var i = 1; i < result.length; i++) {
+		if (result[i].split(',').join('').trim().length == 0)
+			continue;
+		pos = result[i].length-1;
+		for (var j = pos; j >= 0; j--) {
+			if (result[i][j] != ',') {
+				pos = j+1;
+				break;
+			}
+		}
+		res.push(result[i].slice(0, pos));
 	}
 	
 	// 기본 정보 (년, 월, 건물명, 파일종류)
@@ -232,6 +262,25 @@ function excelParser(result)
 		template = new EJS({url : '/static/ejs/03_02_water_excel.ejs'}).render({'result' : res});
 	$('#contents_modal').html(template);
 
+	// 실제 서버에 저장할 때의 대기 변수에 넣는다.
+	parsed_column = null;
+	parsed_column = res[1];
+
+	parsed_result = null;
+	parsed_result = [];
+
+	for (i = 2; i < res.length; i++) {
+//		elem = {};
+		elem = [];
+		temp = res[i].split(',');
+		for (j = 0; j < temp.length; j++)
+			//elem[j] = temp[j].trim();
+			elem.push(temp[j].trim());
+		parsed_result.push(elem);
+//		parsed_result[i] = elem;
+		parsed_length_each = temp.length;
+	}
+
 	alert('엑셀 파일 데이터 로드 성공!\n미리보기를 통해 내용을 확인하세요.');
 }
 
@@ -249,6 +298,10 @@ function saveExcelFile(fromPreview)
 			alert('엑셀 파일만 첨부 가능합니다. (확장자가 xls 또는 xlsx)');
 			return;
 		}
+	}
+	if ($('#uploadDate').val().trim() == '') {
+		alert('업로드 날짜를 입력하세요.');
+		return;
 	}
 
 	var formData = new FormData();
@@ -271,6 +324,11 @@ function saveExcelFile(fromPreview)
 	formData.append('month', excel_month);
 	formData.append('building_id', excel_building_id);
 	formData.append('filename', $('#filename').val().trim());
+	formData.append('uploadDate', $('#uploadDate').val().trim());
+
+	formData.append('column', parsed_column);
+	formData.append('data', parsed_result);
+	formData.append('length', parsed_length_each);
 
 	// send
 	var xhr = new XMLHttpRequest();
@@ -280,25 +338,29 @@ function saveExcelFile(fromPreview)
 	// callback
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
-			if (xhr.status == 200)
+			if (xhr.status == 200) {
 				alert('성공적으로 저장되었습니다.');
+				reloadThisPage();
+			}
 			else
 				alert('다시 시도해 주세요...');
 		}
 	};
 
-	//xhr.onprogress = function(e) {
-
-	//};
+	xhr.onprogress = function(e) {
+		//console.log('파일 업로드 증 : ' + (e.loaded / e.total) + '% 완료');
+	};
 }
 
 function deleteExcelFile(fromPreview)
 {
-	var fileInput;
-    if (!fromPreview)
-		fileInput = document.getElementsByName('file');
-	else
-		fileInput = document.getElementsByName('file_modal');
+	var file_id = $('#file_id').val().trim();
+	if (file_id == '') {
+		alert('현재 업로드 되어있는 파일이 없습니다.');
+		return;
+	}
+	if (!confirm('현재 업로드 되어있는 엑셀 파일을 삭제하시겠습니까?'))
+		return;
 
 	var formData = new FormData();
 
@@ -306,18 +368,11 @@ function deleteExcelFile(fromPreview)
 	var csrftoken = $.cookie('csrftoken');
 	formData.append('csrfmiddlewaretoken', csrftoken);
 
-	// excel file id
-	//var excelFile_id = ;
-	formData.append('excelFile_id', excelFile_id);
-
-	/*
-	// error check
-	if ($('#search_year').val() == '' || $('#search_month').val() == '' || $('#filename').val() == '') {
-		alert('년/월/파일명을 다시 확인해 주세요');
-		return;
-	}
-	삭제할 파일이 없습니다.
-	*/
+	formData.append('file_id', file_id);
+	formData.append('type', excel_type);
+	formData.append('year', excel_year);
+	formData.append('month', excel_month);
+	formData.append('bid', excel_building_id);
 
 	// send
 	var xhr = new XMLHttpRequest();
@@ -327,8 +382,10 @@ function deleteExcelFile(fromPreview)
 	// callback
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
-			if (xhr.status == 200)
+			if (xhr.status == 200) {
 				alert('성공적으로 삭제되었습니다.');
+				reloadThisPage();
+			}
 			else
 				alert('다시 시도해 주세요...');
 		}
@@ -339,7 +396,13 @@ function deleteExcelFile(fromPreview)
 	//};
 }
 
+function reloadThisPage()
+{
+	showLeaseInfo(true);
+}
+
 var curType;
+var curBid;
 var curBName;
 var curYear;
 var curMonth;

@@ -225,7 +225,7 @@
 								</td>
 								<td width="14%">
 									<div>
-										<button class="btn btn-small" onclick="showLeaseInfo();">조회</button>
+										<button class="btn btn-small" onclick="showLeaseInfo(false);">조회</button>
 										<button class="btn btn-small" onclick="InitForm();">초기화</button>
 									</div>
 								</td>
@@ -236,13 +236,6 @@
 
 				<!-- 임대 비용(전기 요금) 입력 -->
 				<div class="row-fluid">
-					<!--
-					<div class="span11">
-						<div style="border:1px solid #000000; background-color:#dbdbd2; padding:7px 10px 7px 10px; font-size:1.1em; margin:10px 0px 10px 0px">
-							<strong>임대 비용(전기 요금) 입력</strong>
-						</div>
-					</div>
-					-->
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
 						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
@@ -316,7 +309,7 @@
 									<td width="23%">
 										<div>
 											업로드 날짜
-											<input id="uploadDate" type="text" class="margin0 input-small datepicker" placeholder="날짜를 입력하세요." />
+											<input id="uploadDate" type="text" class="margin0 input-small datepicker" placeholder="날짜를 입력하세요." value="{{ excel_uploadDate }}" />
 											<a href="#" title="파일을 업로드하는 날짜를 선택하세요." data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a>
 										</div>
 									</td>
@@ -324,7 +317,8 @@
 										<div>
 											<input id="fileInput" type="file" name="file" style="display:none" />
 											<button class="btn btn-danger btn-small" onclick="$('input[id=fileInput]').click();">파일첨부</button>
-											<input id="filename" type="text" class="span7 margin0" placeholder="파일명" disabled />
+											<input id="filename" type="text" class="span7 margin0" placeholder="파일명" value="{{ excel_filename }}" disabled />
+											<input id="file_id" type="hidden" value="{{ excel_id }}" />
 											<button class="btn btn-small" onclick="deleteExcelFile(false);">삭제</button>
 											<button class="btn btn-small" onclick="saveExcelFile(false);">저장</button>
 										</div>
@@ -345,7 +339,6 @@
 								<h2><strong>전체 전기 요금 내역</strong></h2>
 							</div>
 							<div style="text-align:right">
-								<!--<strong>층별 보기</strong>-->
 								<select id="" class="margin0" style="width:70px">
 									<option value="">전체</option>
 									<option value="1">1층</option>
@@ -449,7 +442,7 @@
 								<td width="23%">
 									<div>
 										업로드 날짜
-										<input id="uploadDate_modal" type="text" class="margin0 input-small datepicker" placeholder="날짜를 입력하세요." />
+										<input id="uploadDate_modal" type="text" class="margin0 input-small datepicker" placeholder="날짜를 입력하세요." value="{{ excel_uploadDate }}" />
 										<a href="#" title="파일을 업로드하는 날짜를 선택하세요." data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a>
 									</div>
 								</td>
@@ -457,7 +450,7 @@
 									<div>
 										<input id="fileInput_modal" type="file" name="file" style="display:none" />
 										<button class="btn btn-danger btn-small" onclick="$('input[id=fileInput]').click();">파일첨부</button>
-										<input id="filename_modal" type="text" class="span9 margin0" placeholder="파일명" disabled />
+										<input id="filename_modal" type="text" class="span9 margin0" placeholder="파일명" value="{{ excel_filename }}" disabled />
 										<button class="btn btn-small" onclick="deleteExcelFile(false);">삭제</button>
 										<button class="btn btn-small" onclick="saveExcelFile(false);">저장</button>
 									</div>
@@ -583,13 +576,13 @@
 					$('#uploadDate_modal').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
 				});
 
+				setCurInfo();
+
 				// ejs template 불러오기
 				getContents();
 
 				// excel related func.
 				setExcelInfo();
-
-				setCurInfo();
 			});			
 		</script>
 		<!-- end: JavaScript-->

@@ -1,0 +1,41 @@
+<% var w = new Array(5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6); %>
+<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+	<tr>
+		<th style="text-align:center">층</th>
+		<th style="text-align:center">호수</th>
+		<th style="text-align:center">입주자</th>
+		<th style="text-align:center">입주일</th>
+		<th style="text-align:center">입주검침</th>
+		<th style="text-align:center">사용기간</th>
+		<th style="text-align:center">전월검침</th>
+		<th style="text-align:center">당월검침</th>
+		<th style="text-align:center">전월사용량</th>
+		<th style="text-align:center">당월사용량</th>
+		<th style="text-align:center">기본요금</th>
+		<th style="text-align:center">상수도요금</th>
+		<th style="text-align:center">하수도요금</th>
+		<th style="text-align:center">물이용부담금</th>
+		<th style="text-align:center">절사금액</th>
+		<th style="text-align:center">합계금액</th>
+	</tr>
+	<% for (i = 0; i < data.length; i++) { %>
+	<tr>
+		<td style="text-align:center"><%= data[i].floor %></td>
+		<td style="text-align:center"><%= data[i].roomnum %></td>
+		<td style="text-align:center"><%= data[i].name %></td>
+		<td style="text-align:center"><%= data[i].date %></td>
+		<td style="text-align:center"><%= data[i].checkW %></td>
+		<td style="text-align:center"><%= data[i].usePeriod %></td>
+		<td style="text-align:center"><%= data[i].readBefore %></td>
+		<td style="text-align:center"><%= data[i].readNow %></td>
+		<td style="text-align:center"><%= data[i].capacityBefore %></td>
+		<td style="text-align:center"><%= data[i].capacityNow %></td>
+		<td style="text-align:center"><%= data[i].basicCharge %></td>
+		<td style="text-align:center"><%= data[i].waterSupplyCharge %></td>
+		<td style="text-align:center"><%= data[i].sewerageCharge %></td>
+		<td style="text-align:center"><%= data[i].waterUseCharge %></td>
+		<td style="text-align:center"><%= data[i].trimmedFee %></td>
+		<td style="text-align:center"><%= data[i].totalFee %></td>
+	</tr>
+	<% } %>
+</table>
