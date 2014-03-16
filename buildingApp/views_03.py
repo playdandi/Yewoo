@@ -67,6 +67,8 @@ def lease_notice_detail_show_html(request, bid, rnum):
 def notice_show_html(request):
     return render(request, '03_01_notice_show.html', setPostData(request))
 
+def payment_show_html(request):
+    return render(request, '03_01_payment_show.html', setPostData(request))
 
 '''
 def electricity_show_html(request):

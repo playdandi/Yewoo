@@ -236,13 +236,6 @@
 
 				<!-- 전기 요금 현황 -->
 				<div class="row-fluid">
-					<!--
-					<div class="span11">
-						<div style="border:1px solid #000000; background-color:#dbdbd2; padding:7px 10px 7px 10px; font-size:1.1em; margin:10px 0px 10px 0px">
-							<strong>전기 요금 현황</strong>
-						</div>
-					</div>
-					-->
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
 						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
@@ -316,14 +309,14 @@
 									<td width="23%">
 										<div>
 											업로드 날짜
-											<input id="uploadDate" type="text" class="margin0 input-small" disabled />
+											<input id="uploadDate" type="text" class="margin0 input-small" value="{{ excel_uploadDate }}" disabled />
 											<a href="#" title="현재 파일이 업로드 된 날짜입니다." data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a>
 										</div>
 									</td>
 									<td width="7%" style="vertical-align:middle">파일명</td>
 									<td width="60%">
 										<div>
-											<input id="filename" type="text" class="span12 margin0" placeholder="파일명" disabled />
+											<input id="filename" type="text" class="span12 margin0" placeholder="파일명" value="{{ excel_filename }}" disabled />
 										</div>
 									</td>
 								</tr>
@@ -363,7 +356,7 @@
 		</div>
 	</div>
 	
-	
+	<input type="hidden" value="{{ csrf_token }}" />	
 	<!-- 미리보기 (미리보기 버튼 눌렀을 때 보이는 큰 팝업창) -->
 	<div class="modal hide fade" id="myModal">
 		<div class="modal-header">
@@ -445,14 +438,14 @@
 								<td width="23%">
 									<div>
 										업로드 날짜
-										<input id="uploadDate_modal" type="text" class="margin0 input-small" disabled />
+										<input id="uploadDate_modal" type="text" class="margin0 input-small" value="{{ excel_uploadDate }}" disabled />
 										<a href="#" title="현재 파일이 업로드 된 날짜입니다." data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a>
 									</div>
 								</td>
 								<td width="7%" style="vertical-align:middle">파일명</td>
 								<td width="60%">
 									<div>
-										<input id="filename_modal" type="text" class="span12 margin0" placeholder="파일명" disabled />
+										<input id="filename_modal" type="text" class="span12 margin0" placeholder="파일명" value="{{ excel_filename }}" disabled />
 									</div>
 								</td>
 							</tr>

@@ -368,6 +368,50 @@
 
 								<!-- 2. 납부 내역 이력(확인) -->
 								<div class="tab-pane" id="paymentCheck_tab">
+									<div class="row-fluid">
+										<div class="box span12" style="margin: 0px; padding: 0px">
+											<div class="box-header">
+												<div style="float:left; text-align:left">
+													<h2><strong>전체 납부 내역</strong></h2>
+												</div>
+												<div style="text-align:right">
+													<select id="" class="margin0" style="width:70px">
+														<option value="1">임대 1회차</option>
+														<option value="2">임대 2회차</option>
+														<option value="3">임대 3회차</option>
+													</select>
+													<button class="btn btn-small">조회</button>
+													<button class="btn btn-small">초기화</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 납부 내역 라디오 선택 -->
+									<div class="row-fluid">
+										<div class="box span12" style="margin: 0px; padding: 0px">
+											<div class="box-content" style="margin: 0px; padding: 3px; border:1; background-color:#f8f8f8">
+												<strong>납부 처리</strong>
+												<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" checked />전체</label>
+												<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />선택</label>
+												<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />납부</label>
+												<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />미납</label>
+												<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />연체 회수</label>
+												<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />입금일</label>
+												<div style="text-align:right; float:right">
+													<button class="btn btn-small btn-inverse">출력</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row-fluid">
+										<div class="box span12" style="margin: 0px; padding: 0px">
+											<div id="contents" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+												<!-- ejs template으로 db내용을 불러온다. -->
+											</div>
+										</div>
+									</div>
+
+
 								</div>
 							</div>
 						</div>

@@ -98,6 +98,11 @@
 		padding : 0px 0px 0px 0px;
 		left : 10%;
 	}
+	.fontmini {
+		text-align : center;
+		font-size : 0.9em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
 	</style>
 		
 </head>
@@ -170,7 +175,7 @@
 				<div class="span11">
 					<ul class="breadcrumb">
 						<li>
-							<a href="#">임대 내역 확인</a>
+							<a href="#">납부 내역 확인</a>
 						</li>
 					</ul>
 				</div>
@@ -184,10 +189,11 @@
 									<div style="margin-right:5px; float:left">내역 분류</div>
 									<select id="search_type" class="margin0" style="width:100px">
 										<option value="0">임대 내역</option>
-										<option value="1">고지 내역</option>
-										<option value="2">전기 요금</option>
-										<option value="3" selected>가스 요금</option>
-										<option value="4">수도 요금</option>
+										<option value="1">최종 고지 내역</option>
+										<option value="2" selected>납부 내역</option>
+										<option value="3">전기 요금</option>
+										<option value="4">가스 요금</option>
+										<option value="5">수도 요금</option>
 									</select>
 								</td>
 								<td width="17%">
@@ -234,248 +240,101 @@
 					</div>
 				</div>
 
-				<!-- 가스 요금 현황 -->
+				<!-- 납부 내역 확인 (전체) -->
 				<div class="row-fluid">
-					<!--
-					<div class="span11">
-						<div style="border:1px solid #000000; background-color:#dbdbd2; padding:7px 10px 7px 10px; font-size:1.1em; margin:10px 0px 10px 0px">
-							<strong>가스 요금 현황</strong>
-						</div>
-					</div>
-					-->
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
 						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
-								<colgroup>
-									<col width="10%">
-									<col width="10%">
-									<col width="8%">
-									<col width="10%">
-									<col width="10%">
-									<col width="12%">
-									<col width="10%">
-									<col width="6%">
-									<col width="6%">
-									<col width="6%">
-									<col width="6%">
-									<col width="6%">
-								</colgroup>
 								<tr style="background-color:#dbdbd2">
-									<td colspan="7">
+									<td width="60%">
 										<div style="font-size:0.8em">건물명/기간</div>
-										<div><h3>No.1 루체시티 1 / 2014.01 / 가스 요금</h3></div>
+										<div><h3>No.1 루체시티 1 / 2014.02 / 납부 확인</h3></div>
 									</td>
-									<td colspan="5">
-										<div style="font-size:0.8em">재실 현황</div>
-										<div><h3>총 62실, 재실 20실</h3></div>
+									<td width="40%">
+										<div style="font-size:0.8em">납부 현황</div>
+										<div><h3>총 40개, 현재 22개 납부, 미납 18개</h3></div>
 									</td>
-								</tr>
-								<tr>
-									<th style="text-align:center">당월 요금</th>
-									<th style="text-align:center">고지 용량</th>
-									<th style="text-align:center">단가</th>
-									<th style="text-align:center">적용 단가</th>
-									<th style="text-align:center">사용량</th>
-									<th style="text-align:center">수정사용량</th>
-									<th style="text-align:center">부과 요금</th>
-									<th style="text-align:center">전체</th>
-									<th style="text-align:center">입주</th>
-									<th style="text-align:center">전세</th>
-									<th style="text-align:center">월세</th>
-									<th style="text-align:center">공실</th>
-								</tr>
-								<tr>
-									<td style="text-align:center">120</td>
-									<td style="text-align:center">123</td>
-									<td style="text-align:center">총 390,000</td>
-									<td style="text-align:center">총 30,000</td>
-									<td style="text-align:center">총 3,000</td>
-									<td style="text-align:center">총 3,3,000</td>
-									<td style="text-align:center">총 590,000</td>
-									<td style="text-align:center">62</td>
-									<td style="text-align:center">20</td>
-									<td style="text-align:center">10</td>
-									<td style="text-align:center">10</td>
-									<td style="text-align:center">42</td>
 								</tr>
 							 </table>  
 						</div>
 					</div>
 				</div>
 
-				<!-- 가스요금 첨부파일-->
+				<!-- 납부 확인-->
 				<div class="row-fluid">
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
 						<div class="box-header">
-							<h2><strong>가스요금 첨부파일</strong></h2>
+							<h2><strong>납부 확인</strong></h2>
 						</div>
 						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 								<tr>
-									<td width="10%" style="vertical-align:middle">업로드 확인</td>
-									<td width="23%">
+									<td width="10%" style="vertical-align:middle">납부 확인</td>
+									<td width="24%">
 										<div>
-											업로드 날짜
-											<input id="uploadDate" type="text" class="margin0 input-small" value="{{ excel_uploadDate }}" disabled />
-											<a href="#" title="현재 파일이 업로드 된 날짜입니다." data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a>
+											납부(입금)일
+											<input id="uploadDate" type="text" class="margin0 input-small datepicker" placeholder="날짜를 입력하세요." />
+											<a href="#" title="입금일을 선택하시면 납부항목에 납부일이 자동으로 지정됩니다." data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a>
 										</div>
 									</td>
-									<td width="7%" style="vertical-align:middle">파일명</td>
-									<td width="60%">
-										<div>
-											<input id="filename" type="text" class="span12 margin0" placeholder="파일명" value="{{ excel_filename }}" disabled />
-										</div>
+									<td width="27%">
+										당일 납부: 총
+										<font style="color:red">20</font>개, 오늘
+										<font style="color:red">12</font>개
 									</td>
+									<td width="27%">
+										전체 납부: 총
+										<font style="color:red">40</font>개, 누적
+										<font style="color:red">15</font>개
+									</td>
+									<td width="5%" style="vertical-align:middle">이력</td>
+									<td width="7%"><button class="btn btn-small" onclick="">보기</button>
 								</tr>
 							</table>
 						</div>
 					</div>
 				</div>
 
-				<!-- 전체 가스 요금 내역 -->
+				<!-- 납부 내역 라디오 선택 -->
 				<div class="row-fluid">
 					<div class="box span11" style="margin: 0px; padding: 0px">
-						<div class="box-header">
-							<div style="float:left; text-align:left">
-								<h2><strong>전체 가스 요금 내역</strong></h2>
-							</div>
-							<div style="text-align:right">
-								<strong>층별 보기</strong>
-								<select id="" class="margin0" style="width:70px">
-									<option value="">전체</option>
-									<option value="1">1층</option>
-									<option value="2">2층</option>
-									<option value="3">3층</option>
-									<option value="10">10층</option>
-								</select>
-								<button class="btn btn-small btn-danger btn-setting">미리보기</button>
+						<div class="box-content" style="margin: 0px; padding: 3px; border:1; background-color:#f8f8f8">
+							<strong>납부 처리</strong>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" checked />전체</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />선택</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />납부</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />미납</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />연체 회수</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />입금일</label>
+							<div style="text-align:right; float:right">
 								<button class="btn btn-small btn-inverse">출력</button>
 							</div>
 						</div>
-						<div id="contents" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+					</div>
+				</div>
+
+				<!-- 납부 내역 리스트 -->
+				<div class="row-fluid" style="margin-top:5px">
+					<div class="box span11" style="margin: 0px; padding: 0px">
+						<div id="contents" class="box-content" style="margin: 0px; padding: 3px; border:1; background-color:#f8f8f8">
 							<!-- ejs template으로 db내용을 불러온다. -->
 						</div>
 					</div>
 				</div>
-
 			</div>
 			<!-- end: Content -->
 		</div>
 	</div>
-
-	<input type="hidden" value="{{ csrf_token }}" />	
+	
+	
 	<!-- 미리보기 (미리보기 버튼 눌렀을 때 보이는 큰 팝업창) -->
 	<div class="modal hide fade" id="myModal">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">×</button>
-			<h3>임대 비용(가스 요금)확인</h3>
+			<h3></h3>
 		</div>
 		<div class="modal-body">
-			<div class="row-fluid">
-				<div class="box span12" style="margin:0px 0px 5px 0px; padding: 0px">
-					<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
-						<table class="table table-bordered table-condensed" style="margin-bottom:0px">
-							<colgroup>
-								<col width="10%">
-								<col width="10%">
-								<col width="8%">
-								<col width="10%">
-								<col width="10%">
-								<col width="12%">
-								<col width="10%">
-								<col width="6%">
-								<col width="6%">
-								<col width="6%">
-								<col width="6%">
-								<col width="6%">
-							</colgroup>
-							<tr style="background-color:#dbdbd2">
-								<td colspan="7">
-									<div style="font-size:0.8em">건물명/기간</div>
-									<div><h3>No.1 루체시티 1 / 2014.01 / 가스 요금</h3></div>
-								</td>
-								<td colspan="5">
-									<div style="font-size:0.8em">재실 현황</div>
-									<div><h3>총 62실, 재실 20실</h3></div>
-								</td>
-							</tr>
-							<tr>
-								<th style="text-align:center">당월 요금</th>
-								<th style="text-align:center">고지 용량</th>
-								<th style="text-align:center">단가</th>
-								<th style="text-align:center">적용 단가</th>
-								<th style="text-align:center">사용량</th>
-								<th style="text-align:center">수정사용량</th>
-								<th style="text-align:center">부과 요금</th>
-								<th style="text-align:center">전체</th>
-								<th style="text-align:center">입주</th>
-								<th style="text-align:center">전세</th>
-								<th style="text-align:center">월세</th>
-								<th style="text-align:center">공실</th>
-							</tr>
-							<tr>
-								<td style="text-align:center">120</td>
-								<td style="text-align:center">123</td>
-								<td style="text-align:center">총 390,000</td>
-								<td style="text-align:center">총 30,000</td>
-								<td style="text-align:center">총 3,000</td>
-								<td style="text-align:center">총 3,3,000</td>
-								<td style="text-align:center">총 590,000</td>
-								<td style="text-align:center">62</td>
-								<td style="text-align:center">20</td>
-								<td style="text-align:center">10</td>
-								<td style="text-align:center">10</td>
-								<td style="text-align:center">42</td>
-							</tr>
-						 </table>  
-					</div>
-				</div>
-			</div>
-			<!-- 가스요금 첨부파일-->
-			<div class="row-fluid">
-				<div class="box span12" style="margin:0px 0px 5px 0px; padding: 0px">
-					<div class="box-header">
-						<h2><strong>가스요금 첨부파일</strong></h2>
-					</div>
-					<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
-						<table class="table table-bordered table-condensed" style="margin-bottom:0px">
-							<tr>
-								<td width="10%" style="vertical-align:middle">업로드 확인</td>
-								<td width="23%">
-									<div>
-										업로드 날짜
-										<input id="uploadDate_modal" type="text" class="margin0 input-small" value="{{ excel_uploadDate }}" disabled />
-										<a href="#" title="현재 파일이 업로드 된 날짜입니다." data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a>
-									</div>
-								</td>
-								<td width="7%" style="vertical-align:middle">파일명</td>
-								<td width="60%">
-									<div>
-										<input id="filename_modal" type="text" class="span12 margin0" placeholder="파일명" value="{{ excel_filename }}" disabled />
-									</div>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</div>
-			</div>
 
-			<!-- 전체 가스 요금 내역 -->
-			<div class="row-fluid">
-				<div class="box span12" style="margin: 0px; padding: 0px">
-					<div class="box-header">
-						<div style="float:left; text-align:left">
-							<h2><strong>전체 가스 요금 내역</strong></h2>
-						</div>
-						<div style="text-align:right">
-							<button class="btn btn-small btn-inverse">출력</button>
-						</div>
-					</div>
-					<div id="contents_modal" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
-						<!-- ejs template으로 db내용을 불러온다. -->
-					</div>
-				</div>
-			</div>
 		</div>
 		<!--<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">닫기</a>
@@ -539,7 +398,7 @@
 		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
 
-		<script src="{{ STATIC_URL }}js/03_01_gas_show.js"></script>
+		<script src="{{ STATIC_URL }}js/03_01_payment_show.js"></script>
 		<script src="{{ STATIC_URL }}js/common.js"></script>
 		
 		<script type="text/javascript" language="JavaScript">
@@ -555,24 +414,17 @@
 						getBuildingRooms($(this).val(), 'buildingRoomNumber');
 					}
 				});
-				
-				$('#inDate').change(function() {
-					var mdy = $('#inDate').val().split('/');
-					$('#inDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
-					$('#outDate').attr('disabled', false);
+
+				// 업로드 날짜 datepicker
+				$('#uploadDate').change(function() {
+					var mdy = $('#uploadDate').val().split('/');
+					$('#uploadDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
+					$('#uploadDate_modal').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
 				});
-				
-				$('#outDate').change(function() {
-					var mdy = $('#outDate').val().split('/');
-					$('#outDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
-					var mdyin = $('#inDate').val().split('.');
-					if (mdyin[0] > mdy[2] ||
-						(mdyin[0] == mdy[2] && mdyin[1] > mdy[0]) ||
-						(mdyin[0] == mdy[2] && mdyin[1] == mdy[0] && mdyin[2] > mdy[1]))
-					{
-						alert('만료일은 입주일 이후의 날짜만 입력 가능합니다.');
-						$('#outDate').val('');
-					}
+				$('#uploadDate_modal').change(function() {
+					var mdy = $('#uploadDate_modal').val().split('/');
+					$('#uploadDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
+					$('#uploadDate_modal').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
 				});
 
 				// ejs template 불러오기

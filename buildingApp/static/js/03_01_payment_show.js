@@ -57,34 +57,26 @@ function InitForm()
 	//$('#search_isEmpty').attr('checked', false);
 }
 
-function getContents(tab)
+function getContents()
 {
-	var template = new EJS({url : '/static/ejs/03_03_payment_detail.ejs'}).render();
-	$('#contents_list').html(template);
-	var template = new EJS({url : '/static/ejs/03_03_payment_detail_reason.ejs'}).render();
-	$('#contents_reason').html(template);
+	//var year = $('#').val();
+	//var month = $('#').val();
 
-	var template = new EJS({url : '/static/ejs/03_03_payment_detail_tab2.ejs'}).render();
+	// db에서 정보 뽑고
+
+	var template = new EJS({url : '/static/ejs/03_01_payment_show.ejs'}).render();
 	$('#contents').html(template);
-}
-
-function showModifyForm()
-{
-	$('#detail_input_closed').hide();
-	$('#detail_input_show').show();
-}
-
-function saveChangedInfo()
-{
-	// 저장 후....
 	
-	if(confirm('저장되었습니다.\n납부 현황 화면(이전화면)으로 돌아가시겠습니까?')) {
-	}
+	$('.showDetail').click(function() {
+		$(location).attr('href', '/lease/payment/detail/');
+
+	});
 }
 
-
-
-
+function showDetail(tab)
+{
+	$(location).attr('href', '/lease/payment/detail/');
+}
 
 
 
