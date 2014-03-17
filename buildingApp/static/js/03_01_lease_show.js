@@ -91,6 +91,9 @@ function pagePrint()
 	objWin.document.writeln(content.innerHTML);
 	objWin.document.writeln("</div></body>");
 	objWin.document.close();
+	
+	var useless = objWin.document.getElementById("filter-menu");
+	useless.parentNode.removeChild(useless);
 
 	objWin.print();
 }
