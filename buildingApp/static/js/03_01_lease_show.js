@@ -87,7 +87,9 @@ function pagePrint()
 	var objWin = window.open('', 'print', strFeature);
 	objWin.document.writeln("<!DOCTYPE html>");
 	objWin.document.writeln($("head").html());
+	objWin.document.writeln("<body><div class=\"row-fluid\">");
 	objWin.document.writeln(content.innerHTML);
+	objWin.document.writeln("</div></body>");
 	objWin.document.close();
 
 	objWin.print();
