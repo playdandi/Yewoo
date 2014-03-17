@@ -76,4 +76,19 @@ function getContents()
 	});
 }
 
+function pagePrint()
+{
+	var strFeature = "";
+	strFeature += "width=" + $(document).width() * 0.8;
+	strFeature += ", height=" + $(document).height() * 0.8;
+	strFeature += ", left=" + $(document).width() * 0.1;
+	strFeature += ", top=" + $(document).height() * 0.1;
+//	strFeature += ", location=no";
+	var objWin = window.open('', 'print', strFeature);
+	objWin.document.writeln("<!DOCTYPE html>");
+	objWin.document.writeln($("head").html());
+	objWin.document.writeln(content.innerHTML);
+	objWin.document.close();
 
+	objWin.print();
+}
