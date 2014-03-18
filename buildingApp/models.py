@@ -157,4 +157,41 @@ class WaterInfo(models.Model):
     totalFee = models.IntegerField()
 
 
+class PaymentInfo(models.Model):
+    resident = models.ForeignKey('ResidentInfo')
+    building = models.ForeignKey('BuildingInfo')
+    year = models.IntegerField()
+    month = models.IntegerField()
+    totalFee = models.IntegerField()
+    amountPay = models.IntegerField()
+    amountNoPay = models.IntegerField()
+    payDate = models.DateField(null=True)
+    confirmDate = models.DateField(null=True)
+    confirmStatus = models.CharField(max_length=1)
+    payStatus = models.IntegerField()
+    delayNumberNow = models.IntegerField()
+    delayNumberNext = models.IntegerField()
+    payMsg = models.TextField()
+
+class PaymentModifyInfo(models.Model):
+    payment = models.ForeignKey('PaymentInfo')
+    modifyNumber = models.IntegerField()
+    payStatus = models.IntegerField()
+    payDate = models.DateField()
+    delayNumberNow = models.IntegerField()
+    delayNumberNext = models.IntegerField()
+    amountPay = models.IntegerField()
+    amountNoPay = models.IntegerField()
+    confirmDate = models.DateField()
+    modifyTime = models.DateTimeField()
+    modifyMsg = models.TextField()
+
+
+
+
+
+
+
+
+
 

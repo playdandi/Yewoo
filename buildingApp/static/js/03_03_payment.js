@@ -57,6 +57,7 @@ function InitForm()
 	//$('#search_isEmpty').attr('checked', false);
 }
 
+/*
 function getContents()
 {
 	//var year = $('#').val();
@@ -72,11 +73,43 @@ function getContents()
 
 	});
 }
-
+*/
 function showDetail(tab)
 {
 	$(location).attr('href', '/lease/payment/detail/');
 }
 
 
+function getContents()
+{
+	var template = new EJS({url : '/static/ejs/03_03_payment_detail_tab1.ejs'}).render();
+	$('#no_pay_list').html(template);
+
+	//$('#payment_input').show();
+	//$('#payment_modify').show();
+	doAjaxContents(rid);
+}
+var doAjaxContents = function() {
+	var postData = {};
+	var csrftoken = $.cookie('csrftoken');
+	postData['csrfmiddlewaretoken'] = csrftoken;
+	postData['building_id'] = curBid;
+	postData['year'] = curYear;
+	postData['month'] = curMonth;
+
+	$.ajax({
+		type : 'POST',
+		url : '/lease/payment/getInfo/',
+		data : postData,
+		success : function(result) {
+			EGW_E = result;
+			var template = new EJS({url : '/static/ejs/03_02_electricity.ejs'}).render({'data' : EGW_E, 'start' : 0});
+			$('#contents').html(template);
+			$('#contents_modal').html(template);
+		},
+		error : function(msg) {
+			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
+		},
+	});
+}
 

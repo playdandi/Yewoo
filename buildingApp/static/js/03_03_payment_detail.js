@@ -57,29 +57,71 @@ function InitForm()
 	//$('#search_isEmpty').attr('checked', false);
 }
 
-function getContents(tab)
+/*
+function setCurInfo()
 {
-	var template = new EJS({url : '/static/ejs/03_03_payment_detail.ejs'}).render();
-	$('#contents_list').html(template);
-	var template = new EJS({url : '/static/ejs/03_03_payment_detail_reason.ejs'}).render();
-	$('#contents_reason').html(template);
-
-	var template = new EJS({url : '/static/ejs/03_03_payment_detail_tab2.ejs'}).render();
-	$('#contents').html(template);
+	//curType = $('#search_type option:selected').text().replace('요금', '').trim();
+	curBid = Number($('#search_building').val().replace('b', ''));
+	curBName = $('#search_building option:selected').text();
+	curYear = $('#search_year').val();
+	curMonth = $('#search_month').val();
 }
+*/
 
-function showModifyForm()
+function getContents(rid)
 {
-	$('#detail_input_closed').hide();
-	$('#detail_input_show').show();
-}
+	var template = new EJS({url : '/static/ejs/03_03_payment_detail_tab1.ejs'}).render();
+	$('#no_pay_list').html(template);
 
-function saveChangedInfo()
+	//$('#payment_input').show();
+	//$('#payment_modify').show();
+	doAjaxContents(rid);
+}
+/*
+var doAjaxContents = function(rid) {
+	var postData = {};
+	var csrftoken = $.cookie('csrftoken');
+	postData['csrfmiddlewaretoken'] = csrftoken;
+	postData['resident_id'] = rid;
+	postData['building_id'] = curBid;
+	postData['year'] = curYear;
+	postData['month'] = curMonth;
+
+	$.ajax({
+		type : 'POST',
+		url : '/lease/payment/getInfo/',
+		data : postData,
+		success : function(result) {
+			EGW_E = result;
+			var template = new EJS({url : '/static/ejs/03_02_electricity.ejs'}).render({'data' : EGW_E, 'start' : 0});
+			$('#contents').html(template);
+			$('#contents_modal').html(template);
+		},
+		error : function(msg) {
+			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
+		},
+	});
+}
+*/
+function saveInputInfo()
 {
 	// 저장 후....
 	
 	if(confirm('저장되었습니다.\n납부 현황 화면(이전화면)으로 돌아가시겠습니까?')) {
 	}
+
+	$('#payment_input').hide();
+	$('#payment_modify').hide();
+}
+function saveModifyInfo()
+{
+	// 저장 후....
+	
+	if(confirm('저장되었습니다.\n납부 현황 화면(이전화면)으로 돌아가시겠습니까?')) {
+	}
+
+	$('#payment_input').hide();
+	$('#payment_modify').hide();
 }
 
 

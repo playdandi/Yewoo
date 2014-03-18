@@ -70,47 +70,6 @@ def notice_show_html(request):
 def payment_show_html(request):
     return render(request, '03_01_payment_show.html', setPostData(request))
 
-'''
-def electricity_show_html(request):
-    if request.method == "POST":
-        yy = int(request.POST.get('year'))
-        mm = int(request.POST.get('month'))
-        b_id = int(request.POST.get('building_id'))
-        r_num = request.POST.get('room_num')
-        if r_num != '':
-            r_num = int(r_num)
-
-        # 01. get resident_ID list by b_id & r_num
-        resident_IDs = []
-        if r_num == '':
-            resident_IDs = ResidentInfo.objects.filter(buildingName = b_id).order_by('id').values('id')
-        else:
-            resident_IDs = ResidentInfo.objects.filter(buildingName = b_id, buildingRoomNumber = r_num).order_by('id').values('id')
-        
-        # 02. get electricity info. by year & month & resident_IDs
-        electricity = ElectricityInfo.objects.filter(year = yy, month = mm, resident_id__in = resident_IDs).order_by('resident_id')
-
-        ### assert : resident_IDs & electricity lists have EXACTLY same number of elements.
-
-        # 03. join two lists (make one final list)
-        result = []
-        for r in resident_IDs:
-            temp = {r}
-            for e in electricity:
-                if int(e.resident_id) == int(r):
-                    temp = dict(temp.items() + e.items())
-                    break
-            result.append(temp)
-
-        # 04. done
-        csrf_token = get_token(request)
-        building = BuildingInfo.objects.all()
-        building_name_id = []
-        for b in building:
-            building_name_id.append({'name' : b.name, 'id' : b.id})
-
-        return render(request, '03_01_electricity_show.html', {'building_name_id' : building_name_id, 'result' : result})
-'''
 
 def get_egw_info(request):
     if request.method == 'POST':
@@ -236,23 +195,6 @@ def water_show_html(request):
 def excel_file_upload(request):
     if request.method == 'POST':
         if 'file' in request.FILES:
-            # save the info. into DB
-            fileInfo = None
-            building_info = BuildingInfo.objects.get(id = request.POST['building_id'])
-            try:
-                fileInfo = ExcelFiles.objects.get(type = request.POST['type'], building = building_info.id, year = int(request.POST['year']), month = int(request.POST['month']))
-                os.remove(os.path.join(settings.MEDIA_ROOT, request.POST['type']) + '/' + fileInfo.filename)
-            except:
-                fileInfo = ExcelFiles()
-                print('new fileInfo')
-            fileInfo.type = request.POST['type']
-            fileInfo.building = building_info
-            fileInfo.year = int(request.POST['year'])
-            fileInfo.month = int(request.POST['month'])
-            fileInfo.filename = request.POST['filename']
-            fileInfo.uploadDate = request.POST['uploadDate'].replace('.', '-').strip()
-            fileInfo.save()
-
             # save all data to proper db table
             # 1. get columnNames, eachLength, alldata
             col = request.POST.get('column').split(',')
@@ -270,18 +212,17 @@ def excel_file_upload(request):
                     result.append(temp)
                     temp = []
 
-            #print(column)
-            #print(result)
-
-            # 2. delete current data
+            # 2. delete current data (not delete rightnow, it's executed after save new date)
+            deleteObjs = None
             if str(request.POST['type']) == 'electricity':
-                ElectricityInfo.objects.filter(year = int(request.POST['year']), month = int(request.POST['month']), building = building_info).delete()
+                deleteObjs = ElectricityInfo.objects.filter(year = int(request.POST['year']), month = int(request.POST['month']), building = building_info)
             elif str(request.POST['type']) == 'gas':
-                GasInfo.objects.filter(year = int(request.POST['year']), month = int(request.POST['month']), building = building_info).delete()
+                deleteObjs = GasInfo.objects.filter(year = int(request.POST['year']), month = int(request.POST['month']), building = building_info)
             elif str(request.POST['type']) == 'water':
-                WaterInfo.objects.filter(year = int(request.POST['year']), month = int(request.POST['month']), building = building_info).delete()
+                deleteObjs = WaterInfo.objects.filter(year = int(request.POST['year']), month = int(request.POST['month']), building = building_info)
 
-            # 3. save new data
+            # 3. save new data (not save rightnow, it's executed after gathering the data)
+            newObjs = []
             if request.POST['type'] == 'electricity':
                 for i in range(len(result)):
                     elem = ElectricityInfo()
@@ -320,7 +261,8 @@ def excel_file_upload(request):
                     elem.building = BuildingInfo.objects.get(id = building_info.id)
                     elem.year = int(request.POST['year'])
                     elem.month = int(request.POST['month'])
-                    elem.save()
+                    newObjs.append(elem)
+                    #elem.save()
             elif request.POST['type'] == 'water':
                 for i in range(len(result)):
                     elem = WaterInfo()
@@ -357,7 +299,8 @@ def excel_file_upload(request):
                     elem.building = BuildingInfo.objects.get(id = building_info.id)
                     elem.year = int(request.POST['year'])
                     elem.month = int(request.POST['month'])
-                    elem.save()
+                    newObjs.append(elem)
+                    #elem.save()
             elif request.POST['type'] == 'gas':
                 for i in range(len(result)):
                     elem = GasInfo()
@@ -408,8 +351,32 @@ def excel_file_upload(request):
                     elem.building = BuildingInfo.objects.get(id = building_info.id)
                     elem.year = int(request.POST['year'])
                     elem.month = int(request.POST['month'])
-                    elem.save()
+                    newObjs.append(elem)
+                    #elem.save()
+
+            # delete old data
+            deletedObjs.delete()
+
+            # save new data
+            for obj in newObjs:
+                obj.save()
                 
+            # save the info. into DB
+            fileInfo = None
+            building_info = BuildingInfo.objects.get(id = request.POST['building_id'])
+            try:
+                fileInfo = ExcelFiles.objects.get(type = request.POST['type'], building = building_info.id, year = int(request.POST['year']), month = int(request.POST['month']))
+                os.remove(os.path.join(settings.MEDIA_ROOT, request.POST['type']) + '/' + fileInfo.filename)
+            except:
+                fileInfo = ExcelFiles()
+                print('new fileInfo')
+            fileInfo.type = request.POST['type']
+            fileInfo.building = building_info
+            fileInfo.year = int(request.POST['year'])
+            fileInfo.month = int(request.POST['month'])
+            fileInfo.filename = request.POST['filename']
+            fileInfo.uploadDate = request.POST['uploadDate'].replace('.', '-').strip()
+            fileInfo.save()
 
             # save excel file
             file = request.FILES['file']
@@ -475,5 +442,40 @@ def water_input_html(request):
 def payment_input_html(request):
     return render(request, '03_03_payment.html', setPostData(request))
 
-def payment_detail_html(request):
-    return render(request, '03_03_payment_detail.html', setPostData(request))
+def payment_detail_html(request, bid, rid):
+    param = {}
+    param['list'] = PaymentInfo.objects.filter(building = int(bid), resident = int(rid)).order_by('-id')
+    param['list_last'] = param['list'][len(param['list'])-1]
+    param['modify_list'] = PaymentModifyInfo.objects.filter(payment = int(param['list'][0].id))
+    param['modify_list_last'] = param['modify_list'][len(param['modify_list'])-1]
+    return render(request, '03_03_payment_detail.html', param)
+
+
+'''
+def payment_detail_save_input(request):
+
+def payment_detail_save_modify(request):
+'''
+
+'''
+def payment_detail_getinfo(request):
+    if request.method == 'POST':
+        type = str(request.POST['type'])
+        y = int(request.POST['year'])
+        m = int(request.POST['month'])
+        bid = int(request.POST['building_id'])
+        data = None
+        if type == "E":
+            data = ElectricityInfo.objects.filter(year = y, month = m, building = bid)
+            return toJSON(serialize_electricity(data))
+        elif type == "G":
+            data = GasInfo.objects.filter(year = y, month = m, building = bid)
+            return toJSON(serialize_gas(data))
+        elif type == "W":
+            data = WaterInfo.objects.filter(year = y, month = m, building = bid)
+            return toJSON(serialize_water(data))
+
+        return HttpResponse('NO Matched Type')
+    return HttpResponse('NOT POST')
+'''
+

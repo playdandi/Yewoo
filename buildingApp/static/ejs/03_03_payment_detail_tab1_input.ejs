@@ -1,0 +1,58 @@
+<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+	<tr>
+		<th style="text-align:center" width="6%">년도/월</th>
+		<th style="text-align:center" width="3%">회차</th>
+		<th style="text-align:center" width="6%">합계금액</th>
+		<th style="text-align:center" width="9%">납부예정일</th>
+		<th style="text-align:center" width="8%">납부확인</th>
+		<th style="text-align:center" width="9%">입금일</th>
+		<th style="text-align:center" width="12%">연체회차</th>
+		<th style="text-align:center" width="13%">입금</th>
+		<th style="text-align:center" width="12%">연체회차</th>
+		<th style="text-align:center" width="15%">미납</th>
+		<th style="text-align:center" width="9%">납부처리일</th>
+	</tr>
+	<tr>
+		<td style="text-align:center">2014.02</td>
+		<td style="text-align:center">10</td>
+		<td style="text-align:center">450,000</td>
+		<td style="text-align:center; color:blue">2014.02.28</td>
+		<td style="text-align:center">
+			<select id="" class="margin0 span12">
+				<option value="2">2회</option>
+				<option value="3">3회</option>
+				<option value="4">4회</option>
+			</select>
+		</td>
+		<td style="text-align:center"><input id="paydate" type="text" class="margin0 span12 fontmini datepicker" value="2014.03.01" /></td>
+		<td style="text-align:center">
+			이번달
+			<select id="delayNumberNow" class="margin0 span6">
+				<option value="2">2회</option>
+				<option value="3">3회</option>
+				<option value="4">4회</option>
+			</select>
+		</td>
+		<td style="text-align:center"><input id="amountPay" type="text" class="margin0 span6 fontmini" value="300000"/>되었습니다</td>
+		<td style="text-align:center">
+			다음달
+			<select id="delayNumberNext" class="margin0 span6">
+				<option value="3">3회</option>
+				<option value="4">4회</option>
+				<option value="5">5회</option>
+			</select>
+		</td>
+		<td style="text-align:center"><input id="amountNoPay" type="text" class="margin0 span6 fontmini" value="150000" disabled />추가됩니다</td>
+		<td style="text-align:center"><input id="confirmdate" type="text" class="margin0 span12 fontmini datepicker" value="2014.03.01" /></td>
+	</tr>
+	<tr>
+		<td colspan="3">납부 처리 사유</td>
+		<td colspan="8"><input id="paymentMsg" type="text" class="margin0 span12" placeholder="사유를 입력해주세요." /></td>
+	</tr>
+	<tr>
+		<td colspan="11" style="text-align:center">
+			<button class="btn" onclick="saveChangedInfo();">저  장</button>
+		</td>
+	</tr>
+</table>
+

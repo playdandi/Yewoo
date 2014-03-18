@@ -195,81 +195,87 @@
 							<div id="mytabcontent" class="tab-content">
 								<!-- 1. 납부 내역 관리(입력) -->
 								<div class="tab-pane active" id="paymentInput_tab">
+
+									<!-- 간편 임대 정보 -->
 									<div class="row-fluid">
-										<!-- 임대 내역 정보 -->
 										<div class="box span12" style="margin:0px 0px 5px 0px; padding: 0px">
 											<div class="box-header">
 												<div style="margin-right:5px">
-													<h2><strong>임대 내역 정보</strong></h2>
+													<h2><strong>간편 임대 정보</strong></h2>
 												</div>
 											</div>
 											<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 												<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 													<colgroup>
-														<col width="12%"></col>
-														<col width="6%"></col>
-														<col width="6%"></col>
-														<col width="6%"></col>
-														<col width="8%"></col>
-														<col width="6%"></col>
-														<col width="7%"></col>
-														<col width="6%"></col>
-														<col width="11%"></col>
-														<col width="7%"></col>
-														<col width="7%"></col>
-														<col width="6%"></col>
-														<col width="7%"></col>
-														<col width="6%"></col>
+														<col width="6%">
+														<col width="2%">
+														<col width="4%">
+														<col width="4%">
+														<col width="9%">
+														<col width="9%">
+														<col width="8%">
+														<col width="10%">
+														<col width="10%">
+														<col width="4%">
+														<col width="9%">
+														<col width="4%">
+														<col width="6%">
+														<col width="5%">
+														<col width="5%">
+														<col width="5%">
 													</colgroup>
+													<tr style="background-color:#dbdbd2">
+														<td colspan="8" style="border-right:solid">
+															<div style="font-size:0.8em">건물명/호수</div>
+															<div><h3><font style="color:red">No.1 루체시티 / 101호</font></h3></div>
+														</td>
+														<td colspan="5" style="border-right:solid">
+															<div style="font-size:0.8em">보증금/월세</div>
+															<div><h3><font style="color:red">5,500/25만원</font></h3></div>
+														</td>
+														<td colspan="3">
+															<div style="font-size:0.8em">계약 평수</div>
+															<div><h3><font style="color:red">6.5/21.2<sup>2</sup></font></h3></div>
+														</td>
+													</tr>
 													<tr>
-														<th colspan="1" style="text-align:center">건물명</th>
-														<th colspan="1" style="text-align:center">호수</th>
-														<th colspan="1" style="text-align:center">평수1</th>
-														<th colspan="1" style="text-align:center">평수2</th>
 														<th colspan="2" style="text-align:center">입주자</th>
-														<th colspan="2" style="text-align:center">계약일</th>
-														<th colspan="1" style="text-align:center">만료일</th>
-														<th colspan="1" style="text-align:center">재실</th>
-														<th colspan="2" style="text-align:center">연락처1</th>
-														<th colspan="2" style="text-align:center">연락처2</th>
-													</tr>
-													<tr>
-														<td colspan="1" rowspan="3" style="text-align:center; vertical-align:middle">No.1 루체시티</td>
-														<td colspan="1" style="text-align:center">101</td>
-														<td colspan="1" style="text-align:center">6.5</td>
-														<td colspan="1" style="text-align:center">21</td>
-														<td colspan="1" style="text-align:center">김현성</td>
-														<td colspan="1" style="text-align:center">남</td>
-														<td colspan="2" style="text-align:center">2012.01.04</td>
-														<td colspan="1" style="text-align:center">2013.01.03</td>
-														<td colspan="1" style="text-align:center">재실</td>
-														<td colspan="2" style="text-align:center">010-1234-5678</td>
-														<td colspan="2" style="text-align:center">010-2222-3333</td>
-													</tr>
-													<tr>
-														<th colspan="2" style="text-align:center">가격</th>
-														<th colspan="1" style="text-align:center">구분</th>
+														<th colspan="2" style="text-align:center">임대회차</th>
+														<th style="text-align:center">계약일</th>
+														<th style="text-align:center">만료일</th>
+														<th style="text-align:center">재실여부</th>
+														<th style="text-align:center">연락처</th>
+														<th style="text-align:center">가격</th>
 														<th colspan="2" style="text-align:center">보증금</th>
 														<th colspan="2" style="text-align:center">임대료</th>
-														<th colspan="1" style="text-align:center">관리비</th>
-														<th colspan="2" style="text-align:center">주차비</th>
-														<th colspan="2" style="text-align:center">부가세</th>
-														<th colspan="1" style="text-align:center">납입일</th>
+														<th style="text-align:center">관리비</th>
+														<th style="text-align:center">주차비</th>
+														<th style="text-align:center">부가세</th>
 													</tr>
 													<tr>
-														<td colspan="2" style="text-align:center">70,000,000</td>
-														<td colspan="1" style="text-align:center">월세</td>
-														<td colspan="2" style="text-align:center">55,000,000</td>
-														<td colspan="1" style="text-align:center">250,000</td>
-														<td colspan="1" style="text-align:center">선불</td>
-														<td colspan="1" style="text-align:center">50,000</td>
-														<td colspan="2" style="text-align:center">30,000</td>
-														<td colspan="2" style="text-align:center">-</td>
-														<td colspan="1" style="text-align:center">28일</td>
+														<td style="text-align:center">김현성</td>
+														<td style="text-align:center">남</td>
+														<td style="text-align:center">2회</td>
+														<td style="text-align:center">1년</td>
+														<td style="text-align:center">2013.05.25</td>
+														<td style="text-align:center">2014.05.24</td>
+														<td style="text-align:center">재실</td>
+														<td style="text-align:center">010-1919-2929</td>
+														<td style="text-align:center">85,000,000</td>
+														<td style="text-align:center">월세</td>
+														<td style="text-align:center">55,000,000</td>
+														<td style="text-align:center">선불</td>
+														<td style="text-align:center">250,000</td>
+														<td style="text-align:center">50,000</td>
+														<td style="text-align:center">30,000</td>
+														<td style="text-align:center">-</td>
 													</tr>
 												 </table>  
 											</div>
 										</div>
+									</div>
+
+									<div class="row-fluid">
 										<!-- 최근 미납 내역 -->
 										<div class="box span12" style="margin:5px 0px 5px 0px; padding: 0px">
 											<div class="box-header">
@@ -277,7 +283,8 @@
 													<h2><strong>최근 미납 내역</strong></h2>
 												</div>
 											</div>
-											<div id="contents_list" class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
+											<div id="no_pay_list" class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
+												<!-- ejs 입력 -->
 											</div>
 										</div>
 										<!-- 미납 내역 입력 -->
@@ -285,68 +292,150 @@
 											<div class="box span12" style="margin: 5px 0px 5px 0px; padding: 0px">
 												<div class="box-header">
 													<div style="float:left; text-align:left">
-														<h2><strong>미납 내역 입력</strong></h2>
+														<h2><strong>미납 내역 입력 & 납부 내역 수정</strong></h2>
 													</div>
 												</div>
 												<div class="box-content" style="margin: 0px; padding: 3px; border:1; background-color:#f8f8f8">
-													<div id="detail_input_closed">미납 처리 입력 버튼을 누르면 서식이 나타납니다.</div>
-													<table id="detail_input_show" class="table table-bordered table-condensed" style="margin-bottom:0px; display:none">
-														<tr>
-															<th width="6%">년도/월</th>
-															<th width="3%">회차</th>
-															<th width="6%">합계금액</th>
-															<th width="9%">납부예정일</th>
-															<th width="8%">추가납부</th>
-															<th width="9%">입금일</th>
-															<th width="12%">미납회차</th>
-															<th width="13%">입금</th>
-															<th width="12%">미납회차</th>
-															<th width="15%">미납</th>
-															<th width="9%">납부처리일</th>
-														</tr>
-														<tr>
-															<td>2014.02</td>
-															<td>10</td>
-															<td>450,000</td>
-															<td style="color:blue">2014.02.28</td>
-															<td>
-																<select id="" class="margin0 span12">
-																	<option value="2">2회</option>
-																	<option value="3">3회</option>
-																	<option value="4">4회</option>
-																</select>
-															</td>
-															<td><input id="paydate" type="text" class="margin0 span12 fontmini datepicker" value="2014.03.01" /></td>
-															<td>
-																이번달
-																<select id="" class="margin0 span6">
-																	<option value="2">2회</option>
-																	<option value="3">3회</option>
-																	<option value="4">4회</option>
-																</select>
-															</td>
-															<td><input id="" type="text" class="margin0 span6 fontmini" value="300000"/>되었음</td>
-															<td>
-																다음달
-																<select id="" class="margin0 span6">
-																	<option value="3">3회</option>
-																	<option value="4">4회</option>
-																	<option value="5">5회</option>
-																</select>
-															</td>
-															<td><input id="" type="text" class="margin0 span6 fontmini" value="150000"/>추가됩니다</td>
-															<td><input id="confirmdate" type="text" class="margin0 span12 fontmini datepicker" value="2014.03.01" /></td>
-														</tr>
-														<tr>
-															<td colspan="3">납부 처리 사유</td>
-															<td colspan="7"><input id="modify_reason" type="text" class="margin0 span12" placeholder="사유를 입력해주세요." /></td>
-														</tr>
-														<tr>
-															<td colspan="15" style="text-align:center">
-																<button class="btn" onclick="saveChangedInfo();">저  장</button>
-															</td>
-														</tr>
-													</table>
+													<div>입력, 또는 수정  버튼을 누르면 서식이 나타납니다.</div>
+													<div id="payment_input" style="display:none">
+														<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+															<tr>
+																<th style="text-align:center" width="6%">년도/월</th>
+																<th style="text-align:center" width="3%">회차</th>
+																<th style="text-align:center" width="6%">합계금액</th>
+																<th style="text-align:center" width="9%">납부예정일</th>
+																<th style="text-align:center" width="8%">납부확인</th>
+																<th style="text-align:center" width="9%">입금일</th>
+																<th style="text-align:center" width="12%">연체회차</th>
+																<th style="text-align:center" width="13%">입금</th>
+																<th style="text-align:center" width="12%">연체회차</th>
+																<th style="text-align:center" width="15%">미납</th>
+																<th style="text-align:center" width="9%">납부처리일</th>
+															</tr>
+															<tr>
+																<td style="text-align:center">2014.02</td>
+																<td style="text-align:center">10</td>
+																<td style="text-align:center">450,000</td>
+																<td style="text-align:center; color:blue">2014.02.28</td>
+																<td style="text-align:center">
+																	<select id="" class="margin0 span12">
+																		<option value="2">2회</option>
+																		<option value="3">3회</option>
+																		<option value="4">4회</option>
+																	</select>
+																</td>
+																<td style="text-align:center"><input id="paydate" type="text" class="margin0 span12 fontmini datepicker" value="2014.03.01" /></td>
+																<td style="text-align:center">
+																	이번달
+																	<select id="delayNumberNow" class="margin0 span6">
+																		<option value="2">2회</option>
+																		<option value="3">3회</option>
+																		<option value="4">4회</option>
+																	</select>
+																</td>
+																<td style="text-align:center"><input id="amountPay" type="text" class="margin0 span6 fontmini" value="300000"/>되었습니다</td>
+																<td style="text-align:center">
+																	다음달
+																	<select id="delayNumberNext" class="margin0 span6">
+																		<option value="3">3회</option>
+																		<option value="4">4회</option>
+																		<option value="5">5회</option>
+																	</select>
+																</td>
+																<td style="text-align:center"><input id="amountNoPay" type="text" class="margin0 span6 fontmini" value="150000" disabled />추가됩니다</td>
+																<td style="text-align:center"><input id="confirmdate" type="text" class="margin0 span12 fontmini datepicker" value="2014.03.01" /></td>
+															</tr>
+															<tr>
+																<th colspan="3">납부 처리 사유</th>
+																<td colspan="8"><input id="paymentMsg" type="text" class="margin0 span12" placeholder="사유를 입력해주세요." /></td>
+															</tr>
+															<tr>
+																<td colspan="11" style="text-align:center">
+																	<button class="btn" onclick="saveInputInfo();">저  장</button>
+																</td>
+															</tr>
+														</table>
+													</div>
+
+													<div id="payment_modify" style="display:none">
+														<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+															<tr>
+																<th colspan="2" style="text-align:center" width="6%">내역수정</th>
+																<th style="text-align:center" width="6%">년도/월</th>
+																<th style="text-align:center" width="3%">회차</th>
+																<th style="text-align:center" width="6%">합계금액</th>
+																<th style="text-align:center" width="9%">납부예정일</th>
+																<th style="text-align:center" width="8%">납부확인</th>
+																<th style="text-align:center" width="9%">입금일</th>
+																<th style="text-align:center" width="12%">연체회차</th>
+																<th style="text-align:center" width="13%">입금</th>
+																<th style="text-align:center" width="12%">연체회차</th>
+																<th style="text-align:center" width="15%">미납</th>
+																<th style="text-align:center" width="9%">납부처리일</th>
+															</tr>
+															<tr>
+																<td style="text-align:center">수정</td>
+																<td style="text-align:center">0회</td>
+																<td style="text-align:center">2014.02</td>
+																<td style="text-align:center">10</td>
+																<td style="text-align:center">400,000</td>
+																<td style="text-align:center">2014.02.28</td>
+																<td style="text-align:center">1회</td>
+																<td style="text-align:center">2014.03.01</td>
+																<td style="text-align:center">이번달 1회</td>
+																<td style="text-align:center">300,000 되었습니다</td>
+																<td style="text-align:center">다음달 2회</td>
+																<td style="text-align:center">100,000 추가됩니다</td>
+																<td style="text-align:center">2014.03.01</td>
+															</tr>
+															<tr>
+																<td style="text-align:center">수정</td>
+																<td style="text-align:center">0회</td>
+																<td style="text-align:center">2014.02</td>
+																<td style="text-align:center">10</td>
+																<td style="text-align:center">400,000</td>
+																<td style="text-align:center; color:blue">2014.02.28</td>
+																<td style="text-align:center">
+																	<select id="">
+																		<option value="0">없음</option>
+																	</select>
+																</td>
+																<td style="text-align:center">
+																	<input type="text" class="margin0 span12 fontmini datepicker" value="2014.03.01" />
+																</td>
+																<td style="text-align:center">이번달 
+																	<select id="">
+																		<option value="1">1회</option>
+																	</select>
+																</td>
+																<td style="text-align:center">
+																	<input type="text" class="margin0 span6 fontmini" style="font-color:red" value="200,000" />
+																	되었습니다
+																</td>
+																<td style="text-align:center">다음달
+																	<select id="">
+																		<option value="1">1회</option>
+																	</select>
+																</td>
+																<td style="text-align:center">
+																	<input type="text" class="margin0 span6 fontmini" style="font-color:red" value="200,000" disabled />
+																	추가됩니다
+																</td>
+																<td style="text-align:center">
+																	<input type="text" class="margin0 span12 fontmini datepicker" value="2014.03.01" />
+																</td>
+															</tr>
+															<tr>
+																<th colspan="4">내역 수정 사유</th>
+																<td colspan="9"><input id="modifyMsg" type="text" class="margin0 span12" placeholder="사유를 입력해주세요." /></td>
+															</tr>
+															<tr>
+																<td colspan="13" style="text-align:center">
+																	<button class="btn" onclick="saveModifyInfo();">저  장</button>
+																</td>
+															</tr>
+														</table>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -366,6 +455,7 @@
 									</div>
 								</div>
 
+								<!-------------------------------------------------------- -->
 								<!-- 2. 납부 내역 이력(확인) -->
 								<div class="tab-pane" id="paymentCheck_tab">
 									<div class="row-fluid">
