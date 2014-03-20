@@ -1,12 +1,12 @@
 <% var w = new Array(5,5,5,5,5,5,5,5,5,6,6,6,6,6,5,5,5,5,5); %>
 <table class="table table-bordered table-condensed" style="margin-bottom:0px">
-	<!--
+<!--
 	<colgroup>
 	<% for (i = 0 ; i < w.length; i++) { %>
 		<col width="<%= w[i] %>%">
 	<% } %>
 	</colgroup>
-	-->
+-->
 	<tr>
 		<th rowspan="2" style="text-align:center">선택</th>
 		<th rowspan="2" style="text-align:center">호수</th>
@@ -14,7 +14,7 @@
 		<th rowspan="2" style="text-align:center">년도/월</th>
 		<th rowspan="2" style="text-align:center">회차</th>
 		<th rowspan="2" style="text-align:center">합계금액</th>
-		<th rowspan="2" style="text-align:center">납부(입금)일</th>
+		<th rowspan="2" style="text-align:center">납부(예정)일</th>
 		<th colspan="5" style="text-align:center">납부처리</th>
 		<th colspan="4" style="text-align:center">연체내역</th>
 		<th rowspan="2" style="text-align:center">납부내역확인</th>
@@ -27,37 +27,40 @@
 		<th colspan="2" style="text-align:center">이번달</th>
 		<th colspan="2" style="text-align:center">다음달</th>
 	</tr>
-	<% for (i = 0; i < 4; i++) { %>
+	<% for (i = 0; i < data.length; i++) { %>
 	<tr>
-		<td><input type="checkbox" /></td>
-		<td>101</td>
-		<td>김호근</td>
-		<td>2014.02</td>
-		<td>10</td>
-		<td>300,000</td>
-		<% if (i < 2) { %>
-		<td style="color:green">2014.03.01</td>
-		<td>완납</td>
-		<td>없음</td>
-		<td>300,000</td>
-		<td>0</td>
-		<td style="color:green">2014.03.01</td>
+		<% if (data[i].checked == 1) { %>
+		<td style="text-align:center"><input type="checkbox" checked /></td>
 		<% } else { %>
-		<td style="color:red">2014.02.28</td>
-		<td>납부</td>
-		<td>2회</td>
-		<td style="color:red">100,000</td>
-		<td style="color:red">50,000</td>
-		<td style="color:red">2014.02.28</td>
+		<td style="text-align:center"><input type="checkbox" /></td>
 		<% } %>
-		<td>2월</td>
-		<td>0회</td>
-		<td>3월</td>
-		<td>0회</td>
-		<td><button class="btn btn-mini">확인</button></td>
+		<td style="text-align:center"><%= data[i].roomnum %></td>
+		<td style="text-align:center"><%= data[i].name %></td>
+		<td style="text-align:center"><%= data[i].year %>.<%= data[i].month %></td>
+		<td style="text-align:center"><%= data[i].number %></td>
+		<td style="text-align:center"><%= data[i].totalFee %></td>
+		<% if (data[i].payStatus == -1) { %>
+		<td style="text-align:center"><font style="color:green"><%= data[i].year %>.<%= data[i].month %>.<%= data[i].leasePayDate %></font></td>
+		<td style="text-align:center">완납</td>
+		<td style="text-align:center">없음</td>
+		<td style="text-align:center"><%= data[i].amountPay %></td>
+		<td style="text-align:center"><%= data[i].amountNoPay %></td>
+		<% } else { %>
+		<td style="text-align:center"><font style="color:red"><%= data[i].year %>.<%= data[i].month %>.<%= data[i].leasePayDate %></font></td>
+		<td style="text-align:center">납부</td>
+		<td style="text-align:center"><%= data[i].payStatus %>회</td>
+		<td style="text-align:center"><font style="color:red"><%= data[i].amountPay %></font></td>
+		<td style="text-align:center"><font style="color:red"><%= data[i].amountNoPay %></font></td>
+		<% } %>
+		<td style="text-align:center"><input type="text" class="margin0 span12 fontmini datepicker" value="<%= data[i].payDate %>" /></td>
+		<td style="text-align:center; color:gray"><%= data[i].month %>월</td>
+		<td style="text-align:center"><%= data[i].delayNumberNow %>회</td>
+		<td style="text-align:center; color:gray"><%= data[i].month + 1 %>월</td>
+		<td style="text-align:center"><%= data[i].delayNumberNext %>회</td>
+		<td style="text-align:center"><button class="btn btn-mini" onclick="goDetail('<%= bid %>', '<%= data[i].resident_id %>')">확인</button></td>
 	</tr>
 	<% } %>
- </table>  
+</table>  
 
 
 

@@ -57,26 +57,44 @@ function InitForm()
 	//$('#search_isEmpty').attr('checked', false);
 }
 
+function setCurInfo()
+{
+	curType = $('#search_type option:selected').text().replace('요금', '').trim();
+	curBid = Number($('#search_building').val().replace('b', ''));
+	curBName = $('#search_building option:selected').text();
+	curYear = $('#search_year').val();
+	curMonth = $('#search_month').val();
+}
+
 function getContents()
 {
-	//var year = $('#').val();
-	//var month = $('#').val();
+	doAjaxContents();
+}
+var paymentList;
+var doAjaxContents = function() {
+	var postData = {};
+	var csrftoken = $.cookie('csrftoken');
+	postData['csrfmiddlewaretoken'] = csrftoken;
+	postData['building_id'] = curBid;
+	postData['year'] = curYear;
+	postData['month'] = curMonth;
 
-	// db에서 정보 뽑고
-
-	var template = new EJS({url : '/static/ejs/03_01_payment_show.ejs'}).render();
-	$('#contents').html(template);
-	
-	$('.showDetail').click(function() {
-		$(location).attr('href', '/lease/payment/detail/');
-
+	$.ajax({
+		type : 'POST',
+		url : '/lease/payment/getInfo/',
+		data : postData,
+		success : function(result) {
+			paymentList = result;
+			var template = new EJS({url : '/static/ejs/03_01_payment_show.ejs'}).render({'data' : paymentList, 'bid' : curBid});
+			$('#contents').html(template);
+		},
+		error : function(msg) {
+			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
+		},
 	});
 }
 
-function showDetail(tab)
+function goDetail(bid, rid)
 {
-	$(location).attr('href', '/lease/payment/detail/');
+	$(location).attr('href', '/lease/show/payment/detail/'+bid+'/'+rid+'/');
 }
-
-
-

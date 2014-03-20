@@ -160,8 +160,10 @@ class WaterInfo(models.Model):
 class PaymentInfo(models.Model):
     resident = models.ForeignKey('ResidentInfo')
     building = models.ForeignKey('BuildingInfo')
+    checked = models.BooleanField()
     year = models.IntegerField()
     month = models.IntegerField()
+    number = models.IntegerField()
     totalFee = models.IntegerField()
     amountPay = models.IntegerField()
     amountNoPay = models.IntegerField()
@@ -172,19 +174,26 @@ class PaymentInfo(models.Model):
     delayNumberNow = models.IntegerField()
     delayNumberNext = models.IntegerField()
     payMsg = models.TextField()
+    modifyNumber = models.IntegerField()
+    class Meta:
+        unique_together = ('resident', 'building', 'year', 'month', 'payStatus')
 
 class PaymentModifyInfo(models.Model):
     payment = models.ForeignKey('PaymentInfo')
     modifyNumber = models.IntegerField()
+    year = models.IntegerField()
+    month = models.IntegerField()
     payStatus = models.IntegerField()
-    payDate = models.DateField()
+    payDate = models.DateField(null=True)
     delayNumberNow = models.IntegerField()
     delayNumberNext = models.IntegerField()
     amountPay = models.IntegerField()
     amountNoPay = models.IntegerField()
-    confirmDate = models.DateField()
+    confirmDate = models.DateField(null=True)
     modifyTime = models.DateTimeField()
     modifyMsg = models.TextField()
+    class Meta:
+        unique_together = ('payment', 'modifyNumber')
 
 
 

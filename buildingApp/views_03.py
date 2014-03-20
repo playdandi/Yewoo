@@ -442,13 +442,125 @@ def water_input_html(request):
 def payment_input_html(request):
     return render(request, '03_03_payment.html', setPostData(request))
 
-def payment_detail_html(request, bid, rid):
+## prettify data for payment
+def serialize_payment(result):
+    serialized = []
+    for i in range(len(result)):
+        if i > 0 and int(result[i].resident.id) == int(result[i-1].resident.id):
+            continue
+        data = {}
+        data['id'] = result[i].id
+        data['checked'] = int(result[i].checked)
+        data['roomnum'] = result[i].resident.buildingRoomNumber
+        data['resident_id'] = result[i].resident.id
+        data['name'] = result[i].resident.contractorName
+        data['year'] = result[i].year
+        data['month'] = result[i].month
+        data['number'] = result[i].number
+        data['totalFee'] = result[i].totalFee
+        data['leasePayDate'] = result[i].resident.leasePayDate
+        data['payStatus'] = result[i].payStatus
+        data['amountPay'] = result[i].amountPay
+        data['amountNoPay'] = result[i].amountNoPay
+        data['payDate'] = result[i].payDate
+        data['delayNumberNow'] = result[i].delayNumberNow
+        data['delayNumberNext'] = result[i].delayNumberNext
+        serialized.append(data)
+
+    # sort (by roomnum)
+    temp = [ (d['roomnum'], d) for d in serialized ]
+    temp2 = sorted(temp)
+    serialized = [y for (x, y) in temp2]
+
+    #for s in serialized:
+    #    print(s)
+
+    return serialized
+
+def payment_input_getinfo(request):
+    if request.method == 'POST':
+        y = int(request.POST['year'])
+        m = int(request.POST['month'])
+        bid = int(request.POST['building_id'])
+        data = PaymentInfo.objects.filter(building = bid, year = y, month = m).order_by('resident', '-payStatus')
+        return toJSON(serialize_payment(data))
+    return HttpResponse('NOT POST')
+
+
+
+def payment_detail_html(request, bid, rid, tab):
     param = {}
-    param['list'] = PaymentInfo.objects.filter(building = int(bid), resident = int(rid)).order_by('-id')
-    param['list_last'] = param['list'][len(param['list'])-1]
+    param['tab'] = int(tab)
+    param['bid'] = int(bid)
+    param['rid'] = int(rid)
+
+    # payment history list
+    param['list'] = PaymentInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
+    no = len(param['list'])
+    for p in param['list']:
+        if p.payDate == None:
+            p.payDate = ''
+        if p.confirmDate == None:
+            p.confirmDate = ''
+        p.no = no
+        no -= 1
+    param['list_last'] = param['list'][0]
+    param['list_delay'] = range(max(0, int(param['list_last'].delayNumberNow)-3), int(param['list_last'].delayNumberNow)+3)
+
+    # modify history list (only for the last payment)
     param['modify_list'] = PaymentModifyInfo.objects.filter(payment = int(param['list'][0].id))
+    for p in param['modify_list']:
+        if p.payDate == None:
+            p.payDate = ''
+        if p.confirmDate == None:
+            p.confirmDate = ''
     param['modify_list_last'] = param['modify_list'][len(param['modify_list'])-1]
+    param['modify_list_delay'] = range(max(0, int(param['modify_list_last'].delayNumberNow)-3), int(param['modify_list_last'].delayNumberNow)+3)
+    param['modify_max_num'] = int(param['modify_list_last'].modifyNumber) + 1
+
+    # modify messages
+    param['modify_msg'] = []
+    for i in range(1, len(param['modify_list'])):
+        d = {}
+        d['no'] = i
+        d['year'] = param['modify_list'][i].year
+        d['month'] = param['modify_list'][i].month
+        d['modifyNumber'] = param['modify_list'][i].modifyNumber
+        d['modifyMsg'] = param['modify_list'][i].modifyMsg
+        d['modifyTime'] = param['modify_list'][i].modifyTime
+        param['modify_msg'].append(d)
+
     return render(request, '03_03_payment_detail.html', param)
+
+
+# serialize data for payment modify info
+def serialize_paymentModifyInfo(result):
+    serialized = []
+    for i in range(len(result)):
+        if int(result[i].modifyNumber) == 0:
+            continue
+        data = {}
+        data['pid'] = result[i].payment.id
+        data['no'] = len(result) - i
+        data['year'] = result[i].year
+        data['month'] = result[i].month
+        data['modifyNumber'] = result[i].modifyNumber
+        data['modifyMsg'] = result[i].modifyMsg
+        data['modifyTime'] = result[i].modifyTime
+        serialized.append(data)
+    return serialized
+
+def payment_detail_modifyinfo(request):
+    if request.method == 'POST':
+        bid = int(request.POST['building_id'])
+        rid = int(request.POST['resident_id'])
+        paymentIds = PaymentInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id').values('id')
+        #print(paymentIds)
+        data = PaymentModifyInfo.objects.filter(payment__in = paymentIds).order_by('-id')
+        #print(data)
+        return toJSON(serialize_paymentModifyInfo(data))
+    return HttpResponse('NOT POST')
+
 
 
 '''
@@ -457,25 +569,8 @@ def payment_detail_save_input(request):
 def payment_detail_save_modify(request):
 '''
 
-'''
-def payment_detail_getinfo(request):
-    if request.method == 'POST':
-        type = str(request.POST['type'])
-        y = int(request.POST['year'])
-        m = int(request.POST['month'])
-        bid = int(request.POST['building_id'])
-        data = None
-        if type == "E":
-            data = ElectricityInfo.objects.filter(year = y, month = m, building = bid)
-            return toJSON(serialize_electricity(data))
-        elif type == "G":
-            data = GasInfo.objects.filter(year = y, month = m, building = bid)
-            return toJSON(serialize_gas(data))
-        elif type == "W":
-            data = WaterInfo.objects.filter(year = y, month = m, building = bid)
-            return toJSON(serialize_water(data))
 
-        return HttpResponse('NO Matched Type')
-    return HttpResponse('NOT POST')
-'''
+
+
+
 

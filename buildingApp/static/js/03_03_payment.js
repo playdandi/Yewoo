@@ -57,38 +57,25 @@ function InitForm()
 	//$('#search_isEmpty').attr('checked', false);
 }
 
-/*
-function getContents()
-{
-	//var year = $('#').val();
-	//var month = $('#').val();
-
-	// db에서 정보 뽑고
-
-	var template = new EJS({url : '/static/ejs/03_03_payment.ejs'}).render();
-	$('#contents').html(template);
-	
-	$('.showDetail').click(function() {
-		$(location).attr('href', '/lease/payment/detail/');
-
-	});
-}
-*/
 function showDetail(tab)
 {
 	$(location).attr('href', '/lease/payment/detail/');
 }
 
+function setCurInfo()
+{
+	curType = $('#search_type option:selected').text().replace('요금', '').trim();
+	curBid = Number($('#search_building').val().replace('b', ''));
+	curBName = $('#search_building option:selected').text();
+	curYear = $('#search_year').val();
+	curMonth = $('#search_month').val();
+}
 
 function getContents()
 {
-	var template = new EJS({url : '/static/ejs/03_03_payment_detail_tab1.ejs'}).render();
-	$('#no_pay_list').html(template);
-
-	//$('#payment_input').show();
-	//$('#payment_modify').show();
-	doAjaxContents(rid);
+	doAjaxContents();
 }
+var paymentList;
 var doAjaxContents = function() {
 	var postData = {};
 	var csrftoken = $.cookie('csrftoken');
@@ -102,10 +89,9 @@ var doAjaxContents = function() {
 		url : '/lease/payment/getInfo/',
 		data : postData,
 		success : function(result) {
-			EGW_E = result;
-			var template = new EJS({url : '/static/ejs/03_02_electricity.ejs'}).render({'data' : EGW_E, 'start' : 0});
+			paymentList = result;
+			var template = new EJS({url : '/static/ejs/03_03_payment.ejs'}).render({'data' : paymentList, 'bid' : curBid});
 			$('#contents').html(template);
-			$('#contents_modal').html(template);
 		},
 		error : function(msg) {
 			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
@@ -113,3 +99,17 @@ var doAjaxContents = function() {
 	});
 }
 
+function simpleInput(idx)
+{
+	idx = Number(idx);
+	paymentList[idx]
+	var template = new EJS({url : '/static/ejs/03_03_payment_simpleInput.ejs'}).render({'data' : paymentList[idx], 'bid' : curBid});
+	$('#contents_modal_simpleinput').html(template);
+
+	$('#modal_simpleinput').modal();
+}
+
+function goDetail(bid, rid, type)
+{
+	$(location).attr('href', '/lease/payment/detail/'+bid+'/'+rid+'/'+type+'/');
+}

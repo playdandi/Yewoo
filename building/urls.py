@@ -48,6 +48,7 @@ urlpatterns = patterns('',
     url(r'^lease/input/getEGWInfo/$', get_egw_info),
 
     url(r'^lease/payment/$', payment_input_html),
-    url(r'^lease/payment/detail/(?P<bid>\d+)/(?P<rid>\d+)/$', payment_detail_html),
-    #url(r'^lease/payment/getInfo/$', payment_detail_getinfo),
+    url(r'^lease/payment/getInfo/$', payment_input_getinfo),
+    url(r'^lease/payment/detail/(?P<bid>\d+)/(?P<rid>\d+)/(?P<tab>\d+)/$', payment_detail_html),
+    url(r'^lease/payment/detail/getModifyInfo/$', payment_detail_modifyinfo),
 )

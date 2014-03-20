@@ -1,0 +1,18 @@
+<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+	<tr>
+		<th style="text-align:center" width="5%">No.</th>
+		<th style="text-align:center" width="8%">년도/월</th>
+		<th style="text-align:center" width="10%">수정횟수</th>
+		<th style="text-align:center" width="62%">내용</th>
+		<th style="text-align:center" width="15%">시간</th>
+	</tr>
+	<% for (i = 0; i < data.length; i++) { %>
+	<tr>
+		<td style="text-align:center"><%= data[i].no %></td>
+		<td style="text-align:center"><%= data[i].year %>.<%= data[i].month %></td>
+		<td style="text-align:center"><%= data[i].modifyNumber %>회 수정</td>
+		<td style="text-align:center"><%= data[i].modifyMsg %></td>
+		<td style="text-align:center"><%= data[i].modifyTime %></td>
+	</tr>
+	<% } %>
+</table>

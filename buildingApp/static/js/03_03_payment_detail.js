@@ -68,41 +68,70 @@ function setCurInfo()
 }
 */
 
-function getContents(rid)
+function getContents(bid, rid)
 {
-	var template = new EJS({url : '/static/ejs/03_03_payment_detail_tab1.ejs'}).render();
-	$('#no_pay_list').html(template);
-
-	//$('#payment_input').show();
-	//$('#payment_modify').show();
-	doAjaxContents(rid);
+	doAjaxContentsModifyInfo(bid, rid);
 }
-/*
-var doAjaxContents = function(rid) {
+var modifyInfo;
+var doAjaxContentsModifyInfo = function(bid, rid) {
 	var postData = {};
 	var csrftoken = $.cookie('csrftoken');
 	postData['csrfmiddlewaretoken'] = csrftoken;
+	postData['building_id'] = bid;
 	postData['resident_id'] = rid;
-	postData['building_id'] = curBid;
-	postData['year'] = curYear;
-	postData['month'] = curMonth;
 
 	$.ajax({
 		type : 'POST',
-		url : '/lease/payment/getInfo/',
+		url : '/lease/payment/detail/getModifyInfo/',
 		data : postData,
 		success : function(result) {
-			EGW_E = result;
-			var template = new EJS({url : '/static/ejs/03_02_electricity.ejs'}).render({'data' : EGW_E, 'start' : 0});
-			$('#contents').html(template);
-			$('#contents_modal').html(template);
+			modifyInfo = result;
+			//var template = new EJS({url : '/static/ejs/03_02_electricity.ejs'}).render({'data' : EGW_E, 'start' : 0});
+			//$('#contents').html(template);
+			//$('#contents_modal').html(template);
 		},
 		error : function(msg) {
 			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
 		},
 	});
 }
-*/
+function showModifyInfo(pid)
+{
+	var data = [];
+	pid = Number(pid);
+	for (i = 0 ; i < modifyInfo.length; i++) {
+		if (modifyInfo[i].pid == pid)
+			data.push(modifyInfo[i]);
+	}
+
+	var template = new EJS({url : '/static/ejs/03_03_payment_detail_tab2_modify.ejs'}).render({'data' : data});
+	$('#contents_modal').html(template);
+	data = null;
+
+	$('#modal').modal();
+}
+
+function doInput()
+{
+	$('#payment_basic').hide();
+	$('#payment_input').show();
+	$('#payment_modify').hide();
+
+	$('#payment_reason_basic').hide();
+	$('#payment_reason').show();
+	$('#modify_reason').hide();
+}
+function doModify()
+{
+	$('#payment_basic').hide();
+	$('#payment_input').hide();
+	$('#payment_modify').show();
+
+	$('#payment_reason_basic').hide();
+	$('#payment_reason').hide();
+	$('#modify_reason').show();
+}
+
 function saveInputInfo()
 {
 	// 저장 후....
@@ -110,8 +139,8 @@ function saveInputInfo()
 	if(confirm('저장되었습니다.\n납부 현황 화면(이전화면)으로 돌아가시겠습니까?')) {
 	}
 
-	$('#payment_input').hide();
-	$('#payment_modify').hide();
+	//$('#payment_input').hide();
+	//$('#payment_modify').hide();
 }
 function saveModifyInfo()
 {
@@ -120,8 +149,8 @@ function saveModifyInfo()
 	if(confirm('저장되었습니다.\n납부 현황 화면(이전화면)으로 돌아가시겠습니까?')) {
 	}
 
-	$('#payment_input').hide();
-	$('#payment_modify').hide();
+	//$('#payment_input').hide();
+	//$('#payment_modify').hide();
 }
 
 

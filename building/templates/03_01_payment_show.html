@@ -91,12 +91,12 @@
 		margin-bottom:0px !important;
 		font-family : 'Malgun Gothic' !important;
 	}
-	#myModal {
+	#modal_simpleinput {
 		top : 10%;
-		width : 80%;
+		width : 60%;
 		margin : 0px 0px 0px 0px;
 		padding : 0px 0px 0px 0px;
-		left : 10%;
+		left : 20%;
 	}
 	.fontmini {
 		text-align : center;
@@ -175,7 +175,7 @@
 				<div class="span11">
 					<ul class="breadcrumb">
 						<li>
-							<a href="#">납부 내역 확인</a>
+							<a href="#">임대 내역 확인</a>
 						</li>
 					</ul>
 				</div>
@@ -189,8 +189,8 @@
 									<div style="margin-right:5px; float:left">내역 분류</div>
 									<select id="search_type" class="margin0" style="width:100px">
 										<option value="0">임대 내역</option>
-										<option value="1">최종 고지 내역</option>
-										<option value="2" selected>납부 내역</option>
+										<option value="1">최종고지 내역</option>
+										<option value="2" selected>최종납부 내역</option>
 										<option value="3">전기 요금</option>
 										<option value="4">가스 요금</option>
 										<option value="5">수도 요금</option>
@@ -248,11 +248,11 @@
 								<tr style="background-color:#dbdbd2">
 									<td width="60%">
 										<div style="font-size:0.8em">건물명/기간</div>
-										<div><h3>No.1 루체시티 1 / 2014.02 / 납부 확인</h3></div>
+										<div><h3>No.1 루체시티 1 / <font style="color:red">2014.02 / 납부 확인</font></h3></div>
 									</td>
 									<td width="40%">
 										<div style="font-size:0.8em">납부 현황</div>
-										<div><h3>총 40개, 현재 22개 납부, 미납 18개</h3></div>
+										<div><h3>총 <font style="color:red">40</font>개, 현재 <font style="color:red">22</font>개 납부, 미납 <font style="color:red">18개</font></h3></div>
 									</td>
 								</tr>
 							 </table>  
@@ -278,17 +278,17 @@
 										</div>
 									</td>
 									<td width="27%">
-										당일 납부: 총
-										<font style="color:red">20</font>개, 오늘
+										당일 납부: 총 
+										<font style="color:red">20</font>개, 오늘 
 										<font style="color:red">12</font>개
 									</td>
 									<td width="27%">
 										전체 납부: 총
-										<font style="color:red">40</font>개, 누적
+										<font style="color:red">40</font>개, 누적 
 										<font style="color:red">15</font>개
 									</td>
 									<td width="5%" style="vertical-align:middle">이력</td>
-									<td width="7%"><button class="btn btn-small" onclick="">보기</button>
+									<td width="7%"><button class="btn btn-small" data-toggle="modal" data-target="#modal_history">보기</button>
 								</tr>
 							</table>
 						</div>
@@ -326,19 +326,15 @@
 		</div>
 	</div>
 	
-	
-	<!-- 미리보기 (미리보기 버튼 눌렀을 때 보이는 큰 팝업창) -->
-	<div class="modal hide fade" id="myModal">
+	<input type="hidden" value="{{ csrf_token }}" />	
+	<!-- 미리보기 (변경 이력) -->
+	<div class="modal hide fade" id="modal_history">
 		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal">×</button>
+			<button type="button" class="close" data-dismiss="modal">x</button>
 			<h3></h3>
 		</div>
-		<div class="modal-body">
-
+		<div id="contents_modal_history" class="modal-body">
 		</div>
-		<!--<div class="modal-footer">
-			<a href="#" class="btn" data-dismiss="modal">닫기</a>
-		</div>-->
 	</div>
 	
 	<div class="clearfix"></div>
@@ -415,17 +411,7 @@
 					}
 				});
 
-				// 업로드 날짜 datepicker
-				$('#uploadDate').change(function() {
-					var mdy = $('#uploadDate').val().split('/');
-					$('#uploadDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
-					$('#uploadDate_modal').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
-				});
-				$('#uploadDate_modal').change(function() {
-					var mdy = $('#uploadDate_modal').val().split('/');
-					$('#uploadDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
-					$('#uploadDate_modal').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
-				});
+				setCurInfo();
 
 				// ejs template 불러오기
 				getContents();
