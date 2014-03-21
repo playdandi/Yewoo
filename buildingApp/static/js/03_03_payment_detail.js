@@ -86,9 +86,6 @@ var doAjaxContentsModifyInfo = function(bid, rid) {
 		data : postData,
 		success : function(result) {
 			modifyInfo = result;
-			//var template = new EJS({url : '/static/ejs/03_02_electricity.ejs'}).render({'data' : EGW_E, 'start' : 0});
-			//$('#contents').html(template);
-			//$('#contents_modal').html(template);
 		},
 		error : function(msg) {
 			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
@@ -134,28 +131,122 @@ function doModify()
 
 function saveInputInfo()
 {
-	// 저장 후....
-	
-	if(confirm('저장되었습니다.\n납부 현황 화면(이전화면)으로 돌아가시겠습니까?')) {
+	var param = {};
+	param['payStatus'] = Number($('#input_payStatus').val().trim());
+	param['payDate'] = $('#input_payDate').val().trim();
+	param['delayNumberNow'] = Number($('#input_delayNumberNow').val().trim());
+	param['delayNumberNext'] = Number($('#input_delayNumberNext').val().trim());
+	param['amountPay'] = Number($('#input_amountPay').val().trim());
+	param['amountNoPay'] = Number($('#input_amountNoPay').val().trim());
+	param['confirmDate'] = $('#input_confirmDate').val().trim();
+	param['payMsg'] = $('#input_payMsg').val().trim();
+
+	// error check
+	if (param['delayNumberNow'] + 1 != param['delayNumberNext']) {
+		alert('이번달 연체회차, 다음달 연체회차가 맞지 않습니다.');
+		return;
+	}
+	if (param['amountPay'] <= 0 || param['amountPay'] > Number($('#input_totalFee').html().trim())) {
+		alert('입금액은 0원 ~ 합계금액 사이의 값만 입력 가능합니다.');
+		return;
+	}
+	if (param['payDate'] == '' || param['confirmDate'] == '' || param['payMsg'] == '') {
+		alert('모든 칸에 값을 입력해주세요.');
+		return;
 	}
 
-	//$('#payment_input').hide();
-	//$('#payment_modify').hide();
+	doAjaxSaveInput(param);
 }
-function saveModifyInfo()
+
+var doAjaxSaveInput = function(param) {
+	var csrftoken = $.cookie('csrftoken');
+	param['csrfmiddlewaretoken'] = csrftoken;
+
+	$.ajax({
+		type : 'POST',
+		url : '/lease/payment/detail/saveInput/',
+		data : postData,
+		success : function(result) {
+			if(confirm('저장되었습니다.\n납부 현황 화면(이전화면)으로 돌아가시겠습니까?')) {
+			}
+			else 
+				$(location).reload();
+		},
+		error : function(msg) {
+			alert('실패하였습니다... 다시 시도해 주세요.');
+		},
+	});
+};
+
+
+function saveModifyInfo(pid)
 {
-	// 저장 후....
-	
-	if(confirm('저장되었습니다.\n납부 현황 화면(이전화면)으로 돌아가시겠습니까?')) {
+	var param = {};
+	param['payment_id'] = Number(pid);
+	param['modifyNumber'] = Number($('#modify_modifyNumber').html().trim());
+	var yymm = $('#modify_ym').html().trim();
+	param['year'] = Number(yymm.split('.')[0].trim());
+	param['month'] = Number(yymm.split('.')[1].trim());
+	param['payStatus'] = Number($('#modify_payStatus').val().trim());
+	param['payDate'] = $('#modify_payDate').val().trim();
+	param['delayNumberNow'] = Number($('#modify_delayNumberNow').val().trim());
+	param['delayNumberNext'] = Number($('#modify_delayNumberNext').val().trim());
+	param['amountPay'] = Number($('#modify_amountPay').val().trim());
+	param['amountNoPay'] = Number($('#modify_amountNoPay').val().trim());
+	param['confirmDate'] = $('#modify_confirmDate').val().trim();
+	param['modifyMsg'] = $('#modify_modifyMsg').val().trim();
+	// 'modifyTime'은 서버 상에서 저장하는 시점.
+
+	// error check
+	if (param['delayNumberNow'] + 1 != param['delayNumberNext']) {
+		alert('이번달 연체회차, 다음달 연체회차가 맞지 않습니다.');
+		return;
+	}
+	if (param['amountPay'] < 0 || param['amountPay'] > Number($('#modify_totalFee').html().trim())) {
+		alert('입금액은 0원 ~ 합계금액 사이의 값만 입력 가능합니다.');
+		return;
+	}
+	if (param['payDate'] == '' || param['confirmDate'] == '' || param['modifyMsg'] == '') {
+		alert('모든 칸에 값을 입력해주세요.');
+		return;
 	}
 
-	//$('#payment_input').hide();
-	//$('#payment_modify').hide();
+	doAjaxSaveModify(param);
 }
 
+var doAjaxSaveModify = function(param) {
+	var csrftoken = $.cookie('csrftoken');
+	param['csrfmiddlewaretoken'] = csrftoken;
+
+	$.ajax({
+		type : 'POST',
+		url : '/lease/payment/detail/saveModify/',
+		data : param,
+		success : function(result) {
+			if(confirm('저장되었습니다.\n납부 현황 화면(이전화면)으로 돌아가시겠습니까?')) {
+			}
+			else 
+				$(location).reload();
+		},
+		error : function(msg) {
+			alert('실패하였습니다... 다시 시도해 주세요.');
+		},
+	});
+};
 
 
-
-
-
+// 입금액-미납액 자동 입력
+$('#modify_amountPay').keyup(function() {
+	adjust_amount_pay_nopay($(this).val(), 'modify_totalFee', 'modify_amountNoPay');
+});
+$('#input_amountPay').keyup(function() {
+	adjust_amount_pay_nopay($(this).val(), 'input_totalFee', 'input_amountNoPay');
+});
+function adjust_amount_pay_nopay(val, total, id)
+{
+	val = val.match(/[0-9]/g).join('');
+	var amountPay = Number(val.split(',').join('').trim());
+	var totalFee = Number($('#'+total).html().trim());
+	$('#'+id).val(totalFee - amountPay);
+}
 

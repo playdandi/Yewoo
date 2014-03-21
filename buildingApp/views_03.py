@@ -462,7 +462,11 @@ def serialize_payment(result):
         data['payStatus'] = result[i].payStatus
         data['amountPay'] = result[i].amountPay
         data['amountNoPay'] = result[i].amountNoPay
-        data['payDate'] = result[i].payDate
+        date = result[i].payDate
+        if date == None:
+            data['payDate'] = ''
+        else:
+            data['payDate'] = str(date.year)+'.'+str(date.month)+'.'+str(date.day)
         data['delayNumberNow'] = result[i].delayNumberNow
         data['delayNumberNext'] = result[i].delayNumberNext
         serialized.append(data)
@@ -471,9 +475,6 @@ def serialize_payment(result):
     temp = [ (d['roomnum'], d) for d in serialized ]
     temp2 = sorted(temp)
     serialized = [y for (x, y) in temp2]
-
-    #for s in serialized:
-    #    print(s)
 
     return serialized
 
@@ -500,8 +501,12 @@ def payment_detail_html(request, bid, rid, tab):
     for p in param['list']:
         if p.payDate == None:
             p.payDate = ''
+        else:
+            p.payDate = str(p.payDate.year)+'.'+str(p.payDate.month)+'.'+str(p.payDate.day)
         if p.confirmDate == None:
             p.confirmDate = ''
+        else:
+            p.confirmDate = str(p.confirmDate.year)+'.'+str(p.confirmDate.month)+'.'+str(p.confirmDate.day)
         p.no = no
         no -= 1
     param['list_last'] = param['list'][0]
@@ -512,10 +517,14 @@ def payment_detail_html(request, bid, rid, tab):
     for p in param['modify_list']:
         if p.payDate == None:
             p.payDate = ''
+        else:
+            p.payDate = str(p.payDate.year)+'.'+str(p.payDate.month)+'.'+str(p.payDate.day)
         if p.confirmDate == None:
             p.confirmDate = ''
+        else:
+            p.confirmDate = str(p.confirmDate.year)+'.'+str(p.confirmDate.month)+'.'+str(p.confirmDate.day)
     param['modify_list_last'] = param['modify_list'][len(param['modify_list'])-1]
-    param['modify_list_delay'] = range(max(0, int(param['modify_list_last'].delayNumberNow)-3), int(param['modify_list_last'].delayNumberNow)+3)
+    param['modify_list_delay'] = range(max(0, int(param['modify_list_last'].delayNumberNow)-3), int(param['modify_list_last'].delayNumberNow)+3+1)
     param['modify_max_num'] = int(param['modify_list_last'].modifyNumber) + 1
 
     # modify messages
@@ -527,7 +536,8 @@ def payment_detail_html(request, bid, rid, tab):
         d['month'] = param['modify_list'][i].month
         d['modifyNumber'] = param['modify_list'][i].modifyNumber
         d['modifyMsg'] = param['modify_list'][i].modifyMsg
-        d['modifyTime'] = param['modify_list'][i].modifyTime
+        time = param['modify_list'][i].modifyTime
+        d['modifyTime'] = str(time.year)+'.'+str(time.month)+'.'+str(time.day)
         param['modify_msg'].append(d)
 
     return render(request, '03_03_payment_detail.html', param)
@@ -546,7 +556,8 @@ def serialize_paymentModifyInfo(result):
         data['month'] = result[i].month
         data['modifyNumber'] = result[i].modifyNumber
         data['modifyMsg'] = result[i].modifyMsg
-        data['modifyTime'] = result[i].modifyTime
+        time = result[i].modifyTime
+        data['modifyTime'] = str(time.year)+'.'+str(time.month)+'.'+str(time.day)
         serialized.append(data)
     return serialized
 
@@ -563,12 +574,46 @@ def payment_detail_modifyinfo(request):
 
 
 
-'''
-def payment_detail_save_input(request):
+def payment_detail_saveInput(request):
+    pass
 
-def payment_detail_save_modify(request):
-'''
+def payment_detail_saveModify(request):
+    if request.method == 'POST':
+        # insert new modify info
+        import datetime
+        elem = PaymentModifyInfo()
+        elem.payment = PaymentInfo.objects.get(id = int(request.POST['payment_id']))
+        elem.modifyNumber = int(request.POST['modifyNumber'])
+        elem.year = int(request.POST['year'])
+        elem.month = int(request.POST['month'])
+        elem.payStatus = int(request.POST['payStatus'])
+        elem.payDate = request.POST['payDate'].replace('.', '-')
+        elem.delayNumberNow = int(request.POST['delayNumberNow'])
+        elem.delayNumberNext = int(request.POST['delayNumberNext'])
+        elem.amountPay = int(request.POST['amountPay'])
+        elem.amountNoPay = int(request.POST['amountNoPay'])
+        elem.confirmDate = request.POST['confirmDate'].replace('.', '-')
+        elem.modifyMsg = str(request.POST['modifyMsg'])
+        d = datetime.datetime.now()
+        elem.modifyTime = str(d.year)+'-'+str(d.month)+'-'+str(d.day)
+        elem.save()
 
+        # update payment info by using the newly modified info
+        pay = elem.payment
+        pay.payStatus = elem.payStatus
+        pay.payDate = elem.payDate
+        pay.delayNumberNow = elem.delayNumberNow
+        pay.delayNumberNext = elem.delayNumberNext
+        pay.amountPay = elem.amountPay
+        pay.amountNoPay = elem.amountNoPay
+        pay.confirmDate = elem.confirmDate
+        pay.modifyNumber = elem.modifyNumber
+        pay.confirmStatus = '2'
+        pay.save()
+        
+        #return toJSON([])
+        return HttpResponse('OK')
+    return HttpResponse('NOT POST')
 
 
 

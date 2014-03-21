@@ -370,10 +370,10 @@
 															<tr>
 																<td style="text-align:center">{{ list_last.year }}.{{ list_last.month }}</td>
 																<td style="text-align:center">{{ list_last.number }}</td>
-																<td style="text-align:center">{{ list_last.totalFee }}</td>
+																<td style="text-align:center"><div id="input_totalFee">{{ list_last.totalFee }}</div></td>
 																<td style="text-align:center; color:blue">{{ list_last.year }}.{{ list_last.month }}.{{ list_last.resident.leasePayDate }}</td>
 																<td style="text-align:center">
-																	<select id="" class="margin0 span12" {% if list_last.payStatus == -1 %}disabled{% endif %}>
+																	<select id="input_payStatus" class="margin0 span12" {% if list_last.payStatus == -1 %}disabled{% endif %}>
 																		<option value="0" {% if list_last.payStatus == 0 %}selected{% endif %}>없음</option>
 																		<option value="1" {% if list_last.payStatus == 1 %}selected{% endif %}>1회</option>
 																		<option value="2" {% if list_last.payStatus == 2 %}selected{% endif %}>2회</option>
@@ -382,10 +382,10 @@
 																		<option value="5" {% if list_last.payStatus == 5 %}selected{% endif %}>5회</option>
 																	</select>
 																</td>
-																<td style="text-align:center"><input id="paydate" type="text" class="margin0 span12 fontmini datepicker" value="{{ list_last.payDate }}" /></td>
+																<td style="text-align:center"><input id="input_payDate" type="text" class="margin0 span12 fontmini datepicker" value="{{ list_last.payDate }}" /></td>
 																<td style="text-align:center">
 																	이번달
-																	<select id="delayNumberNow" class="margin0 span6">
+																	<select id="input_delayNumberNow" class="margin0 span6">
 																		<option value="0" {% if list_last.delayNumberNow == 0 %}selected{% endif %}>0회</option>
 																		<option value="1" {% if list_last.delayNumberNow == 1 %}selected{% endif %}>1회</option>
 																		<option value="2" {% if list_last.delayNumberNow == 2 %}selected{% endif %}>2회</option>
@@ -394,10 +394,10 @@
 																		<option value="5" {% if list_last.delayNumberNow == 5 %}selected{% endif %}>5회</option>
 																	</select>
 																</td>
-																<td style="text-align:center"><input id="amountPay" type="text" class="margin0 span6 fontmini" value="{{ list_last.amountPay }}"/>되었습니다</td>
+																<td style="text-align:center"><input id="input_amountPay" type="text" class="margin0 span6 fontmini" value="{{ list_last.amountPay }}"/>되었습니다</td>
 																<td style="text-align:center">
 																	다음달
-																	<select id="delayNumberNext" class="margin0 span6">
+																	<select id="input_delayNumberNext" class="margin0 span6">
 																		<option value="0" {% if list_last.delayNumberNext == 0 %}selected{% endif %}>0회</option>
 																		<option value="1" {% if list_last.delayNumberNext == 1 %}selected{% endif %}>1회</option>
 																		<option value="2" {% if list_last.delayNumberNext == 2 %}selected{% endif %}>2회</option>
@@ -406,12 +406,12 @@
 																		<option value="5" {% if list_last.delayNumberNext == 5 %}selected{% endif %}>5회</option>
 																	</select>
 																</td>
-																<td style="text-align:center"><input id="amountNoPay" type="text" class="margin0 span6 fontmini" value="{{ list_last.amountNoPay }}" disabled />추가됩니다</td>
-																<td style="text-align:center"><input id="confirmdate" type="text" class="margin0 span12 fontmini datepicker" value="" /></td>
+																<td style="text-align:center"><input id="input_amountNoPay" type="text" class="margin0 span6 fontmini" value="{{ list_last.amountNoPay }}" disabled />추가됩니다</td>
+																<td style="text-align:center"><input id="input_confirmDate" type="text" class="margin0 span12 fontmini datepicker" value="" /></td>
 															</tr>
 															<tr>
 																<th colspan="3">납부 처리 사유</th>
-																<td colspan="8"><input id="paymentMsg" type="text" class="margin0 span12" placeholder="사유를 입력해주세요." /></td>
+																<td colspan="8"><input id="input_payMsg" type="text" class="margin0 span12" placeholder="사유를 입력해주세요." /></td>
 															</tr>
 															<tr>
 																<td colspan="11" style="text-align:center">
@@ -441,7 +441,7 @@
 															<tr>
 																<td style="text-align:center">수정</td>
 																<td style="text-align:center">{{ data.modifyNumber }}회</td>
-																<td style="text-align:center">{{ list_last.year }}.{{ list_last.month }}</td>
+																<td style="text-align:center"><div id="modify_ym">{{ list_last.year }}.{{ list_last.month }}</div></td>
 																<td style="text-align:center">{{ list_last.number }}</td>
 																<td style="text-align:center">{{ list_last.totalFee }}</td>
 																<td style="text-align:center">{{ list_last.year }}.{{ list_last.month }}.{{ list_last.resident.leasePayDate }}</td>
@@ -456,13 +456,13 @@
 															{% endfor %}
 															<tr>
 																<td style="text-align:center">수정</td>
-																<td style="text-align:center">{{ modify_max_num }}회</td>
+																<td style="text-align:center"><div id="modify_modifyNumber">{{ modify_max_num }}</div>회</td>
 																<td style="text-align:center">{{ list_last.year}}.{{ list_last.month }}</td>
 																<td style="text-align:center">{{ list_last.number }}</td>
-																<td style="text-align:center">{{ list_last.totalFee }}</td>
-																<td style="text-align:center; color:blue">{{ list_last.year }}.{{ list_last.month }}.{{ list_last.resident_leasePayDate }}</td>
+																<td style="text-align:center"><div id="modify_totalFee">{{ list_last.totalFee }}</div></td>
+																<td style="text-align:center; color:blue">{{ list_last.year }}.{{ list_last.month }}.{{ list_last.resident.leasePayDate }}</td>
 																<td style="text-align:center">
-																	<select id="">
+																	<select id="modify_payStatus" class="margin0" style="width:100%">
 																		<option value="0">없음</option>
 																		<option value="1">1회</option>
 																		<option value="2">2회</option>
@@ -472,41 +472,41 @@
 																	</select>
 																</td>
 																<td style="text-align:center">
-																	<input type="text" class="margin0 span12 fontmini datepicker" value="{{ modify_list_last.payDate }}" />
+																	<input id="modify_payDate" type="text" class="margin0 span12 fontmini datepicker" value="{{ modify_list_last.payDate }}" />
 																</td>
 																<td style="text-align:center">이번달 
-																	<select id="">
+																	<select id="modify_delayNumberNow" class="margin0" style="width:100%">
 																		{% for n in modify_list_delay %}
 																		<option value="{{ n }}" {% if modify_list_last.delayNumberNow == n %}selected{% endif %}>{% if n == 0 %}없음{% else %}{{ n }}회{% endif %}</option>
 																		{% endfor %}
 																	</select>
 																</td>
 																<td style="text-align:center">
-																	<input type="text" class="margin0 span6 fontmini" style="font-color:red" value="{{ modify_list_last.amountPay }}" />
+																	<input id="modify_amountPay" type="text" class="margin0 span6 fontmini" style="font-color:red" value="{{ modify_list_last.amountPay }}" />
 																	되었습니다
 																</td>
 																<td style="text-align:center">다음달
-																	<select id="">
+																	<select id="modify_delayNumberNext" class="margin0" style="width:100%">
 																		{% for n in modify_list_delay %}
-																		<option value="{{ n }}" {% if modify_list_last.delayNumberNow == n %}selected{% endif %}>{% if n == 0 %}없음{% else %}{{ n }}회{% endif %}</option>
+																		<option value="{{ n }}" {% if modify_list_last.delayNumberNext == n %}selected{% endif %}>{% if n == 0 %}없음{% else %}{{ n }}회{% endif %}</option>
 																		{% endfor %}
 																	</select>
 																</td>
 																<td style="text-align:center">
-																	<input type="text" class="margin0 span6 fontmini" style="font-color:red" value="{{ modify_list_last.amountNoPay }}" disabled />
+																	<input id="modify_amountNoPay" type="text" class="margin0 span6 fontmini" style="font-color:red" value="{{ modify_list_last.amountNoPay }}" disabled />
 																	추가됩니다
 																</td>
 																<td style="text-align:center">
-																	<input type="text" class="margin0 span12 fontmini datepicker" value="{{ modify_list_last.confirmDate }}" />
+																	<input id="modify_confirmDate" type="text" class="margin0 span12 fontmini datepicker" value="{{ modify_list_last.confirmDate }}" />
 																</td>
 															</tr>
 															<tr>
 																<th colspan="4">내역 수정 사유</th>
-																<td colspan="9"><input id="modifyMsg" type="text" class="margin0 span12" placeholder="사유를 입력해주세요." /></td>
+																<td colspan="9"><input id="modify_modifyMsg" type="text" class="margin0 span12" placeholder="사유를 입력해주세요." /></td>
 															</tr>
 															<tr>
 																<td colspan="13" style="text-align:center">
-																	<button class="btn" onclick="saveModifyInfo();">저  장</button>
+																	<button class="btn" onclick="saveModifyInfo('{{ modify_list_last.payment.id }}');">저  장</button>
 																</td>
 															</tr>
 														</table>
@@ -739,7 +739,7 @@
 														<td style="text-align:center">{{ data.amountNoPay }}</td>
 														<td style="text-align:center">{{ data.confirmDate }}</td>
 														<td style="text-align:center">미납</td>
-														<td style="text-align:center">{{ data.delayNumberNow }}</td>
+														<td style="text-align:center">{{ data.delayNumberNow }}회</td>
 														<td style="text-align:center">납부</td>
 														<td style="text-align:center">{% if data.payStatus <= 0 %}0{% else %}{{ data.payStatus }}{% endif %}회</td>
 														<td style="text-align:center">{% if data.payStatus == -1 %}납부(완납){% elif data.payStatus == 0 %}미납{% else %}부분 납부{% endif %}</td>
@@ -848,11 +848,11 @@
 				// show sidebar
 				show_sidebar();
 
-				$('#paydate').change(function() {
+				$('#modify_payDate').change(function() {
 					var mdy = $(this).val().split('/');
 					$(this).val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
 				});
-				$('#confirmdate').change(function() {
+				$('#modify_confirmDate').change(function() {
 					var mdy = $(this).val().split('/');
 					$(this).val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
 				});

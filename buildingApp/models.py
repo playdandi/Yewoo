@@ -190,7 +190,7 @@ class PaymentModifyInfo(models.Model):
     amountPay = models.IntegerField()
     amountNoPay = models.IntegerField()
     confirmDate = models.DateField(null=True)
-    modifyTime = models.DateTimeField()
+    modifyTime = models.DateField()
     modifyMsg = models.TextField()
     class Meta:
         unique_together = ('payment', 'modifyNumber')
