@@ -225,7 +225,7 @@
 								</td>
 								<td width="14%">
 									<div>
-										<button class="btn btn-small" onclick="showLeaseInfo();">조회</button>
+										<button class="btn btn-small" onclick="showLeaseInfo(false);">조회</button>
 										<button class="btn btn-small" onclick="InitForm();">초기화</button>
 									</div>
 								</td>
@@ -239,27 +239,14 @@
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
 						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
-								<colgroup>
-									<col width="10%">
-									<col width="17%">
-									<col width="13%">
-									<col width="10%">
-									<col width="10%">
-									<col width="10%">
-									<col width="6%">
-									<col width="6%">
-									<col width="6%">
-									<col width="6%">
-									<col width="6%">
-								</colgroup>
 								<tr style="background-color:#dbdbd2">
-									<td colspan="6">
+									<td width="60%">
 										<div style="font-size:0.8em">건물명/기간</div>
-										<div><h3>No.1 루체시티 1 / 2014.01 / 고지 입력 현황</h3></div>
+										<div><h3>No.{{ search_building_id }} {{ cur_building_name }} / <font style="color:red">{{ search_year }}.{{ search_month }}</font> / <font style="color:red">고지 입력 현황</font></h3></div>
 									</td>
-									<td colspan="5">
+									<td width="40%">
 										<div style="font-size:0.8em">고지 입력 현황</div>
-										<div><h3>총 40개, 현재 22개 완료, 미완료 18개</h3></div>
+										<div><h3>총 <font style="color:red">40</font>개, 현재 <font style="color:red">22</font>개 완료, 미완료 <font style="color:red">18</font>개</h3></div>
 									</td>
 								</tr>
 							 </table>  
@@ -287,30 +274,32 @@
 								</colgroup>
 								<tr>
 									<th style="text-align:center">입력 확인</th>
-									<th style="text-align:center">입력 완료일
-                                                                                <input id="uploadDate" type="text" class="margin0 input-small datepicker" placeholder="날짜를 입력하세요." />
-                                                                                <a href="#" title="입력 완료일을 선택하세요." data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a></th>
+									<th style="text-align:center">
+										입력 완료일
+										<input id="uploadDate" type="text" class="margin0 input-small datepicker" placeholder="날짜를 입력하세요." />
+										<a href="#" title="입력 완료일을 선택하세요." data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a>
+									</th>
 									<th style="text-align:center">당일 완료 : 총 <font style="color:red">20</font>개, 오늘 <font style="color:red">12</font>개</th>
 									<th style="text-align:center">전체 완료 : 총 <font style="color:red">40</font>개, 누적 <font style="color:red">40</font>개</th>
 									<th style="text-align:center">이력</th>
 									<td style="text-align:center"><button class="btn btn-small btn-inverse">보기</button></td>
 								</tr>
 								<tr>
-                                                                        <th colspan="5">
-                                                                                <div style="float:left; text-align:left">
-                                                                                        <span>입력 현황</span>
-                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="all" checked></label>전체
-                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="complete"></label>완료
-                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="notcomplete"></label>미완료
-                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="select"></label>선택
-                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="detail_all"></label>상세 내역(전체)
-                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="detail_part"></label>상세 내역(선택)
-                                                                                </div>
-                                                                        </th>
-									<th style="text-align:center">
-	                                                                        <button class="btn btn-small btn-inverse">출력</button>
+									<th colspan="5">
+										<div style="float:left; text-align:left">
+											<span>입력 현황</span>
+											<label style="display: inline-block"><input type="radio" name="show_range" value="all" checked></label>전체
+											<label style="display: inline-block"><input type="radio" name="show_range" value="complete"></label>완료
+											<label style="display: inline-block"><input type="radio" name="show_range" value="notcomplete"></label>미완료
+											<label style="display: inline-block"><input type="radio" name="show_range" value="select"></label>선택
+											<label style="display: inline-block"><input type="radio" name="show_range" value="detail_all"></label>고지서(전체)
+											<label style="display: inline-block"><input type="radio" name="show_range" value="detail_part"></label>고지서(선택)
+										</div>
 									</th>
-                                                                </tr>
+									<th style="text-align:center">
+										<button class="btn btn-small btn-inverse">출력</button>
+									</th>
+                                </tr>
 							</table>
 						</div>
 						<div id="contents" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
@@ -323,7 +312,29 @@
 			<!-- end: Content -->
 		</div>
 	</div>
-	
+
+
+	<input type="hidden" value="{{ csrf_token }}" />	
+	<!-- 공과금 옆 버튼 눌렀을 때 -->	
+	<div class="modal hide fade" id="billModal">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">×</button>
+			<h3>공과금 입력</h3>
+		</div>
+		<div class="modal-body">
+			<div class="row-fluid">
+				<div>어떤 항목을 입력(파일 업로드) 하시겠습니까?</div>
+				<div>
+					<label style="display: inline-block"><input type="radio" name="bill" value="E"></label>전기
+					<label style="display: inline-block"><input type="radio" name="bill" value="G"></label>가스
+					<label style="display: inline-block"><input type="radio" name="bill" value="W"></label>수도
+				</div>
+				<div>
+					<button class="btn btn-inverse" onclick="goEGWInput();">입력</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	
 	<!-- 미리보기 (미리보기 버튼 눌렀을 때 보이는 큰 팝업창) -->
 	<div class="modal hide fade" id="myModal">
@@ -554,6 +565,8 @@
 						$('#outDate').val('');
 					}
 				});
+
+				setCurInfo();
 
 				// ejs template 불러오기
 				getContents();

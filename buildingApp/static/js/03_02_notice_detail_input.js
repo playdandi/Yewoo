@@ -99,17 +99,75 @@ function changeCharge(num)
 	$('#after'+num).html(before+Number(value));
 }
 
+
 function saveChangedInfo()
 {
-	// 저장 후....
-	
-	if(confirm('저장되었습니다.\n고지(입력) 현황 화면(이전화면)으로 돌아가시겠습니까?')) {
-	}
+	var param = {};
+
+	// error check
+
+	doAjaxSaveInfo(param);
 }
 
+var doAjaxSaveInfo = function(param) {
+	var csrftoken = $.cookie('csrftoken');
+	param['csrfmiddlewaretoken'] = csrftoken;
+
+	$.ajax({
+		type : 'POST',
+		url : '/lease/input/notice/detail/save/',
+		data : param,
+		success : function(result) {
+			if(confirm('저장되었습니다.\n납부 현황 화면(이전화면)으로 돌아가시겠습니까?')) {
+			}
+			else 
+				$(location).reload();
+		},
+		error : function(msg) {
+			alert('실패하였습니다... 다시 시도해 주세요.');
+		},
+	});
+};
 
 
+////////// in TAB 2 //////////////
+function searchBill()
+{
+	return;
+	// 임대 'x'회차 검색 함수 : 지정된 위치에 ejs 형태로 돌려주자.
+	var param = {};
+	// param ...
+	param['leaseNumber'] = Number($('#leaseNumber').val().trim());
+
+	doAjaxSearchBill(param);
+}
+var doAjaxSearchBill = function(param) {
+	var csrftoken = $.cookie('csrftoken');
+	param['csrfmiddlewaretoken'] = csrftoken;
+
+	$.ajax({
+		type : 'POST',
+		url : '/lease/input/notice/detail/blahblah...',
+		data : param,
+		success : function(result) {
+			var template = new EJS({url : '/static/ejs/03_02_notice_detail_tab2_bill.ejs'}).render();
+			$('#content_bill').html(template);
+		},
+		error : function(msg) {
+			alert('실패하였습니다... 다시 시도해 주세요.');
+		},
+	});
+};
 
 
+function showBillModal()
+{
+	//$('#billModal').modal();
+}
+
+function showInputHistoryModal()
+{
+	$('#inputHistoryModal').modal();
+}
 
 
