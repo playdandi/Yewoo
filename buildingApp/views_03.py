@@ -48,16 +48,17 @@ def setPostData(request, typestr = ''):
     param['search_year_list'] = search_year_list
     param['search_month_list'] = search_month_list
 
-    # E, G, W => get excel file info.
-    try:
-        excelInfo = ExcelFiles.objects.get(year = param['search_year'], month = param['search_month'], building = param['search_building_id'], type = str(typestr))
-        param['excel_filename'] = str(excelInfo.filename)
-        param['excel_uploadDate'] = prettyDate(excelInfo.uploadDate)
-        param['excel_id'] = int(excelInfo.id)
-    except:
-        param['excel_filename'] = '업로드 된 파일이 없습니다.'
-        param['excel_uploadDate'] = ''
-        param['excel_id'] = ''
+    if str(typestr) != 'payment':
+        # E, G, W => get excel file info.
+        try:
+            excelInfo = ExcelFiles.objects.get(year = param['search_year'], month = param['search_month'], building = param['search_building_id'], type = str(typestr))
+            param['excel_filename'] = str(excelInfo.filename)
+            param['excel_uploadDate'] = prettyDate(excelInfo.uploadDate)
+            param['excel_id'] = int(excelInfo.id)
+        except:
+            param['excel_filename'] = '업로드 된 파일이 없습니다.'
+            param['excel_uploadDate'] = ''
+            param['excel_id'] = ''
 
     return param
 
@@ -468,7 +469,7 @@ def water_input_html(request):
 ##### 03_03 : payment #####
 
 def payment_input_html(request):
-    return render(request, '03_03_payment.html', setPostData(request))
+    return render(request, '03_03_payment.html', setPostData(request, 'payment'))
 
 ## prettify data for payment
 def serialize_payment(result):
@@ -488,6 +489,7 @@ def serialize_payment(result):
         data['totalFee'] = result[i].totalFee
         data['leasePayDate'] = result[i].resident.leasePayDate
         data['payStatus'] = result[i].payStatus
+        data['amountPaySum'] = result[i].amountPaySum
         data['amountPay'] = result[i].amountPay
         data['amountNoPay'] = result[i].amountNoPay
         date = result[i].payDate
@@ -511,7 +513,7 @@ def payment_input_getinfo(request):
         y = int(request.POST['year'])
         m = int(request.POST['month'])
         bid = int(request.POST['building_id'])
-        data = PaymentInfo.objects.filter(building = bid, year = y, month = m).order_by('resident', '-payStatus')
+        data = PaymentInfo.objects.filter(building = bid, year = y, month = m).order_by('resident', '-id')
         return toJSON(serialize_payment(data))
     return HttpResponse('NOT POST')
 
@@ -538,7 +540,7 @@ def payment_detail_html(request, bid, rid, tab):
         p.no = no
         no -= 1
     param['list_last'] = param['list'][0]
-    param['list_delay'] = range(max(0, int(param['list_last'].delayNumberNow)-3), int(param['list_last'].delayNumberNow)+3)
+    param['list_delay'] = range(max(0, int(param['list_last'].delayNumberNow)-3), int(param['list_last'].delayNumberNow)+3+1)
 
     # modify history list (only for the last payment)
     param['modify_list'] = PaymentModifyInfo.objects.filter(payment = int(param['list'][0].id))
@@ -603,7 +605,57 @@ def payment_detail_modifyinfo(request):
 
 
 def payment_detail_saveInput(request):
-    pass
+    if request.method == 'POST':
+        #insert inputted payment info
+        elem = PaymentInfo()
+        elem.building = BuildingInfo.objects.get(id = int(request.POST['building_id']))
+        print(int(request.POST['resident_id']))
+        elem.resident = ResidentInfo.objects.get(id = int(request.POST['resident_id']))
+        elem.year = int(request.POST['year'])
+        elem.month = int(request.POST['month'])
+        elem.number = int(request.POST['number'])
+        elem.totalFee = int(request.POST['totalFee'])
+        elem.amountPaySum = int(request.POST['amountPaySum'])
+        elem.amountPay = int(request.POST['amountPay'])
+        elem.amountNoPay = int(request.POST['amountNoPay'])
+        if elem.amountPaySum == elem.totalFee:
+            elem.payStatus = int(-1)
+        else:
+            elem.payStatus = int(request.POST['payStatus'])
+        elem.payDate = request.POST['payDate'].replace('.', '-')
+        elem.confirmDate = request.POST['confirmDate'].replace('.', '-')
+        elem.delayNumberNow = int(request.POST['delayNumberNow'])
+        elem.delayNumberNext = int(request.POST['delayNumberNext'])
+        elem.payMsg = str(request.POST['payMsg'])
+        elem.modifyNumber = int(0)
+        elem.confirmStatus = str(1)
+        elem.checked = False
+        elem.save()
+
+        #make 0-th modified info
+        m = PaymentModifyInfo()
+        m.payment = PaymentInfo.objects.get(id = int(elem.id))
+        m.modifyNumber = int(0)
+        m.year = elem.year
+        m.month = elem.month
+        m.payStatus = elem.payStatus
+        m.payDate = elem.payDate
+        m.delayNumberNow = elem.delayNumberNow
+        m.delayNumberNext = elem.delayNumberNext
+        m.amountPaySum = elem.amountPaySum
+        m.amountPay = elem.amountPay
+        m.amountNoPay = elem.amountNoPay
+        m.confirmDate = elem.confirmDate
+        m.modifyMsg = ''
+        m.modifyTime = None
+
+        #save
+        #elem.save()
+        m.save()
+
+        return HttpResponse('OK')
+    return HttpResponse('NOT POST')
+
 
 def payment_detail_saveModify(request):
     if request.method == 'POST':
@@ -618,13 +670,13 @@ def payment_detail_saveModify(request):
         elem.payDate = request.POST['payDate'].replace('.', '-')
         elem.delayNumberNow = int(request.POST['delayNumberNow'])
         elem.delayNumberNext = int(request.POST['delayNumberNext'])
+        elem.amountPaySum = int(request.POST['amountPaySum'])
         elem.amountPay = int(request.POST['amountPay'])
         elem.amountNoPay = int(request.POST['amountNoPay'])
         elem.confirmDate = request.POST['confirmDate'].replace('.', '-')
         elem.modifyMsg = str(request.POST['modifyMsg'])
         d = datetime.datetime.now()
         elem.modifyTime = str(d.year)+'-'+str(d.month)+'-'+str(d.day)
-        elem.save()
 
         # update payment info by using the newly modified info
         pay = elem.payment
@@ -632,14 +684,17 @@ def payment_detail_saveModify(request):
         pay.payDate = elem.payDate
         pay.delayNumberNow = elem.delayNumberNow
         pay.delayNumberNext = elem.delayNumberNext
+        pay.amountPaySum = elem.amountPaySum
         pay.amountPay = elem.amountPay
         pay.amountNoPay = elem.amountNoPay
         pay.confirmDate = elem.confirmDate
         pay.modifyNumber = elem.modifyNumber
         pay.confirmStatus = '2'
+
+        #save
+        elem.save()
         pay.save()
         
-        #return toJSON([])
         return HttpResponse('OK')
     return HttpResponse('NOT POST')
 
