@@ -8,8 +8,9 @@ function showLeaseInfo()
 	var type_text;
 	if (type == '0') type_text = 'lease';
 	else if (type == '1') type_text = 'notice';
-	else if (type == '2') type_text = 'electricity';
-	else if (type == '3') type_text = 'gas';
+	else if (type == '2') type_text = 'payment';
+	else if (type == '3') type_text = 'electricity';
+	else if (type == '4') type_text = 'gas';
 	else type_text = 'water';
 
 	if (year == '' || month == '' || building_id == '') {
@@ -64,9 +65,8 @@ function getContents()
 
 	// db에서 정보 뽑고
 	
-	var template = new EJS({url : '/static/ejs/03_01_notice_show.ejs'}).render();
-	$('#contents').html(template);
-	$('#contents_modal').html(template);
+
+	doAjaxContents_N();
 
 	// 상세보기 버튼일 경우 상세화면으로 들어가지 않도록 하자.	
 	$('.detailBtn').focusin(function() {
@@ -83,6 +83,36 @@ function getContents()
 		$(location).attr('href', 'http://14.49.42.190:8080/lease/show/leaseNotice/' + '1/101/');
 	});
 
+}
+
+var Notice;
+var doAjaxContents_N = function() {
+	var postData = {};
+	var csrftoken = $.cookie('csrftoken');
+	postData['csrfmiddlewaretoken'] = csrftoken; 
+	postData['building_id'] = Number($('#search_building').val().replace('b', ''));
+	postData['year'] = $('#search_year').val().trim();
+	postData['month'] = $('#search_month').val().trim();
+
+	$.ajax({
+		type : 'POST',
+		url : '/lease/input/getNoticeInfo/',
+		data : postData,
+		success : function(result) {
+			Lease = result;
+			var template = new EJS({url : '/static/ejs/03_01_notice_show.ejs'}).render({'data' : Lease, 'start' : 0});
+			$('#contents').html(template);
+			$('#contents_modal').html(template);
+		},
+		error : function(msg) {
+			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
+		},
+	});
+}
+
+function showDetail(bnum, rnum)
+{
+	window.location = "/lease/show/leaseNotice/" + bnum + "/" + rnum + "#noticeDetail_tab";
 }
 
 var detail_btn_clicked = false;

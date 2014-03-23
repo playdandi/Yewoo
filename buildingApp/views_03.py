@@ -83,6 +83,15 @@ def get_lease_info(request):
 	return toJSON(serialize_lease(data))
     return HttpResponse('NOT POST')
 
+def get_notice_info(request):
+    if request.method == 'POST':
+        y = int(request.POST['year'])
+        m = int(request.POST['month'])
+        bid = int(request.POST['building_id'])
+	data = EachMonthInfo.objects.filter(year = y, month = m, building = bid)
+	return toJSON(serialize_notice(data))
+    return HttpResponse('NOT POST')
+
 def get_egw_info(request):
     if request.method == 'POST':
         type = str(request.POST['type'])
@@ -107,6 +116,8 @@ def get_egw_info(request):
 def prettyDate(date):
     return str(date.year) + '.' + str(date.month) + '.' + str(date.day)
 
+def prettyDateWOYear(date):
+    return str(date.month) + '.' + str(date.day)
 ## prettify data for lease
 def serialize_lease(result):
     serialized = []
@@ -122,6 +133,36 @@ def serialize_lease(result):
         data['indate'] = prettyDate(res.inDate)
         data['outdate'] = prettyDate(res.outDate)
         serialized.append(data)
+    return serialized
+
+## prettify data for lease
+def serialize_notice(result):
+    serialized = []
+    for res in result:
+        if(res.inputCheck == True and res.noticeCheck == True):
+            data = {}
+            total = 0
+            data['buildingnum'] = res.resident.buildingName
+            data['roomnum'] = res.resident.buildingRoomNumber
+            data['name'] = res.resident.contractorName
+            data['yearmonth'] = str(res.year) + "/" + str(res.month)
+            data['lease'] = res.leaseMoney
+            total += res.leaseMoney
+            data['maintenance'] = res.maintenanceFee
+            total += res.maintenanceFee
+            data['surtax'] = res.surtax
+            total += res.surtax
+            data['parking'] = res.parkingFee
+            total += res.parkingFee
+            data['electricity'] = res.electricityFee
+            total += res.electricityFee
+            data['water'] = res.waterFee
+            total += res.waterFee
+            data['gas'] = res.gasFee         
+            total += res.gasFee
+            data['total'] = total
+            data['noticedate'] = prettyDateWOYear(res.noticeDate)
+            serialized.append(data)
     return serialized
 
 ## prettify data for electricity

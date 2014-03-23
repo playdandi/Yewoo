@@ -97,6 +97,24 @@ class ExcelFiles(models.Model):
     filename = models.CharField(max_length=150)
     uploadDate = models.DateField()
 
+class EachMonthInfo(models.Model):
+    resident = models.ForeignKey('ResidentInfo')
+    building = models.ForeignKey('BuildingInfo')
+    year = models.IntegerField()
+    month = models.IntegerField()
+    leaseMoney = models.IntegerField(blank=True, null=True)
+    maintenanceFee = models.IntegerField(blank=True, null=True)
+    maintenanceFee = models.IntegerField(blank=True, null=True)
+    surtax = models.IntegerField(blank=True, null=True)
+    parkingFee = models.IntegerField(blank=True, null=True)
+    electricityFee = models.IntegerField(blank=True, null=True)
+    waterFee = models.IntegerField(blank=True, null=True)
+    gasFee = models.IntegerField(blank=True, null=True)
+    inputCheck = models.BooleanField()
+    inputDate = models.DateField(blank=True, null=True)
+    noticeCheck = models.BooleanField()
+    noticeDate = models.DateField(blank=True, null=True)
+
 class ElectricityInfo(models.Model):
     resident = models.ForeignKey('ResidentInfo')
     building = models.ForeignKey('BuildingInfo')
@@ -155,7 +173,6 @@ class WaterInfo(models.Model):
     waterUseCharge = models.IntegerField()
     trimmedFee = models.IntegerField()
     totalFee = models.IntegerField()
-
 
 class PaymentInfo(models.Model):
     resident = models.ForeignKey('ResidentInfo')

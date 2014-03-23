@@ -24,6 +24,7 @@
 		<col width="6%">
 		<col width="5%">
 		<col width="7%">
+		<col width="7%">
 		<col width="4%">
 	</colgroup>
 	<tr>
@@ -39,8 +40,9 @@
 		<th colspan="3" style="text-align:center; vertical-align:middle">공과금</th>
 		<th colspan="3" style="text-align:center; vertical-align:middle">연체료</th>
 
-		<th rowspan="2" style="text-align:center; vertical-align:middle">변동 금액</th>
 		<th rowspan="2" style="text-align:center; vertical-align:middle">기타 금액</th>
+		<th rowspan="2" style="text-align:center; vertical-align:middle">변동 금액</th>
+		<th rowspan="2" style="text-align:center; vertical-align:middle">고지서 확인</th>
 		<th rowspan="2" style="text-align:center; vertical-align:middle">상세고지 내역확인</th>
 		<th rowspan="2" style="text-align:center; vertical-align:middle">출력 선택</th>
 	</tr>
@@ -58,54 +60,32 @@
 		<th style="text-align:center; vertical-align:middle">연체료</th>
 		<th style="text-align:center; vertical-align:middle">회차</th>
 	</tr>
-	<tr class="showDetail">
-		<td style="text-align:center; vertical-align:middle"><input type="checkbox"></td>
-		<td style="text-align:center; vertical-align:middle; color:green">03.01</td>
-		<td style="text-align:center; vertical-align:middle">101</td>
-		<td style="text-align:center; vertical-align:middle">김호근</td>
-		<td style="text-align:center; vertical-align:middle">2014/02</td>
-		<td style="text-align:center; vertical-align:middle">3</td>
-		<td style="text-align:center; vertical-align:middle">400,000</td>
-		
-		<td style="text-align:center; vertical-align:middle">250,000</td>
-		<td style="text-align:center; vertical-align:middle">50,000</td>
-		<td style="text-align:center; vertical-align:middle">30,000</td>
-		<td style="text-align:center; vertical-align:middle">50,000</td>
-		<td style="text-align:center; vertical-align:middle">0</td>
-		<td style="text-align:center; vertical-align:middle">0</td>
-		<td style="text-align:center; vertical-align:middle">0</td>
-
-		<td style="text-align:center; vertical-align:middle">0</td>
-		<td style="text-align:center; vertical-align:middle">0</td>
+	<% for (i=0; i < data.length; i++) { %>
+	<tr>
+		<td style="text-align:center; vertical-align:middle"><input type="checkbox" checked="true" disabled="disabled"></td>
+		<td style="text-align:center; vertical-align:middle; color:green"><%= data[i].noticedate %></td>
+		<td style="text-align:center; vertical-align:middle"><%= data[i].roomnum %></td>
+		<td style="text-align:center; vertical-align:middle"><%=data[i].name %></td>
+		<td style="text-align:center; vertical-align:middle"><%=data[i].yearmonth %></td>
 		<td style="text-align:center; vertical-align:middle">-</td>
-		<td style="text-align:center; vertical-align:middle; color:red">+20,000</td>
-		<td style="text-align:center; vertical-align:middle">0</td>
-		<td style="text-align:center; vertical-align:middle"><button class="btn btn-small btn-setting detailBtn">확인</button></td>
-		<td style="text-align:center; vertical-align:middle"><input type="checkbox"></td>
-	</tr>
-	<tr class="showDetail">
-		<td style="text-align:center; vertical-align:middle"><input type="checkbox"></td>
-		<td style="text-align:center; vertical-align:middle; color:green">03.01</td>
-		<td style="text-align:center; vertical-align:middle">102</td>
-		<td style="text-align:center; vertical-align:middle">김호근</td>
-		<td style="text-align:center; vertical-align:middle">2014/02</td>
-		<td style="text-align:center; vertical-align:middle">3</td>
-		<td style="text-align:center; vertical-align:middle">380,000</td>
+		<td style="text-align:center; vertical-align:middle"><%= data[i].total.toLocaleString() %></td>
 		
-		<td style="text-align:center; vertical-align:middle">250,000</td>
-		<td style="text-align:center; vertical-align:middle">50,000</td>
-		<td style="text-align:center; vertical-align:middle">30,000</td>
-		<td style="text-align:center; vertical-align:middle">50,000</td>
-		<td style="text-align:center; vertical-align:middle">0</td>
-		<td style="text-align:center; vertical-align:middle">0</td>
-		<td style="text-align:center; vertical-align:middle">0</td>
+		<td style="text-align:center; vertical-align:middle"><%=data[i].lease.toLocaleString() %></td>
+		<td style="text-align:center; vertical-align:middle"><%=data[i].maintenance.toLocaleString() %></td>
+		<td style="text-align:center; vertical-align:middle"><%=data[i].surtax.toLocaleString() %></td>
+		<td style="text-align:center; vertical-align:middle"><%=data[i].parking.toLocaleString() %></td>
+		<td style="text-align:center; vertical-align:middle"><%=data[i].electricity.toLocaleString() %></td>
+		<td style="text-align:center; vertical-align:middle"><%=data[i].water.toLocaleString() %></td>
+		<td style="text-align:center; vertical-align:middle"><%=data[i].gas.toLocaleString() %></td>
 
-		<td style="text-align:center; vertical-align:middle">0</td>
-		<td style="text-align:center; vertical-align:middle">0</td>
 		<td style="text-align:center; vertical-align:middle">-</td>
-		<td style="text-align:center; vertical-align:middle; color:blue">-20,000</td>
-		<td style="text-align:center; vertical-align:middle">0</td>
-		<td style="text-align:center; vertical-align:middle"><button class="btn btn-small btn-setting detailBtn">확인</button></td>
-		<td style="text-align:center; vertical-align:middle"><input type="checkbox"></td>
+		<td style="text-align:center; vertical-align:middle">-</td>
+		<td style="text-align:center; vertical-align:middle">-</td>
+		<td style="text-align:center; vertical-align:middle">-</td>
+		<td style="text-align:center; vertical-align:middle">-</td>
+		<td style="text-align:center"><button class="btn btn-small btn-setting" disabled="disabled">확인</button></td>
+		<td style="text-align:center"><button class="btn btn-small" onClick="showDetail(<%= data[i].buildingnum %>,<%= data[i].roomnum %>)">확인</button></td>
+		<td style="text-align:center; vertical-align:middle"><input type="checkbox"></td>	
 	</tr>
+	<% } %>
 </table>

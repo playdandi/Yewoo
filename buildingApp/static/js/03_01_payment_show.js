@@ -8,8 +8,9 @@ function showLeaseInfo()
 	var type_text;
 	if (type == '0') type_text = 'lease';
 	else if (type == '1') type_text = 'notice';
-	else if (type == '2') type_text = 'electricity';
-	else if (type == '3') type_text = 'gas';
+	else if (type == '2') type_text = 'payment';
+	else if (type == '3') type_text = 'electricity';
+	else if (type == '4') type_text = 'gas';
 	else type_text = 'water';
 
 	if (year == '' || month == '' || building_id == '') {
@@ -19,7 +20,7 @@ function showLeaseInfo()
 
 	var form = document.createElement('form');
 	form.setAttribute('method', 'POST');
-	form.setAttribute('action', '/lease/input/'+type_text+'/');
+	form.setAttribute('action', '/lease/show/'+type_text+'/');
 	document.body.appendChild(form);
 
 	var f_year = document.createElement('input');

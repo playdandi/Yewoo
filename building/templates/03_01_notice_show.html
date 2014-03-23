@@ -184,10 +184,11 @@
 									<div style="margin-right:5px; float:left">내역 분류</div>
 									<select id="search_type" class="margin0" style="width:100px">
 										<option value="0">임대 내역</option>
-										<option value="1" selected>고지 내역</option>
-										<option value="2">전기 요금</option>
-										<option value="3">가스 요금</option>
-										<option value="4">수도 요금</option>
+										<option value="1" selected>최종고지 내역</option>
+										<option value="2">최종납부 내역</option>
+										<option value="3">전기 요금</option>
+										<option value="4">가스 요금</option>
+										<option value="5">수도 요금</option>
 									</select>
 								</td>
 								<td width="17%">
@@ -289,15 +290,16 @@
 									<th style="text-align:center">당일 완료 : 총 <font style="color:red">20</font>개, 오늘 <font style="color:red">12</font>개</th>
 									<th style="text-align:center">전체 완료 : 총 <font style="color:red">40</font>개, 누적 <font style="color:red">40</font>개</th>
 									<th style="text-align:center">이력</th>
-									<td style="text-align:center"><button class="btn btn-small btn-inverse">보기</button></td>
+									<td style="text-align:center"><button class="btn btn-small btn-inverse" disabled="disabled">보기</button></td>
 								</tr>
 								<tr>
                                                                         <th colspan="4">
                                                                                 <div style="float:left; text-align:left">
                                                                                         <span>최종 고지 내역</span>
                                                                                         <label style="display: inline-block"><input type="radio" name="show_range" value="all" checked></label>전체
-                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="detail_all"></label>상세 내역(전체)
-                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="detail_part"></label>상세 내역(선택)
+                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="part"></label>선택
+                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="notice_all"></label>고지서(전체)
+                                                                                        <label style="display: inline-block"><input type="radio" name="show_range" value="notice_part"></label>고지서(선택)
                                                                                 </div>
                                                                         </th>
 									<th style="text-align:center">

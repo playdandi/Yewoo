@@ -47,6 +47,7 @@ urlpatterns = patterns('',
     url(r'^lease/input/water/$', water_input_html),
     url(r'^lease/input/getEGWInfo/$', get_egw_info),
     url(r'^lease/input/getLeaseInfo/$', get_lease_info),
+    url(r'^lease/input/getNoticeInfo/$', get_notice_info),
 
     url(r'^lease/payment/$', payment_input_html),
     url(r'^lease/payment/getInfo/$', payment_input_getinfo),
