@@ -70,6 +70,14 @@ def notice_show_html(request):
 def payment_show_html(request):
     return render(request, '03_01_payment_show.html', setPostData(request))
 
+def get_lease_info(request):
+    if request.method == 'POST':
+        y = int(request.POST['year'])
+        m = int(request.POST['month'])
+        bid = int(request.POST['building_id'])
+	data = ResidentInfo.objects.filter(buildingName = bid)
+	return toJSON(serialize_lease(data))
+    return HttpResponse('NOT POST')
 
 def get_egw_info(request):
     if request.method == 'POST':
@@ -94,6 +102,23 @@ def get_egw_info(request):
 
 def prettyDate(date):
     return str(date.year) + '.' + str(date.month) + '.' + str(date.day)
+
+## prettify data for lease
+def serialize_lease(result):
+    serialized = []
+    for res in result:
+        data = {}
+        data['buildingnum'] = res.buildingName
+        data['roomnum'] = res.buildingRoomNumber
+        data['name'] = res.contractorName
+        data['deposit'] = res.leaseDeposit
+        data['money'] = res.leaseMoney
+        data['payway'] = res.leasePayWay
+        data['paydate'] = res.leasePayDate
+        data['indate'] = prettyDate(res.inDate)
+        data['outdate'] = prettyDate(res.outDate)
+        serialized.append(data)
+    return serialized
 
 ## prettify data for electricity
 def serialize_electricity(result):

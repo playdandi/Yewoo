@@ -45,23 +45,25 @@
 		<th style="text-align:center">주거</th>
 		<th style="text-align:center">변경</th>
 	</tr>
+	<% for (i = 0; i < data.length; i++) { %>
 	<tr class="showDetail">
 		<td style="text-align:center"><input type="checkbox"></td>
-		<td style="text-align:center">101</td>
-		<td style="text-align:center">8,500</td>
-		<td style="text-align:center">김현성</td>
-		<td style="text-align:center">55,000,000</td>
-		<td style="text-align:center">150,000</td>
-		<td style="text-align:center">선불</td>
+		<td style="text-align:center"><%= data[i].roomnum %></td>
+		<td style="text-align:center">-</td>
+		<td style="text-align:center"><%= data[i].name %></td>
+		<td style="text-align:center"><%= data[i].deposit.toLocaleString() %></td>
+		<td style="text-align:center"><%= data[i].money.toLocaleString() %></td>
+		<td style="text-align:center"><%= data[i].payway %></td>
 		<td style="text-align:center">-</td>
 		<td style="text-align:center">-</td>
 		<td style="text-align:center">-</td>
-		<td style="text-align:center">11일</td>
-		<td style="text-align:center">2012.01.04</td>
-		<td style="text-align:center">2013.01.03</td>
+		<td style="text-align:center"><%= data[i].paydate %>일</td>
+		<td style="text-align:center"><%= data[i].indate %></td>
+		<td style="text-align:center"><%= data[i].outdate %></td>
 		<td style="text-align:center">재실</td>
-		<td style="text-align:center"><button class="btn btn-small btn-setting detailBtn">입력</button></td>
-		<td style="text-align:center"><button class="btn btn-small btn-setting detailBtn">확인</button></td>
-		<td style="text-align:center"><button class="btn btn-small btn-setting detailBtn">확인</button></td>
+		<td style="text-align:center"><button class="btn btn-small btn-setting" disabled="disabled">입력</button></td>
+		<td style="text-align:center"><button class="btn btn-small btn-setting" disabled="disabled">확인</button></td>
+		<td style="text-align:center"><button class="btn btn-small" onClick="showDetail(<%= data[i].buildingnum %>,<%= data[i].roomnum %>)">확인</button></td>
 	</tr>
+	<% } %>
 </table>
