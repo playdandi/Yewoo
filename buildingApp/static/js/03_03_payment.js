@@ -6,11 +6,7 @@ function showLeaseInfo()
 	var room_num = $('#search_room_num').val();
 	var type = $('#search_type').val();
 	var type_text;
-	if (type == '0') type_text = 'lease';
-	else if (type == '1') type_text = 'notice';
-	else if (type == '2') type_text = 'electricity';
-	else if (type == '3') type_text = 'gas';
-	else type_text = 'water';
+	if (type == '5') type_text = 'payment';
 
 	if (year == '' || month == '' || building_id == '') {
 		alert ('비어 있는 칸이 있습니다.');
@@ -19,7 +15,7 @@ function showLeaseInfo()
 
 	var form = document.createElement('form');
 	form.setAttribute('method', 'POST');
-	form.setAttribute('action', '/lease/input/'+type_text+'/');
+	form.setAttribute('action', '/lease/payment/');
 	document.body.appendChild(form);
 
 	var f_year = document.createElement('input');

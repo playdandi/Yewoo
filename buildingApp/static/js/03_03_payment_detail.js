@@ -1,79 +1,16 @@
-function showLeaseInfo()
+var bid, rid;
+function setData(building_id, resident_id)
 {
-	var year = Number($('#search_year').val());
-	var month = Number($('#search_month').val());
-	var building_id = Number($('#search_building').val().replace('b', ''));
-	var room_num = $('#search_room_num').val();
-	var type = $('#search_type').val();
-	var type_text;
-	if (type == '0') type_text = 'lease';
-	else if (type == '1') type_text = 'notice';
-	else if (type == '2') type_text = 'electricity';
-	else if (type == '3') type_text = 'gas';
-	else type_text = 'water';
-
-	if (year == '' || month == '' || building_id == '') {
-		alert ('비어 있는 칸이 있습니다.');
-		return;
-	}
-
-	var form = document.createElement('form');
-	form.setAttribute('method', 'POST');
-	form.setAttribute('action', '/lease/input/'+type_text+'/');
-	document.body.appendChild(form);
-
-	var f_year = document.createElement('input');
-	f_year.name = 'year';
-	f_year.value = year;
-	form.appendChild(f_year);
-
-	var f_month = document.createElement('input');
-	f_month.name = 'month';
-	f_month.value = month;
-	form.appendChild(f_month);
-
-	var f_bid = document.createElement('input');
-	f_bid.name = 'building_id';
-	f_bid.value = building_id;
-	form.appendChild(f_bid);
-
-	var csrf = document.createElement('input');
-	csrf.type = 'hidden';
-	csrf.name = 'csrfmiddlewaretoken';
-	csrf.value = $.cookie('csrftoken');
-	form.appendChild(csrf);
-
-	//postData['room_num'] = (r_num != '') ? Number(r_num) : '';
-	form.submit();
+	bid = Number(building_id.trim());
+	rid = Number(resident_id.trim());
 }
 
-function InitForm()
+function getContents()
 {
-	$('#search_building').find('option:eq(0)').prop('selected', true);
-	$('#search_year').find('option:eq(0)').prop('selected', true);
-	$('#search_month').find('option:eq(0)').prop('selected', true);
-	$('#search_room_num').find('option:eq(0)').prop('selected', true);
-	//$('input[id=search_isEmpty]:checkbox').attr('checked', false);
-	//$('#search_isEmpty').attr('checked', false);
-}
-
-/*
-function setCurInfo()
-{
-	//curType = $('#search_type option:selected').text().replace('요금', '').trim();
-	curBid = Number($('#search_building').val().replace('b', ''));
-	curBName = $('#search_building option:selected').text();
-	curYear = $('#search_year').val();
-	curMonth = $('#search_month').val();
-}
-*/
-
-function getContents(bid, rid)
-{
-	doAjaxContentsModifyInfo(bid, rid);
+	doAjaxContentsModifyInfo();
 }
 var modifyInfo;
-var doAjaxContentsModifyInfo = function(bid, rid) {
+var doAjaxContentsModifyInfo = function() {
 	var postData = {};
 	var csrftoken = $.cookie('csrftoken');
 	postData['csrfmiddlewaretoken'] = csrftoken;
@@ -117,6 +54,8 @@ function doInput()
 	$('#payment_reason_basic').hide();
 	$('#payment_reason').show();
 	$('#modify_reason').hide();
+	$('#basic_title').html('미납 내역 입력');
+	$('#reason_title').html('납부 처리 사유 보기');
 }
 function doModify()
 {
@@ -127,27 +66,39 @@ function doModify()
 	$('#payment_reason_basic').hide();
 	$('#payment_reason').hide();
 	$('#modify_reason').show();
+	$('#basic_title').html('납부 내역 수정');
+	$('#reason_title').html('납부 내역 수정 사유 보기');
 }
 
 function saveInputInfo()
 {
 	var param = {};
+	param['building_id'] = Number(bid);
+	param['resident_id'] = Number(rid);
+	var yymm = $('#input_ym').html().trim();
+	param['year'] = Number(yymm.split('.')[0].trim());
+	param['month'] = Number(yymm.split('.')[1].trim());
+	param['number'] = Number($('#input_number').html().trim());
 	param['payStatus'] = Number($('#input_payStatus').val().trim());
 	param['payDate'] = $('#input_payDate').val().trim();
 	param['delayNumberNow'] = Number($('#input_delayNumberNow').val().trim());
 	param['delayNumberNext'] = Number($('#input_delayNumberNext').val().trim());
+	param['totalFee'] = Number($('#input_totalFee').html().trim());
 	param['amountPay'] = Number($('#input_amountPay').val().trim());
+	var original = Number($('#input_amountPayOriginal').val().trim());
+	param['amountPaySum'] = Number($('#input_amountPaySum').val().trim()) + param['amountPay'];
 	param['amountNoPay'] = Number($('#input_amountNoPay').val().trim());
 	param['confirmDate'] = $('#input_confirmDate').val().trim();
 	param['payMsg'] = $('#input_payMsg').val().trim();
+	// modifyNumber = 0 , confirmStatus = 1
 
 	// error check
 	if (param['delayNumberNow'] + 1 != param['delayNumberNext']) {
 		alert('이번달 연체회차, 다음달 연체회차가 맞지 않습니다.');
 		return;
 	}
-	if (param['amountPay'] <= 0 || param['amountPay'] > Number($('#input_totalFee').html().trim())) {
-		alert('입금액은 0원 ~ 합계금액 사이의 값만 입력 가능합니다.');
+	if (param['amountPay'] <= 0 || param['amountNoPay'] < 0) {
+		alert('입금액이 잘못되었습니다.');
 		return;
 	}
 	if (param['payDate'] == '' || param['confirmDate'] == '' || param['payMsg'] == '') {
@@ -165,7 +116,7 @@ var doAjaxSaveInput = function(param) {
 	$.ajax({
 		type : 'POST',
 		url : '/lease/payment/detail/saveInput/',
-		data : postData,
+		data : param,
 		success : function(result) {
 			if(confirm('저장되었습니다.\n납부 현황 화면(이전화면)으로 돌아가시겠습니까?')) {
 			}
@@ -183,7 +134,7 @@ function saveModifyInfo(pid)
 {
 	var param = {};
 	param['payment_id'] = Number(pid);
-	param['modifyNumber'] = Number($('#modify_modifyNumber').html().trim());
+	param['modifyNumber'] = Number($('#modify_modifyNumber').html().replace('회','').trim());
 	var yymm = $('#modify_ym').html().trim();
 	param['year'] = Number(yymm.split('.')[0].trim());
 	param['month'] = Number(yymm.split('.')[1].trim());
@@ -192,6 +143,8 @@ function saveModifyInfo(pid)
 	param['delayNumberNow'] = Number($('#modify_delayNumberNow').val().trim());
 	param['delayNumberNext'] = Number($('#modify_delayNumberNext').val().trim());
 	param['amountPay'] = Number($('#modify_amountPay').val().trim());
+	var original = Number($('#modify_amountPayOriginal').val().trim());
+	param['amountPaySum'] = Number($('#modify_amountPaySum').val().trim()) - (original - param['amountPay']);
 	param['amountNoPay'] = Number($('#modify_amountNoPay').val().trim());
 	param['confirmDate'] = $('#modify_confirmDate').val().trim();
 	param['modifyMsg'] = $('#modify_modifyMsg').val().trim();
@@ -237,16 +190,28 @@ var doAjaxSaveModify = function(param) {
 
 // 입금액-미납액 자동 입력
 $('#modify_amountPay').keyup(function() {
-	adjust_amount_pay_nopay($(this).val(), 'modify_totalFee', 'modify_amountNoPay');
+	adjust_amount_pay_nopay($(this).val(), 'modify');
 });
 $('#input_amountPay').keyup(function() {
-	adjust_amount_pay_nopay($(this).val(), 'input_totalFee', 'input_amountNoPay');
+	adjust_amount_pay_nopay($(this).val(), 'input');
 });
-function adjust_amount_pay_nopay(val, total, id)
+function adjust_amount_pay_nopay(val, stat)
 {
+	if (val.trim() == '')
+		val = '0';
 	val = val.match(/[0-9]/g).join('');
+	var amountPaySum = Number($('#'+stat+'_amountPaySum').val().trim());
 	var amountPay = Number(val.split(',').join('').trim());
-	var totalFee = Number($('#'+total).html().trim());
-	$('#'+id).val(totalFee - amountPay);
+	var amountPayOriginal = Number($('#'+stat+'_amountPayOriginal').val().trim());
+	var totalFee = Number($('#'+stat+'_totalFee').html().trim());
+	if (stat == 'modify') {
+		// 바뀐 미납액 = (totalFee - amountPaySum) + (amountPayOriginal - this)
+		//             =      원래 미납액          +     변동된 입금액 차이
+		$('#'+stat+'_amountNoPay').val(totalFee - amountPaySum + amountPayOriginal - amountPay);
+	}
+	else {
+		// 새로 입력하는 건 쉽다. 입금액만큼 추가하면 된다.
+		$('#'+stat+'_amountNoPay').val(totalFee - (amountPaySum + amountPay));
+	}
 }
 

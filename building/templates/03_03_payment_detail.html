@@ -324,15 +324,15 @@
 														<td style="text-align:center; color:blue">{{ data.year }}.{{ data.month }}.{{ data.resident.leasePayDate }}</td>
 														<td style="text-align:center; color:red">{{ data.payDate }}</td>
 														<td style="text-align:center">{{ data.amountPay }}</td>
-														<td style="text-align:center; background-color:red">{{ data.amountNoPay }}</td>
+														<td style="text-align:center; {% if data.amountNoPay > 0 %}background-color:red{% endif %}"><strong>{{ data.amountNoPay }}</strong></td>
 														<td style="text-align:center">{{ data.confirmDate }}</td>
 														<td style="text-align:center">{% if data.confirmStatus == "0" %}미처리{% elif data.confirmStatus == "1"	%}납부처리{% else %}수정처리{% endif %}</td>
-														{% if data.id == list_last.id %}
-														<td style="text-align:center"><button class="btn btn-small" onclick="doInput();">입력</button></td>
-														<td style="text-align:center"><button class="btn btn-mini" onclick="doModify();">수정</button></td>
+														{% if data.id == list_last.id and data.payStatus != -1 %}
+														<td style="text-align:center"><button class="btn btn-small margin0" onclick="doInput();">입력</button></td>
+														<td style="text-align:center"><button class="btn btn-small mragin0" onclick="doModify();">수정</button></td>
 														{% else %}
-														<td style="text-align:center"><button class="btn btn-small" onclick="doInput();" disabled>입력</button></td>
-														<td style="text-align:center"><button class="btn btn-mini" onclick="doModify();" disabled>수정</button></td>
+														<td style="text-align:center"><button class="btn btn-small margin0" onclick="doInput();" disabled>입력</button></td>
+														<td style="text-align:center"><button class="btn btn-small margin0" onclick="doModify();" disabled>수정</button></td>
 														{% endif %}
 														<td style="text-align:center">수정</td>
 														<td style="text-align:center">{{ data.modifyNumber }}회</td>
@@ -347,7 +347,7 @@
 											<div class="box span12" style="margin: 5px 0px 5px 0px; padding: 0px">
 												<div class="box-header">
 													<div style="float:left; text-align:left">
-														<h2><strong>미납 내역 입력 & 납부 내역 수정</strong></h2>
+														<h2><strong><div id="basic_title">미납 입력 내역</div></strong></h2>
 													</div>
 												</div>
 												<div class="box-content" style="margin: 0px; padding: 3px; border:1; background-color:#f8f8f8">
@@ -368,42 +368,46 @@
 																<th style="text-align:center" width="9%">납부처리일</th>
 															</tr>
 															<tr>
-																<td style="text-align:center">{{ list_last.year }}.{{ list_last.month }}</td>
-																<td style="text-align:center">{{ list_last.number }}</td>
+																<td style="text-align:center"><div id="input_ym">{{ list_last.year }}.{{ list_last.month }}</div></td>
+																<td style="text-align:center"><div id="input_number">{{ list_last.number }}</div></td>
 																<td style="text-align:center"><div id="input_totalFee">{{ list_last.totalFee }}</div></td>
 																<td style="text-align:center; color:blue">{{ list_last.year }}.{{ list_last.month }}.{{ list_last.resident.leasePayDate }}</td>
 																<td style="text-align:center">
-																	<select id="input_payStatus" class="margin0 span12" {% if list_last.payStatus == -1 %}disabled{% endif %}>
-																		<option value="0" {% if list_last.payStatus == 0 %}selected{% endif %}>없음</option>
-																		<option value="1" {% if list_last.payStatus == 1 %}selected{% endif %}>1회</option>
-																		<option value="2" {% if list_last.payStatus == 2 %}selected{% endif %}>2회</option>
-																		<option value="3" {% if list_last.payStatus == 3 %}selected{% endif %}>3회</option>
-																		<option value="4" {% if list_last.payStatus == 4 %}selected{% endif %}>4회</option>
-																		<option value="5" {% if list_last.payStatus == 5 %}selected{% endif %}>5회</option>
+																	<!--<select id="input_payStatus" class="margin0 span12" {% if list_last.payStatus == -1 %}disabled{% endif %}>-->
+																	<select id="input_payStatus" class="margin0 span12" disabled >
+																		<option value="" {% if list_last.payStatus == -1 %}selected{% endif %}>완납</option>
+																		<option value="1" {% if list_last.payStatus == 0 %}selected{% endif %}>1회</option>
+																		<option value="2" {% if list_last.payStatus == 1 %}selected{% endif %}>2회</option>
+																		<option value="3" {% if list_last.payStatus == 2 %}selected{% endif %}>3회</option>
+																		<option value="4" {% if list_last.payStatus == 3 %}selected{% endif %}>4회</option>
+																		<option value="5" {% if list_last.payStatus == 4 %}selected{% endif %}>5회</option>
+																		<option value="6" {% if list_last.payStatus == 5 %}selected{% endif %}>6회</option>
+																		<option value="7" {% if list_last.payStatus == 6 %}selected{% endif %}>7회</option>
+																		<option value="8" {% if list_last.payStatus == 7 %}selected{% endif %}>8회</option>
+																		<option value="9" {% if list_last.payStatus == 8 %}selected{% endif %}>9회</option>
+																		<option value="10" {% if list_last.payStatus == 9 %}selected{% endif %}>10회</option>
 																	</select>
 																</td>
 																<td style="text-align:center"><input id="input_payDate" type="text" class="margin0 span12 fontmini datepicker" value="{{ list_last.payDate }}" /></td>
 																<td style="text-align:center">
 																	이번달
 																	<select id="input_delayNumberNow" class="margin0 span6">
-																		<option value="0" {% if list_last.delayNumberNow == 0 %}selected{% endif %}>0회</option>
-																		<option value="1" {% if list_last.delayNumberNow == 1 %}selected{% endif %}>1회</option>
-																		<option value="2" {% if list_last.delayNumberNow == 2 %}selected{% endif %}>2회</option>
-																		<option value="3" {% if list_last.delayNumberNow == 3 %}selected{% endif %}>3회</option>
-																		<option value="4" {% if list_last.delayNumberNow == 4 %}selected{% endif %}>4회</option>
-																		<option value="5" {% if list_last.delayNumberNow == 5 %}selected{% endif %}>5회</option>
+																		{% for l in list_delay %}
+																		<option value="{{ l }}" {% if list_last.delayNumberNow == l %}selected{% endif %}>{{ l }}회</option>
+																		{% endfor %}
 																	</select>
 																</td>
-																<td style="text-align:center"><input id="input_amountPay" type="text" class="margin0 span6 fontmini" value="{{ list_last.amountPay }}"/>되었습니다</td>
+																<td style="text-align:center">
+																	<input id="input_amountPay" type="text" class="margin0 span6 fontmini" value="{{ list_last.amountPay }}"/>되었습니다
+																	<input id="input_amountPayOriginal" type="hidden" value="{{ list_last.amountPay }}" />
+																	<input id="input_amountPaySum" type="hidden" value="{{ list_last.amountPaySum }}" />
+																</td>
 																<td style="text-align:center">
 																	다음달
 																	<select id="input_delayNumberNext" class="margin0 span6">
-																		<option value="0" {% if list_last.delayNumberNext == 0 %}selected{% endif %}>0회</option>
-																		<option value="1" {% if list_last.delayNumberNext == 1 %}selected{% endif %}>1회</option>
-																		<option value="2" {% if list_last.delayNumberNext == 2 %}selected{% endif %}>2회</option>
-																		<option value="3" {% if list_last.delayNumberNext == 3 %}selected{% endif %}>3회</option>
-																		<option value="4" {% if list_last.delayNumberNext == 4 %}selected{% endif %}>4회</option>
-																		<option value="5" {% if list_last.delayNumberNext == 5 %}selected{% endif %}>5회</option>
+																		{% for l in list_delay %}
+																		<option value="{{ l }}" {% if list_last.delayNumberNext == l %}selected{% endif %}>{{ l }}회</option>
+																		{% endfor %}
 																	</select>
 																</td>
 																<td style="text-align:center"><input id="input_amountNoPay" type="text" class="margin0 span6 fontmini" value="{{ list_last.amountNoPay }}" disabled />추가됩니다</td>
@@ -441,7 +445,7 @@
 															<tr>
 																<td style="text-align:center">수정</td>
 																<td style="text-align:center">{{ data.modifyNumber }}회</td>
-																<td style="text-align:center"><div id="modify_ym">{{ list_last.year }}.{{ list_last.month }}</div></td>
+																<td style="text-align:center">{{ list_last.year }}.{{ list_last.month }}</td>
 																<td style="text-align:center">{{ list_last.number }}</td>
 																<td style="text-align:center">{{ list_last.totalFee }}</td>
 																<td style="text-align:center">{{ list_last.year }}.{{ list_last.month }}.{{ list_last.resident.leasePayDate }}</td>
@@ -456,26 +460,32 @@
 															{% endfor %}
 															<tr>
 																<td style="text-align:center">수정</td>
-																<td style="text-align:center"><div id="modify_modifyNumber">{{ modify_max_num }}</div>회</td>
-																<td style="text-align:center">{{ list_last.year}}.{{ list_last.month }}</td>
+																<td style="text-align:center"><div id="modify_modifyNumber">{{ modify_max_num }}회</div></td>
+																<td style="text-align:center"><div id="modify_ym">{{ list_last.year}}.{{ list_last.month }}</div></td>
 																<td style="text-align:center">{{ list_last.number }}</td>
 																<td style="text-align:center"><div id="modify_totalFee">{{ list_last.totalFee }}</div></td>
 																<td style="text-align:center; color:blue">{{ list_last.year }}.{{ list_last.month }}.{{ list_last.resident.leasePayDate }}</td>
 																<td style="text-align:center">
 																	<select id="modify_payStatus" class="margin0" style="width:100%">
-																		<option value="0">없음</option>
-																		<option value="1">1회</option>
-																		<option value="2">2회</option>
-																		<option value="3">3회</option>
-																		<option value="4">4회</option>
-																		<option value="5">5회</option>
+																		<option value="-1" {% if modify_list_last.payStatus == -1 %}selected{% endif %}>완납</option>
+																		<option value="0" {% if modify_list_last.payStatus == 0 %}selected{% endif %}>없음</option>
+																		<option value="1" {% if modify_list_last.payStatus == 1 %}selected{% endif %}>1회</option>
+																		<option value="2" {% if modify_list_last.payStatus == 2 %}selected{% endif %}>2회</option>
+																		<option value="3" {% if modify_list_last.payStatus == 3 %}selected{% endif %}>3회</option>
+																		<option value="4" {% if modify_list_last.payStatus == 4 %}selected{% endif %}>4회</option>
+																		<option value="5" {% if modify_list_last.payStatus == 5 %}selected{% endif %}>5회</option>
+																		<option value="6" {% if modify_list_last.payStatus == 6 %}selected{% endif %}>6회</option>
+																		<option value="7" {% if modify_list_last.payStatus == 7 %}selected{% endif %}>7회</option>
+																		<option value="8" {% if modify_list_last.payStatus == 8 %}selected{% endif %}>8회</option>
+																		<option value="9" {% if modify_list_last.payStatus == 9 %}selected{% endif %}>9회</option>
+																		<option value="10" {% if modify_list_last.payStatus == 10 %}selected{% endif %}>10회</option>
 																	</select>
 																</td>
 																<td style="text-align:center">
 																	<input id="modify_payDate" type="text" class="margin0 span12 fontmini datepicker" value="{{ modify_list_last.payDate }}" />
 																</td>
 																<td style="text-align:center">이번달 
-																	<select id="modify_delayNumberNow" class="margin0" style="width:100%">
+																	<select id="modify_delayNumberNow" class="margin0 span6">
 																		{% for n in modify_list_delay %}
 																		<option value="{{ n }}" {% if modify_list_last.delayNumberNow == n %}selected{% endif %}>{% if n == 0 %}없음{% else %}{{ n }}회{% endif %}</option>
 																		{% endfor %}
@@ -484,9 +494,11 @@
 																<td style="text-align:center">
 																	<input id="modify_amountPay" type="text" class="margin0 span6 fontmini" style="font-color:red" value="{{ modify_list_last.amountPay }}" />
 																	되었습니다
+																	<input id="modify_amountPayOriginal" type="hidden" value="{{ modify_list_last.amountPay }}" />
+																	<input id="modify_amountPaySum" type="hidden" value="{{ modify_list_last.amountPaySum }}" />
 																</td>
 																<td style="text-align:center">다음달
-																	<select id="modify_delayNumberNext" class="margin0" style="width:100%">
+																	<select id="modify_delayNumberNext" class="margin0 span6">
 																		{% for n in modify_list_delay %}
 																		<option value="{{ n }}" {% if modify_list_last.delayNumberNext == n %}selected{% endif %}>{% if n == 0 %}없음{% else %}{{ n }}회{% endif %}</option>
 																		{% endfor %}
@@ -519,7 +531,7 @@
 											<div class="box span12" style="margin: 5px 0px 5px 0px; padding: 0px">
 												<div class="box-header">
 													<div style="float:left; text-align:left">
-														<h2><strong>납부 처리 사유 보기</strong></h2>
+														<h2><strong><div id="reason_title">납부 처리 사유 보기</div></strong></h2>
 													</div>
 												</div>
 												<div id="payment_reason_basic">입력, 또는 수정  버튼을 누르면 서식이 나타납니다.</div>
@@ -847,6 +859,14 @@
 				// show sidebar
 				show_sidebar();
 
+				$('#input_payDate').change(function() {
+					var mdy = $(this).val().split('/');
+					$(this).val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
+				});
+				$('#input_confirmDate').change(function() {
+					var mdy = $(this).val().split('/');
+					$(this).val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
+				});
 				$('#modify_payDate').change(function() {
 					var mdy = $(this).val().split('/');
 					$(this).val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
@@ -856,8 +876,10 @@
 					$(this).val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
 				});
 
+				setData('{{ bid }}', '{{ rid }}');
+
 				// ejs template 불러오기
-				getContents('{{ bid }}', '{{ rid }}');
+				getContents();
 			});			
 		</script>
 		<!-- end: JavaScript-->
