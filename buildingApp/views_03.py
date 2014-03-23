@@ -35,6 +35,9 @@ def setPostData(request, typestr = ''):
     building_name_id = []
     for b in building:
         building_name_id.append({'name' : b.name, 'id' : b.id})
+        if int(b.id) == int(param['search_building_id']):
+            param['cur_building_name'] = str(b.name)
+
     param['building_name_id'] = building_name_id
     search_year_list = []
     for i in range(2013, 2017):
@@ -439,7 +442,7 @@ def check_input_html(request):
 def notice_input_html(request):
     return render(request, '03_02_notice_input.html', setPostData(request))
 
-def notice_detail_input_html(request):
+def notice_detail_input_html(request, bid, rid):
     return render(request, '03_02_notice_detail_input.html', setPostData(request))
 
 def electricity_input_html(request):
