@@ -88,6 +88,13 @@ class BuildingFloor(models.Model):
     hasParking = models.CharField(max_length=1)
     parkingNum = models.IntegerField(blank=True, null=True)
 
+class RoomInfo(models.Model):
+    building = models.ForeignKey('BuildingInfo')
+    floor = models.ForeignKey('BuildingFloor')
+    roomnum = models.IntegerField()
+    residentnum = models.IntegerField()
+    isOccupied = models.BooleanField()
+    nowResident = models.ForeignKey('ResidentInfo', blank=True, null=True)
 
 class ExcelFiles(models.Model):
     type = models.CharField(max_length=11)
