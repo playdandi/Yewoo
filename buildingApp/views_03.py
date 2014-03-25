@@ -133,6 +133,8 @@ def serialize_lease(result):
         data['name'] = res.contractorName
         data['deposit'] = res.leaseDeposit
         data['money'] = res.leaseMoney
+	data['maintenance'] = res.maintenanceFee
+	data['surtax'] = res.surtax
         data['parking'] = res.parkingFee
         data['payway'] = res.leasePayWay
         data['paydate'] = res.leasePayDate

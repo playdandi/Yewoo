@@ -14,6 +14,8 @@ class ResidentInfo(models.Model):
     leasePayWay = models.CharField(max_length=4)
     leasePayDate = models.IntegerField()
     leaseMoney = models.IntegerField()
+    maintenanceFee = models.IntegerField()
+    surtax = models.IntegerField()
     agency = models.CharField(max_length=10)
     agencyName = models.CharField(max_length=20)
     checkType = models.IntegerField()

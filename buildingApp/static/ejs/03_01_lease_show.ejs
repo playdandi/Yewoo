@@ -3,7 +3,6 @@
 		<col width="3%">
 		<col width="5%">
 		<col width="5%">
-		<col width="5%">
 		<col width="10%">
 		<col width="7%">
 		<col width="4%">
@@ -22,7 +21,7 @@
 	</colgroup>
 	<tr>
 		<th rowspan="2" style="text-align:center; vertical-align:middle">선택</th>
-		<th colspan="6" style="text-align:center; vertical-align:middle">임대 정보 1</th>
+		<th colspan="5" style="text-align:center; vertical-align:middle">임대 정보 1</th>
 		<th colspan="4" style="text-align:center; vertical-align:middle">임대 정보 2</th>
 		<th colspan="4" style="text-align:center; vertical-align:middle">재실 정보</th>
 		<th rowspan="2" style="text-align:center; vertical-align:middle">상세내역 입력</th>
@@ -30,7 +29,6 @@
 	</tr>
 	</tr>
 		<th style="text-align:center">호수</th>
-		<th style="text-align:center">가격</th>
 		<th style="text-align:center">입주자</th>
 		<th style="text-align:center">보증금</th>
 		<th colspan="2" style="text-align:center">임대료</th>
@@ -48,14 +46,13 @@
 	<% for (i = 0; i < data.length; i++) { %>
 	<tr class="showDetail">
 		<td style="text-align:center"><input type="checkbox"></td>
-		<td style="text-align:center"><%= data[i].roomnum %></td>
-		<td style="text-align:center">-</td>
+		<td style="text-align:center"><%= data[i].roomnum %>11</td>
 		<td style="text-align:center"><%= data[i].name %></td>
 		<td style="text-align:center"><%= data[i].deposit.toLocaleString() %></td>
 		<td style="text-align:center"><%= data[i].money.toLocaleString() %></td>
 		<td style="text-align:center"><%= data[i].payway %></td>
-		<td style="text-align:center">-</td>
-		<td style="text-align:center">-</td>
+		<td style="text-align:center"><%= data[i].maintenance.toLocaleString() %></td>
+		<td style="text-align:center"><%= data[i].surtax.toLocaleString() %></td>
 		<td style="text-align:center"><%= data[i].parking.toLocaleString() %></td>
 		<td style="text-align:center"><%= data[i].paydate %>일</td>
 		<td style="text-align:center"><%= data[i].indate %></td>
