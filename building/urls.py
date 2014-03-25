@@ -54,6 +54,7 @@ urlpatterns = patterns('',
 
     url(r'^lease/payment/$', payment_input_html),
     url(r'^lease/payment/getInfo/$', payment_input_getinfo),
+    url(r'^lease/payment/savePaymentCheck/$', payment_check),
     url(r'^lease/payment/detail/(?P<bid>\d+)/(?P<rid>\d+)/(?P<tab>\d+)/$', payment_detail_html),
     url(r'^lease/payment/detail/getModifyInfo/$', payment_detail_modifyinfo),
     url(r'^lease/payment/detail/saveInput/$', payment_detail_saveInput),

@@ -431,6 +431,13 @@
 
 				// ejs template 불러오기
 				getContents();
+
+				// 날짜 넣기
+				var d = new Date();
+				yy = d.getFullYear();
+				mm = d.getMonth()+1;
+				dd = d.getDate();
+				$('#uploadDate').val(yy+'.'+mm+'.'+dd);
 			});			
 		</script>
 		<!-- end: JavaScript-->

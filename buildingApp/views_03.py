@@ -771,7 +771,7 @@ def serialize_payment(result):
             continue
         data = {}
         data['id'] = result[i].id
-        data['checked'] = int(result[i].checked)
+        data['checked'] = result[i].checked
         data['roomnum'] = result[i].resident.buildingRoomNumber
         data['resident_id'] = result[i].resident.id
         data['name'] = result[i].resident.contractorName
@@ -791,6 +791,7 @@ def serialize_payment(result):
             data['payDate'] = str(date.year)+'.'+str(date.month)+'.'+str(date.day)
         data['delayNumberNow'] = result[i].delayNumberNow
         data['delayNumberNext'] = result[i].delayNumberNext
+        data['modifyNumber'] = result[i].modifyNumber
         serialized.append(data)
 
     # sort (by roomnum)
@@ -808,6 +809,20 @@ def payment_input_getinfo(request):
         data = PaymentInfo.objects.filter(building = bid, year = y, month = m).order_by('resident', '-id')
         return toJSON(serialize_payment(data))
     return HttpResponse('NOT POST')
+
+def payment_check(request):
+    if request.method == 'POST':
+        data = PaymentInfo.objects.get(id = int(request.POST['pid']))
+        if str(request.POST['inputCheck']) == '0':
+            data.checked = False
+        else:
+            data.checked = True
+        data.save()
+
+        return HttpResponse('OK')
+    return HttpResponse('NOT POST')
+
+
 
 
 
@@ -906,7 +921,6 @@ def payment_detail_saveInput(request):
         #insert inputted payment info
         elem = PaymentInfo()
         elem.building = BuildingInfo.objects.get(id = int(request.POST['building_id']))
-        print(int(request.POST['resident_id']))
         elem.resident = ResidentInfo.objects.get(id = int(request.POST['resident_id']))
         elem.year = int(request.POST['year'])
         elem.month = int(request.POST['month'])

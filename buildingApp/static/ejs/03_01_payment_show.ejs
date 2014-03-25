@@ -1,12 +1,5 @@
 <% var w = new Array(5,5,5,5,5,5,5,5,5,6,6,6,6,6,5,5,5,5,5); %>
 <table class="table table-bordered table-condensed" style="margin-bottom:0px">
-<!--
-	<colgroup>
-	<% for (i = 0 ; i < w.length; i++) { %>
-		<col width="<%= w[i] %>%">
-	<% } %>
-	</colgroup>
--->
 	<tr>
 		<th rowspan="2" style="text-align:center">선택</th>
 		<th rowspan="2" style="text-align:center">호수</th>
@@ -28,11 +21,14 @@
 		<th colspan="2" style="text-align:center">다음달</th>
 	</tr>
 	<% for (i = 0; i < data.length; i++) { %>
+	<% if (data[i].checked == 0) { %>
+	<% continue; %>
+	<% } %>
 	<tr>
-		<% if (data[i].checked == 1) { %>
-		<td style="text-align:center"><input type="checkbox" checked /></td>
+		<% if (data[i].checked) { %>
+		<td style="text-align:center"><input type="checkbox" checked disabled /></td>
 		<% } else { %>
-		<td style="text-align:center"><input type="checkbox" /></td>
+		<td style="text-align:center"><input type="checkbox" disabled /></td>
 		<% } %>
 		<td style="text-align:center"><%= data[i].roomnum %></td>
 		<td style="text-align:center"><%= data[i].name %></td>

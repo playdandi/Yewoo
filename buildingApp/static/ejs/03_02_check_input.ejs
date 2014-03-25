@@ -60,8 +60,8 @@
 		<td style="text-align:center"></td>
 		<td style="text-align:center"><%= data[i].etcFee %></td>
 		<td style="text-align:center; color:red"><%= data[i].changedFee %></td>
-		<td style="text-align:center"><button class="btn btn-small" onclick="goDetail('<%= data[i].building_id %>', '<%= data[i].resident_id %>', '<%= data[i].id %>');">입력</button></td>
-		<td style="text-align:center"><button class="btn btn-small" onclick="" disabled>확인</button></td>
+		<td style="text-align:center"><button class="btn btn-mini" onclick="goDetail('<%= data[i].building_id %>', '<%= data[i].resident_id %>', '<%= data[i].id %>');">입력</button></td>
+		<td style="text-align:center"><button class="btn btn-mini" onclick="" disabled>확인</button></td>
 		<td style="text-align:center; vertical-align:middle"><input id="print_<%= data[i].id %>" type="checkbox" /></td>
 	</tr>
 	<% } %>

@@ -17,13 +17,14 @@
 		<td style="text-align:center"><%= data.roomnum %></td>
 		<td style="text-align:center"><%= data.name %></td>
 		<td style="text-align:center; background-color:#dbdbd2">납부 회차</td>
-		<td style="text-align:center"><%= data.year %>.<%= data.month %></td>
-		<td style="text-align:center"><%= data.number %></td>
-		<td style="text-align:center"><%= data.totalFee %></td>
+		<td style="text-align:center"><div id="si_ym"><%= data.year %>.<%= data.month %></div></td>
+		<td style="text-align:center"><div id="si_number"><%= data.number %></div></td>
+		<td style="text-align:center"><div id="si_totalFee"><%= data.totalFee %></div></td>
 		<td style="text-align:center"><font style="color:blue"><%= data.year %>.<%= data.month %>.<%= data.leasePayDate %></font></td>
 		<td style="text-align:center; background-color:#dbdbd2">추가 납부</td>
 		<td style="text-align:center">
 			<select id="si_payStatus" class="margin0" style="width:100%" disabled>
+				<option value="0">0회</option>
 				<option value="1" <% if (data.payStatus == 0) { %>selected<% } %>>1회</option>
 				<option value="2" <% if (data.payStatus == 1) { %>selected<% } %>>2회</option>
 				<option value="3" <% if (data.payStatus == 2) { %>selected<% } %>>3회</option>
@@ -35,6 +36,9 @@
 				<option value="9" <% if (data.payStatus == 8) { %>selected<% } %>>9회</option>
 				<option value="10" <% if (data.payStatus == 9) { %>selected<% } %>>10회</option>
 			</select>
+			<input id="si_payStatus_original" type="hidden" value="<%= data.payStatus %>" />
+			<input id="si_resident_id" type="hidden" value="<%= data.resident_id %>" />
+			<input id="si_modifyNumber" type="hidden" value="<%= data.modifyNumber %>" />
 		</td>
 	</tr>
 	<tr>
@@ -55,6 +59,7 @@
 		<td colspan="4">
 			<input id="si_amountPay" type="text" class="margin0" style="width:40%" value="<%= data.amountPay %>" /> 입금되었습니다.
 			<input id="si_amountPaySum" type="hidden" value="<%= data.amountPaySum %>" />
+			<input id="si_amountPayOriginal" type="hidden" value="<%= data.amountPay %>" />
 		</td>
 		<td style="text-align:center; background-color:#dbdbd2" colspan="2">납부처리일</td>
 	</tr>
@@ -73,17 +78,22 @@
 			</select>
 		</td>
 		<td style="text-align:center; background-color:#dbdbd2">미납</td>
-		<td colspan="4"><input id="si_amountNoPay" type="text" class="margin0" style="width:40%" value="<%= data.amountNoPay %>" disabled /> 추가됩니다.</td>
-		<td style="text-align:center" colspan="2"><input id="si_confirmDate" type="text" class="margin0 datepicker" style="width:100%" value="<%= data.confirmDate %>" /></td>
+		<td colspan="4">
+			<input id="si_amountNoPay" type="text" class="margin0" style="width:40%" value="<%= data.amountNoPay %>" disabled /> 추가됩니다.
+			<input id="si_amountNoPayOriginal" type="hidden" value="<%= data.amountNoPay %>" />
+		</td>
+		<td style="text-align:center" colspan="2"><input id="si_confirmDate" type="text" class="margin0 datepicker span12" value="<%= data.confirmDate %>" /></td>
 	</tr>
 	<tr>
 		<td colspan="2" style="text-align:center; background-color:#dbdbd2">납부 처리 사유</td>
-		<td colspan="8" style="text-align:center"><input id="si_payMsg" type="text" class="margin0" style="width:100%" /></td>
+		<td colspan="8" style="text-align:center"><input id="si_payMsg" type="text" class="margin0 span12" /></td>
 	</tr>
 	<tr>
 		<td colspan="10" style="text-align:center">
-			<button class="btn" onclick="modifyStatus();" disabled>수  정</button>
-			<button class="btn" onclick="saveChangedInfo('<%= data.id %>');">저  장</button>
+			<button id="modifyNo" class="btn modifyYesNo">수  정</button>
+			<button id="modifyYes" class="btn btn-success modifyYesNo" style="display:none">수 정 <i class="icon-ok"></i></button>
+			<button class="btn saveChangedInfo">저  장</button>
+			<input id="si_id" type="hidden" value="<%= data.id %>" />
 		</td>
 	</tr>
  </table>  
