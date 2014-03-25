@@ -683,7 +683,56 @@ def save_notice(request):
         else:
             data.noticeCheck = True
             data.noticeDate = str(request.POST['noticeDate']).replace('.', '-')
+
+            try:
+                PaymentInfo.objects.get(building = data.building, resident = data.resident, year = int(data.year), month = int(data.month))
+            except:
+                info = PaymentInfo.objects.filter(building = data.building, resident = data.resident).order_by('-id')
+                # make new 'payment object
+                pay = PaymentInfo()
+                pay.checked = False
+                pay.resident = data.resident
+                pay.building = data.building
+                pay.year = int(data.year)
+                pay.month = int(data.month)
+                pay.number = len(info) + 1
+                pay.amountPaySum = 0
+                pay.amountPay = 0
+                pay.amountNoPay = int(data.totalFee)
+                if pay.number > 1 :
+                    pay.amountNoPay += int(info[0].amountNoPay)
+                pay.totalFee = pay.amountNoPay
+                pay.confirmStatus = '0'
+                pay.payStatus = 0
+                if pay.number == 1:
+                    pay.delayNumberNow = 1
+                else:
+                    if info[0].payStatus == -1:
+                        pay.delayNumberNow = info[0].delayNumberNow
+                    else:
+                        pay.delayNumberNow = info[0].delayNumberNow + 1
+                pay.delayNumberNext = pay.delayNumberNow + 1
+                pay.modifyNumber = 0
+                pay.save()
+
+                # insert new modify info
+                import datetime
+                elem = PaymentModifyInfo()
+                elem.payment = PaymentInfo.objects.get(id = int(pay.id))
+                elem.modifyNumber = int(0)
+                elem.year = pay.year
+                elem.month = pay.month
+                elem.payStatus = pay.payStatus
+                elem.delayNumberNow = pay.delayNumberNow
+                elem.delayNumberNext = pay.delayNumberNext
+                elem.amountPaySum = pay.amountPaySum
+                elem.amountPay = pay.amountPay
+                elem.amountNoPay = pay.amountNoPay
+                elem.modifyMsg = ''
+                elem.save()
+
         data.save()
+
         return HttpResponse('OK')
     return HttpResponse('NOT POST')
 

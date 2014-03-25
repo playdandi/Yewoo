@@ -185,9 +185,9 @@
 					<div class="span11">
 						<table class="table table-condensed" style="margin-bottom:0px">
 							<tr>
-								<td width="17%">
+								<td width="20%">
 									<div style="margin-right:5px; float:left">내역 분류</div>
-									<select id="search_type" class="margin0" style="width:100px">
+									<select id="search_type" class="margin0" style="width:150px">
 										<option value="0">임대 내역</option>
 										<option value="1">최종고지 내역</option>
 										<option value="2" selected>최종납부 내역</option>
@@ -196,7 +196,7 @@
 										<option value="5">수도 요금</option>
 									</select>
 								</td>
-								<td width="17%">
+								<td width="20%">
 									<div style="margin-right:5px; float:left">건물명</div>
 									<select id="search_building" class="margin0" style="width:120px">
 										{% for b in building_name_id %}
@@ -204,7 +204,7 @@
 										{% endfor %}
 									</select>
 								</td>
-								<td width="18%">
+								<td width="15%">
 									<div style="margin-right:5px; float:left">내역일</div>
 									<select id="search_year" class="margin0" style="width:70px">
 										<option value="">년도</option>
@@ -219,7 +219,7 @@
 										{% endfor %}
 									</select>
 								</td>
-								<td width="13%">
+								<td width="10%">
 									<div style="margin-right:5px; float:left">호수</div>
 									<select id="search_room_num" class="margin0" style="width:70px">
 										<option value="">전체</option>
@@ -229,7 +229,7 @@
 									<div style="margin-right:5px; float:left">공실여부</div>
 									<input id="search_isEmpty" type="checkbox">
 								</td>
-								<td width="14%">
+								<td width="15%">
 									<div>
 										<button class="btn btn-small" onclick="showLeaseInfo();">조회</button>
 										<button class="btn btn-small" onclick="InitForm();">초기화</button>
