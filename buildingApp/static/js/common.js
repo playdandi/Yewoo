@@ -16,7 +16,7 @@ var doAjax_buildingRoom = function(id, select_id) {
 
 	$.ajax({
 		type : 'POST',
-		url : 'http://14.49.42.190:8080/building/getrooms/',
+		url : '/building/getrooms/',
 		data : postData,
 		success : function(rooms) {
 			$('#'+select_id).find('option').each(function() {
