@@ -60,18 +60,12 @@ function InitForm()
 
 function getContents()
 {
-	//var year = $('#').val();
-	//var month = $('#').val();
-
-	// db에서 정보 뽑고
-	
-
 	doAjaxContents_L();
 	
 	$('#detailBtn').click(function() {
 		//var id = $(this).attr('id');
 		// 나중에 수정해야 함
-		$(location).attr('href', 'http://14.49.42.190:8080/lease/show/leaseNotice/' + '1/101/');
+		$(location).attr('href', '/lease/show/leaseNotice/' + '1/101/');
 	});
 }
 

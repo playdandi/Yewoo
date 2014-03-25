@@ -23,8 +23,17 @@
 		<td style="text-align:center"><font style="color:blue"><%= data.year %>.<%= data.month %>.<%= data.leasePayDate %></font></td>
 		<td style="text-align:center; background-color:#dbdbd2">추가 납부</td>
 		<td style="text-align:center">
-			<select id="" class="margin0" style="width:100%">
-				<option value="1">1회</option>
+			<select id="si_payStatus" class="margin0" style="width:100%" disabled>
+				<option value="1" <% if (data.payStatus == 0) { %>selected<% } %>>1회</option>
+				<option value="2" <% if (data.payStatus == 1) { %>selected<% } %>>2회</option>
+				<option value="3" <% if (data.payStatus == 2) { %>selected<% } %>>3회</option>
+				<option value="4" <% if (data.payStatus == 3) { %>selected<% } %>>4회</option>
+				<option value="5" <% if (data.payStatus == 4) { %>selected<% } %>>5회</option>
+				<option value="6" <% if (data.payStatus == 5) { %>selected<% } %>>6회</option>
+				<option value="7" <% if (data.payStatus == 6) { %>selected<% } %>>7회</option>
+				<option value="8" <% if (data.payStatus == 7) { %>selected<% } %>>8회</option>
+				<option value="9" <% if (data.payStatus == 8) { %>selected<% } %>>9회</option>
+				<option value="10" <% if (data.payStatus == 9) { %>selected<% } %>>10회</option>
 			</select>
 		</td>
 	</tr>
@@ -32,7 +41,7 @@
 		<td style="text-align:center; background-color:#dbdbd2">연체 회차</td>
 		<td style="text-align:center">이번달</td>
 		<td style="text-align:center">
-			<select id="" class="margin0" style="width:100%">
+			<select id="si_delayNumberNow" class="margin0" style="width:100%">
 				<% for (i = data.delayNumberNow-3; i <= data.delayNumberNow+3; i++) { %>
 				<% if (i == data.delayNumberNow) { %>
 				<option value="<%= i %>" selected><%= i %>회</option>
@@ -43,14 +52,17 @@
 			</select>
 		</td>
 		<td style="text-align:center; background-color:#dbdbd2">입금</td>
-		<td colspan="4"><input type="text" class="margin0" style="width:40%" value="<%= data.amountPay %>" /> 입금되었습니다.</td>
+		<td colspan="4">
+			<input id="si_amountPay" type="text" class="margin0" style="width:40%" value="<%= data.amountPay %>" /> 입금되었습니다.
+			<input id="si_amountPaySum" type="hidden" value="<%= data.amountPaySum %>" />
+		</td>
 		<td style="text-align:center; background-color:#dbdbd2" colspan="2">납부처리일</td>
 	</tr>
 	<tr>
 		<td style="text-align:center; background-color:#dbdbd2">연체 회차</td>
 		<td style="text-align:center">다음달</td>
 		<td style="text-align:center">
-			<select id="" class="margin0" style="width:100%">
+			<select id="si_delayNumberNext" class="margin0" style="width:100%">
 				<% for (i = data.delayNumberNext-3; i <= data.delayNumberNext+3; i++) { %>
 				<% if (i == data.delayNumberNext) { %>
 				<option value="<%= i %>" selected><%= i %>회</option>
@@ -61,17 +73,17 @@
 			</select>
 		</td>
 		<td style="text-align:center; background-color:#dbdbd2">미납</td>
-		<td colspan="4"><input type="text" class="margin0" style="width:40%" value="<%= data.amountNoPay %>" /> 추가됩니다.</td>
-		<td style="text-align:center" colspan="2"><input type="text" class="margin0 datepicker" style="width:100%" value="<%= data.confirmDate %>" /></td>
+		<td colspan="4"><input id="si_amountNoPay" type="text" class="margin0" style="width:40%" value="<%= data.amountNoPay %>" disabled /> 추가됩니다.</td>
+		<td style="text-align:center" colspan="2"><input id="si_confirmDate" type="text" class="margin0 datepicker" style="width:100%" value="<%= data.confirmDate %>" /></td>
 	</tr>
 	<tr>
 		<td colspan="2" style="text-align:center; background-color:#dbdbd2">납부 처리 사유</td>
-		<td colspan="8" style="text-align:center"><input type="text" class="margin0" style="width:100%" value="<%= data.payMsg %>" /></td>
+		<td colspan="8" style="text-align:center"><input id="si_payMsg" type="text" class="margin0" style="width:100%" /></td>
 	</tr>
 	<tr>
 		<td colspan="10" style="text-align:center">
-			<button class="btn" onclick="modifyStatus();">수  정</button>
-			<button class="btn" onclick="saveChangedInfo();">저  장</button>
+			<button class="btn" onclick="modifyStatus();" disabled>수  정</button>
+			<button class="btn" onclick="saveChangedInfo('<%= data.id %>');">저  장</button>
 		</td>
 	</tr>
  </table>  

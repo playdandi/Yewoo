@@ -207,35 +207,34 @@
 											<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 												<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 													<colgroup>
-														<col width="6%">
-														<col width="2%">
+														<col width="7%">
+														<col width="3%">
 														<col width="4%">
 														<col width="4%">
-														<col width="9%">
-														<col width="9%">
+														<col width="10%">
+														<col width="10%">
 														<col width="8%">
-														<col width="10%">
-														<col width="10%">
+														<col width="13%">
 														<col width="4%">
-														<col width="9%">
+														<col width="11%">
 														<col width="4%">
+														<col width="8%">
 														<col width="6%">
-														<col width="5%">
-														<col width="5%">
-														<col width="5%">
+														<col width="6%">
+														<col width="6%">
 													</colgroup>
 													<tr style="background-color:#dbdbd2">
-														<td colspan="8" style="border-right:solid">
+														<td colspan="8">
 															<div style="font-size:0.8em">건물명/호수</div>
-															<div><h3><font style="color:red">No.1 루체시티 / 101호</font></h3></div>
+															<div><h3><font style="color:red">No.{{ resident.buildingName }} {{ resident.bName }} / {{ resident.buildingRoomNumber }}호</font></h3></div>
 														</td>
-														<td colspan="5" style="border-right:solid">
+														<td colspan="4">
 															<div style="font-size:0.8em">보증금/월세</div>
-															<div><h3><font style="color:red">5,500/25만원</font></h3></div>
+															<div><h3><font style="color:red">/만원</font></h3></div>
 														</td>
 														<td colspan="3">
 															<div style="font-size:0.8em">계약 평수</div>
-															<div><h3><font style="color:red">6.5/21.2m<sup>2</sup></font></h3></div>
+															<div><h3><font style="color:red"></font></h3></div>
 														</td>
 													</tr>
 													<tr>
@@ -245,7 +244,6 @@
 														<th style="text-align:center">만료일</th>
 														<th style="text-align:center">재실여부</th>
 														<th style="text-align:center">연락처</th>
-														<th style="text-align:center">가격</th>
 														<th colspan="2" style="text-align:center">보증금</th>
 														<th colspan="2" style="text-align:center">임대료</th>
 														<th style="text-align:center">관리비</th>
@@ -253,22 +251,21 @@
 														<th style="text-align:center">부가세</th>
 													</tr>
 													<tr>
-														<td style="text-align:center">김현성</td>
-														<td style="text-align:center">남</td>
+														<td style="text-align:center">{{ resident.contractorName }}</td>
+														<td style="text-align:center">{{ resident.contractorGender }}</td>
 														<td style="text-align:center">2회</td>
 														<td style="text-align:center">1년</td>
-														<td style="text-align:center">2013.05.25</td>
-														<td style="text-align:center">2014.05.24</td>
+														<td style="text-align:center">{{ resident.inDate }}</td>
+														<td style="text-align:center">{{ resident.outDate }}</td>
 														<td style="text-align:center">재실</td>
-														<td style="text-align:center">010-1919-2929</td>
-														<td style="text-align:center">85,000,000</td>
-														<td style="text-align:center">월세</td>
-														<td style="text-align:center">55,000,000</td>
-														<td style="text-align:center">선불</td>
-														<td style="text-align:center">250,000</td>
-														<td style="text-align:center">50,000</td>
-														<td style="text-align:center">30,000</td>
-														<td style="text-align:center">-</td>
+														<td style="text-align:center">{{ resident.contractorContactNumber1 }}</td>
+														<td style="text-align:center">{{ resident.leaseType }}</td>
+														<td style="text-align:center">{{ resident.leaseDeposit }}</td>
+														<td style="text-align:center">{{ resident.leasePayWay }}</td>
+														<td style="text-align:center">{{ resident.leaseMoney }}</td>
+														<td style="text-align:center"></td>
+														<td style="text-align:center">{{ resident.parkingFee }}</td>
+														<td style="text-align:center"></td>
 													</tr>
 												 </table>  
 											</div>
@@ -313,7 +310,7 @@
 														<th colspan="2" style="text-align:center">회차</th>
 													</tr>
 													{% for data in list %}
-													<tr>
+													<tr {% if data.id != list_last.id %}style="background-color:#dbdbd2"{% endif %}>
 														<td style="text-align:center">미납</td>
 														<td style="text-align:center">{{ data.delayNumberNow }}회</td>
 														<td style="text-align:center">{% if data.payStatus == -1 %}완납{% else %}납부{% endif %}</td>
@@ -324,22 +321,27 @@
 														<td style="text-align:center; color:blue">{{ data.year }}.{{ data.month }}.{{ data.resident.leasePayDate }}</td>
 														<td style="text-align:center; color:red">{{ data.payDate }}</td>
 														<td style="text-align:center">{{ data.amountPay }}</td>
-														<td style="text-align:center; {% if data.amountNoPay > 0 %}background-color:red{% endif %}"><strong>{{ data.amountNoPay }}</strong></td>
+														{% if data.amountNoPay > 0 and data.id == list_last.id %}
+														<td style="text-align:center; background-color:red"><strong><font style="color:black">{{ data.amountNoPay }}</font></strong></td>
+														{% elif data.amountNoPay == 0 and data.id == list_last.id %}
+														<td style="text-align:center">{{ data.amountNoPay }}</td>
+														{% else %}
+														<td style="text-align:center">{{ data.amountNoPay }}</td>
+														{% endif %}
 														<td style="text-align:center">{{ data.confirmDate }}</td>
 														<td style="text-align:center">{% if data.confirmStatus == "0" %}미처리{% elif data.confirmStatus == "1"	%}납부처리{% else %}수정처리{% endif %}</td>
 														{% if data.id == list_last.id and data.payStatus != -1 %}
 														<td style="text-align:center"><button class="btn btn-small margin0" onclick="doInput();">입력</button></td>
-														<td style="text-align:center"><button class="btn btn-small mragin0" onclick="doModify();">수정</button></td>
 														{% else %}
 														<td style="text-align:center"><button class="btn btn-small margin0" onclick="doInput();" disabled>입력</button></td>
-														<td style="text-align:center"><button class="btn btn-small margin0" onclick="doModify();" disabled>수정</button></td>
 														{% endif %}
+														
+														<td style="text-align:center"><button class="btn btn-small mragin0" onclick="doModify();" {% if data.id != list_last.id %}disabled{% endif %}>수정</button></td>
 														<td style="text-align:center">수정</td>
 														<td style="text-align:center">{{ data.modifyNumber }}회</td>
 													</tr>
 													{% endfor %}
 												 </table>  
-												<!-- ejs 입력 -->
 											</div>
 										</div>
 										<!-- 미납 내역 입력 -->
@@ -535,7 +537,7 @@
 													</div>
 												</div>
 												<div id="payment_reason_basic">입력, 또는 수정  버튼을 누르면 서식이 나타납니다.</div>
-												<div id="payment_reason" class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8; display:none">
+												<div id="payment_reason" class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 													<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 														<tr>
 															<th style="text-align:center" width="5%">No.</th>
@@ -548,7 +550,7 @@
 														<tr>
 															<td style="text-align:center">{{ m.no }}</td>
 															<td style="text-align:center">미납 {{ m.delayNumberNow }}회</td>
-															<td style="text-align:center">{{ m.payStatus }}회 납부</td>
+															<td style="text-align:center">{% if m.payStatus == -1 %}완납{% else %}{{ m.payStatus }}회 납부{% endif %}</td>
 															<td style="text-align:center">{{ m.payMsg }}</td>
 															<td style="text-align:center">{{ m.confirmDate }}</td>
 														</tr>
@@ -594,35 +596,34 @@
 											<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 												<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 													<colgroup>
-														<col width="6%">
-														<col width="2%">
+														<col width="7%">
+														<col width="3%">
 														<col width="4%">
 														<col width="4%">
-														<col width="9%">
-														<col width="9%">
+														<col width="10%">
+														<col width="10%">
 														<col width="8%">
-														<col width="10%">
-														<col width="10%">
+														<col width="13%">
 														<col width="4%">
-														<col width="9%">
+														<col width="11%">
 														<col width="4%">
+														<col width="8%">
 														<col width="6%">
-														<col width="5%">
-														<col width="5%">
-														<col width="5%">
+														<col width="6%">
+														<col width="6%">
 													</colgroup>
 													<tr style="background-color:#dbdbd2">
-														<td colspan="8" style="border-right:solid">
+														<td colspan="8">
 															<div style="font-size:0.8em">건물명/호수</div>
-															<div><h3><font style="color:red">No.1 루체시티 / 101호</font></h3></div>
+															<div><h3><font style="color:red">No.{{ resident.buildingName }} {{ resident.bName }} / {{ resident.buildingRoomNumber }}호</font></h3></div>
 														</td>
-														<td colspan="5" style="border-right:solid">
+														<td colspan="4">
 															<div style="font-size:0.8em">보증금/월세</div>
-															<div><h3><font style="color:red">5,500/25만원</font></h3></div>
+															<div><h3><font style="color:red">/만원</font></h3></div>
 														</td>
 														<td colspan="3">
 															<div style="font-size:0.8em">계약 평수</div>
-															<div><h3><font style="color:red">6.5/21.2m<sup>2</sup></font></h3></div>
+															<div><h3><font style="color:red"></font></h3></div>
 														</td>
 													</tr>
 													<tr>
@@ -632,7 +633,6 @@
 														<th style="text-align:center">만료일</th>
 														<th style="text-align:center">재실여부</th>
 														<th style="text-align:center">연락처</th>
-														<th style="text-align:center">가격</th>
 														<th colspan="2" style="text-align:center">보증금</th>
 														<th colspan="2" style="text-align:center">임대료</th>
 														<th style="text-align:center">관리비</th>
@@ -640,22 +640,21 @@
 														<th style="text-align:center">부가세</th>
 													</tr>
 													<tr>
-														<td style="text-align:center">김현성</td>
-														<td style="text-align:center">남</td>
+														<td style="text-align:center">{{ resident.contractorName }}</td>
+														<td style="text-align:center">{{ resident.contractorGender }}</td>
 														<td style="text-align:center">2회</td>
 														<td style="text-align:center">1년</td>
-														<td style="text-align:center">2013.05.25</td>
-														<td style="text-align:center">2014.05.24</td>
+														<td style="text-align:center">{{ resident.inDate }}</td>
+														<td style="text-align:center">{{ resident.outDate }}</td>
 														<td style="text-align:center">재실</td>
-														<td style="text-align:center">010-1919-2929</td>
-														<td style="text-align:center">85,000,000</td>
-														<td style="text-align:center">월세</td>
-														<td style="text-align:center">55,000,000</td>
-														<td style="text-align:center">선불</td>
-														<td style="text-align:center">250,000</td>
-														<td style="text-align:center">50,000</td>
-														<td style="text-align:center">30,000</td>
-														<td style="text-align:center">-</td>
+														<td style="text-align:center">{{ resident.contractorContactNumber1 }}</td>
+														<td style="text-align:center">{{ resident.leaseType }}</td>
+														<td style="text-align:center">{{ resident.leaseDeposit }}</td>
+														<td style="text-align:center">{{ resident.leasePayWay }}</td>
+														<td style="text-align:center">{{ resident.leaseMoney }}</td>
+														<td style="text-align:center"></td>
+														<td style="text-align:center">{{ resident.parkingFee }}</td>
+														<td style="text-align:center"></td>
 													</tr>
 												 </table>  
 											</div>
@@ -752,8 +751,8 @@
 														<td style="text-align:center">{{ data.confirmDate }}</td>
 														<td style="text-align:center">미납</td>
 														<td style="text-align:center">{{ data.delayNumberNow }}회</td>
-														<td style="text-align:center">납부</td>
-														<td style="text-align:center">{% if data.payStatus <= 0 %}0{% else %}{{ data.payStatus }}{% endif %}회</td>
+														<td style="text-align:center">{% if data.payStatus == -1 %}완납{% else %}납부{% endif %}</td>
+														<td style="text-align:center">{% if data.payStatus == -1 %}없음{% else %}{{ data.payStatus }}회{% endif %}</td>
 														<td style="text-align:center">{% if data.payStatus == -1 %}납부(완납){% elif data.payStatus == 0 %}미납{% else %}부분 납부{% endif %}</td>
 														<td style="text-align:center">수정</td>
 														<td style="text-align:center">{{ data.modifyNumber }}회</td>

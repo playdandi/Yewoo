@@ -79,19 +79,73 @@ function setCurInfo()
 	curType = Number($('#search_type option:selected').val());
 	curBid = Number($('#search_building').val().replace('b', ''));
 	curBName = $('#search_building option:selected').text();
-	curYear = $('#search_year').val();
+	curYear = Number($('#search_year').val());
 	curMonth = $('#search_month').val();
 }
 
 
 function getContents()
 {
-	var template = new EJS({url : '/static/ejs/03_02_check_input.ejs'}).render();
-	$('#contents').html(template);
+	doAjaxCheckInfo();
+}
+var checkList;
+var doAjaxCheckInfo = function() {
+	var postData = {};
+	var csrftoken = $.cookie('csrftoken');
+	postData['csrfmiddlewaretoken'] = csrftoken; 
+	postData['building_id'] = curBid;
+	postData['year'] = curYear;
+	postData['month'] = curMonth;
+	postData['fromWhere'] = 1;
+
+	$.ajax({
+		type : 'POST',
+		url : '/lease/input/getNoticeInfo/',
+		data : postData,
+		success : function(result) {
+			checkList = result;
+			var template = new EJS({url : '/static/ejs/03_02_check_input.ejs'}).render({'data' : checkList});
+			$('#contents').html(template);
+		},
+		error : function(msg) {
+			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
+		},
+	});
 }
 
-var detail_btn_clicked = false;
+// check button누를 때 동작
+function InputCheck(type, id)
+{
+	if ($('#uploadDate').val().trim() == '') {
+		alert('입력 확인 날짜를 선택해주세요.');
+		return;
+	}
 
+	doAjaxInputCheck(type, id);
+}
+var doAjaxInputCheck = function(type, id) {
+	var postData = {};
+	var csrftoken = $.cookie('csrftoken');
+	postData['csrfmiddlewaretoken'] = csrftoken; 
+	postData['eid'] = id;
+	postData['inputCheck'] = type;
+	postData['inputDate'] = $('#uploadDate').val().trim();
+
+	$.ajax({
+		type : 'POST',
+		url : '/lease/input/saveInputCheck/',
+		data : postData,
+		success : function(result) {
+			if (type == '1')
+				alert('입력확인 되었습니다.');
+			else
+				alert('입력확인이 취소되었습니다.');
+		},
+		error : function(msg) {
+			alert('다시 시도해 주세요...');
+		},
+	});
+}
 
 function showEGWModal()
 {
@@ -102,14 +156,14 @@ function goEGWInput()
 	showLeaseInfo(true);
 }
 
-function inputDetail(bid, rid)
+function goDetail(bid, rid, id)
 {
-	$(location).attr('href', '/lease/input/notice/detail/'+bid+'/'+rid+'/');
+	// 변동 금액 입력 버튼 눌렀을 시 이동
+	$(location).attr('href', '/lease/input/notice/detail/'+bid+'/'+rid+'/'+id+'/'+'0'+'/');
 }
 
 function showBill(bid, rid)
 {
 	// curYear ,curMonth, curBId 의 모든 고지서 정보를 미리 들고와 있어야 한다. 그래놓고 modal에서 정보 보여줌.
-
 	// $('#').modal();
 }

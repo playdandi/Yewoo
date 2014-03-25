@@ -58,7 +58,7 @@
 		<td style="text-align:center"><font style="color:red"><%= data[i].amountNoPay %></font></td>
 		<% } %>
 		<td style="text-align:center"><input type="text" class="margin0 span12 fontmini datepicker" value="<%= data[i].payDate %>" /></td>
-		<td style="text-align:center"><button class="btn btn-mini" onclick="simpleInput('<%= i %>');">입력</button></td>
+		<td style="text-align:center"><button class="btn btn-mini" onclick="simpleInput('<%= i %>');" <% if (data[i].payStatus == -1) { %>disabled<% } %>>입력</button></td>
 		<td style="text-align:center; color:gray"><%= data[i].month %>월</td>
 		<td style="text-align:center"><%= data[i].delayNumberNow %>회</td>
 		<td style="text-align:center; color:gray"><%= data[i].month + 1 %>월</td>

@@ -58,51 +58,39 @@ function InitForm()
 	//$('#search_isEmpty').attr('checked', false);
 }
 
-function getContents()
+function setCurInfo()
 {
-	//var year = $('#').val();
-	//var month = $('#').val();
-
-	// db에서 정보 뽑고
-	
-
-	doAjaxContents_N();
-
-	// 상세보기 버튼일 경우 상세화면으로 들어가지 않도록 하자.	
-	$('.detailBtn').focusin(function() {
-		detail_btn_clicked = true;
-	});
-	// template에서 상세화면 들어가는 class 설정
-	$('.showDetail').click(function() {
-		//var id = $(this).attr('id');
-		// 나중에 수정해야 함
-		if (detail_btn_clicked) {
-			detail_btn_clicked = false;
-			return;
-		}
-		$(location).attr('href', 'http://14.49.42.190:8080/lease/show/leaseNotice/' + '1/101/');
-	});
-
+	// 여기서 type은 번호 (입력현황 : 0 , 고지현황 : 1)
+	curType = Number($('#search_type option:selected').val());
+	curBid = Number($('#search_building').val().replace('b', ''));
+	curBName = $('#search_building option:selected').text();
+	curYear = Number($('#search_year').val());
+	curMonth = $('#search_month').val();
 }
 
-var Notice;
+function getContents()
+{
+	doAjaxContents_N();
+		//$(location).attr('href', 'http://14.49.42.190:8080/lease/show/leaseNotice/' + '1/101/');
+}
+var list;
 var doAjaxContents_N = function() {
 	var postData = {};
 	var csrftoken = $.cookie('csrftoken');
 	postData['csrfmiddlewaretoken'] = csrftoken; 
-	postData['building_id'] = Number($('#search_building').val().replace('b', ''));
-	postData['year'] = $('#search_year').val().trim();
-	postData['month'] = $('#search_month').val().trim();
+	postData['building_id'] = curBid;
+	postData['year'] = curYear;
+	postData['month'] = curMonth;
+	postData['fromWhere'] = 0;
 
 	$.ajax({
 		type : 'POST',
 		url : '/lease/input/getNoticeInfo/',
 		data : postData,
 		success : function(result) {
-			Lease = result;
-			var template = new EJS({url : '/static/ejs/03_01_notice_show.ejs'}).render({'data' : Lease, 'start' : 0});
+			list = result;
+			var template = new EJS({url : '/static/ejs/03_01_notice_show.ejs'}).render({'data' : list});
 			$('#contents').html(template);
-			$('#contents_modal').html(template);
 		},
 		error : function(msg) {
 			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');

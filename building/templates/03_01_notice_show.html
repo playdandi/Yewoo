@@ -256,7 +256,7 @@
 								<tr style="background-color:#dbdbd2">
 									<td colspan="6">
 										<div style="font-size:0.8em">건물명/기간</div>
-										<div><h3>No.1 루체시티 1 / 2014.01 / 최종고지 현황</h3></div>
+										<div><h3>No.{{ search_building_id }} {{ cur_building_name }} / <font style="color:red">{{ search_year }}.{{ search_month }}</font> / <font style="color:red">최종 고지 현황</font></h3></div>
 									</td>
 									<td colspan="5">
 										<div style="font-size:0.8em">최종 고지 현황</div>
@@ -354,11 +354,11 @@
 							<tr style="background-color:#dbdbd2">
 								<td colspan="4" style="border-right-style:solid">
 									<div style="font-size:0.8em">건물명/호수</div>
-									<div><h3 style="color:red">No.1 루체시티 1 / 101호</h3></div>
+									<div><h3>No.{{ search_building_id }} {{ cur_building_name }} / <font style="color:red">{{ search_year }}.{{ search_month }}</font> / <font style="color:red">최종 고지 현황</font></h3></div>
 								</td>
 								<td colspan="4" style="border-right-style:solid">
 									<div style="font-size:0.8em">계약 평수</div>
-									<div><h3 style="color:red">6.5/21.2m<sup>2</sup></h3></div>
+									<div><h3 style="color:red"></h3></div>
 								</td>
 								<td colspan="4">
 									<div style="font-size:0.8em">보증금/월세</div>
@@ -549,6 +549,8 @@
 						$('#outDate').val('');
 					}
 				});
+
+				setCurInfo();
 
 				// ejs template 불러오기
 				getContents();

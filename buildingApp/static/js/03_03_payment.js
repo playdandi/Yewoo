@@ -102,10 +102,19 @@ function simpleInput(idx)
 	var template = new EJS({url : '/static/ejs/03_03_payment_simpleInput.ejs'}).render({'data' : paymentList[idx], 'bid' : curBid});
 	$('#contents_modal_simpleinput').html(template);
 
+	// functions
+	//$('# 
+	
+
 	$('#modal_simpleinput').modal();
 }
 
 function goDetail(bid, rid, type)
 {
 	$(location).attr('href', '/lease/payment/detail/'+bid+'/'+rid+'/'+type+'/');
+}
+
+
+function saveChangedInfo()
+{
 }

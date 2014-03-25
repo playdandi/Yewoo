@@ -64,10 +64,10 @@ function getContents()
 
 	// db에서 정보 뽑고
 	
-	var template = new EJS({url : '/static/ejs/03_02_notice_detail_input.ejs'}).render();
-	$('#contents_list').html(template);
-	var template = new EJS({url : '/static/ejs/03_02_notice_detail_reason.ejs'}).render();
-	$('#contents_reason').html(template);
+	//var template = new EJS({url : '/static/ejs/03_02_notice_detail_input.ejs'}).render();
+	//$('#contents_list').html(template);
+	//var template = new EJS({url : '/static/ejs/03_02_notice_detail_reason.ejs'}).render();
+	//$('#contents_reason').html(template);
 }
 
 function showModifyForm()
@@ -77,6 +77,7 @@ function showModifyForm()
 }
 
 
+$('#c0').keyup(function() { changeCharge(0); });
 $('#c1').keyup(function() { changeCharge(1); });
 $('#c2').keyup(function() { changeCharge(2); });
 $('#c3').keyup(function() { changeCharge(3); });
@@ -89,27 +90,66 @@ $('#c9').keyup(function() { changeCharge(9); });
 
 function changeCharge(num)
 {
-	var before = Number($('#before'+num).text().split(',').join('').trim());
-
+	var before = Number($('#before'+num).text().trim());
 	var variation = $('#c'+num).val().split(',').join('').trim();
-	if (variation == '')
+	if (variation == '' || variation == '-')
 		variation = '0';
-	var value = variation.match(/[0-9]/g).join('');
+	var value = Number(variation.match(/[0-9\-]/g).join(''));
 
-	$('#after'+num).html(before+Number(value));
+	$('#after'+num).html(before + value);
+
+	// 변동금액 합 구하기
+	var varSum = Number(0);
+	for (i = 0; i <= 9; i++) {
+		v = $('#c'+i).val().split(',').join('').trim();
+		if (v == '' || v == '-')
+			v = '0';
+		varSum += Number(v.match(/[0-9\-]/g).join(''));
+	}
+	$('#changeFee').html(varSum);
+
+	// 합계금액 구하기
+	var allSum = Number(0);
+	for (i = 0; i <= 9; i++) {
+		v = $('#after'+i).html().trim();
+		if (v == '' || v == '-')
+			v = '0';
+		allSum += Number(v.match(/[0-9\-]/g).join(''));
+	}
+	$('#afterTotalFee').html(allSum);
 }
 
 
 function saveChangedInfo()
 {
 	var param = {};
+	param['em_id'] = $('#em_id').val().trim();
+	param['leaseMoney'] = $('#after0').html().trim();
+	param['maintenanceFee'] = $('#after1').html().trim();
+	param['surtax'] = $('#after2').html().trim();
+	param['parkingFee'] = $('#after3').html().trim();
+	param['electricityFee'] = $('#after4').html().trim();
+	param['waterFee'] = $('#after5').html().trim();
+	param['gasFee'] = $('#after6').html().trim();
+	//
+	//
+	param['etcFee'] = $('#after9').html().trim();
+	param['changeFee'] = $('#changeFee').html().trim();
+	param['totalFee'] = $('#afterTotalFee').html().trim();
+	param['modifyNumber'] = $('#nextModifyNumber').html().replace('회','').trim();
+	param['msg'] = $('#modifyMsg').val().trim();
+	param['modifyDate'] = $('#modifyDate').val().trim();
 
 	// error check
+	if (param['msg'] == '' || param['modifyDate'] == '') {
+		alert ('칸을 모두 입력하세요.');
+		return;
+	}
 
-	doAjaxSaveInfo(param);
+	doAjaxSaveChangedInfo(param);
 }
 
-var doAjaxSaveInfo = function(param) {
+var doAjaxSaveChangedInfo = function(param) {
 	var csrftoken = $.cookie('csrftoken');
 	param['csrfmiddlewaretoken'] = csrftoken;
 
@@ -118,7 +158,7 @@ var doAjaxSaveInfo = function(param) {
 		url : '/lease/input/notice/detail/save/',
 		data : param,
 		success : function(result) {
-			if(confirm('저장되었습니다.\n납부 현황 화면(이전화면)으로 돌아가시겠습니까?')) {
+			if(confirm('저장되었습니다.\n고지 현황 화면(이전화면)으로 돌아가시겠습니까?')) {
 			}
 			else 
 				$(location).reload();
