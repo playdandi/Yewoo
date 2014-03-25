@@ -165,7 +165,7 @@ function goDetail(bid, rid, id)
 }
 function goDetail2(bid, rid, id)
 {
-	// 변동 금액 입력 버튼 눌렀을 시 이동
+	// 상세 내역 확인 버튼 눌렀을 시 이동
 	$(location).attr('href', '/lease/input/notice/detail/'+bid+'/'+rid+'/'+id+'/'+'1'+'/');
 }
 

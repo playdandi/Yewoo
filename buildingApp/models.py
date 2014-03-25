@@ -9,6 +9,10 @@ class ResidentInfo(models.Model):
     buildingRoomNumber = models.IntegerField()
     inDate = models.DateField()
     outDate = models.DateField()
+
+    leaseNumber = models.IntegerField()
+    leaseContractPeriod = models.IntegerField()
+    leaseContractPeriodUnit = models.CharField(max_length=4)
     leaseType = models.CharField(max_length=4)
     leaseDeposit = models.IntegerField()
     leasePayWay = models.CharField(max_length=4)

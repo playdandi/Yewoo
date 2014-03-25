@@ -225,11 +225,11 @@
 													<tr style="background-color:#dbdbd2">
 														<td colspan="8">
 															<div style="font-size:0.8em">건물명/호수</div>
-															<div><h3><font style="color:red">No.{{ search_building_id }} {{ cur_building_name }} / </font></h3></div>
+															<div><h3><font style="color:red">No.{{ building_id }} {{ building_name }} / {{ resident.buildingRoomNumber }}호</font></h3></div>
 														</td>
 														<td colspan="5">
 															<div style="font-size:0.8em">보증금/월세</div>
-															<div><h3><font style="color:red">5,500/25만원</font></h3></div>
+															<div><h3><font style="color:red">{{ simpleLeaseDeposit }}/{{ simpleLeaseMoney }}만원</font></h3></div>
 														</td>
 														<td colspan="3">
 															<div style="font-size:0.8em">계약 평수</div>
@@ -252,19 +252,19 @@
 													<tr>
 														<td style="text-align:center">{{ resident.contractorName }}</td>
 														<td style="text-align:center">{{ resident.contractorGender }}</td>
-														<td style="text-align:center">2회</td>
-														<td style="text-align:center">1년</td>
+														<td style="text-align:center">{{ resident.leaseNumber }}회</td>
+														<td style="text-align:center">{{ resident.leaseContractPeriod }}{{ resident.leaseContractPeriodUnit }}</td>
 														<td style="text-align:center">{{ resident.inDate }}</td>
 														<td style="text-align:center">{{ resident.outDate }}</td>
-														<td style="text-align:center">재실</td>
+														<td style="text-align:center">-</td>
 														<td style="text-align:center">{{ resident.contractorContactNumber1 }}</td>
 														<td style="text-align:center">{{ resident.leaseType }}</td>
 														<td style="text-align:center">{{ resident.leaseDeposit }}</td>
 														<td style="text-align:center">{{ resident.leasePayWay }}</td>
 														<td style="text-align:center">{{ resident.leaseMoney }}</td>
-														<td style="text-align:center"></td>
+														<td style="text-align:center">{{ resident.maintenanceFee }}</td>
 														<td style="text-align:center">{{ resident.parkingFee }}</td>
-														<td style="text-align:center"></td>
+														<td style="text-align:center">{{ resident.surtax }}</td>
 													</tr>
 												 </table>  
 											</div>
@@ -510,8 +510,81 @@
 
 								<!-- 2. 고지 상세 내역 확인 -->
 								<div class="tab-pane" id="noticeDetailCheck_tab">
-									<!-- 수정되면 같이 바꾸고 -->
-
+									<div class="row-fluid">
+										<!-- 임대 내역 정보 -->
+										<div class="box span12" style="margin:0px 0px 5px 0px; padding: 0px">
+											<div class="box-header">
+												<div style="margin-right:5px">
+													<h2><strong>임대 내역 정보</strong></h2>
+												</div>
+											</div>
+											<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
+												<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+													<colgroup>
+														<col width="6%">
+														<col width="3%">
+														<col width="4%">
+														<col width="4%">
+														<col width="9%">
+														<col width="9%">
+														<col width="11%">
+														<col width="10%">
+														<col width="4%">
+														<col width="10%">
+														<col width="4%">
+														<col width="8%">
+														<col width="6%">
+														<col width="6%">
+														<col width="6%">
+													</colgroup>
+													<tr style="background-color:#dbdbd2">
+														<td colspan="8">
+															<div style="font-size:0.8em">건물명/호수</div>
+															<div><h3><font style="color:red">No.{{ building_id }} {{ building_name }} / {{ resident.buildingRoomNumber }}호</font></h3></div>
+														</td>
+														<td colspan="5">
+															<div style="font-size:0.8em">보증금/월세</div>
+															<div><h3><font style="color:red">{{ simpleLeaseDeposit }}/{{ simpleLeaseMoney }}만원</font></h3></div>
+														</td>
+														<td colspan="3">
+															<div style="font-size:0.8em">계약 평수</div>
+															<div><h3><font style="color:red"></font></h3></div>
+														</td>
+													</tr>
+													<tr>
+														<th colspan="2" style="text-align:center">입주자</th>
+														<th colspan="2" style="text-align:center">임대회차</th>
+														<th style="text-align:center">계약일</th>
+														<th style="text-align:center">만료일</th>
+														<th style="text-align:center">재실여부</th>
+														<th style="text-align:center">연락처</th>
+														<th colspan="2" style="text-align:center">보증금</th>
+														<th colspan="2" style="text-align:center">임대료</th>
+														<th style="text-align:center">관리비</th>
+														<th style="text-align:center">주차비</th>
+														<th style="text-align:center">부가세</th>
+													</tr>
+													<tr>
+														<td style="text-align:center">{{ resident.contractorName }}</td>
+														<td style="text-align:center">{{ resident.contractorGender }}</td>
+														<td style="text-align:center">{{ resident.leaseNumber }}회</td>
+														<td style="text-align:center">{{ resident.leaseContractPeriod }}{{ resident.leaseContractPeriodUnit }}</td>
+														<td style="text-align:center">{{ resident.inDate }}</td>
+														<td style="text-align:center">{{ resident.outDate }}</td>
+														<td style="text-align:center">-</td>
+														<td style="text-align:center">{{ resident.contractorContactNumber1 }}</td>
+														<td style="text-align:center">{{ resident.leaseType }}</td>
+														<td style="text-align:center">{{ resident.leaseDeposit }}</td>
+														<td style="text-align:center">{{ resident.leasePayWay }}</td>
+														<td style="text-align:center">{{ resident.leaseMoney }}</td>
+														<td style="text-align:center">{{ resident.maintenanceFee }}</td>
+														<td style="text-align:center">{{ resident.parkingFee }}</td>
+														<td style="text-align:center">{{ resident.surtax }}</td>
+													</tr>
+												 </table>  
+											</div>
+										</div>
+									</div>
 									<!-- 전체 고지 내역-->
 									<div class="row-fluid">
 										<div class="box span12" style="margin: 0px; padding: 0px">
@@ -627,6 +700,7 @@
 		</div>
 		<div class="modal-body">
 			<div class="row-fluid">
+				<!--
 				<table class="table table-bordered table-condensed" style="margin-bottom:5px;">
 					<tr>
 						<th style="background-color:#dbdbd2; text-align:center">납부대상</th>
@@ -691,7 +765,8 @@
 						<td style="text-align:center"><font style="color:red">2014.3.1</font></td>
 						<td>미처리</td>
 					</tr>
-				 </table>  
+				</table>  
+				-->
 			</div>
 		</div>
 	</div>

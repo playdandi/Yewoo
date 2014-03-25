@@ -97,5 +97,5 @@ var doAjaxContents = function() {
 
 function goDetail(bid, rid)
 {
-	$(location).attr('href', '/lease/show/leaseNotice/'+bid+'/'+rid+'/#paymentDetail_tab');
+	$(location).attr('href', '/lease/show/leaseNotice/'+bid+'/'+rid+'/'+'2'+'/');
 }

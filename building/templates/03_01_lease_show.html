@@ -310,6 +310,7 @@
 										<div style="float:left; text-align:left">
 											<span>입력 현황</span>
 											<label style="display: inline-block"><input type="radio" name="show_range" value="all" checked></label>전체
+											<label style="display: inline-block"><input type="radio" name="show_range" value="all" checked></label>선택
 											<label style="display: inline-block"><input type="radio" name="show_range" value="detail_all"></label>상세 내역(전체)
 											<label style="display: inline-block"><input type="radio" name="show_range" value="detail_part"></label>상세 내역(선택)
 										</div>
@@ -333,6 +334,7 @@
 	</div>
 	
 	
+	<input type="hidden" value="{{ csrf_token }}" />	
 	<!-- 미리보기 (미리보기 버튼 눌렀을 때 보이는 큰 팝업창) -->
 	<div class="modal hide fade" id="myModal">
 		<div class="modal-header">

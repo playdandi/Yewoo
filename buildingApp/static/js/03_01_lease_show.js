@@ -61,12 +61,6 @@ function InitForm()
 function getContents()
 {
 	doAjaxContents_L();
-	
-	$('#detailBtn').click(function() {
-		//var id = $(this).attr('id');
-		// 나중에 수정해야 함
-		$(location).attr('href', '/lease/show/leaseNotice/' + '1/101/');
-	});
 }
 
 var Lease;
@@ -116,7 +110,7 @@ function pagePrint()
 	objWin.print();
 }
 
-function showDetail(bnum, rnum)
+function showDetail(bid, rid)
 {
-	window.location = "/lease/show/leaseNotice/" + bnum + "/" + rnum;
+	window.location = "/lease/show/leaseNotice/" + bid + "/" + rid + '/' + '0' + '/';
 }

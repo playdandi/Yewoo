@@ -71,7 +71,6 @@ function setCurInfo()
 function getContents()
 {
 	doAjaxContents_N();
-		//$(location).attr('href', 'http://14.49.42.190:8080/lease/show/leaseNotice/' + '1/101/');
 }
 var list;
 var doAjaxContents_N = function() {
@@ -98,9 +97,8 @@ var doAjaxContents_N = function() {
 	});
 }
 
-function showDetail(bnum, rnum)
+function showDetail(bid, rid)
 {
-	window.location = "/lease/show/leaseNotice/" + bnum + "/" + rnum + "#noticeDetail_tab";
+	window.location = "/lease/show/leaseNotice/" + bid + "/" + rid + '/' + '1' + '/';
 }
 
-var detail_btn_clicked = false;
