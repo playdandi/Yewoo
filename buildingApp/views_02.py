@@ -123,8 +123,24 @@ def save_resident_info(request):
         resident.checkin = param['checkin']
         resident.checkout = param['checkout']
         resident.memo = param['memo']
+        
+        roominfo = RoomInfo.objects.get(building_id = int(resident.buildingName), roomnum = int(resident.buildingRoomNumber))
+        if not roominfo.nowResident == resident:
+            resident.leaseNumber = roominfo.residentnum + 1
+        
+        #수정필요
+        resident.leaseContractPeriod = 0
+        resident.leaseContractPeriodUnit = u'월'        
+	resident.maintenanceFee = 0
+	resident.surtax = 0
 
         resident.save()
+
+        if not roominfo.nowResident == resident:
+            roominfo.nowResident = resident
+            roominfo.isOccupied = True
+            roominfo.residentnum = roominfo.residentnum + 1
+            roominfo.save()
 
     return render_to_response('index.html')
 

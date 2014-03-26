@@ -181,11 +181,11 @@ var doSaveResidentInfo = function(postData) {
 
 	$.ajax({
 		type : 'POST',
-		url : 'http://14.49.42.190:8080/resident/save/',
+		url : '/resident/save/',
 		data : postData,
 		success : function() {
 			alert('성공적으로 입력되었습니다.');
-			$(location).attr('href', 'http://14.49.42.190:8080/resident/info/');
+			$(location).attr('href', '/resident/info/');
 		},
 		error : function(msg) {
 			alert('error : ' + msg);	

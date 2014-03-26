@@ -60,6 +60,31 @@ def setPostData(request, typestr = ''):
             param['excel_uploadDate'] = ''
             param['excel_id'] = ''
 
+    #재실 정보
+    rooms = RoomInfo.objects.filter(building = param['search_building_id'])
+    occRooms = rooms.filter(isOccupied = True)
+    param['num_of_rooms'] = len(rooms)
+    param['num_of_occ_rooms'] = len(occRooms)
+    param['num_of_jeon_rooms'] = len(occRooms.filter(nowResident__leaseType = u'전세'))
+    param['num_of_woel_rooms'] = len(occRooms.filter(nowResident__leaseType = u'월세'))
+    param['num_of_empty_rooms'] = len(rooms) - len(occRooms)
+    total_deposit = 0
+    total_lease = 0
+    total_maintenance = 0
+    total_parking = 0
+    total_surtax = 0
+    for room in occRooms:
+        total_deposit += room.nowResident.leaseDeposit
+        total_lease += room.nowResident.leaseMoney
+        total_maintenance += room.nowResident.maintenanceFee
+        total_parking += room.nowResident.parkingFee
+        total_surtax += room.nowResident.surtax
+    param['total_deposit'] = total_deposit
+    param['total_lease'] = total_lease
+    param['total_maintenance'] = total_maintenance
+    param['total_parking'] = total_parking
+    param['total_surtax'] = total_surtax
+
     return param
 
 def lease_show_html(request):

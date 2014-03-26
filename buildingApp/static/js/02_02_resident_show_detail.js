@@ -242,11 +242,11 @@ var doUpdateResidentInfo = function(postData) {
 	postData['uid'] = resident_id;
 	$.ajax({
 		type : 'POST',
-		url : 'http://14.49.42.190:8080/resident/save/',
+		url : '/resident/save/',
 		data : postData,
 		success : function() {
 			alert('성공적으로 입력되었습니다.');
-			$(location).attr('href', 'http://14.49.42.190:8080/resident/show/'+resident_id+'/');
+			$(location).attr('href', '/resident/show/'+resident_id+'/');
 		},
 		error : function(msg) {
 			alert('error : ' + msg);	
