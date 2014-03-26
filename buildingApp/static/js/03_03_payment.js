@@ -1,9 +1,19 @@
-function showLeaseInfo()
+function showLeaseInfo(isForReload)
 {
-	var year = Number($('#search_year').val());
-	var month = Number($('#search_month').val());
-	var building_id = Number($('#search_building').val().replace('b', ''));
-	var room_num = $('#search_room_num').val();
+	var year, month, building_id, room_num;
+	if (isForReload) {
+		year = Number(curYear);
+		month = Number(curMonth);
+		building_id = Number(curBid);
+		room_num = '';
+	}
+	else {
+		year = Number($('#search_year').val());
+		month = Number($('#search_month').val());
+		building_id = Number($('#search_building').val().replace('b', ''));
+		room_num = $('#search_room_num').val();
+	}
+
 	var type = $('#search_type').val();
 	var type_text;
 	if (type == '5') type_text = 'payment';
@@ -206,7 +216,7 @@ function functions()
 			data : param,
 			success : function(result) {
 				alert('성공적으로 저장되었습니다.');
-				showLeaseInfo();
+				showLeaseInfo(true);
 			},
 			error : function(msg) {
 				alert('다시 시도해 주세요...');
@@ -242,7 +252,7 @@ var doAjaxInputCheck = function(type, id) {
 				alert('납부확인 되었습니다.');
 			else
 				alert('납부확인이 취소되었습니다.');
-			window.location.reload();
+			showLeaseInfo(true);
 		},
 		error : function(msg) {
 			alert('다시 시도해 주세요...');

@@ -1,3 +1,4 @@
+var curTypeChar = 'notice';
 function showLeaseInfo(isForBillMove)
 {
 	var year, month, building_id, room_num, type_text;
@@ -8,7 +9,8 @@ function showLeaseInfo(isForBillMove)
 		room_num = $('#search_room_num').val();
 		// type check (E, G, W)
 		var typeChar = $('input[name=bill]:checked').val();
-		if (typeChar == 'E') type_text = 'electricity';
+		if (typeChar == undefined) type_text = curTypeChar;
+		else if (typeChar == 'E') type_text = 'electricity';
 		else if (typeChar == 'G') type_text = 'gas';
 		else if (typeChar == 'W') type_text = 'water';
 	}
@@ -142,6 +144,7 @@ var doAjaxNoticeCheck = function(type, id) {
 				alert('고지확인 되었습니다.');
 			else
 				alert('고지확인 해제되었습니다.');
+			showLeaseInfo(true);
 		},
 		error : function(msg) {
 			alert('다시 시도해 주세요...');

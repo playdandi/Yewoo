@@ -540,10 +540,13 @@ def excel_file_upload(request):
                 for elem in em:
                     if int(elem.resident.id) == int(obj.resident.id):
                         if request.POST['type'] == 'electricity':
+                            elem.totalFee -= int(elem.electricityFee)
                             elem.electricityFee = 0
                         elif request.POST['type'] == 'gas':
+                            elem.totalFee -= int(elem.gasFee)
                             elem.gasFee = 0
                         else:
+                            elem.waterFee -= int(elem.waterFee)
                             elem.waterFee = 0
                         elem.save()
                         break
@@ -556,10 +559,13 @@ def excel_file_upload(request):
                     if int(elem.resident.id) == int(obj.resident.id):
                         if request.POST['type'] == 'electricity':
                             elem.electricityFee = obj.totalFee
+                            elem.totalFee += int(elem.electricityFee)
                         elif request.POST['type'] == 'gas':
                             elem.gasFee = obj.totalFee
+                            elem.totalFee += int(elem.gasFee)
                         else:
                             elem.waterFee = obj.totalFee
+                            elem.waterFee += int(elem.waterFee)
                         elem.save()
                         break
                 
@@ -615,10 +621,13 @@ def excel_file_delete(request):
             for elem in em:
                 if int(elem.resident.id) == int(obj.resident.id):
                     if typestr == 'electricity':
+                        elem.totalFee -= int(elem.electricityFee)
                         elem.electricityFee = 0
                     elif typestr == 'gas':
+                        elem.totalFee -= int(elem.gasFee)
                         elem.gasFee = 0
                     else:
+                        elem.totalFee -= int(elem.waterFee)
                         elem.waterFee = 0
                     elem.save()
                     break
@@ -649,6 +658,7 @@ def notice_detail_save(request):
         data.gasFee = int(request.POST['gasFee'])
         data.waterFee = int(request.POST['waterFee'])
         data.totalFee = int(request.POST['totalFee'])
+        data.etcFee = int(request.POST['etcFee'])
         data.changedFee = int(request.POST['changeFee'])
         data.msg = str(request.POST['msg'])
         data.changeDate = str(request.POST['modifyDate']).replace('.', '-')
@@ -663,11 +673,40 @@ def notice_detail_save(request):
         em.gasFee = data.gasFee
         em.waterFee = data.waterFee
         em.totalFee = data.totalFee
+        em.etcFee = data.etcFee
         em.changedFee = data.changedFee
         em.save()
 
         return HttpResponse('OK')
     return HttpResponse('NOT POST')
+
+
+def serialize_notice_input_detail(notice):
+    serialized = []
+    for n in notice:
+        data = {}
+        data['id'] = int(n.id)
+        data['year'] = int(n.year)
+        data['month'] = int(n.month)
+        data['noticeNumber'] = int(n.noticeNumber)
+        data['leaseMoney'] = int(n.leaseMoney)
+        data['maintenanceFee'] = int(n.maintenanceFee)
+        data['surtax'] = int(n.surtax)
+        data['parkingFee'] = int(n.parkingFee)
+        data['electricityFee'] = int(n.electricityFee)
+        data['gasFee'] = int(n.gasFee)
+        data['waterFee'] = int(n.waterFee)
+        data['etcFee'] = int(n.etcFee)
+        data['totalFee'] = int(n.totalFee)
+        data['changedFee'] = ''
+        if n.changedFee != None:
+            data['changedFee'] = int(n.changedFee)
+        data['noticeDate'] = ''
+        if n.noticeDate != None:
+            #data['noticeDate'] = str(n.noticeDate.month)+'.'+str(n.noticeDate.day)
+            data['noticeDate'] = '.'.join(str(n.noticeDate).split('.')[1:])
+        serialized.append(data)
+    return serialized
 
 def notice_detail_input_html(request, bid, rid, eid, tab):
     param = {}
@@ -681,75 +720,39 @@ def notice_detail_input_html(request, bid, rid, eid, tab):
     param['building_name'] = BuildingInfo.objects.get(id = int(bid)).name
     param['building_id'] = int(bid)
 
-    #totalFee = int(0)
-    param['zero_data'] = EachMonthInfo.objects.get(id = int(eid))
-    if param['zero_data'].inputDate == None:
-        param['zero_data'].inputDate = ''
-    else:
-        param['zero_data'].inputDate = str(param['zero_data'].inputDate.year)+'.'+str(param['zero_data'].inputDate.month)+'.'+str(param['zero_data'].inputDate.day)
-    if param['zero_data'].noticeDate == None:
-        param['zero_data'].noticeDate = ''
-    else:
-        param['zero_data'].noticeDate = str(param['zero_data'].noticeDate.year)+'.'+str(param['zero_data'].noticeDate.month)+'.'+str(param['zero_data'].noticeDate.day)
-    if param['zero_data'].inputDate != '' and param['zero_data'].noticeDate != '':
-        param['zero_data'].status = int(1);
-    else:
-        param['zero_data'].status = int(0);
+    param['eachMonth'] = EachMonthInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
+    for n in param['eachMonth']:
+        if n.changedFee != None:
+            n.changedFee = int(n.changedFee)
+        if n.noticeDate != None:
+            n.noticeDate = '.'.join(str(n.noticeDate).split('.')[1:])
+        else:
+            n.noticeDate = ''
 
-    if param['zero_data'].electricityFee == None:
-        param['zero_data'].electricityFee = ''
-    if param['zero_data'].gasFee == None:
-        param['zero_data'].gasFee = ''
-    if param['zero_data'].waterFee == None:
-        param['zero_data'].waterFee = ''
-    if param['zero_data'].etcFee == None:
-        param['zero_data'].etcFee = ''
-    """
-    try:
-        param['zero_E'] = ElectricityInfo.objects.get(year = int(param['zero_data'].year), month = int(param['zero_data'].month), building = int(bid), resident = int(rid)).value('totalFee')
-        #totalFee += int(param['zero_E'])
-    except:
-        param['zero_E'] = ''
-    try:
-        param['zero_G'] = GasInfo.objects.get(year = int(param['zero_data'].year), month = int(param['zero_data'].month), building = int(bid), resident = int(rid)).value('totalFee')
-        #totalFee += int(param['zero_G'])
-    except:
-        param['zero_G'] = ''
-    try:
-        param['zero_W'] = WaterInfo.objects.get(year = int(param['zero_data'].year), month = int(param['zero_data'].month), building = int(bid), resident = int(rid)).value('totalFee')
-        #totalFee += int(param['zero_W'])
-    except:
-        param['zero_W'] = ''
-    """
-
+    original = EachMonthInfo.objects.get(id = int(eid))
+    param['yymm'] = str(original.year)+'.'+str(original.month)
+    param['noticeNumber'] = int(original.noticeNumber)
     param['list'] = EachMonthDetailInfo.objects.filter(eachMonth = int(eid)).order_by('-id')
     for l in param['list']:
-        if l.electricityFee == None:
-            l.electricityFee = ''
-        if l.gasFee == None:
-            l.gasFee = ''
-        if l.waterFee == None:
-            l.waterFee = ''
-        if l.etcFee == None:
-            l.etcFee = ''
+        if l.changeDate != None:
+            l.changeDate = str(l.changeDate.year)+'.'+str(l.changeDate.month)+'.'+str(l.changeDate.day)
+        else:
+            l.changeDate = ''
+        l.inputDate = ''
+        l.noticeDate = ''
+        if original.inputDate != None:
+            l.inputDate = str(original.inputDate.year)+'.'+str(original.inputDate.month)+'.'+str(original.inputDate.day)
+        if original.noticeDate != None:
+            l.noticeDate = str(original.noticeDate.year)+'.'+str(original.noticeDate.month)+'.'+str(original.noticeDate.day)
+        l.status = int(0)
+        if l.inputDate != None and l.noticeDate != None:
+            l.status = int(1)
+    
     param['list_length'] = len(param['list'])
+    param['maxModifyNumber'] = int(param['list'][0].modifyNumber)
 
-    if param['list_length'] > 0:
-        param['list_last'] = param['list'][0]
-    else:
-        param['list_last'] = param['zero_data']
-        param['list_last'].modifyNumber = int(0)
+    param['list_last'] = param['list'][0]
     param['list_last'].nextModifyNumber = int(param['list_last'].modifyNumber) + 1
-
-    #totalFee += int(param['list'].leaseMoney)
-    #totalFee += int(param['list'].maintenanceFee)
-    #totalFee += int(param['list'].surtax)
-    #totalFee += int(param['list'].parkingFee)
-    #totalFee += int(param['list'].)
-    #totalFee += int(param['list'].)
-    #totalFee += int(param['list'].etcFee)
-    #totalFee += int(param['list'].etcFee)
-    #param['totalFee'] = totalFee
 
     return render(request, '03_02_notice_detail_input.html', param)
 
@@ -930,6 +933,8 @@ def payment_detail_html(request, bid, rid, tab):
     out = param['resident'].outDate
     param['resident'].inDate = str(inn.year)+'.'+str(inn.month)+'.'+str(inn.day)
     param['resident'].outDate = str(out.year)+'.'+str(out.month)+'.'+str(out.day)
+    param['simpleLeaseDeposit'] = int(param['resident'].leaseDeposit) / int(10000)
+    param['simpleLeaseMoney'] = int(param['resident'].leaseMoney) / int(10000)
 
     # payment history list
     param['list'] = PaymentInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
