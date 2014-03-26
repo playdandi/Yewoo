@@ -93,7 +93,7 @@ var doAjax = function(type, postData) {
 
 	$.ajax({
 		type : 'POST',
-		url : 'http://14.49.42.190:8080/building/search/',
+		url : '/building/search/',
 		data : postData,
 		success : function(result) {
 			$('#search_result').show();
@@ -131,7 +131,7 @@ var doAjax = function(type, postData) {
 
 			$('.showDetail').click(function() {
 				var id = $(this).attr('id');
-				$(location).attr('href', 'http://14.49.42.190:8080/building/contents/'+id);
+				$(location).attr('href', '/building/contents/'+id);
 			});
 		},
 		error : function(msg) {

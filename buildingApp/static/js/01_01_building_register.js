@@ -279,11 +279,11 @@ var doAjax = function(postData) {
 	postData['csrfmiddlewaretoken'] = csrftoken; 
 	$.ajax({
 		type : 'POST',
-		url : 'http://14.49.42.190:8080/building/save/',
+		url : '/building/save/',
 		data : postData,
 		success : function() {
 			alert('성공적으로 입력되었습니다.');
-			$(location).attr('href', 'http://14.49.42.190:8080/building/register/');
+			$(location).attr('href', '/building/register/');
 		},
 		error : function(msg) {
 			alert('error : ' + msg);	

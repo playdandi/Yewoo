@@ -277,7 +277,7 @@ var doAjax = function(postData) {
 
 	$.ajax({
 		type : 'POST',
-		url : 'http://14.49.42.190:8080/building/update/'+building_id+'/',
+		url : '/building/update/'+building_id+'/',
 		data : postData,
 		success : function() {
 			alert('성공적으로 입력되었습니다.');
