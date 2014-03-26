@@ -57,18 +57,34 @@ function InitForm()
 	//$('#search_isEmpty').attr('checked', false);
 }
 
-function getContents()
+function getContents(bid, rid, rn, n, leaseMoney, leasePayDate)
 {
-	//var year = $('#').val();
-	//var month = $('#').val();
-
-	// db에서 정보 뽑고
-	
-	//var template = new EJS({url : '/static/ejs/03_02_notice_detail_input.ejs'}).render();
-	//$('#contents_list').html(template);
-	//var template = new EJS({url : '/static/ejs/03_02_notice_detail_reason.ejs'}).render();
-	//$('#contents_reason').html(template);
+	roomnum = rn;
+	name = n;
+	lm = leaseMoney;
+	lpd = leasePayDate;
+	doAjaxDetailAllInfo(bid, rid);
 }
+var modify;
+var doAjaxDetailAllInfo = function(bid, rid) {
+	param = {}
+	var csrftoken = $.cookie('csrftoken');
+	param['csrfmiddlewaretoken'] = csrftoken;
+	param['building_id'] = Number(bid);
+	param['resident_id'] = Number(rid);
+
+	$.ajax({
+		type : 'POST',
+		url : '/lease/input/notice/detail/detailInfo/',
+		data : param,
+		success : function(result) {
+			modify = result;
+		},
+		error : function(msg) {
+			alert('실패하였습니다... 다시 시도해 주세요.');
+		},
+	});
+};
 
 function showModifyForm()
 {
@@ -197,14 +213,17 @@ var doAjaxSearchBill = function(param) {
 	});
 };
 
-
+var roomnum, name, lm, lpd;
 function showBillModal()
 {
 	//$('#billModal').modal();
 }
 
-function showInputHistoryModal()
+function showInputHistoryModal(eid, ym, noticeNumber)
 {
+	eid = Number(eid);
+	var template = new EJS({url : '/static/ejs/03_02_notice_detail_tab2_modify.ejs'}).render({'data' : modify, 'idx' : eid, 'ym' : ym, 'noticeNumber' : noticeNumber, 'roomnum' : roomnum, 'name' : name, 'leaseMoney' : lm, 'leasePayDate' : lpd});
+	$('#content_modify').html(template);
 	$('#inputHistoryModal').modal();
 }
 

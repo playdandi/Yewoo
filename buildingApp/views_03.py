@@ -708,6 +708,61 @@ def serialize_notice_input_detail(notice):
         serialized.append(data)
     return serialized
 
+
+def serialize_detail_tab2(data):
+    serialized = []
+    for d in data:
+        p = {}
+        p['id'] = int(d.id)
+        p['eid'] = int(d.eachMonth_id)
+        p['modifyNumber'] = d.modifyNumber
+        p['leaseMoney'] = d.leaseMoney
+        p['maintenanceFee'] = d.maintenanceFee
+        p['surtax'] = d.surtax
+        p['parkingFee'] = d.parkingFee
+        p['electricityFee'] = d.electricityFee
+        p['gasFee'] = d.gasFee
+        p['waterFee'] = d.waterFee
+        #p[''] = d.
+        #p[''] = d.
+        #p[''] = d.
+        p['etcFee'] = d.etcFee
+        p['changedFee'] = d.changedFee
+        p['totalFee'] = d.totalFee
+        p['inputDate'] = d.inputDate
+        p['noticeDate'] = d.noticeDate
+        p['status'] = int(0)
+        if d.inputDate != '' and d.noticeDate != '':
+            p['status'] = int(1)
+        serialized.append(p)
+    return serialized
+
+def notice_detail_tab2(request):
+    if request.method == 'POST':
+        bid = int(request.POST['building_id'])
+        rid = int(request.POST['resident_id'])
+        em = EachMonthInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
+        em_id = []
+        for n in em:
+            em_id.append(int(n.id))
+            if n.changedFee != None:
+                n.changedFee = int(n.changedFee)
+
+        emd = EachMonthDetailInfo.objects.filter(eachMonth_id__in = em_id).order_by('-id')
+        for e in emd:
+            e.inputDate = ''
+            e.noticeDate = ''
+            for i in em:
+                if int(i.id) == int(e.eachMonth_id):
+                    if i.inputDate != None:
+                        e.inputDate = str(i.inputDate.year)+'.'+str(i.inputDate.month)+'.'+str(i.inputDate.day)
+                    if i.noticeDate != None:
+                        e.noticeDate = str(i.noticeDate.year)+'.'+str(i.noticeDate.month)+'.'+str(i.noticeDate.day)
+                    break
+
+        return toJSON(serialize_detail_tab2(emd))
+    return HttpResponse('NOT POST')
+
 def notice_detail_input_html(request, bid, rid, eid, tab):
     param = {}
     param['tab'] = int(tab)
@@ -720,14 +775,16 @@ def notice_detail_input_html(request, bid, rid, eid, tab):
     param['building_name'] = BuildingInfo.objects.get(id = int(bid)).name
     param['building_id'] = int(bid)
 
+    ### for tab2 ###
     param['eachMonth'] = EachMonthInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
     for n in param['eachMonth']:
         if n.changedFee != None:
             n.changedFee = int(n.changedFee)
         if n.noticeDate != None:
-            n.noticeDate = '.'.join(str(n.noticeDate).split('.')[1:])
+            n.noticeDate = str(n.noticeDate.month)+'.'+str(n.noticeDate.day)
         else:
             n.noticeDate = ''
+    ################
 
     original = EachMonthInfo.objects.get(id = int(eid))
     param['yymm'] = str(original.year)+'.'+str(original.month)

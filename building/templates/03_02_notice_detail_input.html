@@ -649,7 +649,7 @@
 														<td style="text-align:center"><font style="color:red">{{ e.changedFee }}</font></td>
 														<td style="text-align:center">{{ e.totalFee }}</td>
 														<td style="text-align:center"><button class="btn btn-mini" onclick="showBillModal();" disabled>확인</button></td>
-														<td style="text-align:center"><button class="btn btn-mini" onclick="showInputHistoryModal('{{ e.id }}');">확인</button></td>
+														<td style="text-align:center"><button class="btn btn-mini" onclick="showInputHistoryModal('{{ e.id }}', '{{ e.year }}.{{ e.month }}', '{{ e.noticeNumber }}');">확인</button></td>
 													</tr>
 													{% endfor %}
 												 </table>  
@@ -675,73 +675,8 @@
 		</div>
 		<div class="modal-body">
 			<div class="row-fluid">
-				<!--
-				<table class="table table-bordered table-condensed" style="margin-bottom:5px;">
-					<tr>
-						<th style="background-color:#dbdbd2; text-align:center">납부대상</th>
-						<td style="text-align:center">103</td>
-						<td style="text-align:center">김호근</td>
-						<th style="background-color:#dbdbd2; text-align:center">년도/월</th>
-						<td style="text-align:center">2014.2</td>
-						<td style="text-align:center">10회차</td>
-						<th style="background-color:#dbdbd2; text-align:center">금액</th>
-						<td style="text-align:center">450000</td>
-						<td style="text-align:center">2014.2.28</td>
-						<th style="background-color:#dbdbd2; text-align:center">입력일</th>
-						<td style="text-align:center">2014.2.28</td>
-						<th style="background-color:#dbdbd2; text-align:center">고지일</th>
-						<td style="text-align:center">2014.3.1</td>
-					</tr>
-				</table>
-				<table class="table table-bordered table-condensed" style="margin-bottom:0px">
-					<tr>
-						<th style="text-align:center" colspan="2" rowspan="2">입력수정</th>
-						<th style="text-align:center" colspan="4">임대료 및 관리비</th>
-						<th style="text-align:center" colspan="3">공과금</th>
-						<th style="text-align:center" rowspan="2">미납액<a href="#" title="미납 금액은 이전 달에 미납 처리 입력 후, 다음달 고지입력으로 넘어오게 됩니다." date-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a></th>
-						<th style="text-align:center" colspan="2">연체료</th>
-						<th style="text-align:center" rowspan="2">기타금액</th>
-						<th style="text-align:center" rowspan="2">변동금액</th>
-						<th style="text-align:center" rowspan="2">합계금액</th>
-						<th style="text-align:center" colspan="2">고지처리사항<a href="#" title="고지 확인이 안 된 경우, 고지일 표시가 되지 않습니다." date-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a></th>
-						<th style="text-align:center" rowspan="2">처리상태</th>
-					</tr>
-					<tr>
-						<th style="text-align:center">임대료</th>
-						<th style="text-align:center">관리비</th>
-						<th style="text-align:center">부가세</th>
-						<th style="text-align:center">주차비</th>
-						<th style="text-align:center">전기</th>
-						<th style="text-align:center">수도</th>
-						<th style="text-align:center">가스</th>
-						<th style="text-align:center">연체료</th>
-						<th style="text-align:center">회차</th>
-						<th style="text-align:center">입력일</th>
-						<th style="text-align:center">고지일</th>
-					</tr>
-
-					<tr>
-						<td style="text-align:center">수정</td>
-						<td style="text-align:center">1회</td>
-						<td style="text-align:center"></td>
-						<td style="text-align:center"></td>
-						<td style="text-align:center"></td>
-						<td style="text-align:center"></td>
-						<td style="text-align:center"></td>
-						<td style="text-align:center"></td>
-						<td style="text-align:center"></td>
-						<td style="text-align:center"></td>
-						<td style="text-align:center"></td>
-						<td style="text-align:center"></td>
-						<td style="text-align:center"></td>
-						<td style="text-align:center"><font style="color:red">10000</font></td>
-						<td style="text-align:center"></td>
-						<td style="text-align:center"><font style="color:blue">2014.2.28</font></td>
-						<td style="text-align:center"><font style="color:red">2014.3.1</font></td>
-						<td>미처리</td>
-					</tr>
-				</table>  
-				-->
+				<div id="content_modify" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+				</div>
 			</div>
 		</div>
 	</div>
@@ -823,9 +758,15 @@
 					var mdy = $(this).val().split('/');
 					$(this).val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
 				});
+				
+				roomnum = '{{ resident.buildingRoomNumber }}';
+				name = '{{ resident.contractorName }}';
+				leaseMoney = '{{ resident.leaseMoney }}';
+				leasePayDate = '{{ resident.leasePayDate }}';
 
 				// ejs template 불러오기
-				getContents();
+				getContents('{{ building_id }}', '{{ resident.id }}', roomnum, name, leaseMoney, leasePayDate);
+
 			});			
 		</script>
 		<!-- end: JavaScript-->

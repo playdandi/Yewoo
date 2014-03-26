@@ -1,0 +1,77 @@
+<% for (i = 0; i < data.length; i++) { %>
+<% if (data[i].eid == idx) { %>
+<% var inputDate = data[i].inputDate %>
+<% var noticeDate = data[i].noticeDate %>
+<% break; %>
+<% } %>
+<% } %>
+<table class="table table-bordered table-condensed" style="margin-bottom:5px;">
+	<tr>
+		<th style="background-color:#dbdbd2; text-align:center">납부대상</th>
+		<td style="text-align:center"><%= roomnum %></td>
+		<td style="text-align:center"><%= name %></td>
+		<th style="background-color:#dbdbd2; text-align:center">년도/월</th>
+		<td style="text-align:center"><%= ym %></td>
+		<td style="text-align:center"><%= noticeNumber %>회차</td>
+		<th style="background-color:#dbdbd2; text-align:center">금액</th>
+		<td style="text-align:center"><%= leaseMoney %></td>
+		<td style="text-align:center"><%= ym %>.<%= leasePayDate %></td>
+		<th style="background-color:#dbdbd2; text-align:center">입력일</th>
+		<td style="text-align:center"><font style="color:blue"><%= inputDate %></font></td>
+		<th style="background-color:#dbdbd2; text-align:center">고지일</th>
+		<td style="text-align:center"><font style="color:red"><%= noticeDate %></font></td>
+	</tr>
+</table>
+<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+	<tr>
+		<th style="text-align:center" colspan="2" rowspan="2">입력수정</th>
+		<th style="text-align:center" colspan="4">임대료 및 관리비</th>
+		<th style="text-align:center" colspan="3">공과금</th>
+		<th style="text-align:center" rowspan="2">미납액<a href="#" title="미납 금액은 이전 달에 미납 처리 입력 후, 다음달 고지입력으로 넘어오게 됩니다." date-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a></th>
+		<th style="text-align:center" colspan="2">연체료</th>
+		<th style="text-align:center" rowspan="2">기타금액</th>
+		<th style="text-align:center" rowspan="2">변동금액</th>
+		<th style="text-align:center" rowspan="2">합계금액</th>
+		<th style="text-align:center" colspan="2">고지처리사항<a href="#" title="고지 확인이 안 된 경우, 고지일 표시가 되지 않습니다." date-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a></th>
+		<th style="text-align:center" rowspan="2">처리상태</th>
+	</tr>
+	<tr>
+		<th style="text-align:center">임대료</th>
+		<th style="text-align:center">관리비</th>
+		<th style="text-align:center">부가세</th>
+		<th style="text-align:center">주차비</th>
+		<th style="text-align:center">전기</th>
+		<th style="text-align:center">수도</th>
+		<th style="text-align:center">가스</th>
+		<th style="text-align:center">연체료</th>
+		<th style="text-align:center">회차</th>
+		<th style="text-align:center">입력일</th>
+		<th style="text-align:center">고지일</th>
+	</tr>
+	<% for (i = 0; i < data.length; i++) { %>
+	<% if (data[i].eid == idx) { %>
+	<tr>
+		<td style="text-align:center">수정</td>
+		<td style="text-align:center"><%= data[i].modifyNumber %>회</td>
+		<td style="text-align:center"><%= data[i].leaseMoney %></td>
+		<td style="text-align:center"><%= data[i].maintenanceFee %></td>
+		<td style="text-align:center"><%= data[i].surtax %></td>
+		<td style="text-align:center"><%= data[i].parkingFee %></td>
+		<td style="text-align:center"><%= data[i].electricityFee %></td>
+		<td style="text-align:center"><%= data[i].waterFee %></td>
+		<td style="text-align:center"><%= data[i].gasFee %></td>
+		<td style="text-align:center"></td>
+		<td style="text-align:center"></td>
+		<td style="text-align:center"></td>
+		<td style="text-align:center"><%= data[i].etcFee %></td>
+		<td style="text-align:center"><font style="color:red"><%= data[i].changedFee %></font></td>
+		<td style="text-align:center"><%= data[i].totalFee %></td>
+		<td style="text-align:center"><font style="color:blue"><%= data[i].inputDate %></font></td>
+		<td style="text-align:center"><font style="color:red"><%= data[i].noticeDate %></font></td>
+		<td style="text-align:center">
+		<% if (data[i].status == 1) { %>처리<% } else { %>미처리<% } %>
+		</td>
+	</tr>
+	<% } %>
+	<% } %>
+</table>  
