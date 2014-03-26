@@ -13,6 +13,38 @@ import os
 def main_html(request):
     return render(request, 'main.html')
 
+def calRoomNum(floorNum, roomNum):
+    if floorNum < 0:
+        return floorNum * 100 - roomNum
+    else:
+        return floorNum * 100 + roomNum
+
+def adjustRoomInfo(floor, oldRoomNum, newRoomNum):
+    if oldRoomNum < newRoomNum:
+        for i in range(oldRoomNum+1,newRoomNum+1):
+            room = RoomInfo()
+            room.building = floor.building
+            room.floor = floor
+            room.roomnum = calRoomNum(int(floor.floor), i)
+            room.residentnum = 0
+            room.isOccupied = False
+            room.save() 
+    else:
+        for i in range(newRoomNum+1,oldRoomNum+1):
+            tobeDeleted = calRoomNum(int(floor.floor), i)
+            tbdRoom = RoomInfo.objects.get(floor = floor, roomnum = tobeDeleted)
+            tbdRoom.delete()
+
+def makeRoomInfo(floor):
+    for i in range(1, int(floor.roomNum)+1):
+        room = RoomInfo()
+        room.building = floor.building
+        room.floor = floor
+        room.roomnum = calRoomNum(int(floor.floor), i)
+        room.residentnum = 0
+        room.isOccupied = False
+        room.save() 
+
 
 def building_register_html(request):
     csrf_token = get_token(request)
@@ -79,6 +111,7 @@ def building_save(request):
             bFloor.hasParking = f['hasParking']
             bFloor.parkingNum = f['parkingNum']
             bFloor.save()
+            makeRoomInfo(bFloor)
         return HttpResponse('', status=200)
 
 
@@ -222,6 +255,7 @@ def building_update(request, uid):
             flag = False
             for fdb in floorsDB:
                 if int(f['floor']) == fdb.floor:
+                    adjustRoomInfo(fdb,fdb.roomNum,int(f['roomNum']))
                     fdb.roomNum = f['roomNum']
                     if int(param['type']) == 0:
                         fdb.hasStore = None
@@ -243,7 +277,7 @@ def building_update(request, uid):
 
             if not flag: # 없으면 newly insert
                 fdb = BuildingFloor()
-                fdb.building_id = int(param['number'])
+                fdb.building_id = uid
                 fdb.floor = f['floor']
                 fdb.roomNum = f['roomNum']
                 if int(param['type']) != 0:
@@ -254,6 +288,7 @@ def building_update(request, uid):
                 fdb.hasParking = f['hasParking']
                 fdb.parkingNum = f['parkingNum']
                 fdb.save()
+                makeRoomInfo(fdb)
 
         return HttpResponse('', status=200)
 
