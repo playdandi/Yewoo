@@ -158,10 +158,8 @@ var doAjaxSaveChangedInfo = function(param) {
 		url : '/lease/input/notice/detail/save/',
 		data : param,
 		success : function(result) {
-			if(confirm('저장되었습니다.\n고지 현황 화면(이전화면)으로 돌아가시겠습니까?')) {
-			}
-			else 
-				$(location).reload();
+			alert('성공적으로 저장되었습니다.');
+			window.location.reload();
 		},
 		error : function(msg) {
 			alert('실패하였습니다... 다시 시도해 주세요.');

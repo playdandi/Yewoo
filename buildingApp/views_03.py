@@ -65,8 +65,100 @@ def setPostData(request, typestr = ''):
 def lease_show_html(request):
     return render(request, '03_01_lease_show.html', setPostData(request))
 
-def lease_notice_detail_show_html(request, bid, rnum):
-    return render(request, '03_01_lease_notice_detail_show.html')
+
+def serialize_allInfo(notice, payment, leasePayDate):
+    serialized_lease = []
+    serialized_notice = []
+    serialized_payment = []
+    for n in notice:
+        data = {}
+        data['id'] = int(n.id)
+        data['year'] = int(n.year)
+        data['month'] = int(n.month)
+        data['noticeNumber'] = int(n.noticeNumber)
+        data['leaseMoney'] = int(n.leaseMoney)
+        data['maintenanceFee'] = int(n.maintenanceFee)
+        data['surtax'] = int(n.surtax)
+        data['parkingFee'] = int(n.parkingFee)
+        data['electricityFee'] = int(n.electricityFee)
+        data['gasFee'] = int(n.gasFee)
+        data['waterFee'] = int(n.waterFee)
+        data['etcFee'] = int(n.etcFee)
+        data['totalFee'] = int(n.totalFee)
+        data['changedFee'] = ''
+        if n.changedFee != None:
+            data['changedFee'] = int(n.changedFee)
+        data['noticeDate'] = ''
+        if n.noticeDate != None:
+            #data['noticeDate'] = str(n.noticeDate.month)+'.'+str(n.noticeDate.day)
+            data['noticeDate'] = '.'.join(str(n.noticeDate).split('.')[1:])
+        serialized_notice.append(data)
+    for p in payment:
+        data = {}
+        data['id'] = int(p.id)
+        data['year'] = int(p.year)
+        data['month'] = int(p.month)
+        data['number'] = int(p.number)
+        data['totalFee'] = int(p.totalFee)
+        data['amountPaySum'] = int(p.amountPaySum)
+        data['amountPay'] = int(p.amountPay)
+        data['amountNoPay'] = int(p.amountNoPay)
+        data['confirmStatus'] = int(p.confirmStatus)
+        data['payStatus'] = int(p.payStatus)
+        data['delayNumberNow'] = int(p.delayNumberNow)
+        data['delayNumberNext'] = int(p.delayNumberNext)
+        data['payMsg'] = str(p.payMsg)
+        data['modifyNumber'] = int(p.modifyNumber)
+        data['leasePayDate'] = int(leasePayDate)
+        data['payDate'] = ''
+        data['confirmDate'] = ''
+        if p.payDate != None:
+            #data['payDate'] = str(p.payDate.year)+'.'+str(p.payDate.month)+'.'+str(p.payDate.day)
+            data['payDate'] = str(p.payDate)
+        if p.confirmDate != None:
+            #data['confirmDate'] = str(p.confirmDate.year)+'.'+str(p.confirmDate.month)+'.'+str(p.confirmDate.day)
+            data['confirmDate'] = str(p.confirmDate)
+        serialized_payment.append(data)
+
+    return [serialized_notice, serialized_payment]
+    #return serialized
+
+def lease_notice_detail_getAllInfo(request):
+    if request.method == 'POST':
+        bid = int(request.POST['building_id'])
+        rid = int(request.POST['resident_id'])
+        leasePayDate = ResidentInfo.objects.get(id = int(rid)).leasePayDate
+
+        #lease = ResidentInfo.objects.filter
+        notice = EachMonthInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
+        payment = PaymentInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
+
+        #for l in param['lease_list']:
+        #    l.inDate = str(l.inDate.year)+'.'+str(l.inDate.month)+'.'+str(l.inDate.day)
+        #    l.outDate = str(l.outDate.year)+'.'+str(l.outDate.month)+'.'+str(l.outDate.day)
+        for l in notice:
+            if l.noticeDate != None:
+                l.noticeDate = str(l.noticeDate.year)+'.'+str(l.noticeDate.month)+'.'+str(l.noticeDate.day)
+            #if l.inputDate != None:
+            #    l.inputDate = str(l.inputDate.year)+'.'+str(l.inputDate.month)+'.'+str(l.inputDate.day)
+        for l in payment:
+            if l.payDate != None:
+                l.payDate = str(l.payDate.year)+'.'+str(l.payDate.month)+'.'+str(l.payDate.day)
+            if l.confirmDate != None:
+                l.confirmDate = str(l.confirmDate.year)+'.'+str(l.confirmDate.month)+'.'+str(l.confirmDate.day)
+        #return HttpResponse(simplejson.dumps(param))
+    	return toJSON(serialize_allInfo(notice, payment, leasePayDate))
+    return HttpResponse('NOT POST')
+
+def lease_notice_detail_show_html(request, bid, rid, tab):
+    param = {}
+    param['tab'] = int(tab)
+    param['resident'] = ResidentInfo.objects.get(id = int(rid))
+    param['building_name'] = BuildingInfo.objects.get(id = int(bid)).name
+    param['building_id'] = int(bid)
+    param['simpleLeaseDeposit'] = int(param['resident'].leaseDeposit) / int(10000)
+    param['simpleLeaseMoney'] = int(param['resident'].leaseMoney) / int(10000)
+    return render(request, '03_01_lease_notice_detail_show.html', param)
 
 def notice_show_html(request):
     return render(request, '03_01_notice_show.html', setPostData(request))
@@ -91,9 +183,6 @@ def get_notice_info(request):
         #fromWhere = 0(03_01_notice), 1(03_02_check), 2(03_02_notice)
         fromWhere = int(request.POST['fromWhere'])
     	data = EachMonthInfo.objects.filter(year = y, month = m, building = bid)
-        #E = ElectricityInfo.objects.filter(year = y, month = m, building = bid)
-        #G = GasInfo.objects.filter(year = y, month = m, building = bid)
-        #W = WaterInfo.objects.filter(year = y, month = m, building = bid)
     	return toJSON(serialize_notice(data, fromWhere)) #, E, G, W))
     return HttpResponse('NOT POST')
 
@@ -128,13 +217,14 @@ def serialize_lease(result):
     serialized = []
     for res in result:
         data = {}
+        data['rid'] = res.id
         data['buildingnum'] = res.buildingName
         data['roomnum'] = res.buildingRoomNumber
         data['name'] = res.contractorName
         data['deposit'] = res.leaseDeposit
         data['money'] = res.leaseMoney
-	data['maintenance'] = res.maintenanceFee
-	data['surtax'] = res.surtax
+        data['maintenance'] = res.maintenanceFee
+    	data['surtax'] = res.surtax
         data['parking'] = res.parkingFee
         data['payway'] = res.leasePayWay
         data['paydate'] = res.leasePayDate
@@ -450,10 +540,13 @@ def excel_file_upload(request):
                 for elem in em:
                     if int(elem.resident.id) == int(obj.resident.id):
                         if request.POST['type'] == 'electricity':
+                            elem.totalFee -= int(elem.electricityFee)
                             elem.electricityFee = 0
                         elif request.POST['type'] == 'gas':
+                            elem.totalFee -= int(elem.gasFee)
                             elem.gasFee = 0
                         else:
+                            elem.waterFee -= int(elem.waterFee)
                             elem.waterFee = 0
                         elem.save()
                         break
@@ -466,10 +559,13 @@ def excel_file_upload(request):
                     if int(elem.resident.id) == int(obj.resident.id):
                         if request.POST['type'] == 'electricity':
                             elem.electricityFee = obj.totalFee
+                            elem.totalFee += int(elem.electricityFee)
                         elif request.POST['type'] == 'gas':
                             elem.gasFee = obj.totalFee
+                            elem.totalFee += int(elem.gasFee)
                         else:
                             elem.waterFee = obj.totalFee
+                            elem.waterFee += int(elem.waterFee)
                         elem.save()
                         break
                 
@@ -525,10 +621,13 @@ def excel_file_delete(request):
             for elem in em:
                 if int(elem.resident.id) == int(obj.resident.id):
                     if typestr == 'electricity':
+                        elem.totalFee -= int(elem.electricityFee)
                         elem.electricityFee = 0
                     elif typestr == 'gas':
+                        elem.totalFee -= int(elem.gasFee)
                         elem.gasFee = 0
                     else:
+                        elem.totalFee -= int(elem.waterFee)
                         elem.waterFee = 0
                     elem.save()
                     break
@@ -540,10 +639,8 @@ def excel_file_delete(request):
 def check_input_html(request):
     return render(request, '03_02_check_input.html', setPostData(request))
 
-
 def notice_input_html(request):
     return render(request, '03_02_notice_input.html', setPostData(request))
-
 
 def notice_detail_save(request):
     if request.method == 'POST':
@@ -561,6 +658,7 @@ def notice_detail_save(request):
         data.gasFee = int(request.POST['gasFee'])
         data.waterFee = int(request.POST['waterFee'])
         data.totalFee = int(request.POST['totalFee'])
+        data.etcFee = int(request.POST['etcFee'])
         data.changedFee = int(request.POST['changeFee'])
         data.msg = str(request.POST['msg'])
         data.changeDate = str(request.POST['modifyDate']).replace('.', '-')
@@ -575,11 +673,40 @@ def notice_detail_save(request):
         em.gasFee = data.gasFee
         em.waterFee = data.waterFee
         em.totalFee = data.totalFee
+        em.etcFee = data.etcFee
         em.changedFee = data.changedFee
         em.save()
 
         return HttpResponse('OK')
     return HttpResponse('NOT POST')
+
+
+def serialize_notice_input_detail(notice):
+    serialized = []
+    for n in notice:
+        data = {}
+        data['id'] = int(n.id)
+        data['year'] = int(n.year)
+        data['month'] = int(n.month)
+        data['noticeNumber'] = int(n.noticeNumber)
+        data['leaseMoney'] = int(n.leaseMoney)
+        data['maintenanceFee'] = int(n.maintenanceFee)
+        data['surtax'] = int(n.surtax)
+        data['parkingFee'] = int(n.parkingFee)
+        data['electricityFee'] = int(n.electricityFee)
+        data['gasFee'] = int(n.gasFee)
+        data['waterFee'] = int(n.waterFee)
+        data['etcFee'] = int(n.etcFee)
+        data['totalFee'] = int(n.totalFee)
+        data['changedFee'] = ''
+        if n.changedFee != None:
+            data['changedFee'] = int(n.changedFee)
+        data['noticeDate'] = ''
+        if n.noticeDate != None:
+            #data['noticeDate'] = str(n.noticeDate.month)+'.'+str(n.noticeDate.day)
+            data['noticeDate'] = '.'.join(str(n.noticeDate).split('.')[1:])
+        serialized.append(data)
+    return serialized
 
 def notice_detail_input_html(request, bid, rid, eid, tab):
     param = {}
@@ -588,76 +715,44 @@ def notice_detail_input_html(request, bid, rid, eid, tab):
     res.inDate = str(res.inDate.year)+'.'+str(res.inDate.month)+'.'+str(res.inDate.day)
     res.outDate = str(res.outDate.year)+'.'+str(res.outDate.month)+'.'+str(res.outDate.day)
     param['resident'] = res
+    param['simpleLeaseDeposit'] = int(param['resident'].leaseDeposit) / int(10000)
+    param['simpleLeaseMoney'] = int(param['resident'].leaseMoney) / int(10000)
+    param['building_name'] = BuildingInfo.objects.get(id = int(bid)).name
+    param['building_id'] = int(bid)
 
-    #totalFee = int(0)
-    param['zero_data'] = EachMonthInfo.objects.get(id = int(eid))
-    if param['zero_data'].inputDate == None:
-        param['zero_data'].inputDate = ''
-    else:
-        param['zero_data'].inputDate = str(param['zero_data'].inputDate.year)+'.'+str(param['zero_data'].inputDate.month)+'.'+str(param['zero_data'].inputDate.day)
-    if param['zero_data'].noticeDate == None:
-        param['zero_data'].noticeDate = ''
-    else:
-        param['zero_data'].noticeDate = str(param['zero_data'].noticeDate.year)+'.'+str(param['zero_data'].noticeDate.month)+'.'+str(param['zero_data'].noticeDate.day)
-    if param['zero_data'].inputDate != '' and param['zero_data'].noticeDate != '':
-        param['zero_data'].status = int(1);
-    else:
-        param['zero_data'].status = int(0);
+    param['eachMonth'] = EachMonthInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
+    for n in param['eachMonth']:
+        if n.changedFee != None:
+            n.changedFee = int(n.changedFee)
+        if n.noticeDate != None:
+            n.noticeDate = '.'.join(str(n.noticeDate).split('.')[1:])
+        else:
+            n.noticeDate = ''
 
-    if param['zero_data'].electricityFee == None:
-        param['zero_data'].electricityFee = ''
-    if param['zero_data'].gasFee == None:
-        param['zero_data'].gasFee = ''
-    if param['zero_data'].waterFee == None:
-        param['zero_data'].waterFee = ''
-    if param['zero_data'].etcFee == None:
-        param['zero_data'].etcFee = ''
-    """
-    try:
-        param['zero_E'] = ElectricityInfo.objects.get(year = int(param['zero_data'].year), month = int(param['zero_data'].month), building = int(bid), resident = int(rid)).value('totalFee')
-        #totalFee += int(param['zero_E'])
-    except:
-        param['zero_E'] = ''
-    try:
-        param['zero_G'] = GasInfo.objects.get(year = int(param['zero_data'].year), month = int(param['zero_data'].month), building = int(bid), resident = int(rid)).value('totalFee')
-        #totalFee += int(param['zero_G'])
-    except:
-        param['zero_G'] = ''
-    try:
-        param['zero_W'] = WaterInfo.objects.get(year = int(param['zero_data'].year), month = int(param['zero_data'].month), building = int(bid), resident = int(rid)).value('totalFee')
-        #totalFee += int(param['zero_W'])
-    except:
-        param['zero_W'] = ''
-    """
-
+    original = EachMonthInfo.objects.get(id = int(eid))
+    param['yymm'] = str(original.year)+'.'+str(original.month)
+    param['noticeNumber'] = int(original.noticeNumber)
     param['list'] = EachMonthDetailInfo.objects.filter(eachMonth = int(eid)).order_by('-id')
     for l in param['list']:
-        if l.electricityFee == None:
-            l.electricityFee = ''
-        if l.gasFee == None:
-            l.gasFee = ''
-        if l.waterFee == None:
-            l.waterFee = ''
-        if l.etcFee == None:
-            l.etcFee = ''
+        if l.changeDate != None:
+            l.changeDate = str(l.changeDate.year)+'.'+str(l.changeDate.month)+'.'+str(l.changeDate.day)
+        else:
+            l.changeDate = ''
+        l.inputDate = ''
+        l.noticeDate = ''
+        if original.inputDate != None:
+            l.inputDate = str(original.inputDate.year)+'.'+str(original.inputDate.month)+'.'+str(original.inputDate.day)
+        if original.noticeDate != None:
+            l.noticeDate = str(original.noticeDate.year)+'.'+str(original.noticeDate.month)+'.'+str(original.noticeDate.day)
+        l.status = int(0)
+        if l.inputDate != None and l.noticeDate != None:
+            l.status = int(1)
+    
     param['list_length'] = len(param['list'])
+    param['maxModifyNumber'] = int(param['list'][0].modifyNumber)
 
-    if param['list_length'] > 0:
-        param['list_last'] = param['list'][0]
-    else:
-        param['list_last'] = param['zero_data']
-        param['list_last'].modifyNumber = int(0)
+    param['list_last'] = param['list'][0]
     param['list_last'].nextModifyNumber = int(param['list_last'].modifyNumber) + 1
-
-    #totalFee += int(param['list'].leaseMoney)
-    #totalFee += int(param['list'].maintenanceFee)
-    #totalFee += int(param['list'].surtax)
-    #totalFee += int(param['list'].parkingFee)
-    #totalFee += int(param['list'].)
-    #totalFee += int(param['list'].)
-    #totalFee += int(param['list'].etcFee)
-    #totalFee += int(param['list'].etcFee)
-    #param['totalFee'] = totalFee
 
     return render(request, '03_02_notice_detail_input.html', param)
 
@@ -683,7 +778,56 @@ def save_notice(request):
         else:
             data.noticeCheck = True
             data.noticeDate = str(request.POST['noticeDate']).replace('.', '-')
+
+            try:
+                PaymentInfo.objects.get(building = data.building, resident = data.resident, year = int(data.year), month = int(data.month))
+            except:
+                info = PaymentInfo.objects.filter(building = data.building, resident = data.resident).order_by('-id')
+                # make new 'payment object
+                pay = PaymentInfo()
+                pay.checked = False
+                pay.resident = data.resident
+                pay.building = data.building
+                pay.year = int(data.year)
+                pay.month = int(data.month)
+                pay.number = len(info) + 1
+                pay.amountPaySum = 0
+                pay.amountPay = 0
+                pay.amountNoPay = int(data.totalFee)
+                if pay.number > 1 :
+                    pay.amountNoPay += int(info[0].amountNoPay)
+                pay.totalFee = pay.amountNoPay
+                pay.confirmStatus = '0'
+                pay.payStatus = 0
+                if pay.number == 1:
+                    pay.delayNumberNow = 1
+                else:
+                    if info[0].payStatus == -1:
+                        pay.delayNumberNow = info[0].delayNumberNow
+                    else:
+                        pay.delayNumberNow = info[0].delayNumberNow + 1
+                pay.delayNumberNext = pay.delayNumberNow + 1
+                pay.modifyNumber = 0
+                pay.save()
+
+                # insert new modify info
+                import datetime
+                elem = PaymentModifyInfo()
+                elem.payment = PaymentInfo.objects.get(id = int(pay.id))
+                elem.modifyNumber = int(0)
+                elem.year = pay.year
+                elem.month = pay.month
+                elem.payStatus = pay.payStatus
+                elem.delayNumberNow = pay.delayNumberNow
+                elem.delayNumberNext = pay.delayNumberNext
+                elem.amountPaySum = pay.amountPaySum
+                elem.amountPay = pay.amountPay
+                elem.amountNoPay = pay.amountNoPay
+                elem.modifyMsg = ''
+                elem.save()
+
         data.save()
+
         return HttpResponse('OK')
     return HttpResponse('NOT POST')
 
@@ -722,7 +866,7 @@ def serialize_payment(result):
             continue
         data = {}
         data['id'] = result[i].id
-        data['checked'] = int(result[i].checked)
+        data['checked'] = result[i].checked
         data['roomnum'] = result[i].resident.buildingRoomNumber
         data['resident_id'] = result[i].resident.id
         data['name'] = result[i].resident.contractorName
@@ -742,6 +886,7 @@ def serialize_payment(result):
             data['payDate'] = str(date.year)+'.'+str(date.month)+'.'+str(date.day)
         data['delayNumberNow'] = result[i].delayNumberNow
         data['delayNumberNext'] = result[i].delayNumberNext
+        data['modifyNumber'] = result[i].modifyNumber
         serialized.append(data)
 
     # sort (by roomnum)
@@ -760,6 +905,20 @@ def payment_input_getinfo(request):
         return toJSON(serialize_payment(data))
     return HttpResponse('NOT POST')
 
+def payment_check(request):
+    if request.method == 'POST':
+        data = PaymentInfo.objects.get(id = int(request.POST['pid']))
+        if str(request.POST['inputCheck']) == '0':
+            data.checked = False
+        else:
+            data.checked = True
+        data.save()
+
+        return HttpResponse('OK')
+    return HttpResponse('NOT POST')
+
+
+
 
 
 def payment_detail_html(request, bid, rid, tab):
@@ -774,6 +933,8 @@ def payment_detail_html(request, bid, rid, tab):
     out = param['resident'].outDate
     param['resident'].inDate = str(inn.year)+'.'+str(inn.month)+'.'+str(inn.day)
     param['resident'].outDate = str(out.year)+'.'+str(out.month)+'.'+str(out.day)
+    param['simpleLeaseDeposit'] = int(param['resident'].leaseDeposit) / int(10000)
+    param['simpleLeaseMoney'] = int(param['resident'].leaseMoney) / int(10000)
 
     # payment history list
     param['list'] = PaymentInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
@@ -857,7 +1018,6 @@ def payment_detail_saveInput(request):
         #insert inputted payment info
         elem = PaymentInfo()
         elem.building = BuildingInfo.objects.get(id = int(request.POST['building_id']))
-        print(int(request.POST['resident_id']))
         elem.resident = ResidentInfo.objects.get(id = int(request.POST['resident_id']))
         elem.year = int(request.POST['year'])
         elem.month = int(request.POST['month'])

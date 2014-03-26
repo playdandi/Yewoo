@@ -230,7 +230,7 @@
 														</td>
 														<td colspan="4">
 															<div style="font-size:0.8em">보증금/월세</div>
-															<div><h3><font style="color:red">/만원</font></h3></div>
+															<div><h3><font style="color:red">{{ simpleLeaseDeposit }}/{{ simpleLeaseMoney }}만원</font></h3></div>
 														</td>
 														<td colspan="3">
 															<div style="font-size:0.8em">계약 평수</div>
@@ -253,19 +253,19 @@
 													<tr>
 														<td style="text-align:center">{{ resident.contractorName }}</td>
 														<td style="text-align:center">{{ resident.contractorGender }}</td>
-														<td style="text-align:center">2회</td>
-														<td style="text-align:center">1년</td>
+														<td style="text-align:center">{{ resident.leaseNumber }}회</td>
+														<td style="text-align:center">{{ resident.leaseContractPeriod }}{{ resident.leaseContractPeriodUnit }}</td>
 														<td style="text-align:center">{{ resident.inDate }}</td>
 														<td style="text-align:center">{{ resident.outDate }}</td>
-														<td style="text-align:center">재실</td>
+														<td style="text-align:center">-</td>
 														<td style="text-align:center">{{ resident.contractorContactNumber1 }}</td>
 														<td style="text-align:center">{{ resident.leaseType }}</td>
 														<td style="text-align:center">{{ resident.leaseDeposit }}</td>
 														<td style="text-align:center">{{ resident.leasePayWay }}</td>
 														<td style="text-align:center">{{ resident.leaseMoney }}</td>
-														<td style="text-align:center"></td>
+														<td style="text-align:center">{{ resident.maintenanceFee }}</td>
 														<td style="text-align:center">{{ resident.parkingFee }}</td>
-														<td style="text-align:center"></td>
+														<td style="text-align:center">{{ resident.surtax }}</td>
 													</tr>
 												 </table>  
 											</div>
@@ -282,12 +282,6 @@
 											</div>
 											<div id="" class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 												<table class="table table-bordered table-condensed" style="margin-bottom:0px">
-												<!--	<colgroup>
-													<% for (i = 0 ; i < w.length; i++) { %>
-														<col width="<%= w[i] %>%">
-													<% } %>
-													</colgroup>
-												-->
 													<tr>
 														<th rowspan="2" colspan="2" style="text-align:center">연체내역</th>
 														<th rowspan="2" colspan="2" style="text-align:center">납부확인</th>
@@ -619,7 +613,7 @@
 														</td>
 														<td colspan="4">
 															<div style="font-size:0.8em">보증금/월세</div>
-															<div><h3><font style="color:red">/만원</font></h3></div>
+															<div><h3><font style="color:red">{{ simpleLeaseDeposit }}/{{ simpleLeaseMoney }}만원</font></h3></div>
 														</td>
 														<td colspan="3">
 															<div style="font-size:0.8em">계약 평수</div>
@@ -642,19 +636,19 @@
 													<tr>
 														<td style="text-align:center">{{ resident.contractorName }}</td>
 														<td style="text-align:center">{{ resident.contractorGender }}</td>
-														<td style="text-align:center">2회</td>
-														<td style="text-align:center">1년</td>
+														<td style="text-align:center">{{ resident.leaseNumber }}회</td>
+														<td style="text-align:center">{{ resident.leaseContractPeriod }}{{ resident.leaseContractPeriodUnit }}</td>
 														<td style="text-align:center">{{ resident.inDate }}</td>
 														<td style="text-align:center">{{ resident.outDate }}</td>
-														<td style="text-align:center">재실</td>
+														<td style="text-align:center">-</td>
 														<td style="text-align:center">{{ resident.contractorContactNumber1 }}</td>
 														<td style="text-align:center">{{ resident.leaseType }}</td>
 														<td style="text-align:center">{{ resident.leaseDeposit }}</td>
 														<td style="text-align:center">{{ resident.leasePayWay }}</td>
 														<td style="text-align:center">{{ resident.leaseMoney }}</td>
-														<td style="text-align:center"></td>
+														<td style="text-align:center">{{ resident.maintenanceFee }}</td>
 														<td style="text-align:center">{{ resident.parkingFee }}</td>
-														<td style="text-align:center"></td>
+														<td style="text-align:center">{{ resident.surtax }}</td>
 													</tr>
 												 </table>  
 											</div>
@@ -849,7 +843,7 @@
 		<script type="text/javascript" language="JavaScript">
 			$(document).ready(function(){
 				// tabmenu
-					$('#tabmenu li:eq({{ tab }}) a').tab('show');
+				$('#tabmenu li:eq({{ tab }}) a').tab('show');
 				$('#tabmenu a').click(function(e) {
 					e.preventDefault();
 					$(this).tab('show');
