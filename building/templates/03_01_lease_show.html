@@ -222,7 +222,7 @@
 								</td>
 								<td width="10%">
 									<div style="margin-right:5px; float:left">공실여부</div>
-									<input id="search_isEmpty" type="checkbox">
+									<input id="search_isEmpty" type="checkbox" {% if search_is_empty == 'true' %}checked="checked"{% endif %}>
 								</td>
 								<td width="13%">
 									<div>
@@ -308,7 +308,7 @@
 										<div style="float:left; text-align:left">
 											<span>입력 현황</span>
 											<label style="display: inline-block"><input type="radio" name="show_range" value="all" checked></label>전체
-											<label style="display: inline-block"><input type="radio" name="show_range" value="all" checked></label>선택
+											<label style="display: inline-block"><input type="radio" name="show_range" value="all"></label>선택
 											<label style="display: inline-block"><input type="radio" name="show_range" value="detail_all"></label>상세 내역(전체)
 											<label style="display: inline-block"><input type="radio" name="show_range" value="detail_part"></label>상세 내역(선택)
 										</div>
