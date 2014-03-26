@@ -213,6 +213,7 @@ class WaterInfo(models.Model):
 class PaymentInfo(models.Model):
     resident = models.ForeignKey('ResidentInfo')
     building = models.ForeignKey('BuildingInfo')
+    noticeCheck = models.BooleanField()
     checked = models.BooleanField()
     year = models.IntegerField()
     month = models.IntegerField()

@@ -211,3 +211,106 @@ function adjust_amount_pay_nopay(val, stat)
 	}
 }
 
+function getAllInfo()
+{
+	doAjaxDetailAllInfo();
+}
+var allInfo;
+var doAjaxDetailAllInfo = function() {
+	var postData = {};
+	var csrftoken = $.cookie('csrftoken');
+	postData['csrfmiddlewaretoken'] = csrftoken;
+	postData['building_id'] = bid;
+	postData['resident_id'] = rid;
+
+	$.ajax({
+		type : 'POST',
+		url : '/lease/payment/detail/getAllInfo/',
+		data : postData,
+		success : function(result) {
+			allInfo = result;
+			var template = new EJS({url : '/static/ejs/03_03_payment_detail_tab2.ejs'}).render({'data' : allInfo, 'bid' : curBid, 'radio': Number(0)});
+			$('#contents_tab2').html(template);
+		},
+		error : function(msg) {
+			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
+		},
+	});
+}
+// 라디오 버튼 구현
+// 전체(0), 선택(1), 납부(2), 미납(3), 연체회수(4), 입금일(5)
+// 0,1,2,3 = 필터링 , 4,5 = 정렬
+var sortAllInfo;
+var radioValue;
+function changeRadio(val) 
+{
+	radioValue = val;
+	if (val == 4) { // 연체회수 정렬
+		sortAllInfo = null;
+		sortAllInfo = allInfo;
+		for (i = 0; i < sortAllInfo.length; i++) {
+			for (j = i+1; j < sortAllInfo.length; j++) {
+				if (sortAllInfo[i].delayNumberNow > sortAllInfo[j].delayNumberNow) {
+					temp = sortAllInfo[i];
+					sortAllInfo[i] = sortAllInfo[j];
+					sortAllInfo[j] = temp;
+				}
+			}
+		}
+	}
+	else if (val == 5) { // 입금일 정렬
+		sortAllInfo = null;
+		sortAllInfo = allInfo;
+		for (i = 0; i < sortAllInfo.length; i++) {
+			if (sortAllInfo[i].payDate == '')
+				sortAllInfo[i].sort = Number(0);
+			else
+				sortAllInfo[i].sort = Number(sortAllInfo[i].payDate.split('.')[2]);
+		}
+		for (i = 0; i < sortAllInfo.length; i++) {
+			for (j = i+1; j < sortAllInfo.length; j++) {
+				if (sortAllInfo[i].sort < sortAllInfo[j].sort) {
+					temp = sortAllInfo[i];
+					sortAllInfo[i] = sortAllInfo[j];
+					sortAllInfo[j] = temp;
+				}
+			}
+		}
+	}
+
+	var template;
+	if (val <= 3)
+		template = new EJS({url : '/static/ejs/03_03_payment_detail_tab2.ejs'}).render({'data' : allInfo, 'bid' : curBid, 'radio': val});
+	else
+		template = new EJS({url : '/static/ejs/03_03_payment_detail_tab2.ejs'}).render({'data' : sortAllInfo, 'bid' : curBid, 'radio': val});
+	$('#contents_tab2').html(template);
+}
+
+function pagePrint()
+{
+	content = document.getElementById('paymentCheck_tab');
+	var strFeature = "";
+	strFeature += "width=" + $(document).width() * 0.8;
+	strFeature += ", height=" + $(document).height() * 0.8;
+	strFeature += ", left=" + $(document).width() * 0.1;
+	strFeature += ", top=" + $(document).height() * 0.1;
+//	strFeature += ", location=no";
+	var objWin = window.open('', 'print', strFeature);
+	objWin.document.writeln("<!DOCTYPE html>");
+	objWin.document.writeln($("head").html());
+	objWin.document.writeln("<body><div class=\"row-fluid\">");
+	objWin.document.writeln(content.innerHTML);
+	objWin.document.writeln("</div></body>");
+	objWin.document.close();
+	
+	if (radioValue == 1) {
+		for (i = 0; i < allInfo.length; i++) {
+			if ($('input:checkbox[id="selCheck'+i+'"]').is(':checked'))
+				continue;
+			var useless = objWin.document.getElementById('sel'+i);
+			useless.parentNode.removeChild(useless);
+		}	
+	}
+
+	objWin.print();
+}

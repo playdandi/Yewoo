@@ -62,12 +62,12 @@ function InitForm()
 	//$('input[id=search_isEmpty]:checkbox').attr('checked', false);
 	//$('#search_isEmpty').attr('checked', false);
 }
-
+/*
 function showDetail(tab)
 {
 	$(location).attr('href', '/lease/payment/detail/');
 }
-
+*/
 function setCurInfo()
 {
 	curType = $('#search_type option:selected').text().replace('요금', '').trim();
@@ -96,7 +96,7 @@ var doAjaxContents = function() {
 		data : postData,
 		success : function(result) {
 			paymentList = result;
-			var template = new EJS({url : '/static/ejs/03_03_payment.ejs'}).render({'data' : paymentList, 'bid' : curBid});
+			var template = new EJS({url : '/static/ejs/03_03_payment.ejs'}).render({'data' : paymentList, 'bid' : curBid, 'radio' : Number(0)});
 			$('#contents').html(template);
 		},
 		error : function(msg) {
@@ -170,6 +170,7 @@ function functions()
 		param['building_id'] = Number(curBid);
 		param['resident_id'] = Number($('#si_resident_id').val().trim());
 		param['payment_id'] = Number($('#si_id').val().trim());
+		param['noticeCheck'] = Number(1)
 		param['modifyNumber'] = Number($('#si_modifyNumber').val().trim()) + 1;
 		ym = $('#si_ym').html().trim();
 		param['year'] = ym.split('.')[0];
@@ -260,3 +261,72 @@ var doAjaxInputCheck = function(type, id) {
 	});
 }
 
+// 라디오 버튼 구현
+// 전체(0), 부분(1), (2), (3), (4)
+// 0,1,2 = 필터링 , 3,4 = 정렬
+var sortPaymentList;
+function changeRadio(val) 
+{
+	if (val == 3) { // 연체회수 정렬
+		sortPaymentList = null;
+		sortPaymentList = paymentList;
+		for (i = 0; i < sortPaymentList.length; i++) {
+			for (j = i+1; j < sortPaymentList.length; j++) {
+				if (sortPaymentList[i].delayNumberNow > sortPaymentList[j].delayNumberNow) {
+					temp = sortPaymentList[i];
+					sortPaymentList[i] = sortPaymentList[j];
+					sortPaymentList[j] = temp;
+				}
+			}
+		}
+	}
+	else if (val == 4) { // 입금일 정렬
+		sortPaymentList = null;
+		sortPaymentList = paymentList;
+		for (i = 0; i < sortPaymentList.length; i++) {
+			if (sortPaymentList[i].payDate == '')
+				sortPaymentList[i].sort = Number(0);
+			else
+				sortPaymentList[i].sort = Number(sortPaymentList[i].payDate.split('.')[2]);
+		}
+		for (i = 0; i < sortPaymentList.length; i++) {
+			for (j = i+1; j < sortPaymentList.length; j++) {
+				if (sortPaymentList[i].sort < sortPaymentList[j].sort) {
+					temp = sortPaymentList[i];
+					sortPaymentList[i] = sortPaymentList[j];
+					sortPaymentList[j] = temp;
+				}
+			}
+		}
+	}
+
+	var template;
+	if (val <= 2)
+		template = new EJS({url : '/static/ejs/03_03_payment.ejs'}).render({'data' : paymentList, 'bid' : curBid, 'radio': val});
+	else
+		template = new EJS({url : '/static/ejs/03_03_payment.ejs'}).render({'data' : sortPaymentList, 'bid' : curBid, 'radio': val});
+	$('#contents').html(template);
+}
+
+
+function pagePrint()
+{
+	var strFeature = "";
+	strFeature += "width=" + $(document).width() * 0.8;
+	strFeature += ", height=" + $(document).height() * 0.8;
+	strFeature += ", left=" + $(document).width() * 0.1;
+	strFeature += ", top=" + $(document).height() * 0.1;
+//	strFeature += ", location=no";
+	var objWin = window.open('', 'print', strFeature);
+	objWin.document.writeln("<!DOCTYPE html>");
+	objWin.document.writeln($("head").html());
+	objWin.document.writeln("<body><div class=\"row-fluid\">");
+	objWin.document.writeln(content.innerHTML);
+	objWin.document.writeln("</div></body>");
+	objWin.document.close();
+	
+	var useless = objWin.document.getElementById("filter-menu");
+	useless.parentNode.removeChild(useless);
+
+	objWin.print();
+}

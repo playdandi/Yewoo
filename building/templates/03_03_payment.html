@@ -181,7 +181,7 @@
 				</div>
 				
 				<!-- 검색 필터링 -->
-				<div class="row-fluid">
+				<div id="filter-menu" class="row-fluid">
 					<div class="span11">
 						<table class="table table-condensed" style="margin-bottom:0px">
 							<tr>
@@ -243,7 +243,7 @@
 								<tr style="background-color:#dbdbd2">
 									<td width="60%">
 										<div style="font-size:0.8em">건물명/기간</div>
-										<div><h3>No.1 루체시티 1 / <font style="color:red">2014.02 / 납부 확인</font></h3></div>
+										<div><h3>No.{{ search_building_id }} {{ cur_building_name }} / <font style="color:red">{{ search_year }}.{{ search_month }} / 납부 확인</font></h3></div>
 									</td>
 									<td width="40%">
 										<div style="font-size:0.8em">납부 현황</div>
@@ -295,18 +295,17 @@
 					<div class="box span11" style="margin: 0px; padding: 0px">
 						<div class="box-content" style="margin: 0px; padding: 3px; border:1; background-color:#f8f8f8">
 							<strong>납부 처리</strong>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" checked />전체</label>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />납부</label>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />미납</label>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />연체 회수</label>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />입금일</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="0" checked />전체</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="1" />납부</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="2" />미납</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="3" />연체 회수</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="4" />입금일</label>
 							<div style="text-align:right; float:right">
-								<button class="btn btn-small btn-inverse">출력</button>
+								<button class="btn btn-small btn-inverse" onclick="pagePrint();">출력</button>
 							</div>
 						</div>
 					</div>
 				</div>
-
 				<!-- 납부 내역 리스트 -->
 				<div class="row-fluid" style="margin-top:5px">
 					<div class="box span11" style="margin: 0px; padding: 0px">
@@ -438,6 +437,11 @@
 				mm = d.getMonth()+1;
 				dd = d.getDate();
 				$('#uploadDate').val(yy+'.'+mm+'.'+dd);
+
+				// radio btn 클릭 시 동작
+				$('input[name=radioN]').change(function() {
+					changeRadio(Number($(this).val()));
+				});
 			});			
 		</script>
 		<!-- end: JavaScript-->

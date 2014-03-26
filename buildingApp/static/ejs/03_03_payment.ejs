@@ -23,8 +23,13 @@
 		<th colspan="2" style="text-align:center">다음달</th>
 	</tr>
 	<% for (i = 0; i < data.length; i++) { %>
+	<% if (!data[i].noticeCheck || (radio == 1 && !data[i].checked) || (radio == 2 && data[i].checked)) { %>
+	<% continue; %>
+	<% } %>
 	<tr>
-		<% if (data[i].checked) { %>
+		<% if (data[i].amountNoPay > 0) { %>
+		<td style="text-align:center"><input type="checkbox" disabled /></td>
+		<% } else if (data[i].checked) { %>
 		<td style="text-align:center"><input type="checkbox" onclick="InputCheck('0', '<%= data[i].id %>');" checked /></td>
 		<% } else { %>
 		<td style="text-align:center"><input type="checkbox" onclick="InputCheck('1', '<%= data[i].id %>');"  /></td>

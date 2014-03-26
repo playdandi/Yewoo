@@ -19,14 +19,12 @@ import os
 def setPostData(request, typestr = ''):
     param = {}
     if request.method == 'GET':
-        print('get')
         import datetime
         ym = datetime.datetime.now()
         param['search_year'] = int(ym.year)
         param['search_month'] = int(ym.month)
         param['search_building_id'] = 1
     elif request.method == 'POST':
-        print('post')
         param['search_year'] = int(request.POST['year'])
         param['search_month'] = int(request.POST['month'])
         param['search_building_id'] = int(request.POST['building_id'])
@@ -832,16 +830,23 @@ def save_notice(request):
         if str(request.POST['noticeCheck']) == '0':
             data.noticeCheck = False
             data.noticeDate = None
+            pay = PaymentInfo.objects.filter(building = data.building, resident = data.resident, year = int(data.year), month = int(data.month))
+            for p in pay:
+                p.noticeCheck = False
+                p.save()
         else:
             data.noticeCheck = True
             data.noticeDate = str(request.POST['noticeDate']).replace('.', '-')
-
-            try:
-                PaymentInfo.objects.get(building = data.building, resident = data.resident, year = int(data.year), month = int(data.month))
-            except:
+            temp = PaymentInfo.objects.filter(building = data.building, resident = data.resident, year = int(data.year), month = int(data.month))
+            for t in temp:
+                t.noticeCheck = True
+                t.save()
+            print(len(temp))
+            if len(temp) == 0:
                 info = PaymentInfo.objects.filter(building = data.building, resident = data.resident).order_by('-id')
                 # make new 'payment object
                 pay = PaymentInfo()
+                pay.noticeCheck = True
                 pay.checked = False
                 pay.resident = data.resident
                 pay.building = data.building
@@ -913,6 +918,7 @@ def water_input_html(request):
 ##### 03_03 : payment #####
 
 def payment_input_html(request):
+
     return render(request, '03_03_payment.html', setPostData(request, 'payment'))
 
 ## prettify data for payment
@@ -923,6 +929,7 @@ def serialize_payment(result):
             continue
         data = {}
         data['id'] = result[i].id
+        data['noticeCheck'] = result[i].noticeCheck
         data['checked'] = result[i].checked
         data['roomnum'] = result[i].resident.buildingRoomNumber
         data['resident_id'] = result[i].resident.id
@@ -1041,6 +1048,39 @@ def payment_detail_html(request, bid, rid, tab):
     return render(request, '03_03_payment_detail.html', param)
 
 
+# serialize data for payment detail all info
+def serialize_paymentDetailAllInfo(result):
+    serialized = []
+    for i in range(len(result)):
+        data = {}
+        data['id'] = result[i].id
+        data['checked'] = result[i].checked
+        data['year'] = result[i].year
+        data['month'] = result[i].month
+        data['number'] = result[i].number
+        data['totalFee'] = result[i].totalFee
+        data['leasePayDate'] = result[i].resident.leasePayDate
+        data['payDate'] = ''
+        if result[i].payDate != None:
+            data['payDate'] = str(result[i].payDate.year)+'.'+str(result[i].payDate.month)+'.'+str(result[i].payDate.day)
+        data['amountPay'] = result[i].amountPay
+        data['amountNoPay'] = result[i].amountNoPay
+        data['confirmDate'] = ''
+        if result[i].confirmDate != None:
+            data['confirmDate'] = str(result[i].confirmDate.year)+'.'+str(result[i].confirmDate.month)+'.'+str(result[i].confirmDate.day)
+        data['delayNumberNow'] = result[i].delayNumberNow
+        data['payStatus'] = result[i].payStatus
+        data['modifyNumber'] = result[i].modifyNumber
+        serialized.append(data)
+    return serialized
+def payment_detail_allInfo(request):
+    if request.method == 'POST':
+        bid = int(request.POST['building_id'])
+        rid = int(request.POST['resident_id'])
+        data = PaymentInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
+        return toJSON(serialize_paymentDetailAllInfo(data))
+    return HttpResponse('NOT POST')
+
 # serialize data for payment modify info
 def serialize_paymentModifyInfo(result):
     serialized = []
@@ -1076,6 +1116,7 @@ def payment_detail_saveInput(request):
         elem = PaymentInfo()
         elem.building = BuildingInfo.objects.get(id = int(request.POST['building_id']))
         elem.resident = ResidentInfo.objects.get(id = int(request.POST['resident_id']))
+        elem.noticeCheck = int(request.POST['noticeCheck'])
         elem.year = int(request.POST['year'])
         elem.month = int(request.POST['month'])
         elem.number = int(request.POST['number'])
