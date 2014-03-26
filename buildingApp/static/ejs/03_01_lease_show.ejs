@@ -54,13 +54,13 @@
 		<td style="text-align:center"><%= data[i].maintenance.toLocaleString() %></td>
 		<td style="text-align:center"><%= data[i].surtax.toLocaleString() %></td>
 		<td style="text-align:center"><%= data[i].parking.toLocaleString() %></td>
-		<td style="text-align:center"><%= data[i].paydate %>일</td>
+		<td style="text-align:center"><%if (data[i].paydate != '') { %><%= data[i].paydate %>일<% } %></td>
 		<td style="text-align:center"><%= data[i].indate %></td>
 		<td style="text-align:center"><%= data[i].outdate %></td>
-		<td style="text-align:center">재실</td>
+		<td style="text-align:center"><%if (data[i].paydate != '') { %>재실<% } %></td>
 		<td style="text-align:center"><button class="btn btn-small btn-setting" disabled="disabled">입력</button></td>
 		<td style="text-align:center"><button class="btn btn-small btn-setting" disabled="disabled">확인</button></td>
-		<td style="text-align:center"><button class="btn btn-small" onClick="showDetail(<%= data[i].buildingnum %>,<%= data[i].rid %>)">확인</button></td>
+		<td style="text-align:center"><button class="btn btn-small" onClick="showDetail(<%= data[i].buildingnum %>,<%= data[i].rid %>)" <%if (data[i].rid == -1) { %>disabled="disabled"<% } %>>확인</button></td>
 	</tr>
 	<% } %>
 </table>

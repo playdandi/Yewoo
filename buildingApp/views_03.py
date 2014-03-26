@@ -24,11 +24,13 @@ def setPostData(request, typestr = ''):
         param['search_year'] = int(ym.year)
         param['search_month'] = int(ym.month)
         param['search_building_id'] = 1
+    	param['search_is_empty'] = 'false'
     elif request.method == 'POST':
         param['search_year'] = int(request.POST['year'])
         param['search_month'] = int(request.POST['month'])
         param['search_building_id'] = int(request.POST['building_id'])
-    
+    	param['search_is_empty'] = request.POST['is_empty']
+
     building = BuildingInfo.objects.all()
     building_name_id = []
     for b in building:
@@ -57,6 +59,31 @@ def setPostData(request, typestr = ''):
             param['excel_filename'] = '업로드 된 파일이 없습니다.'
             param['excel_uploadDate'] = ''
             param['excel_id'] = ''
+
+    #재실 정보
+    rooms = RoomInfo.objects.filter(building = param['search_building_id'])
+    occRooms = rooms.filter(isOccupied = True)
+    param['num_of_rooms'] = len(rooms)
+    param['num_of_occ_rooms'] = len(occRooms)
+    param['num_of_jeon_rooms'] = len(occRooms.filter(nowResident__leaseType = u'전세'))
+    param['num_of_woel_rooms'] = len(occRooms.filter(nowResident__leaseType = u'월세'))
+    param['num_of_empty_rooms'] = len(rooms) - len(occRooms)
+    total_deposit = 0
+    total_lease = 0
+    total_maintenance = 0
+    total_parking = 0
+    total_surtax = 0
+    for room in occRooms:
+        total_deposit += room.nowResident.leaseDeposit
+        total_lease += room.nowResident.leaseMoney
+        total_maintenance += room.nowResident.maintenanceFee
+        total_parking += room.nowResident.parkingFee
+        total_surtax += room.nowResident.surtax
+    param['total_deposit'] = total_deposit
+    param['total_lease'] = total_lease
+    param['total_maintenance'] = total_maintenance
+    param['total_parking'] = total_parking
+    param['total_surtax'] = total_surtax
 
     return param
 
@@ -169,7 +196,11 @@ def get_lease_info(request):
         y = int(request.POST['year'])
         m = int(request.POST['month'])
         bid = int(request.POST['building_id'])
-    	data = ResidentInfo.objects.filter(buildingName = bid)
+        is_empty = request.POST['is_empty']
+        if is_empty == 'false':
+        	data = RoomInfo.objects.filter(building_id = bid, isOccupied = True)
+        else:
+        	data = RoomInfo.objects.filter(building_id = bid)
     	return toJSON(serialize_lease(data))
     return HttpResponse('NOT POST')
 
@@ -213,22 +244,48 @@ def prettyDateWOYear(date):
 ## prettify data for lease
 def serialize_lease(result):
     serialized = []
-    for res in result:
-        data = {}
-        data['rid'] = res.id
-        data['buildingnum'] = res.buildingName
-        data['roomnum'] = res.buildingRoomNumber
-        data['name'] = res.contractorName
-        data['deposit'] = res.leaseDeposit
-        data['money'] = res.leaseMoney
-        data['maintenance'] = res.maintenanceFee
-    	data['surtax'] = res.surtax
-        data['parking'] = res.parkingFee
-        data['payway'] = res.leasePayWay
-        data['paydate'] = res.leasePayDate
-        data['indate'] = prettyDate(res.inDate)
-        data['outdate'] = prettyDate(res.outDate)
-        serialized.append(data)
+    under = result.filter(roomnum__lt = 0).order_by('-roomnum') 
+    over = result.filter(roomnum__gt = 0).order_by('roomnum')
+    for chunk in (under,over):
+        for room in chunk:
+            data = {}
+            if room.isOccupied:
+                res = room.nowResident
+                data['rid'] = res.id
+                data['buildingnum'] = res.buildingName
+                if res.buildingRoomNumber < 0:
+                    data['roomnum'] = "B" + str(-1 * res.buildingRoomNumber)
+                else:
+                    data['roomnum'] = str(res.buildingRoomNumber)
+                data['name'] = res.contractorName
+                data['deposit'] = res.leaseDeposit
+                data['money'] = res.leaseMoney
+                data['maintenance'] = res.maintenanceFee
+                data['surtax'] = res.surtax
+                data['parking'] = res.parkingFee
+                data['payway'] = res.leasePayWay
+                data['paydate'] = res.leasePayDate
+                data['indate'] = prettyDate(res.inDate)
+                data['outdate'] = prettyDate(res.outDate)
+            else:
+                data['rid'] = -1 
+                data['buildingnum'] = room.building_id
+                if room.roomnum < 0:
+                    data['roomnum'] = "B" + str(-1 * room.roomnum)
+                else:
+                    data['roomnum'] = str(room.roomnum)
+                data['name'] = ''
+                data['deposit'] = ''
+                data['money'] = ''
+                data['maintenance'] = ''
+                data['surtax'] = ''
+                data['parking'] = ''
+                data['payway'] = ''
+                data['paydate'] = ''
+                data['indate'] = ''
+                data['outdate'] = ''
+
+            serialized.append(data)
     return serialized
 
 ## prettify data for notice
