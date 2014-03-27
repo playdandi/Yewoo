@@ -181,7 +181,7 @@
 				</div>
 				
 				<!-- 검색 필터링 -->
-				<div class="row-fluid">
+				<div id="filter-menu" class="row-fluid">
 					<div class="span11">
 						<table class="table table-condensed" style="margin-bottom:0px">
 							<tr>
@@ -300,14 +300,14 @@
 					<div class="box span11" style="margin: 0px; padding: 0px">
 						<div class="box-content" style="margin: 0px; padding: 3px; border:1; background-color:#f8f8f8">
 							<strong>납부 처리</strong>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" checked />전체</label>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />선택</label>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />납부</label>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />미납</label>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />연체 회수</label>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />입금일</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" value="0" checked />전체</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" value="1" />선택</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" value="2" />납부</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" value="3" />미납</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" value="4" />연체 회수</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" value="5" />입금일</label>
 							<div style="text-align:right; float:right">
-								<button class="btn btn-small btn-inverse">출력</button>
+								<button class="btn btn-small btn-inverse" onclick="pagePrint();">출력</button>
 							</div>
 						</div>
 					</div>
@@ -415,6 +415,11 @@
 
 				// ejs template 불러오기
 				getContents();
+
+				// radio btn 클릭 시 동작
+				$('input[name=radioN]').change(function() {
+					changeRadio(Number($(this).val()));
+				});
 			});			
 		</script>
 		<!-- end: JavaScript-->

@@ -106,7 +106,7 @@ var doAjaxNoticeInfo = function() {
 		data : postData,
 		success : function(result) {
 			noticeList = result;
-			var template = new EJS({url : '/static/ejs/03_02_notice_input.ejs'}).render({'data' : noticeList});
+			var template = new EJS({url : '/static/ejs/03_02_notice_input.ejs'}).render({'data' : noticeList, 'radio' : Number(0)});
 			$('#contents').html(template);
 		},
 		error : function(msg) {
@@ -176,4 +176,53 @@ function showBill(bid, rid)
 {
 	// curYear ,curMonth, curBId 의 모든 고지서 정보를 미리 들고와 있어야 한다. 그래놓고 modal에서 정보 보여줌.
 	// $('#').modal();
+}
+
+
+
+// 라디오 버튼 구현
+// 전체(0), 완료(1), 미완료(2), 선택(3), 고지서[전체](4), 고지서[선택](5)
+// 0,1,2 = 필터링, 3 = 선택, 4,5 = ?
+var radioValue;
+function changeRadio(val) 
+{
+	radioValue = Number(val);
+
+	var template;
+	if (val <= 3)
+		template = new EJS({url : '/static/ejs/03_02_notice_input.ejs'}).render({'data' : noticeList, 'radio' : Number(val)});
+	//else
+	//	template = new EJS({url : '/static/ejs/03_03_payment_detail_tab2.ejs'}).render({'data' : sortAllInfo, 'bid' : curBid, 'radio': val});
+	$('#contents').html(template);
+}
+
+function pagePrint()
+{
+	var strFeature = "";
+	strFeature += "width=" + $(document).width() * 0.8;
+	strFeature += ", height=" + $(document).height() * 0.8;
+	strFeature += ", left=" + $(document).width() * 0.1;
+	strFeature += ", top=" + $(document).height() * 0.1;
+//	strFeature += ", location=no";
+	var objWin = window.open('', 'print', strFeature);
+	objWin.document.writeln("<!DOCTYPE html>");
+	objWin.document.writeln($("head").html());
+	objWin.document.writeln("<body><div class=\"row-fluid\">");
+	objWin.document.writeln(content.innerHTML);
+	objWin.document.writeln("</div></body>");
+	objWin.document.close();
+	
+	if (radioValue == 3) {
+		for (i = 0; i < noticeList.length; i++) {
+			if ($('input:checkbox[id="selCheck'+i+'"]').is(':checked'))
+				continue;
+			var useless = objWin.document.getElementById('sel'+i);
+			useless.parentNode.removeChild(useless);
+		}	
+	}
+	
+	var useless = objWin.document.getElementById('filter-menu');
+	useless.parentNode.removeChild(useless);
+
+	objWin.print();
 }

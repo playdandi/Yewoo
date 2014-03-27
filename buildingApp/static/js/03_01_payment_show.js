@@ -86,7 +86,7 @@ var doAjaxContents = function() {
 		data : postData,
 		success : function(result) {
 			paymentList = result;
-			var template = new EJS({url : '/static/ejs/03_01_payment_show.ejs'}).render({'data' : paymentList, 'bid' : curBid});
+			var template = new EJS({url : '/static/ejs/03_01_payment_show.ejs'}).render({'data' : paymentList, 'bid' : curBid, 'radio' : Number(0)});
 			$('#contents').html(template);
 		},
 		error : function(msg) {
@@ -98,4 +98,88 @@ var doAjaxContents = function() {
 function goDetail(bid, rid)
 {
 	$(location).attr('href', '/lease/show/leaseNotice/'+bid+'/'+rid+'/'+'2'+'/');
+}
+
+
+
+// 라디오 버튼 구현
+// 전체(0), 선택(1) 납부(2), 미납(3), 연체회수(4), 입금일(5)
+// 0,1,2,3 = 필터링 , 4,5 = 정렬
+var radioValue;
+var sortPaymentList;
+function changeRadio(val) 
+{
+	radioValue = Number(val);
+
+	if (val == 4) { // 연체회수 정렬
+		sortPaymentList = null;
+		sortPaymentList = paymentList.slice(0);
+		for (i = 0; i < sortPaymentList.length; i++) {
+			for (j = i+1; j < sortPaymentList.length; j++) {
+				if (sortPaymentList[i].delayNumberNow > sortPaymentList[j].delayNumberNow) {
+					temp = sortPaymentList[i];
+					sortPaymentList[i] = sortPaymentList[j];
+					sortPaymentList[j] = temp;
+				}
+			}
+		}
+	}
+	else if (val == 5) { // 입금일 정렬
+		sortPaymentList = null;
+		sortPaymentList = paymentList.slice(0);
+		for (i = 0; i < sortPaymentList.length; i++) {
+			if (sortPaymentList[i].payDate == '')
+				sortPaymentList[i].sort = Number(0);
+			else
+				sortPaymentList[i].sort = Number(sortPaymentList[i].payDate.split('.')[2]);
+		}
+		for (i = 0; i < sortPaymentList.length; i++) {
+			for (j = i+1; j < sortPaymentList.length; j++) {
+				if (sortPaymentList[i].sort < sortPaymentList[j].sort) {
+					temp = sortPaymentList[i];
+					sortPaymentList[i] = sortPaymentList[j];
+					sortPaymentList[j] = temp;
+				}
+			}
+		}
+	}
+
+	var template;
+	if (val <= 3)
+		template = new EJS({url : '/static/ejs/03_01_payment_show.ejs'}).render({'data' : paymentList, 'bid' : curBid, 'radio' : Number(val)});
+	else
+		template = new EJS({url : '/static/ejs/03_01_payment_show.ejs'}).render({'data' : sortPaymentList, 'bid' : curBid, 'radio' : Number(val)});
+	$('#contents').html(template);
+}
+function pagePrint()
+{
+	var strFeature = "";
+	strFeature += "width=" + $(document).width() * 0.8;
+	strFeature += ", height=" + $(document).height() * 0.8;
+	strFeature += ", left=" + $(document).width() * 0.1;
+	strFeature += ", top=" + $(document).height() * 0.1;
+//	strFeature += ", location=no";
+	var objWin = window.open('', 'print', strFeature);
+	objWin.document.writeln("<!DOCTYPE html>");
+	objWin.document.writeln($("head").html());
+	objWin.document.writeln("<body><div class=\"row-fluid\">");
+	objWin.document.writeln(content.innerHTML);
+	objWin.document.writeln("</div></body>");
+	objWin.document.close();
+	
+	if (radioValue == 1) {
+		for (i = 0; i < paymentList.length; i++) {
+			if ($('input:checkbox[id="selCheck'+i+'"]').is(':checked'))
+				continue;
+			if (!paymentList[i].checked)
+				continue;
+			var useless = objWin.document.getElementById('sel'+i);
+			useless.parentNode.removeChild(useless);
+		}	
+	}
+
+	var useless = objWin.document.getElementById("filter-menu");
+	useless.parentNode.removeChild(useless);
+
+	objWin.print();
 }

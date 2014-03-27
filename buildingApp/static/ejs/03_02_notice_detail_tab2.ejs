@@ -1,4 +1,4 @@
-<% var w = new Array(5,5,5,5,5,5,5,5,5,6,6,6,6,6,5,5,5,5,5); %>
+<% var w = new Array(5,6,6,6,6,6,5,5,5,5,5,5,5,5,5,5,5,5,5); %>
 <table class="table table-bordered table-condensed" style="margin-bottom:0px">
 	<tr>
 		<th rowspan="2" style="text-align:center">선택</th>
@@ -11,7 +11,8 @@
 		<th rowspan="2" style="text-align:center">기타금액</th>
 		<th rowspan="2" style="text-align:center">변동금액</th>
 		<th rowspan="2" style="text-align:center">합계금액</th>
-		<th rowspan="2" style="text-align:center">고지서보기</th>
+		<th rowspan="2" style="text-align:center">고지서확인</th>
+		<th rowspan="2" style="text-align:center">입력내역보기</th>
 	</tr>
 	<tr>
 		<th style="text-align:center">임대료</th>
@@ -27,13 +28,11 @@
 	</tr>
 	<% for (i = 0; i < data.length; i++) { %>
 	<tr id="sel<%= i %>">
-		<td style="text-align:center">
 		<% if (radio == 1) { %>
-			<input id="selCheck<%= i %>" type="checkbox" />
+		<td style="text-align:center"><input id="selCheck<%= i %>" type="checkbox" /></td>
 		<% } else { %>
-			<input id="selCheck<%= i %>" type="checkbox" disabled />
+		<td style="text-align:center"><input id="selCheck<%= i %>" type="checkbox" disabled /></td>
 		<% } %>
-		</td>
 		<td style="text-align:center"><%= data[i].year %>.<%= data[i].month %></td>
 		<td style="text-align:center"><%= data[i].noticeNumber %></td>
 		<td style="text-align:center"><%= data[i].noticeDate %></td>
@@ -50,13 +49,8 @@
 		<td style="text-align:center"><%= data[i].etcFee %></td>
 		<td style="text-align:center"><font style="color:red"><%= data[i].changedFee %></font></td>
 		<td style="text-align:center"><%= data[i].totalFee %></td>
-		<td style="text-align:center"><button class="btn btn-mini" disabled>확인</button></td>
+		<td style="text-align:center"><button class="btn btn-mini" onclick="showBillModal();" disabled>확인</button></td>
+		<td style="text-align:center"><button class="btn btn-mini" onclick="showInputHistoryModal('<%= data[i].id %>', '<%= data[i].year %>.<%= data[i].month %>', '<%= data[i].noticeNumber %>');">확인</button></td>
 	</tr>
 	<% } %>
-</table>  
-
-
-
-
-
-
+ </table>  

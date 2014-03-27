@@ -78,6 +78,7 @@ function saveInputInfo()
 	var yymm = $('#input_ym').html().trim();
 	param['year'] = Number(yymm.split('.')[0].trim());
 	param['month'] = Number(yymm.split('.')[1].trim());
+	param['noticeCheck'] = true;
 	param['number'] = Number($('#input_number').html().trim());
 	param['payStatus'] = Number($('#input_payStatus').val().trim());
 	param['payDate'] = $('#input_payDate').val().trim();
@@ -237,6 +238,8 @@ var doAjaxDetailAllInfo = function() {
 		},
 	});
 }
+
+
 // 라디오 버튼 구현
 // 전체(0), 선택(1), 납부(2), 미납(3), 연체회수(4), 입금일(5)
 // 0,1,2,3 = 필터링 , 4,5 = 정렬
@@ -247,7 +250,7 @@ function changeRadio(val)
 	radioValue = val;
 	if (val == 4) { // 연체회수 정렬
 		sortAllInfo = null;
-		sortAllInfo = allInfo;
+		sortAllInfo = allInfo.slice(0);
 		for (i = 0; i < sortAllInfo.length; i++) {
 			for (j = i+1; j < sortAllInfo.length; j++) {
 				if (sortAllInfo[i].delayNumberNow > sortAllInfo[j].delayNumberNow) {
@@ -260,7 +263,7 @@ function changeRadio(val)
 	}
 	else if (val == 5) { // 입금일 정렬
 		sortAllInfo = null;
-		sortAllInfo = allInfo;
+		sortAllInfo = allInfo.slice(0);
 		for (i = 0; i < sortAllInfo.length; i++) {
 			if (sortAllInfo[i].payDate == '')
 				sortAllInfo[i].sort = Number(0);

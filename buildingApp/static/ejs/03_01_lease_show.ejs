@@ -44,8 +44,17 @@
 		<th style="text-align:center">변경</th>
 	</tr>
 	<% for (i = 0; i < data.length; i++) { %>
-	<tr class="showDetail">
-		<td style="text-align:center"><input type="checkbox"></td>
+	<% if (radio == -1 && !select[i]) { %>
+	<% continue; %>
+	<% } %>
+	<tr id="sel<%= i %>">
+		<td style="text-align:center">
+		<% if (radio == 1) { %>
+		<input id="selCheck<%= i %>" type="checkbox" class="sel" />
+		<% } else { %>
+		<input id="selCheck<%= i %>" type="checkbox" class="sel" disabled />
+		<% } %>
+		</td>
 		<td style="text-align:center"><%= data[i].roomnum %></td>
 		<td style="text-align:center"><%= data[i].name %></td>
 		<td style="text-align:center"><%= data[i].deposit.toLocaleString() %></td>

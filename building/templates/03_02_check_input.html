@@ -176,7 +176,7 @@
 				</div>
 				
 				<!-- 검색 필터링 -->
-				<div class="row-fluid">
+				<div id="filter-menu" class="row-fluid">
 					<div class="span11">
 						<table class="table table-condensed" style="margin-bottom:0px">
 							<tr>
@@ -288,16 +288,16 @@
 									<th colspan="5">
 										<div style="float:left; text-align:left">
 											<span>입력 현황</span>
-											<label style="display: inline-block"><input type="radio" name="show_range" value="all" checked></label>전체
-											<label style="display: inline-block"><input type="radio" name="show_range" value="complete"></label>완료
-											<label style="display: inline-block"><input type="radio" name="show_range" value="notcomplete"></label>미완료
-											<label style="display: inline-block"><input type="radio" name="show_range" value="select"></label>선택
-											<label style="display: inline-block"><input type="radio" name="show_range" value="detail_all"></label>고지서(전체)
-											<label style="display: inline-block"><input type="radio" name="show_range" value="detail_part"></label>고지서(선택)
+											<label style="display: inline-block"><input type="radio" name="radioN" value="0" checked /></label>전체
+											<label style="display: inline-block"><input type="radio" name="radioN" value="1" /></label>완료
+											<label style="display: inline-block"><input type="radio" name="radioN" value="2" /></label>미완료
+											<label style="display: inline-block"><input type="radio" name="radioN" value="3" /></label>선택
+											<label style="display: inline-block"><input type="radio" name="radioN" value="4" /></label>고지서(전체)
+											<label style="display: inline-block"><input type="radio" name="radioN" value="5" /></label>고지서(선택)
 										</div>
 									</th>
 									<th style="text-align:center">
-										<button class="btn btn-small btn-inverse">출력</button>
+										<button class="btn btn-small btn-inverse" onclick="pagePrint();">출력</button>
 									</th>
                                 </tr>
 							</table>
@@ -449,6 +449,11 @@
 				mm = d.getMonth()+1;
 				dd = d.getDate();
 				$('#uploadDate').val(yy+'.'+mm+'.'+dd);
+
+				// radio btn 클릭 시 동작
+				$('input[name=radioN]').change(function() {
+					changeRadio(Number($(this).val()));
+				});
 			});			
 		</script>
 

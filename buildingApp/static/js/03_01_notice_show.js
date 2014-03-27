@@ -88,7 +88,7 @@ var doAjaxContents_N = function() {
 		data : postData,
 		success : function(result) {
 			list = result;
-			var template = new EJS({url : '/static/ejs/03_01_notice_show.ejs'}).render({'data' : list});
+			var template = new EJS({url : '/static/ejs/03_01_notice_show.ejs'}).render({'data' : list, 'radio' : Number(0)});
 			$('#contents').html(template);
 		},
 		error : function(msg) {
@@ -102,3 +102,49 @@ function showDetail(bid, rid)
 	window.location = "/lease/show/leaseNotice/" + bid + "/" + rid + '/' + '1' + '/';
 }
 
+
+// 라디오 버튼 구현
+// 전체(0), 선택(1), 고지서[전체](2), 고지서[선택](3)
+var radioValue;
+function changeRadio(val) 
+{
+	radioValue = Number(val);
+
+	var template;
+	if (val <= 1)
+		template = new EJS({url : '/static/ejs/03_01_notice_show.ejs'}).render({'data' : list, 'radio' : Number(val)});
+	//else
+	//	template = new EJS({url : '/static/ejs/03_03_payment_detail_tab2.ejs'}).render({'data' : sortAllInfo, 'bid' : curBid, 'radio': val});
+	$('#contents').html(template);
+}
+
+function pagePrint()
+{
+	var strFeature = "";
+	strFeature += "width=" + $(document).width() * 0.8;
+	strFeature += ", height=" + $(document).height() * 0.8;
+	strFeature += ", left=" + $(document).width() * 0.1;
+	strFeature += ", top=" + $(document).height() * 0.1;
+//	strFeature += ", location=no";
+	var objWin = window.open('', 'print', strFeature);
+	objWin.document.writeln("<!DOCTYPE html>");
+	objWin.document.writeln($("head").html());
+	objWin.document.writeln("<body><div class=\"row-fluid\">");
+	objWin.document.writeln(content.innerHTML);
+	objWin.document.writeln("</div></body>");
+	objWin.document.close();
+	
+	if (radioValue == 1) {
+		for (i = 0; i < list.length; i++) {
+			if ($('input:checkbox[id="selCheck'+i+'"]').is(':checked'))
+				continue;
+			var useless = objWin.document.getElementById('sel'+i);
+			useless.parentNode.removeChild(useless);
+		}	
+	}
+
+	var useless = objWin.document.getElementById("filter-menu");
+	useless.parentNode.removeChild(useless);
+
+	objWin.print();
+}

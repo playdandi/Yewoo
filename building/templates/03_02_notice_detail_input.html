@@ -588,12 +588,12 @@
 										<div class="box span12" style="margin: 0px; padding: 0px">
 											<div class="box-content" style="margin: 0px; padding: 3px; border:1; background-color:#f8f8f8">
 												<strong>내역 현황</strong>
-												<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" checked />전체 내역</label>
-												<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />선택 내역</label>
-												<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />고지서(전체)</label>
-												<label style="display:inline-block; font-size:0.95em"><input type="radio" name="handle" value="" />고지서(선택)</label>
+												<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" value="0" checked />전체 내역</label>
+												<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" value="1" />선택 내역</label>
+												<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" value="2" />고지서(전체)</label>
+												<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" value="3" />고지서(선택)</label>
 												<div style="text-align:right; float:right">
-													<button class="btn btn-small btn-inverse">출력</button>
+													<button class="btn btn-small btn-inverse" onclick="pagePrint();">출력</button>
 												</div>
 											</div>
 										</div>
@@ -602,57 +602,6 @@
 									<div class="row-fluid">
 										<div class="box span12" style="margin: 0px; padding: 0px">
 											<div id="content_bill" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
-												<table class="table table-bordered table-condensed" style="margin-bottom:0px">
-													<tr>
-														<th rowspan="2" style="text-align:center">선택</th>
-														<th rowspan="2" style="text-align:center">년도/월</th>
-														<th rowspan="2" style="text-align:center">고지회차</th>
-														<th rowspan="2" style="text-align:center">최종고지일</th>
-														<th colspan="4" style="text-align:center">임대료 및 관리비</th>
-														<th colspan="3" style="text-align:center">공과금</th>
-														<th colspan="3" style="text-align:center">연체료</th>
-														<th rowspan="2" style="text-align:center">기타금액</th>
-														<th rowspan="2" style="text-align:center">변동금액</th>
-														<th rowspan="2" style="text-align:center">합계금액</th>
-														<th rowspan="2" style="text-align:center">고지서확인</th>
-														<th rowspan="2" style="text-align:center">입력내역보기</th>
-													</tr>
-													<tr>
-														<th style="text-align:center">임대료</th>
-														<th style="text-align:center">관리비</th>
-														<th style="text-align:center">부가세</th>
-														<th style="text-align:center">주차비</th>
-														<th style="text-align:center">전기</th>
-														<th style="text-align:center">수도</th>
-														<th style="text-align:center">가스</th>
-														<th style="text-align:center">미납금</th>
-														<th style="text-align:center">연체료</th>
-														<th style="text-align:center">회차</th>
-													</tr>
-													{% for e in eachMonth %}
-													<tr>
-														<td style="text-align:center"><input type="checkbox" /></td>
-														<td style="text-align:center">{{ e.year }}.{{ e.month }}</td>
-														<td style="text-align:center">{{ e.noticeNumber }}</td>
-														<td style="text-align:center">{{ e.noticeDate }}</td>
-														<td style="text-align:center">{{ e.leaseMoney }}</td>
-														<td style="text-align:center">{{ e.maintenanceFee }}</td>
-														<td style="text-align:center">{{ e.surtax }}</td>
-														<td style="text-align:center">{{ e.parkingFee }}</td>
-														<td style="text-align:center">{{ e.electricityFee }}</td>
-														<td style="text-align:center">{{ e.waterFee }}</td>
-														<td style="text-align:center">{{ e.gasFee }}</td>
-														<td style="text-align:center"></td>
-														<td style="text-align:center"></td>
-														<td style="text-align:center"></td>
-														<td style="text-align:center">{{ e.etcFee }}</td>
-														<td style="text-align:center"><font style="color:red">{{ e.changedFee }}</font></td>
-														<td style="text-align:center">{{ e.totalFee }}</td>
-														<td style="text-align:center"><button class="btn btn-mini" onclick="showBillModal();" disabled>확인</button></td>
-														<td style="text-align:center"><button class="btn btn-mini" onclick="showInputHistoryModal('{{ e.id }}', '{{ e.year }}.{{ e.month }}', '{{ e.noticeNumber }}');">확인</button></td>
-													</tr>
-													{% endfor %}
-												 </table>  
 											</div>
 										</div>
 									</div>
@@ -766,7 +715,12 @@
 
 				// ejs template 불러오기
 				getContents('{{ building_id }}', '{{ resident.id }}', roomnum, name, leaseMoney, leasePayDate);
+				getNoticeDetail('{{ building_id }}', '{{ resident.id }}');
 
+				// radio btn 클릭 시 동작
+				$('input[name=radioN]').change(function() {
+					changeRadio(Number($(this).val()));
+				});
 			});			
 		</script>
 		<!-- end: JavaScript-->

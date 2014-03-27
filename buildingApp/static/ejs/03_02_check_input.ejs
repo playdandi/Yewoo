@@ -15,7 +15,7 @@
 
 		<th colspan="2" style="text-align:center; vertical-align:middle">변동 금액 입력</th>
 		<th rowspan="2" style="text-align:center; vertical-align:middle">고지서 확인</th>
-		<th rowspan="2" style="text-align:center; vertical-align:middle">출력 선택</th>
+		<th rowspan="2" style="text-align:center; vertical-align:middle">선택</th>
 	</tr>
 	<tr>
 		<th style="text-align:center; vertical-align:middle">임대료</th>
@@ -35,7 +35,10 @@
 		<th style="text-align:center; vertical-align:middle">입력</th>
 	</tr>
 	<% for (i = 0; i < data.length; i++) { %>
-	<tr>
+	<% if ((radio == 1 && !data[i].inputCheck) || (radio == 2 && data[i].inputCheck)) { %>
+	<% continue; %>
+	<% } %>
+	<tr id="sel<%= i %>">
 		<td style="text-align:center; vertical-align:middle">
 		<% if (data[i].inputCheck) { %>
 			<input id="check_<%= data[i].id %>" type="checkbox" class="applyCheck" onclick="InputCheck('0', '<%= data[i].id %>');" checked />
@@ -62,7 +65,13 @@
 		<td style="text-align:center; color:red"><%= data[i].changedFee %></td>
 		<td style="text-align:center"><button class="btn btn-mini" onclick="goDetail('<%= data[i].building_id %>', '<%= data[i].resident_id %>', '<%= data[i].id %>');">입력</button></td>
 		<td style="text-align:center"><button class="btn btn-mini" onclick="" disabled>확인</button></td>
-		<td style="text-align:center; vertical-align:middle"><input id="print_<%= data[i].id %>" type="checkbox" /></td>
+		<td style="text-align:center; vertical-align:middle">
+		<% if (radio == 3) { %>
+			<input id="selCheck<%= i %>" type="checkbox" />
+		<% } else { %>
+			<input id="selCheck<%= i %>" type="checkbox" disabled />
+		<% } %>
+		</td>
 	</tr>
 	<% } %>
 </table>

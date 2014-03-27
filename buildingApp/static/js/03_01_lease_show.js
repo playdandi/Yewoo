@@ -85,7 +85,7 @@ var doAjaxContents_L = function() {
 		data : postData,
 		success : function(result) {
 			Lease = result;
-			var template = new EJS({url : '/static/ejs/03_01_lease_show.ejs'}).render({'data' : Lease, 'start' : 0});
+			var template = new EJS({url : '/static/ejs/03_01_lease_show.ejs'}).render({'data' : Lease, 'radio' : Number(0)});
 			$('#contents').html(template);
 			$('#contents_modal').html(template);
 		},
@@ -93,6 +93,49 @@ var doAjaxContents_L = function() {
 			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
 		},
 	});
+}
+
+function showDetail(bid, rid)
+{
+	window.location = "/lease/show/leaseNotice/" + bid + "/" + rid + '/' + '0' + '/';
+}
+
+
+// 라디오 버튼 구현
+// 전체(0), 선택(1), 상세전체(2), 상세선택(3)
+var radioValue;
+var select;
+function changeRadio(val) 
+{
+	if (radioValue == val)
+		return;
+
+	radioValue = Number(val);
+
+	var template;
+	if (val <= 1)
+		template = new EJS({url : '/static/ejs/03_01_lease_show.ejs'}).render({'data' : Lease, 'radio' : Number(val)});
+	//else
+	//	template = new EJS({url : '/static/ejs/03_03_payment_detail_tab2.ejs'}).render({'data' : sortAllInfo, 'bid' : curBid, 'radio': val});
+	$('#contents').html(template);
+	$('#contents_modal').html(template);
+
+	if (val == 1) {
+		// '선택'일 경우, 체크할 때마다 미리보기에 계속 상태를 바꿔줘야 한다.
+		select = new Array();
+		for (i = 0; i < Lease.length; i++)
+			select.push(false);
+
+		template = new EJS({url : '/static/ejs/03_01_lease_show.ejs'}).render({'data' : Lease, 'radio' : Number(-1), 'select' : select});
+		$('#contents_modal').html(template);
+		
+		$('.sel').change(function() {
+			idx = Number($(this).attr('id').replace('selCheck','').trim());
+			select[idx] = !select[idx];
+			template = new EJS({url : '/static/ejs/03_01_lease_show.ejs'}).render({'data' : Lease, 'radio' : Number(-1), 'select' : select});
+			$('#contents_modal').html(template);
+		});
+	}
 }
 
 function pagePrint()
@@ -111,13 +154,18 @@ function pagePrint()
 	objWin.document.writeln("</div></body>");
 	objWin.document.close();
 	
+	if (radioValue == 1) {
+		for (i = 0; i < Lease.length; i++) {
+			if ($('input:checkbox[id="selCheck'+i+'"]').is(':checked'))
+				continue;
+			var useless = objWin.document.getElementById('sel'+i);
+			useless.parentNode.removeChild(useless);
+		}	
+	}
+
 	var useless = objWin.document.getElementById("filter-menu");
 	useless.parentNode.removeChild(useless);
 
 	objWin.print();
 }
 
-function showDetail(bid, rid)
-{
-	window.location = "/lease/show/leaseNotice/" + bid + "/" + rid + '/' + '0' + '/';
-}

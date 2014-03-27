@@ -176,7 +176,7 @@
 				</div>
 				
 				<!-- 검색 필터링 -->
-				<div class="row-fluid">
+				<div id="filter-menu" class="row-fluid">
 					<div class="span11">
 						<table class="table table-condensed" style="margin-bottom:0px">
 							<tr>
@@ -343,7 +343,7 @@
 									<option value="10">10층</option>
 								</select>
 								<button class="btn btn-small btn-setting btn-danger">미리보기</button>
-								<button class="btn btn-small btn-inverse">출력</button>
+								<button class="btn btn-small btn-inverse" onclick="pagePrint();">출력</button>
 							</div>
 						</div>
 						<div id="contents" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
@@ -463,7 +463,7 @@
 							<h2><strong>전체 전기 요금 내역</strong></h2>
 						</div>
 						<div style="text-align:right">
-							<button class="btn btn-small btn-inverse">출력</button>
+							<button class="btn btn-small btn-inverse" onclick="pagePrint();">출력</button>
 						</div>
 					</div>
 					<div id="contents_modal" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">

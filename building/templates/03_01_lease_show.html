@@ -237,7 +237,6 @@
 
 				<!-- 임대 내역 현황 -->
 				<div class="row-fluid">
-
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
 						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
@@ -307,10 +306,10 @@
 									<th>
 										<div style="float:left; text-align:left">
 											<span>입력 현황</span>
-											<label style="display: inline-block"><input type="radio" name="show_range" value="all" checked></label>전체
-											<label style="display: inline-block"><input type="radio" name="show_range" value="all"></label>선택
-											<label style="display: inline-block"><input type="radio" name="show_range" value="detail_all"></label>상세 내역(전체)
-											<label style="display: inline-block"><input type="radio" name="show_range" value="detail_part"></label>상세 내역(선택)
+											<label style="display: inline-block"><input type="radio" name="radioN" value="0" checked /></label>전체
+											<label style="display: inline-block"><input type="radio" name="radioN" value="1" /></label>선택
+											<label style="display: inline-block"><input type="radio" name="radioN" value="2" /></label>상세 내역(전체)
+											<label style="display: inline-block"><input type="radio" name="radioN" value="3" /></label>상세 내역(선택)
 										</div>
 										<div style="text-align:right">
 											<button class="btn btn-small btn-setting">미리보기</button>
@@ -406,7 +405,7 @@
 							<h2><strong>전체 임대 내역</strong></h2>
 						</div>
 						<div style="text-align:right">
-							<button class="btn btn-small btn-inverse">출력</button>
+							<button class="btn btn-small btn-inverse" onclick="pagePrint();">출력</button>
 						</div>
 					</div>
 					<div id="contents_modal" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
@@ -515,6 +514,11 @@
 
 				// ejs template 불러오기
 				getContents();
+
+				// radio btn 클릭 시 동작
+				$('input[name=radioN]').change(function() {
+					changeRadio(Number($(this).val()));
+				});
 			});			
 		</script>
 		<!-- end: JavaScript-->

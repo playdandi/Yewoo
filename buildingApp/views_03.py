@@ -769,6 +769,45 @@ def serialize_detail_tab2(data):
     for d in data:
         p = {}
         p['id'] = int(d.id)
+        p['noticeNumber'] = d.noticeNumber
+        p['year'] = d.year
+        p['month'] = d.month
+        p['leaseMoney'] = d.leaseMoney
+        p['maintenanceFee'] = d.maintenanceFee
+        p['surtax'] = d.surtax
+        p['parkingFee'] = d.parkingFee
+        p['electricityFee'] = d.electricityFee
+        p['gasFee'] = d.gasFee
+        p['waterFee'] = d.waterFee
+        #p[''] = d.
+        #p[''] = d.
+        #p[''] = d.
+        p['etcFee'] = d.etcFee
+        if d.changedFee == None:
+            p['changedFee'] = int(0)
+        else:
+            p['changedFee'] = int(d.changedFee)
+        p['totalFee'] = d.totalFee
+        p['noticeDate'] = ''
+        if d.noticeDate != None:
+            p['noticeDate'] = str(d.noticeDate.month)+'.'+str(d.noticeDate.day)
+        serialized.append(p)
+    return serialized
+
+def notice_detail_tab2(request):
+    if request.method == 'POST':
+        bid = int(request.POST['building_id'])
+        rid = int(request.POST['resident_id'])
+        data = EachMonthInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
+        return toJSON(serialize_detail_tab2(data))
+    return HttpResponse('NOT POST')
+
+
+def serialize_detail_tab2_detail(data):
+    serialized = []
+    for d in data:
+        p = {}
+        p['id'] = int(d.id)
         p['eid'] = int(d.eachMonth_id)
         p['modifyNumber'] = d.modifyNumber
         p['leaseMoney'] = d.leaseMoney
@@ -792,7 +831,7 @@ def serialize_detail_tab2(data):
         serialized.append(p)
     return serialized
 
-def notice_detail_tab2(request):
+def notice_detail_tab2_detail(request):
     if request.method == 'POST':
         bid = int(request.POST['building_id'])
         rid = int(request.POST['resident_id'])
@@ -815,7 +854,7 @@ def notice_detail_tab2(request):
                         e.noticeDate = str(i.noticeDate.year)+'.'+str(i.noticeDate.month)+'.'+str(i.noticeDate.day)
                     break
 
-        return toJSON(serialize_detail_tab2(emd))
+        return toJSON(serialize_detail_tab2_detail(emd))
     return HttpResponse('NOT POST')
 
 def notice_detail_input_html(request, bid, rid, eid, tab):
@@ -1173,7 +1212,7 @@ def payment_detail_saveInput(request):
         elem = PaymentInfo()
         elem.building = BuildingInfo.objects.get(id = int(request.POST['building_id']))
         elem.resident = ResidentInfo.objects.get(id = int(request.POST['resident_id']))
-        elem.noticeCheck = int(request.POST['noticeCheck'])
+        elem.noticeCheck = request.POST['noticeCheck']
         elem.year = int(request.POST['year'])
         elem.month = int(request.POST['month'])
         elem.number = int(request.POST['number'])

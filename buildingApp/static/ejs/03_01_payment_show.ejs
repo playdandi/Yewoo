@@ -21,14 +21,14 @@
 		<th colspan="2" style="text-align:center">다음달</th>
 	</tr>
 	<% for (i = 0; i < data.length; i++) { %>
-	<% if (data[i].checked == 0) { %>
+	<% if (!data[i].checked || (radio == 2 && !data[i].checked) || (radio == 3 && data[i].checked)) { %>
 	<% continue; %>
 	<% } %>
-	<tr>
-		<% if (data[i].checked) { %>
-		<td style="text-align:center"><input type="checkbox" checked disabled /></td>
+	<tr id="sel<%= i %>">
+		<% if (radio == 1) { %>
+		<td style="text-align:center"><input id="selCheck<%= i %>" type="checkbox" /></td>
 		<% } else { %>
-		<td style="text-align:center"><input type="checkbox" disabled /></td>
+		<td style="text-align:center"><input id="selCheck<%= i %>" type="checkbox" disabled /></td>
 		<% } %>
 		<td style="text-align:center"><%= data[i].roomnum %></td>
 		<td style="text-align:center"><%= data[i].name %></td>

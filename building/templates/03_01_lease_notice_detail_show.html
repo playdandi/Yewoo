@@ -284,10 +284,10 @@
 															<th>
 																<div style="float:left; text-align:left">
 																	<span>내역 현황</span>
-																	<label style="display: inline-block"><input type="radio" name="show_range" value="all" checked></label>전체
+																	<label style="display: inline-block"><input type="radio" name="" value="" checked></label>전체
 																</div>
 																<div style="text-align:right">
-																	<button class="btn btn-small btn-inverse">출력</button>
+																	<button class="btn btn-small btn-inverse" onclick="pagePrint('1');">출력</button>
 																</div>
 															</th>
 														</tr>
@@ -408,13 +408,13 @@
 															<th>
 																<div style="float:left; text-align:left">
 																	<span>내역 현황</span>
-																	<label style="display: inline-block"><input type="radio" name="show_range2" value="all" checked></label>전체
-																	<label style="display: inline-block"><input type="radio" name="show_range2" value="all" checked></label>선택
-																	<label style="display: inline-block"><input type="radio" name="show_range2" value="all" checked></label>고지서(전체)
-																	<label style="display: inline-block"><input type="radio" name="show_range2" value="all" checked></label>고지서(선택)
+																	<label style="display: inline-block"><input type="radio" name="radioN2" value="0" /></label>전체
+																	<label style="display: inline-block"><input type="radio" name="radioN2" value="1" /></label>선택
+																	<label style="display: inline-block"><input type="radio" name="radioN2" value="2" /></label>고지서(전체)
+																	<label style="display: inline-block"><input type="radio" name="radioN2" value="3" /></label>고지서(선택)
 																</div>
 																<div style="text-align:right">
-																	<button class="btn btn-small btn-inverse">출력</button>
+																	<button class="btn btn-small btn-inverse" onclick="pagePrint('2');">출력</button>
 																</div>
 															</th>
 														</tr>
@@ -535,15 +535,15 @@
 															<th>
 																<div style="float:left; text-align:left">
 																	<span>납부 처리</span>
-																	<label style="display: inline-block"><input type="radio" name="show_range3" value="all" checked></label>전체
-																	<label style="display: inline-block"><input type="radio" name="show_range3" value="all" checked></label>선택
-																	<label style="display: inline-block"><input type="radio" name="show_range3" value="all" checked></label>납부
-																	<label style="display: inline-block"><input type="radio" name="show_range3" value="all" checked></label>미납
-																	<label style="display: inline-block"><input type="radio" name="show_range3" value="all" checked></label>연체회수
-																	<label style="display: inline-block"><input type="radio" name="show_range3" value="all" checked></label>입금일
+																	<label style="display: inline-block"><input type="radio" name="radioN3" value="0" checked /></label>전체
+																	<label style="display: inline-block"><input type="radio" name="radioN3" value="1" /></label>선택
+																	<label style="display: inline-block"><input type="radio" name="radioN3" value="2" /></label>납부
+																	<label style="display: inline-block"><input type="radio" name="radioN3" value="3" /></label>미납
+																	<label style="display: inline-block"><input type="radio" name="radioN3" value="4" /></label>연체회수
+																	<label style="display: inline-block"><input type="radio" name="radioN3" value="5" /></label>입금일
 																</div>
 																<div style="text-align:right">
-																	<button class="btn btn-small btn-inverse">출력</button>
+																	<button class="btn btn-small btn-inverse" onclick="pagePrint('3');">출력</button>
 																</div>
 															</th>
 														</tr>
@@ -646,7 +646,10 @@
 				$('#tabmenu a').click(function(e) {
 					e.preventDefault();
 					$(this).tab('show');
+					//curTab = Number($(this).attr('id'));
 				});
+
+				//curTab = Number({{ tab }});
 
 				// show sidebar
 				show_sidebar();
@@ -681,6 +684,15 @@
 
 				// ejs template 불러오기
 				getContents('{{ building_id }}', '{{ resident.id }}');
+
+				// radio btn 클릭 시 동작 (tab2)
+				$('input[name=radioN2]').change(function() {
+					changeRadio(Number($(this).val()), Number(2));
+				});
+				// radio btn 클릭 시 동작 (tab3)
+				$('input[name=radioN3]').change(function() {
+					changeRadio(Number($(this).val()), Number(3));
+				});
 			});			
 		</script>
 		<!-- end: JavaScript-->

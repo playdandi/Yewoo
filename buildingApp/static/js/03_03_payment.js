@@ -269,7 +269,7 @@ function changeRadio(val)
 {
 	if (val == 3) { // 연체회수 정렬
 		sortPaymentList = null;
-		sortPaymentList = paymentList;
+		sortPaymentList = paymentList.slice(0);
 		for (i = 0; i < sortPaymentList.length; i++) {
 			for (j = i+1; j < sortPaymentList.length; j++) {
 				if (sortPaymentList[i].delayNumberNow > sortPaymentList[j].delayNumberNow) {
@@ -282,7 +282,7 @@ function changeRadio(val)
 	}
 	else if (val == 4) { // 입금일 정렬
 		sortPaymentList = null;
-		sortPaymentList = paymentList;
+		sortPaymentList = paymentList.slice(0);
 		for (i = 0; i < sortPaymentList.length; i++) {
 			if (sortPaymentList[i].payDate == '')
 				sortPaymentList[i].sort = Number(0);

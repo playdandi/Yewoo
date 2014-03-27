@@ -184,7 +184,37 @@ var doAjaxSaveChangedInfo = function(param) {
 };
 
 
-////////// in TAB 2 //////////////
+////////// in TAB 2 //////////////////////////////////////
+///////////////////////////////////////////////////////////
+function getNoticeDetail(bid, rid)
+{
+	doAjaxNoticeDetail(bid, rid);
+}
+var noticeDetailList;
+var doAjaxNoticeDetail = function(bid, rid) {
+	param = {}
+	var csrftoken = $.cookie('csrftoken');
+	param['csrfmiddlewaretoken'] = csrftoken;
+	param['building_id'] = Number(bid);
+	param['resident_id'] = Number(rid);
+
+	$.ajax({
+		type : 'POST',
+		url : '/lease/input/notice/detail/getListInfo/',
+		data : param,
+		success : function(result) {
+			noticeDetailList = result;
+			var template = new EJS({url : '/static/ejs/03_02_notice_detail_tab2.ejs'}).render({'data' : noticeDetailList, 'radio' : Number(0)});
+			$('#content_bill').html(template);
+		},
+		error : function(msg) {
+			alert('실패하였습니다... 다시 시도해 주세요.');
+		},
+	});
+};
+
+
+// 고지서 데이터 가져오기
 function searchBill()
 {
 	return;
@@ -204,8 +234,8 @@ var doAjaxSearchBill = function(param) {
 		url : '/lease/input/notice/detail/blahblah...',
 		data : param,
 		success : function(result) {
-			var template = new EJS({url : '/static/ejs/03_02_notice_detail_tab2_bill.ejs'}).render();
-			$('#content_bill').html(template);
+			//var template = new EJS({url : '/static/ejs/03_02_notice_detail_tab2_bill.ejs'}).render();
+			//$('#content_bill').html(template);
 		},
 		error : function(msg) {
 			alert('실패하였습니다... 다시 시도해 주세요.');
@@ -228,3 +258,47 @@ function showInputHistoryModal(eid, ym, noticeNumber)
 }
 
 
+// 라디오 버튼 구현
+// 전체(0), 선택(1), 고지서[전체](2), 고지서[선택](3)
+// 0,1 = 필터링, 2,3 = ?
+var radioValue;
+function changeRadio(val) 
+{
+	radioValue = Number(val);
+
+	var template;
+	if (val <= 1)
+		template = new EJS({url : '/static/ejs/03_02_notice_detail_tab2.ejs'}).render({'data' : noticeDetailList, 'radio' : Number(val)});
+	//else
+	//	template = new EJS({url : '/static/ejs/03_03_payment_detail_tab2.ejs'}).render({'data' : sortAllInfo, 'bid' : curBid, 'radio': val});
+	$('#content_bill').html(template);
+}
+
+function pagePrint()
+{
+	content = document.getElementById('noticeDetailCheck_tab');
+	var strFeature = "";
+	strFeature += "width=" + $(document).width() * 0.8;
+	strFeature += ", height=" + $(document).height() * 0.8;
+	strFeature += ", left=" + $(document).width() * 0.1;
+	strFeature += ", top=" + $(document).height() * 0.1;
+//	strFeature += ", location=no";
+	var objWin = window.open('', 'print', strFeature);
+	objWin.document.writeln("<!DOCTYPE html>");
+	objWin.document.writeln($("head").html());
+	objWin.document.writeln("<body><div class=\"row-fluid\">");
+	objWin.document.writeln(content.innerHTML);
+	objWin.document.writeln("</div></body>");
+	objWin.document.close();
+	
+	if (radioValue == 1) {
+		for (i = 0; i < noticeDetailList.length; i++) {
+			if ($('input:checkbox[id="selCheck'+i+'"]').is(':checked'))
+				continue;
+			var useless = objWin.document.getElementById('sel'+i);
+			useless.parentNode.removeChild(useless);
+		}	
+	}
+
+	objWin.print();
+}

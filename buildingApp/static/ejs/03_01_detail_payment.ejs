@@ -18,8 +18,17 @@
 		<th style="text-align:center">처리일자</th>
 	</tr>
 	<% for (i = 0; i < data.length; i++) { %>
-	<tr>
-		<td style="text-align:center"><input id="check_<%= data[i].id %>" type="checkbox" /></td>
+	<% if ((radio == 2 && !data[i].checked) || (radio == 3 && data[i].checked)) { %>
+	<% continue; %>
+	<% } %>
+	<tr id="sel<%= i %>">
+		<td style="text-align:center">
+		<% if (radio == 1) { %>
+			<input id="selCheck<%= i %>" type="checkbox" />
+		<% } else { %>
+			<input id="selCheck<%= i %>" type="checkbox" disabled />
+		<% } %>
+		</td>
 		<td style="text-align:center"><%= data[i].year %>.<%= data[i].month %></td>
 		<td style="text-align:center"><%= data[i].number %></td>
 		<td style="text-align:center"><%= data[i].totalFee %></td>
