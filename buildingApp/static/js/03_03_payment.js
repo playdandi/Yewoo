@@ -118,13 +118,19 @@ function goDetail(bid, rid, type)
 }
 
 
-function simpleInput(idx)
+function simpleInput(id)
 {
-	idx = Number(idx);
-	var template = new EJS({url : '/static/ejs/03_03_payment_simpleInput.ejs'}).render({'data' : paymentList[idx], 'bid' : curBid});
-	$('#contents_modal_simpleinput').html(template);
-	$('#modal_simpleinput').modal();
-	functions();
+	for (i = 0; i < paymentList.length; i++) {
+		if (Number(paymentList[i].id) == Number(id)) {
+			var template = new EJS({url : '/static/ejs/03_03_payment_simpleInput.ejs'}).render({'data' : paymentList[i], 'bid' : curBid});
+			$('#contents_modal_simpleinput').html(template);
+
+			functions();
+			$("#si_confirmDate").click();
+			$('#modal_simpleinput').modal();
+			break;
+		}
+	}
 }
 
 var isForModify = false;

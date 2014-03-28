@@ -154,6 +154,7 @@ def serialize_allInfo(lease, notice, payment, leasePayDate):
         data['id'] = int(p.id)
         data['year'] = int(p.year)
         data['month'] = int(p.month)
+        data['checked'] = p.checked
         data['number'] = int(p.number)
         data['totalFee'] = int(p.totalFee)
         data['amountPaySum'] = int(p.amountPaySum)

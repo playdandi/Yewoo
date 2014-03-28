@@ -82,11 +82,15 @@
 			<input id="si_amountNoPay" type="text" class="margin0" style="width:40%" value="<%= data.amountNoPay %>" disabled /> 추가됩니다.
 			<input id="si_amountNoPayOriginal" type="hidden" value="<%= data.amountNoPay %>" />
 		</td>
-		<td style="text-align:center" colspan="2"><input id="si_confirmDate" type="text" class="margin0 datepicker span12" value="<%= data.confirmDate %>" /></td>
+		<td colspan="2">
+			<input id="si_confirmDate" type="text" class="margin0" style="width:90%" value="<%= data.confirmDate %>" />
+		</td>
 	</tr>
 	<tr>
 		<td colspan="2" style="text-align:center; background-color:#dbdbd2">납부 처리 사유</td>
-		<td colspan="8" style="text-align:center"><input id="si_payMsg" type="text" class="margin0 span12" /></td>
+		<td colspan="8">
+			<input id="si_payMsg" type="text" class="margin0" style="width:98%" />
+		</td>
 	</tr>
 	<tr>
 		<td colspan="10" style="text-align:center">
