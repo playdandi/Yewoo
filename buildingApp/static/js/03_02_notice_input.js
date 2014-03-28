@@ -1,7 +1,7 @@
 var curTypeChar = 'notice';
 function showLeaseInfo(isForBillMove)
 {
-	var year, month, building_id, room_num, type_text;
+	var year, month, building_id, room_num, type_text, is_empty;
 	if (isForBillMove) {
 		year = Number(curYear);
 		month = Number(curMonth);
@@ -20,6 +20,7 @@ function showLeaseInfo(isForBillMove)
 		var month = Number($('#search_month').val());
 		var building_id = Number($('#search_building').val().replace('b', ''));
 		var room_num = $('#search_room_num').val();
+		var is_empty = $('#search_isEmpty').parent().hasClass('checked');
 		var type = $('#search_type').val();
 		var type_text;
 		if (type == '0') type_text = 'check';
@@ -53,6 +54,11 @@ function showLeaseInfo(isForBillMove)
 	f_bid.name = 'building_id';
 	f_bid.value = building_id;
 	form.appendChild(f_bid);
+
+	var f_isempty = document.createElement('input');
+	f_isempty.name = 'is_empty';
+	f_isempty.value = is_empty;
+	form.appendChild(f_isempty);
 
 	var csrf = document.createElement('input');
 	csrf.type = 'hidden';
@@ -98,6 +104,7 @@ var doAjaxNoticeInfo = function() {
 	postData['building_id'] = curBid;
 	postData['year'] = curYear;
 	postData['month'] = curMonth;
+	postData['is_empty'] = $('#search_isEmpty')[0].checked;
 	postData['fromWhere'] = 2;
 
 	$.ajax({

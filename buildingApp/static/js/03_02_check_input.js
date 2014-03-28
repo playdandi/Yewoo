@@ -1,7 +1,7 @@
 var curTypeChar = 'check';
 function showLeaseInfo(isForBillMove)
 {
-	var year, month, building_id, room_num, type_text;
+	var year, month, building_id, room_num, type_text, is_empty;
 	if (isForBillMove) {
 		year = Number(curYear);
 		month = Number(curMonth);
@@ -103,7 +103,7 @@ var doAjaxCheckInfo = function() {
 	postData['building_id'] = curBid;
 	postData['year'] = curYear;
 	postData['month'] = curMonth;
-	postData['is_empty'] = $('#search_isEmpty').parent().hasClass('checked');
+	postData['is_empty'] = $('#search_isEmpty')[0].checked;
 	postData['fromWhere'] = 1;
 
 	$.ajax({

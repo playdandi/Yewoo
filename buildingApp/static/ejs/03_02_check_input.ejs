@@ -40,7 +40,9 @@
 	<% } %>
 	<tr id="sel<%= i %>">
 		<td style="text-align:center; vertical-align:middle">
-		<% if (data[i].inputCheck) { %>
+		<% if (data[i].id == -1) { %>
+			<input id="check_<%= data[i].id %>" type="checkbox" class="applyCheck" disabled />
+		<% } else if (data[i].inputCheck) { %>
 			<input id="check_<%= data[i].id %>" type="checkbox" class="applyCheck" onclick="InputCheck('0', '<%= data[i].id %>');" checked />
 		<% } else { %>
 			<input id="check_<%= data[i].id %>" type="checkbox" class="applyCheck" onclick="InputCheck('1', '<%= data[i].id %>');" />
@@ -63,10 +65,10 @@
 		<td style="text-align:center"></td>
 		<td style="text-align:center"><%= data[i].etcFee %></td>
 		<td style="text-align:center; color:red"><%= data[i].changedFee %></td>
-		<td style="text-align:center"><button class="btn btn-mini" onclick="goDetail('<%= data[i].building_id %>', '<%= data[i].resident_id %>', '<%= data[i].id %>');">입력</button></td>
+		<td style="text-align:center"><button class="btn btn-mini" onclick="goDetail('<%= data[i].building_id %>', '<%= data[i].resident_id %>', '<%= data[i].id %>');" <%if (data[i].id == -1) { %>disabled="disabled"<% } %>>입력</button></td>
 		<td style="text-align:center"><button class="btn btn-mini" onclick="" disabled>확인</button></td>
 		<td style="text-align:center; vertical-align:middle">
-		<% if (radio == 3) { %>
+		<% if (radio == 3 && data[i].id != -1) { %>
 			<input id="selCheck<%= i %>" type="checkbox" />
 		<% } else { %>
 			<input id="selCheck<%= i %>" type="checkbox" disabled />

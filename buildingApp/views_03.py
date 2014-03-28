@@ -241,6 +241,7 @@ def get_notice_info(request):
         y = int(request.POST['year'])
         m = int(request.POST['month'])
         bid = int(request.POST['building_id'])
+        is_empty = request.POST['is_empty']
         #fromWhere = 0(03_01_notice), 1(03_02_check), 2(03_02_notice)
         fromWhere = int(request.POST['fromWhere'])
     	data = EachMonthInfo.objects.filter(year = y, month = m, building = bid)
@@ -287,8 +288,12 @@ def get_notice_info(request):
                     em.noticeDate = None
                     em.save()
     	    data = EachMonthInfo.objects.filter(year = y, month = m, building = bid)
+        if is_empty == 'false':
+            rooms = RoomInfo.objects.filter(building_id = bid, isOccupied = True)
+        else:
+            rooms = RoomInfo.objects.filter(building_id = bid)
 
-    	return toJSON(serialize_notice(data, fromWhere))
+        return toJSON(serialize_notice(data, rooms, fromWhere))
     return HttpResponse('NOT POST')
 
 def get_egw_info(request):
@@ -365,41 +370,52 @@ def serialize_lease(result):
     return serialized
 
 ## prettify data for notice
-def serialize_notice(result, fromWhere): #, E, G, W):
+def serialize_notice(result, rooms, fromWhere): #, E, G, W):
     serialized = []
-    for res in result:
-        if (fromWhere == 0 and res.inputCheck and res.noticeCheck) or (fromWhere == 1) or (fromWhere == 2 and res.inputCheck):
-            # if(res.inputCheck == True and res.noticeCheck == True):
-            data = {}
-            total = 0
-            data['id'] = res.id
-            data['inputCheck'] = res.inputCheck
-            if res.inputDate != None:
-                data['inputdate'] = prettyDateWOYear(res.inputDate)
-            data['noticeCheck'] = res.noticeCheck
-            if res.noticeDate != None:
-                data['noticedate'] = prettyDateWOYear(res.noticeDate)
-            data['building_id'] = res.building.id
-            data['resident_id'] = res.resident.id
-            data['buildingnum'] = res.resident.buildingName
-            data['roomnum'] = res.resident.buildingRoomNumber
-            data['name'] = res.resident.contractorName
-            data['yearmonth'] = str(res.year) + "/" + str(res.month)
-            data['noticeNumber'] = res.noticeNumber
-            data['lease'] = res.leaseMoney
-            data['maintenance'] = res.maintenanceFee
-            data['surtax'] = res.surtax
-            data['parking'] = res.parkingFee
+    under = rooms.filter(roomnum__lt = 0).order_by('-roomnum') 
+    over = rooms.filter(roomnum__gt = 0).order_by('roomnum')
+    for chunk in (under,over):
+        for room in chunk:
+            if room.isOccupied == True:
+                res = result.get(resident = room.nowResident)
+                if (fromWhere == 0 and res.inputCheck and res.noticeCheck) or (fromWhere == 1) or (fromWhere == 2 and res.inputCheck):
+                    # if(res.inputCheck == True and res.noticeCheck == True):
+                    data = {}
+                    total = 0
+                    data['id'] = res.id
+                    data['inputCheck'] = res.inputCheck
+                    if res.inputDate != None:
+                        data['inputdate'] = prettyDateWOYear(res.inputDate)
+                    data['noticeCheck'] = res.noticeCheck
+                    if res.noticeDate != None:
+                        data['noticedate'] = prettyDateWOYear(res.noticeDate)
+                    data['building_id'] = res.building.id
+                    data['resident_id'] = res.resident.id
+                    data['buildingnum'] = res.resident.buildingName
+                    data['roomnum'] = res.resident.buildingRoomNumber
+                    data['name'] = res.resident.contractorName
+                    data['yearmonth'] = str(res.year) + "/" + str(res.month)
+                    data['noticeNumber'] = res.noticeNumber
+                    data['lease'] = res.leaseMoney
+                    data['maintenance'] = res.maintenanceFee
+                    data['surtax'] = res.surtax
+                    data['parking'] = res.parkingFee
+        
+                    data['electricityFee'] = res.electricityFee
+                    data['gasFee'] = res.gasFee
+                    data['waterFee'] = res.waterFee
+        
+                    data['etcFee'] = res.etcFee
+                    data['changedFee'] = res.changedFee
+                    data['totalFee'] = res.totalFee
 
-            data['electricityFee'] = res.electricityFee
-            data['gasFee'] = res.gasFee
-            data['waterFee'] = res.waterFee
-
-            data['etcFee'] = res.etcFee
-            data['changedFee'] = res.changedFee
-            data['totalFee'] = res.totalFee
-
-            serialized.append(data)
+                    serialized.append(data)
+            else:
+                if fromWhere == 1:
+                    data = {}
+                    data['id'] = -1
+                    data['roomnum'] = room.roomnum
+                    serialized.append(data)
     return serialized
 
 ## prettify data for electricity
