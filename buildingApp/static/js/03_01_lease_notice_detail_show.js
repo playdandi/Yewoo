@@ -53,12 +53,12 @@ var doAjaxContentsGetAllInfo = function(bid, rid) {
 		url : '/lease/show/detail/getAllInfo/',
 		data : postData,
 		success : function(result) {
-			//lease = result[0];
-			notice = result[0];
-			payment = result[1];
+			lease = result[0];
+			notice = result[1];
+			payment = result[2];
 			
-			//var template = new EJS({url : '/static/ejs/03_01_detail_lease.ejs'}).render();
-			//$('#contents').html(template);
+			var template = new EJS({url : '/static/ejs/03_01_detail_lease.ejs'}).render({'data' : lease});
+			$('#contents').html(template);
 			var template = new EJS({url : '/static/ejs/03_01_detail_notice.ejs'}).render({'data' : notice, 'radio' : Number(0)});
 			$('#contents2').html(template);
 			var template = new EJS({url : '/static/ejs/03_01_detail_payment.ejs'}).render({'data' : payment, 'radio' : Number(0)});

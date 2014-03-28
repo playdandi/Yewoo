@@ -107,10 +107,25 @@ def lease_show_html(request):
     return render(request, '03_01_lease_show.html', setPostData(request))
 
 
-def serialize_allInfo(notice, payment, leasePayDate):
+def serialize_allInfo(lease, notice, payment, leasePayDate):
     serialized_lease = []
     serialized_notice = []
     serialized_payment = []
+    
+    for r in lease:
+        data = {}
+        data['leaseNumber'] = r.leaseNumber
+        data['leasePeriod'] = str(r.leaseContractPeriod) + r.leaseContractPeriodUnit
+        data['inDate'] = prettyDate(r.inDate)
+        data['outDate'] = prettyDate(r.outDate)
+        data['leaseType'] = r.leaseType
+        data['leaseDeposit'] = r.leaseDeposit
+        data['leasePayWay'] = r.leasePayWay
+        data['leaseMoney'] = r.leaseMoney
+        data['maintenanceFee'] = r.maintenanceFee
+        data['parkingFee'] = r.parkingFee
+        data['surtax'] = r.surtax
+        serialized_lease.append(data)
     for n in notice:
         data = {}
         data['id'] = int(n.id)
@@ -161,7 +176,7 @@ def serialize_allInfo(notice, payment, leasePayDate):
             data['confirmDate'] = str(p.confirmDate)
         serialized_payment.append(data)
 
-    return [serialized_notice, serialized_payment]
+    return [serialized_lease, serialized_notice, serialized_payment]
     #return serialized
 
 def lease_notice_detail_getAllInfo(request):
@@ -170,7 +185,8 @@ def lease_notice_detail_getAllInfo(request):
         rid = int(request.POST['resident_id'])
         leasePayDate = ResidentInfo.objects.get(id = int(rid)).leasePayDate
 
-        #lease = ResidentInfo.objects.filter
+        roomNum = ResidentInfo.objects.get(id = int(rid)).buildingRoomNumber
+        lease = ResidentInfo.objects.filter(buildingName = int(bid), buildingRoomNumber = roomNum)
         notice = EachMonthInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
         payment = PaymentInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
 
@@ -188,7 +204,7 @@ def lease_notice_detail_getAllInfo(request):
             if l.confirmDate != None:
                 l.confirmDate = str(l.confirmDate.year)+'.'+str(l.confirmDate.month)+'.'+str(l.confirmDate.day)
         #return HttpResponse(simplejson.dumps(param))
-    	return toJSON(serialize_allInfo(notice, payment, leasePayDate))
+    	return toJSON(serialize_allInfo(lease, notice, payment, leasePayDate))
     return HttpResponse('NOT POST')
 
 def lease_notice_detail_show_html(request, bid, rid, tab):

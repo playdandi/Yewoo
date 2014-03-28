@@ -1,0 +1,45 @@
+<% var w = new Array(5,5,5,9,9,7,7,10,7,9,9,9,9); %>
+<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+	<tr>
+		<th rowspan="2" style="text-align:center">No.</th>
+		<th colspan="2" style="text-align:center">임대 회차</th>
+		<th colspan="2" style="text-align:center">입주 기간</th>
+		<th rowspan="2" style="text-align:center">재실 여부</th>
+		<th colspan="4" style="text-align:center">임대 비용</th>
+		<th colspan="3" style="text-align:center">부가 비용</th>
+	</tr>
+	<tr>
+		<th style="text-align:center">횟수</th>
+		<th style="text-align:center">기간</th>
+		<th style="text-align:center">계약일</th>
+		<th style="text-align:center">만료일</th>
+		<th colspan="2" style="text-align:center">보증금</th>
+		<th colspan="2" style="text-align:center">임대료</th>
+		<th style="text-align:center">관리비</th>
+		<th style="text-align:center">주차비</th>
+		<th style="text-align:center">부가세</th>
+	</tr>
+	<% for (i = 0; i < data.length; i++) { %>
+	<tr>
+		<td style="text-align:center"><%= i+1 %></td>
+		<td style="text-align:center"><%= data[i].leaseNumber %></td>
+		<td style="text-align:center"><%= data[i].leasePeriod %></td>
+		<td style="text-align:center"><%= data[i].inDate %></td>
+		<td style="text-align:center"><%= data[i].outDate %></td>
+		<td style="text-align:center">재실</td>
+		<td style="text-align:center"><%= data[i].leaseType %></td>
+		<td style="text-align:center"><%= data[i].leaseDeposit %></td>
+		<td style="text-align:center"><%= data[i].leasePayWay %></td>
+		<td style="text-align:center"><%= data[i].leaseMoney %></td>
+		<td style="text-align:center"><%= data[i].maintenanceFee %></td>
+		<td style="text-align:center"><%= data[i].parkingFee %></td>
+		<td style="text-align:center"><%= data[i].surtax %></td>
+	</tr>
+	<% } %>
+</table>  
+
+
+
+
+
+
