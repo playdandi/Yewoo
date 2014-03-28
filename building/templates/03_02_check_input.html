@@ -221,7 +221,7 @@
 								</td>
 								<td width="10%">
 									<div style="margin-right:5px; float:left">공실여부</div>
-									<input id="search_isEmpty" type="checkbox">
+									<input id="search_isEmpty" type="checkbox" {% if search_is_empty == 'true' %}checked="checked"{% endif %}>
 								</td>
 								<td width="14%">
 									<div>
@@ -246,7 +246,7 @@
 									</td>
 									<td width="40%">
 										<div style="font-size:0.8em">고지 입력 현황</div>
-										<div><h3>총 <font style="color:red">40</font>개, 현재 <font style="color:red">22</font>개 완료, 미완료 <font style="color:red">18</font>개</h3></div>
+										<div><h3>총 <font style="color:red">{{ num_of_occ_rooms }}</font>개, 현재 <font style="color:red">{{ num_of_comp_input }}</font>개 완료, 미완료 <font style="color:red">{{ num_of_ncomp_input }}</font>개</h3></div>
 									</td>
 								</tr>
 							 </table>  
@@ -279,8 +279,8 @@
 										<input id="uploadDate" type="text" class="margin0 input-small datepicker" placeholder="날짜를 입력하세요." />
 										<a href="#" title="입력 완료일을 선택하세요." data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a>
 									</th>
-									<th style="text-align:center">당일 완료 : 총 <font style="color:red">20</font>개, 오늘 <font style="color:red">12</font>개</th>
-									<th style="text-align:center">전체 완료 : 총 <font style="color:red">40</font>개, 누적 <font style="color:red">40</font>개</th>
+									<th style="text-align:center">당일 완료 : 총 <font style="color:red">{{ num_of_occ_rooms }}</font>개, 오늘 <font style="color:red">{{ num_of_comp_input_today }}</font>개</th>
+									<th style="text-align:center">전체 완료 : 총 <font style="color:red">{{ num_of_occ_rooms }}</font>개, 누적 <font style="color:red">{{ num_of_comp_input }}</font>개</th>
 									<th style="text-align:center">이력</th>
 									<td style="text-align:center"><button class="btn btn-small btn-inverse">보기</button></td>
 								</tr>

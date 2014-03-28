@@ -221,7 +221,7 @@
 								</td>
 								<td width="10%">
 									<div style="margin-right:5px; float:left">공실여부</div>
-									<input id="search_isEmpty" type="checkbox">
+									<input id="search_isEmpty" type="checkbox" {% if search_is_empty == 'true' %}checked="checked"{% endif %}>
 								</td>
 								<td width="14%">
 									<div>
@@ -260,7 +260,7 @@
 									</td>
 									<td colspan="5">
 										<div style="font-size:0.8em">재실 현황</div>
-										<div><h3>총 62실, 재실 20실</h3></div>
+										<div><h3>총 <font style="color:red">{{ num_of_rooms }}</font>실, 재실 <font style="color:red">{{num_of_occ_rooms}}</font>실</h3></div>
 									</td>
 								</tr>
 								<tr>
@@ -285,11 +285,11 @@
 									<td style="text-align:center"></td>
 									<td style="text-align:center"></td>
 									<td style="text-align:center"></td>
-									<td style="text-align:center">62</td>
-									<td style="text-align:center">20</td>
-									<td style="text-align:center">10</td>
-									<td style="text-align:center">10</td>
-									<td style="text-align:center">42</td>
+									<td style="text-align:center">{{ num_of_rooms }}</td>
+									<td style="text-align:center">{{ num_of_occ_rooms}} </td>
+									<td style="text-align:center">{{ num_of_jeon_rooms }}</td>
+									<td style="text-align:center">{{ num_of_woel_rooms }}</td>
+									<td style="text-align:center">{{ num_of_empty_rooms }}</td>
 								</tr>
 							 </table>  
 						</div>

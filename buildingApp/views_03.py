@@ -11,7 +11,6 @@ from django.conf import settings
 from django.utils import simplejson
 import os
 
-
 ################################################
 #################### Chap.3 ####################
 ################################################
@@ -68,6 +67,7 @@ def setPostData(request, typestr = ''):
     param['num_of_jeon_rooms'] = len(occRooms.filter(nowResident__leaseType = u'전세'))
     param['num_of_woel_rooms'] = len(occRooms.filter(nowResident__leaseType = u'월세'))
     param['num_of_empty_rooms'] = len(rooms) - len(occRooms)
+
     total_deposit = 0
     total_lease = 0
     total_maintenance = 0
@@ -84,6 +84,22 @@ def setPostData(request, typestr = ''):
     param['total_maintenance'] = total_maintenance
     param['total_parking'] = total_parking
     param['total_surtax'] = total_surtax
+    #고지 정보
+    completeNotice = EachMonthInfo.objects.filter(year = param['search_year'], month = param['search_month'], building_id = param['search_building_id'], inputCheck = True, noticeCheck = True)
+    param['num_of_complete_notice'] = len(completeNotice)
+    param['num_of_ncomplete_notice'] = len(occRooms) - len(completeNotice)
+    import datetime
+    param['num_of_complete_notice_today'] = len(completeNotice.filter(noticeDate = datetime.date.today()))
+    #납부 정보
+    completePayment = PaymentInfo.objects.filter(year = param['search_year'], month = param['search_month'], building_id = param['search_building_id'], payStatus = -1)
+    param['num_of_comp_pay'] = len(completePayment)
+    param['num_of_ncomp_pay'] = len(occRooms) - len(completePayment)
+    param['num_of_comp_pay_today'] = len(completePayment.filter(payDate = datetime.date.today()))
+    #입력 정보
+    completeInput = EachMonthInfo.objects.filter(year = param['search_year'], month = param['search_month'], building_id = param['search_building_id'], inputCheck = True)
+    param['num_of_comp_input'] = len(completeInput)
+    param['num_of_ncomp_input'] = len(occRooms) - len(completeInput)
+    param['num_of_comp_input_today'] = len(completeInput.filter(inputDate = datetime.date.today()))
 
     return param
 

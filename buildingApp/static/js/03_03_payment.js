@@ -13,6 +13,7 @@ function showLeaseInfo(isForReload)
 		building_id = Number($('#search_building').val().replace('b', ''));
 		room_num = $('#search_room_num').val();
 	}
+	var is_empty = $('#search_isEmpty').parent().hasClass('checked');
 
 	var type = $('#search_type').val();
 	var type_text;
@@ -42,6 +43,11 @@ function showLeaseInfo(isForReload)
 	f_bid.name = 'building_id';
 	f_bid.value = building_id;
 	form.appendChild(f_bid);
+
+	var f_isempty = document.createElement('input');
+	f_isempty.name = 'is_empty';
+	f_isempty.value = is_empty;
+	form.appendChild(f_isempty);
 
 	var csrf = document.createElement('input');
 	csrf.type = 'hidden';
@@ -89,6 +95,7 @@ var doAjaxContents = function() {
 	postData['building_id'] = curBid;
 	postData['year'] = curYear;
 	postData['month'] = curMonth;
+	postData['is_empty'] = $('#search_isEmpty').parent().hasClass('checked');
 
 	$.ajax({
 		type : 'POST',

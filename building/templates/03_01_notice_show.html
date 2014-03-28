@@ -222,7 +222,7 @@
 								</td>
 								<td width="10%">
 									<div style="margin-right:5px; float:left">공실여부</div>
-									<input id="search_isEmpty" type="checkbox">
+									<input id="search_isEmpty" type="checkbox" {% if search_is_empty == 'true' %}checked="checked"{% endif %}>
 								</td>
 								<td width="13%">
 									<div>
@@ -260,7 +260,7 @@
 									</td>
 									<td colspan="5">
 										<div style="font-size:0.8em">최종 고지 현황</div>
-										<div><h3>총 40개, 현재 40개 완료, 미완료 0개</h3></div>
+										<div><h3>총 {{ num_of_occ_rooms }}개, 현재 {{ num_of_complete_notice }}개 완료, 미완료 {{ num_of_ncomplete_notice }}개</h3></div>
 									</td>
 								</tr>
 							 </table>  
@@ -286,9 +286,9 @@
 									<col width="10%">
 								</colgroup>
 								<tr>
-									<th style="text-align:center">현재 재실 현황 : 총 <font style="color:red">60</font>실, 현재 <font style="color:red">40</font>실</th>
-									<th style="text-align:center">당일 완료 : 총 <font style="color:red">20</font>개, 오늘 <font style="color:red">12</font>개</th>
-									<th style="text-align:center">전체 완료 : 총 <font style="color:red">40</font>개, 누적 <font style="color:red">40</font>개</th>
+									<th style="text-align:center">현재 재실 현황 : 총 <font style="color:red">{{ num_of_rooms }}</font>실, 현재 <font style="color:red">{{ num_of_occ_rooms}}</font>실</th>
+									<th style="text-align:center">당일 완료 : 총 <font style="color:red">{{ num_of_occ_rooms }}</font>개, 오늘 <font style="color:red">{{ num_of_complete_notice_today }}</font>개</th>
+									<th style="text-align:center">전체 완료 : 총 <font style="color:red">{{ num_of_occ_rooms }}</font>개, 누적 <font style="color:red">{{ num_of_complete_notice }}</font>개</th>
 									<th style="text-align:center">이력</th>
 									<td style="text-align:center"><button class="btn btn-small btn-inverse" disabled="disabled">보기</button></td>
 								</tr>

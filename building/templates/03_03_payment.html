@@ -222,7 +222,7 @@
 								</td>
 								<td width="10%">
 									<div style="margin-right:5px; float:left">공실여부</div>
-									<input id="search_isEmpty" type="checkbox">
+									<input id="search_isEmpty" type="checkbox" {% if search_is_empty == 'true' %}checked="checked"{% endif %}>
 								</td>
 								<td width="14%">
 									<div>
@@ -247,7 +247,7 @@
 									</td>
 									<td width="40%">
 										<div style="font-size:0.8em">납부 현황</div>
-										<div><h3>총 <font style="color:red">40</font>개, 현재 <font style="color:red">22</font>개 납부, 미납 <font style="color:red">18개</font></h3></div>
+										<div><h3>총 <font style="color:red">{{ num_of_occ_rooms }}</font>개, 현재 <font style="color:red">{{ num_of_comp_pay }}</font>개 납부, 미납 <font style="color:red">{{ num_of_ncomp_pay }}개</font></h3></div>
 									</td>
 								</tr>
 							 </table>  
@@ -274,13 +274,13 @@
 									</td>
 									<td width="27%">
 										당일 납부: 총 
-										<font style="color:red">20</font>개, 오늘 
-										<font style="color:red">12</font>개
+										<font style="color:red">{{ num_of_occ_rooms }}</font>개, 오늘 
+										<font style="color:red">{{ num_of_comp_pay_today }}</font>개
 									</td>
 									<td width="27%">
 										전체 납부: 총
-										<font style="color:red">40</font>개, 누적 
-										<font style="color:red">15</font>개
+										<font style="color:red">{{ num_of_occ_rooms }}</font>개, 누적 
+										<font style="color:red">{{ num_of_comp_pay }}</font>개
 									</td>
 									<td width="5%" style="vertical-align:middle">이력</td>
 									<td width="7%"><button class="btn btn-small" data-toggle="modal" data-target="#modal_history" disabled>보기</button>
