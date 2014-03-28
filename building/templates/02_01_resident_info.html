@@ -94,6 +94,7 @@
 	#myModal {
 		top : 10%;
 		width : 70%;
+		height : 80%;
 		margin : 0px 0px 0px 0px;
 		padding : 0px 0px 0px 0px;
 		left : 15%;
@@ -217,7 +218,7 @@
 								</colgroup>
 								<tbody>
 								  	<tr>
-										<td colspan="7">
+										<td colspan="6">
 											<div class="must" style="margin-right:26px"><strong>건물명</strong></div>
 											<select id="buildingName" class="margin0" style="width:150px">
 												<option value="">선택</option>
@@ -231,14 +232,64 @@
 											<select id="buildingRoomNumber" class="margin0" style="width:85px" disabled>
 												<option value="">선택</option>
 									  		</select>
-								  		</td>
-										<td colspan="9">
-											<div class="must" style="margin-right:26px"><strong>입주일</strong></div>
-											<input id="inDate" class="margin0 input-small datepicker" type="text" placeholder="입주일" />
-											<input id="outDate" class="margin0 input-small datepicker disabled" type="text" placeholder="만료일" disabled="" />
-								  		</td>
+										</td>
+										<td colspan="5">
+											<div class="must" style="margin-right:20px"><strong>관리비</strong></div>
+											<input id="maintenanceFee" class="margin0 input-small" type="text" />
+										</td>
+										<td colspan="5">
+											<div class="must" style="margin-right:20px"><strong>부가세</strong></div>
+											<input id="surtax" class="margin0 input-small" type="text" />
+										</td>
 								  	</tr>
-								  	<tr>
+									<tr>
+										<td colspan="4">
+											<div class="must"><strong>입주자</strong></div>
+											<input id="residentName" class="margin0 input-small" type="text" />
+										</td>
+										<td colspan="3">
+											<div class="must"><strong>입주회차</strong></div>
+											<select id="leaseNumber" class="margin0 input-mini">
+												<option value="1">1회</option>
+												<option value="2">2회</option>
+												<option value="3">3회</option>
+												<option value="4">4회</option>
+												<option value="5">5회</option>
+												<option value="6">6회</option>
+												<option value="7">7회</option>
+												<option value="8">8회</option>
+												<option value="9">9회</option>
+												<option value="10">10회</option>
+											</select>
+										</td>
+										<td colspan="5">
+											<div class="must"><strong>입주기간</strong></div>
+											<select id="leaseContractPeriod" class="margin0 input-mini" style="float:left">
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
+												<option value="6">6</option>
+												<option value="7">7</option>
+												<option value="8">8</option>
+												<option value="9">9</option>
+												<option value="10">10</option>
+												<option value="11">11</option>
+												<option value="12">12</option>
+											</select>
+											<select id="leaseContractPeriodUnit" class="margin0 input-mini" style="float:left">
+												<option value="년">년</option>
+												<option value="월">월</option>
+											</select>
+										</td>
+										<td colspan="8">
+											<div class="must" style="margin-right:26px"><strong>입주일</strong></div>
+											<input id="inDate" class="margin0 input-small datepicker dateinput fontmini" type="text" placeholder="입주일" />
+											<input id="outDate" class="margin0 input-small datepicker fontmini disabled" type="text" placeholder="만료일" disabled="" />
+										</td>
+									</tr>
+									<tr>
 								  		<td colspan="4"> 
 								  			<div class="must"><strong>임대 구분</strong></div>
 								  			<select id="leaseType" class="margin0 width2">
@@ -247,12 +298,12 @@
 												<option value="매매">매매</option>
 											</select>
 								  		</td>
-								  		<td colspan="7">
+								  		<td colspan="8">
 								  			<div class="must"><strong>보증금</strong></div>
 											<input id="leaseDeposit" type="text" class="margin0" style="width:80px" />
 											<input id="leaseDeposit2" type="text" class="margin0" style="font-size:0.80em; width:140px" disabled />
 								  		</td>
-								  		<td colspan="9">
+								  		<td colspan="8">
 								  			<div class="must" style="margin-right:26px"><strong>임대료</strong></div>
 								  			<select id="leasePayWay" class="margin0 width2">
 												<option value="선불">선불</option>
@@ -267,15 +318,7 @@
 								  		</td>
 								  	</tr>
 								  	<tr>
-								  		<td colspan="11">
-											<div class="must"><strong>중개 정보</strong></div>
-											<select id="agency" class="" style="margin-right:5px; margin-bottom:0px; width:100px">
-												<option value="공인중개">공인중개</option>
-												<option value="직거래">직거래</option>
-											</select>
-											<input id="agencyName" type="text" class="margin0" style="width:200px"  placeholder="중개 정보를 입력하세요." />
-										</td>
-										<td colspan="9">
+										<td colspan="10">
 											<div class="must"><strong>입주 검침</strong></div>
 											<select id="checkType" class="margin0" style="width:82px; font-size:0.8em">
 												<option value="0">일반</option>
@@ -295,7 +338,64 @@
 												<a href="#" title="전기, 온수(가스), 난방(가스), 온수(수도), 난방(수도)" data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a>
 											</span>
 										</td>
-									  </tr>
+										<td colspan="4">
+											<input id="readDate" class="margin0 span12 datepicker dateinput" type="text" placeholder="검침 날짜" />
+										</td>
+										<td colspan="6">
+											<input id="readContent" class="margin0 span12" type="text" placeholder="검침 사항" />
+										</td>
+									</tr>
+									<tr>
+								  		<td colspan="20">
+											<div class="must" width="10%"><strong>중개 정보</strong></div>
+											<select id="agency" class="" style="margin-right:5px; margin-bottom:0px" width="10%">
+												<option value="공인중개">공인중개</option>
+												<option value="직거래">직거래</option>
+											</select>
+											<input id="agencyName" type="text" class="margin0" width="80%"  placeholder="중개 정보를 입력하세요." />
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<div class="must">재실 정보</div>
+										</td>
+										<td colspan="1">
+											<div class="must">입실</div>
+										</td>
+										<td colspan="4">
+											<label class="radio">확인
+		   										<input type="radio" name="checkIn" id="checkInDateY" value="y" checked />
+		   									</label>
+		   									<label class="radio">미확인
+		   										<input type="radio" name="checkIn" id="checkInDateN" value="n" />
+		   									</label>
+										</td>
+										<td colspan="4">
+											<input id="realInDate" class="margin0 span12 datepicker dateinput" type="text" placeholder="입실일" />
+										</td>
+										<td colspan="1">
+											<div class="must">퇴실</div>
+										</td>
+										<td colspan="4">
+											<label class="radio">확인
+		   										<input type="radio" name="checkOut" id="checkOutDateY" value="y" checked />
+		   									</label>
+		   									<label class="radio">미확인
+		   										<input type="radio" name="checkOut" id="checkOutDateN" value="n" />
+		   									</label>
+										</td>
+										<td colspan="4">
+											<input id="realOutDate" class="margin0 span12 datepicker dateinput" type="text" placeholder="퇴실일" />
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<div class="optional">퇴실 사유</div>
+										</td>
+										<td colspan="18">
+											<input id="outReason" class="margin0 span12" type="text" placeholder="(예) 개인 사유로 퇴실함" />
+										</td>
+									</tr>
 								</tbody>
 							 </table>  
 						</div>
@@ -423,7 +523,7 @@
 								  	<tr>
 								  		<td colspan="10">
 											<div class="must" style="margin-right:65px"><strong>성명</strong></div>
-											<input id="residentName" class="margin0 input-medium" type="text" placeholder="거주자 이름을 입력하세요." />
+											<input id="realResidentName" class="margin0 input-medium" type="text" placeholder="거주자 이름을 입력하세요." />
 											<select id="residentGender" class="width2" style="margin-right:10px; margin-bottom:0px">
 												<option value="남">남</option>
 												<option value="여">여</option>
@@ -583,19 +683,19 @@
 											<div class="must"><strong>품목체크리스트</strong></div>
 											<label class="radio">
 		  										입실확인
-		   										<input type="radio" name="checkin" id="checkinY" value="y" checked="" />
+		   										<input type="radio" name="itemCheckIn" id="checkinY" value="y" checked="" />
 		   									</label>
 		   									<label class="radio">
 		   										미확인
-		   										<input type="radio" name="checkin" id="checkinN" value="n" />
+		   										<input type="radio" name="itemCheckIn" id="checkinN" value="n" />
 		   									</label>
 		   									<label class="radio" style="margin-left:20px">
 		  										퇴실확인
-		   										<input type="radio" name="checkout" id="checkoutY" value="y" checked="" />
+		   										<input type="radio" name="itemCheckOut" id="checkoutY" value="y" checked="" />
 		   									</label>
 		   									<label class="radio">
 		   										미확인
-		   										<input type="radio" name="checkout" id="checkoutN" value="n" />
+		   										<input type="radio" name="itemCheckOut" id="checkoutN" value="n" />
 		   									</label>
 										</td>
 									</tr>			
@@ -1043,12 +1143,19 @@
 					}
 				});
 				
+				$('.dateinput').change(function() {
+					var mdy = $(this).val().split('/');
+					$(this).val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
+					if ($(this).attr('id') == "inDate")
+						$('#outDate').attr('disabled', false);
+				});
+				/*
 				$('#inDate').change(function() {
 					var mdy = $('#inDate').val().split('/');
 					$('#inDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
 					$('#outDate').attr('disabled', false);
 				});
-				
+				*/
 				$('#outDate').change(function() {
 					var mdy = $('#outDate').val().split('/');
 					$('#outDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);

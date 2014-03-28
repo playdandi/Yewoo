@@ -7,21 +7,22 @@ class UserProfile(models.Model):
 class ResidentInfo(models.Model):
     buildingName = models.IntegerField()
     buildingRoomNumber = models.IntegerField()
-    inDate = models.DateField()
-    outDate = models.DateField()
+    maintenanceFee = models.IntegerField()
+    surtax = models.IntegerField()
 
+    residentName = models.CharField(max_length=10)
     leaseNumber = models.IntegerField()
     leaseContractPeriod = models.IntegerField()
     leaseContractPeriodUnit = models.CharField(max_length=4)
+    inDate = models.DateField()
+    outDate = models.DateField()
+
     leaseType = models.CharField(max_length=4)
     leaseDeposit = models.IntegerField()
     leasePayWay = models.CharField(max_length=4)
     leasePayDate = models.IntegerField()
     leaseMoney = models.IntegerField()
-    maintenanceFee = models.IntegerField()
-    surtax = models.IntegerField()
-    agency = models.CharField(max_length=10)
-    agencyName = models.CharField(max_length=20)
+
     checkType = models.IntegerField()
     checkE = models.IntegerField()
     checkG = models.IntegerField(null=True)
@@ -30,6 +31,17 @@ class ResidentInfo(models.Model):
     checkHG = models.IntegerField(null=True)
     checkHWW = models.IntegerField(null=True)
     checkHW = models.IntegerField(null=True)
+    readDate = models.DateField(null=True)
+    readContent = models.CharField(max_length=200, null=True)
+
+    agency = models.CharField(max_length=10)
+    agencyName = models.CharField(max_length=50)
+
+    checkIn = models.CharField(max_length=1)
+    realInDate = models.DateField()
+    checkOut = models.CharField(max_length=1)
+    realOutDate = models.DateField()
+    outReason = models.CharField(max_length=200)
 
     contractorName = models.CharField(max_length=10)
     contractorGender = models.CharField(max_length=1)
@@ -38,7 +50,7 @@ class ResidentInfo(models.Model):
     contractorContactNumber2 = models.CharField(max_length=13, blank=True)
     contractorAddress = models.CharField(max_length=150)
     
-    residentName = models.CharField(max_length=10)
+    realResidentName = models.CharField(max_length=10)
     residentGender = models.CharField(max_length=1)
     residentRegNumber = models.CharField(max_length=14)
     relToContractor = models.CharField(max_length=10)
@@ -56,8 +68,8 @@ class ResidentInfo(models.Model):
     parkingFee = models.IntegerField(null=True, blank=True)
 
     sendMsg = models.CharField(max_length=1)
-    checkin = models.CharField(max_length=1)
-    checkout = models.CharField(max_length=1)
+    itemCheckIn = models.CharField(max_length=1)
+    itemCheckOut = models.CharField(max_length=1)
     checkoutWhy = models.CharField(max_length=200, null=True, blank=True)
     checkoutDate = models.DateField(null=True)
 
