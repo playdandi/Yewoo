@@ -1,57 +1,85 @@
 function SaveResidentInfo()
 {
 	var data = {};
-	data['buildingName'] = $('#buildingName').val().replace('b', '');
-	data['buildingRoomNumber'] = $('#buildingRoomNumber').val();
-	data['inDate'] = $('#inDate').val();
-	data['outDate'] = $('#outDate').val();
-	data['leaseType'] = $('#leaseType').val();
-	data['leaseDeposit'] = $('#leaseDeposit').val();
+
+	// 건물명, 호실, 관리비, 부가세
+	data['buildingName'] = $('#buildingName').val().replace('b', '').trim();
+	data['buildingRoomNumber'] = $('#buildingRoomNumber').val().trim();
+	data['maintenanceFee'] = $('#maintenanceFee').val().trim();
+	data['surtax'] = $('#surtax').val().trim();
+	// 입주자, 입주회차, 입주기간, 입주기간단위, 입주일, 만료일
+	data['residentName'] = $('#residentName').val().trim();
+	data['leaseNumber'] = $('#leaseNumber').val().trim();
+	data['leaseContractPeriod'] = $('#leaseContractPeriod').val().trim();
+	data['leaseContractPeriodUnit'] = $('#leaseContractPeriodUnit').val().trim();
+	data['inDate'] = $('#inDate').val().trim();
+	data['outDate'] = $('#outDate').val().trim();
+	// 임대구분, 보증금, 임대료방법, 임대료날짜, 임대료
+	data['leaseType'] = $('#leaseType').val().trim();
+	data['leaseDeposit'] = $('#leaseDeposit').val().trim();
 	data['leasePayWay'] = $('#leasePayWay').val();
-	data['leasePayDate'] = $('#leasePayDate').val();
-	data['leaseMoney'] = $('#leaseMoney').val();
-	data['agency'] = $('#agency').val();
-	data['agencyName'] = $('#agencyName').val();
-	data['checkType'] = $('#checkType').val();
-	data['checkE'] = $('#checkE').val();
+	data['leasePayDate'] = $('#leasePayDate').val().trim();
+	data['leaseMoney'] = $('#leaseMoney').val().trim();
+	// 입주검침, 전기/온수/난방/온수/난방, 검침날짜, 검침사항
+	data['checkType'] = $('#checkType').val().trim();
+	data['checkE'] = $('#checkE').val().trim();
 	if (data['checkType'] == '1') {
-		data['checkHWG'] = $('#checkHWG').val();
-		data['checkHG'] = $('#checkHG').val();
-		data['checkHWW'] = $('#checkHWW').val();
-		data['checkHW'] = $('#checkHW').val();
+		data['checkHWG'] = $('#checkHWG').val().trim();
+		data['checkHG'] = $('#checkHG').val().trim();
+		data['checkHWW'] = $('#checkHWW').val().trim();
+		data['checkHW'] = $('#checkHW').val().trim();
 	}
 	else {
-		data['checkG'] = $('#checkG').val();
-		data['checkW'] = $('#checkW').val();
+		data['checkG'] = $('#checkG').val().trim();
+		data['checkW'] = $('#checkW').val().trim();
 	}
-	data['contractorName'] = $('#contractorName').val();
-	data['contractorGender'] = $('#contractorGender').val();
-	data['contractorRegNumber'] = $('#contractorRegNumber_1').val() + '-' + $('#contractorRegNumber_2').val();
-	data['contractorContactNumber1'] = $('#contractorContactNumber1_1').val() + '-' + $('#contractorContactNumber1_2').val() + '-' + $('#contractorContactNumber1_3').val(); 
-	data['contractorContactNumber2'] = $('#contractorContactNumber2_1').val() + '-' + $('#contractorContactNumber2_2').val() + '-' + $('#contractorContactNumber2_3').val();
-	data['contractorAddress'] = $('#contractorAddress').val();
+	data['readDate'] = $('#readDate').val().trim();
+	data['readContent'] = $('#readContent').val().trim();
+	// 중개방식, 중개이름
+	data['agency'] = $('#agency').val().trim();
+	data['agencyName'] = $('#agencyName').val().trim();
+	// 입실(확/미), 입실일, 퇴실(확/미), 퇴실일
+	data['checkIn'] = $(':radio[name="checkIn"]:checked').val();
+	data['realInDate'] = $('#realInDate').val().trim();
+	data['checkOut'] = $(':radio[name="checkOut"]:checked').val();
+	data['realOutDate'] = $('#realOutDate').val().trim();
+	// 퇴실사유
+	data['outReason'] = $('#outReason').val().trim();
+
+	// 2.
+	data['contractorName'] = $('#contractorName').val().trim();
+	data['contractorGender'] = $('#contractorGender').val().trim();
+	data['contractorRegNumber'] = $('#contractorRegNumber_1').val().trim() + '-' + $('#contractorRegNumber_2').val().trim();
+	data['contractorContactNumber1'] = $('#contractorContactNumber1_1').val().trim() + '-' + $('#contractorContactNumber1_2').val().trim() + '-' + $('#contractorContactNumber1_3').val().trim();
+	data['contractorContactNumber2'] = $('#contractorContactNumber2_1').val().trim() + '-' + $('#contractorContactNumber2_2').val().trim() + '-' + $('#contractorContactNumber2_3').val().trim();
+	data['contractorAddress'] = $('#contractorAddress').val().trim();
+
+	// 3.
+	data['realResidentName'] = $('#residentName').val().trim();
+	data['residentGender'] = $('#residentGender').val().trim();
+	data['residentRegNumber'] = $('#residentRegNumber_1').val().trim() + '-' + $('#residentRegNumber_2').val().trim();
+	data['relToContractor'] = $('#relToContractor').val().trim();
+	data['residentPeopleNumber'] = $('#residentPeopleNumber').val().trim();
+	data['residentAddress'] = $('#residentAddress').val().trim();
+	data['residentContactNumber1'] = $('#residentContactNumber1_1').val().trim() + '-' + $('#residentContactNumber1_2').val().trim() + '-' + $('#residentContactNumber1_3').val().trim();
+	data['residentContactNumber2'] = $('#residentContactNumber2_1').val().trim() + '-' + $('#residentContactNumber2_2').val().trim() + '-' + $('#residentContactNumber2_3').val().trim();
+	data['residentOfficeName'] = $('#residentOfficeName').val().trim();
+	data['residentOfficeLevel'] = $('#residentOfficeLevel').val().trim();
+	data['residentOfficeAddress'] = $('#residentOfficeAddress').val().trim();
+	data['residentOfficeContactNumber'] = $('#residentOfficeContactNumber_1').val().trim() + '-' + $('#residentOfficeContactNumber_2').val().trim() + '-' + $('#residentOfficeContactNumber_3').val().trim();
+	data['residentEmail'] = $('#residentEmail').val().trim();
 	
-	data['residentName'] = $('#residentName').val();
-	data['residentGender'] = $('#residentGender').val();
-	data['residentRegNumber'] = $('#residentRegNumber_1').val() + '-' + $('#residentRegNumber_2').val();
-	data['relToContractor'] = $('#relToContractor').val();
-	data['residentPeopleNumber'] = $('#residentPeopleNumber').val();
-	data['residentAddress'] = $('#residentAddress').val();
-	data['residentContactNumber1'] = $('#residentContactNumber1_1').val() + '-' + $('#residentContactNumber1_2').val() + '-' + $('#residentContactNumber1_3').val();
-	data['residentContactNumber2'] = $('#residentContactNumber2_1').val() + '-' + $('#residentContactNumber2_2').val() + '-' + $('#residentContactNumber2_3').val();
-	data['residentOfficeName'] = $('#residentOfficeName').val();
-	data['residentOfficeLevel'] = $('#residentOfficeLevel').val();
-	data['residentOfficeAddress'] = $('#residentOfficeAddress').val();
-	data['residentOfficeContactNumber'] = $('#residentOfficeContactNumber_1').val() + '-' + $('#residentOfficeContactNumber_2').val() + '-' + $('#residentOfficeContactNumber_3').val();
-	data['residentEmail'] = $('#residentEmail').val();
-	
-	data['haveCar'] = $(':radio[name="haveCar"]:checked').val();
-	data['carNumber'] = $('#carNumber').val();
-	data['parkingFee'] = $('#parkingFee').val();
-	data['sendMsg'] = $(':radio[name="sendMsg"]:checked').val();
-	data['checkin'] = $(':radio[name="checkin"]:checked').val();
-	data['checkout'] = $(':radio[name="checkout"]:checked').val();
-	data['memo'] = $('#memo').val();
+	data['haveCar'] = $(':radio[name="haveCar"]:checked').val().trim();
+	data['carNumber'] = $('#carNumber').val().trim();
+	data['parkingFee'] = $('#parkingFee').val().trim();
+
+	// 4.
+	data['sendMsg'] = $(':radio[name="sendMsg"]:checked').val().trim();
+	data['itemCheckIn'] = $(':radio[name="itemCheckIn"]:checked').val().trim();
+	data['itemCheckOut'] = $(':radio[name="itemCheckOut"]:checked').val().trim();
+
+	// 5.
+	data['memo'] = $('#memo').val().trim();
 	
 	// check
 	for (var name in data) {
@@ -84,7 +112,8 @@ function SaveResidentInfo()
 		// 숫자여야만 하는 부분은 따로 체크해준다.
 		if (name == 'leaseDeposit' || name == 'leaseMoney' || 
 			name == 'checkE' || name == 'checkG' || name == 'checkW' || name == 'checkHWG' || name == 'checkHG' ||
-			name == 'checkHWW' || name == 'checkHW' || name == 'residentPeopleNumber') {
+			name == 'checkHWW' || name == 'checkHW' || name == 'residentPeopleNumber' ||
+			name == 'maintenanceFee' || name == 'surtax') {
 			if (!IsNumberRight(name, data[name]))
 				return;
 		}
@@ -295,9 +324,9 @@ function setPreviewInfo()
 
 	var sendMsg = $(':radio[name="sendMsg"]:checked').val() == 'y' ? '전달 유' : '전달 무';
 	$('#sendMsg_modal').html(sendMsg);
-	var checkin = $(':radio[name="checkin"]:checked').val() == 'y' ? '입실 확인' : '입실 미확인';
-	var checkout = $(':radio[name="checkout"]:checked').val() == 'y' ? '퇴실 확인' : '퇴실 미확인';
-	$('#checkinout_modal').html(checkin + ', ' + checkout);
+	var itemCheckIn = $(':radio[name="itemCheckIn"]:checked').val() == 'y' ? '입실 확인' : '입실 미확인';
+	var itemCheckOut = $(':radio[name="itemCheckOut"]:checked').val() == 'y' ? '퇴실 확인' : '퇴실 미확인';
+	$('#checkinout_modal').html(itemCheckIn + ', ' + itemCheckOut);
 
 	$('#memo_modal').html( $('#memo').val() );
 }

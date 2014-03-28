@@ -212,7 +212,51 @@ def get_notice_info(request):
         #fromWhere = 0(03_01_notice), 1(03_02_check), 2(03_02_notice)
         fromWhere = int(request.POST['fromWhere'])
     	data = EachMonthInfo.objects.filter(year = y, month = m, building = bid)
-    	return toJSON(serialize_notice(data, fromWhere)) #, E, G, W))
+        if len(data) == 0:
+            # create new data for new month
+            import datetime
+            nowYear = int(datetime.datetime.now().year)
+            nowMonth = int(datetime.datetime.now().month)
+            if nowYear == y and nowMonth == m:
+                beforeYear = y
+                beforeMonth = m-1
+                if beforeMonth == 0:
+                    beforeYear -= 1
+                    beforeMonth = 12
+                room = RoomInfo.objects.filter(building = bid).order_by('roomnum', '-residentnum')
+                for i in range(len(room)):
+                    if i > 0 and int(room[i].roomnum) == int(room[i-1].roomnum):
+                        continue
+                    em = EachMonthInfo()
+                    em.building = room[i].building
+                    em.resident = room[i].nowResident
+                    em.year = y
+                    em.month = m
+                    beforeInfo = EachMonthInfo.objects.get(year = beforeYear, month = beforeMonth, building = bid, resident = em.resident)
+                    if em.resident != None:
+                        em.noticeNumber = int(beforeInfo.noticeNumber) + 1
+                        em.leaseMoney = int(em.resident.leaseMoney)
+                        em.maintenanceFee = int(em.resident.maintenanceFee)
+                        em.surtax = int(em.resident.surtax)
+                    else:
+                        em.noticeNumber = 0
+                        em.leaseMoney = 0
+                        em.maintenanceFee = 0
+                        em.surtax = 0
+                    em.electricityFee = 0
+                    em.waterFee = 0
+                    em.gasFee = 0
+                    em.etcFee = 0
+                    em.totalFee = int(em.noticeNumber)+int(em.leaseMoney)+int(em.maintenanceFee)+int(em.surtax)
+                    em.changedFee = 0
+                    em.inputCheck = False
+                    em.inputDate = None
+                    em.noticeCheck = False
+                    em.noticeDate = None
+                    em.save()
+    	    data = EachMonthInfo.objects.filter(year = y, month = m, building = bid)
+
+    	return toJSON(serialize_notice(data, fromWhere))
     return HttpResponse('NOT POST')
 
 def get_egw_info(request):

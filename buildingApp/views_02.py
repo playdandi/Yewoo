@@ -58,15 +58,21 @@ def save_resident_info(request):
 
         resident.buildingName = int(param['buildingName'])
         resident.buildingRoomNumber = param['buildingRoomNumber']
+        resident.maintenanceFee = int(param['maintenanceFee'])
+        resident.surtax = int(param['surtax'])
+        
+        resident.residentName = str(param['residentName'])
+        resident.leaseNumber = int(param['leaseNumber'])
+        resident.leaseContractPeriod = int(param['leaseContractPeriod'])
+        resident.leaseContractPeriodUnit = str(param['leaseContractPeriodUnit'])
         resident.inDate = param['inDate'].replace('.', '-')
         resident.outDate = param['outDate'].replace('.', '-')
+
         resident.leaseType = param['leaseType']
         resident.leaseDeposit = param['leaseDeposit']
         resident.leasePayWay = param['leasePayWay']
         resident.leasePayDate = param['leasePayDate']
         resident.leaseMoney = param['leaseMoney']
-        resident.agency = param['agency']
-        resident.agencyName = param['agencyName']
 
         resident.checkType = int(param['checkType'])
         resident.checkE = param['checkE']
@@ -84,6 +90,11 @@ def save_resident_info(request):
             resident.checkHW = None
             resident.checkG = param['checkG']
             resident.checkW = param['checkW']
+        resident.readDate = param['readDate'].replace('.', '-')
+        resident.readContent = param['readContent']
+
+        resident.agency = param['agency']
+        resident.agencyName = param['agencyName']
 
         resident.contractorName = param['contractorName']
         resident.contractorGender = param['contractorGender']
@@ -93,7 +104,7 @@ def save_resident_info(request):
             resident.contractorContactNumber2 = param['contractorContactNumber2']
         resident.contractorAddress = param['contractorAddress']
 
-        resident.residentName = param['residentName']
+        resident.realResidentName = param['realResidentName']
         resident.residentGender = param['residentGender']
         resident.residentRegNumber = param['residentRegNumber']
         resident.relToContractor = param['relToContractor']
@@ -120,20 +131,14 @@ def save_resident_info(request):
             resident.carNumber = ''
             resident.parkingFee = 0
         resident.sendMsg = param['sendMsg']
-        resident.checkin = param['checkin']
-        resident.checkout = param['checkout']
+        resident.itemCheckIn = param['itemCheckIn']
+        resident.itemCheckOut = param['itemCheckOut']
         resident.memo = param['memo']
         
         roominfo = RoomInfo.objects.get(building_id = int(resident.buildingName), roomnum = int(resident.buildingRoomNumber))
         if not roominfo.nowResident == resident:
             resident.leaseNumber = roominfo.residentnum + 1
         
-        #수정필요
-        resident.leaseContractPeriod = 0
-        resident.leaseContractPeriodUnit = u'월'        
-	resident.maintenanceFee = 0
-	resident.surtax = 0
-
         resident.save()
 
         if not roominfo.nowResident == resident:
