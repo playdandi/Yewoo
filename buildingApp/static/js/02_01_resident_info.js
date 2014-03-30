@@ -132,6 +132,19 @@ function SaveResidentInfo()
 		}
 	}
 
+	// 입주일은 지금 폼을 입력하는 그 달에만 가능하다.
+	var date = new Date();
+	mm = Number(date.getMonth() + 1);
+	yy = Number(date.getFullYear());
+	input_yy = Number(data['inDate'].split('.')[0]);
+   	input_mm = Number(data['inDate'].split('.')[1]);
+	if (!(yy == input_yy && mm == input_mm)) {
+		alert('입주자 정보 입력은 이번 달에 입주하는 사람에 한해 등록 가능합니다.');
+		$('#inDate').focus();
+		return;
+	}
+	
+
 	if (confirm('저장하시겠습니까? (미리보기로 꼭 확인해주세요)'))
 		doSaveResidentInfo(data);
 }

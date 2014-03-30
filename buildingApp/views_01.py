@@ -20,7 +20,7 @@ def calRoomNum(floorNum, roomNum):
         return floorNum * 100 + roomNum
 
 def adjustRoomInfo(floor, oldRoomNum, newRoomNum):
-    if oldRoomNum < newRoomNum:
+    if oldRoomNum < newRoomNum: #increased room number
         for i in range(oldRoomNum+1,newRoomNum+1):
             room = RoomInfo()
             room.building = floor.building
@@ -29,10 +29,11 @@ def adjustRoomInfo(floor, oldRoomNum, newRoomNum):
             room.residentnum = 0
             room.isOccupied = False
             room.save() 
-    else:
+    else: # decreased room number
         for i in range(newRoomNum+1,oldRoomNum+1):
             tobeDeleted = calRoomNum(int(floor.floor), i)
             tbdRoom = RoomInfo.objects.get(floor = floor, roomnum = tobeDeleted)
+            tbdRoom.nowResident = None
             tbdRoom.delete()
 
 def makeRoomInfo(floor):
@@ -248,6 +249,14 @@ def building_update(request, uid):
                     break
             if not flag:
                 fdb.delete()
+                # delete all tuples of this bid & floor_id in RoomInfo
+                #ri = RoomInfo.objects.filter(building_id = uid, floor_id = int(fdb.id))
+                #for r in ri:
+                #    r.nowResident = None
+                #    r.delete()
+                # delete all eachmonthInfo of this year/month
+                #EachMonthDetailInfo.objects
+
         
         # 있는건 update, 없는건 새로 insert
         floorsDB = BuildingFloor.objects.filter(building_id = uid)
@@ -255,7 +264,9 @@ def building_update(request, uid):
             flag = False
             for fdb in floorsDB:
                 if int(f['floor']) == fdb.floor:
-                    adjustRoomInfo(fdb,fdb.roomNum,int(f['roomNum']))
+                    # RoomInfo revision
+                    adjustRoomInfo(fdb, fdb.roomNum, int(f['roomNum']))
+
                     fdb.roomNum = f['roomNum']
                     if int(param['type']) == 0:
                         fdb.hasStore = None
@@ -288,6 +299,7 @@ def building_update(request, uid):
                 fdb.hasParking = f['hasParking']
                 fdb.parkingNum = f['parkingNum']
                 fdb.save()
+                # make new RoomInfo
                 makeRoomInfo(fdb)
 
         return HttpResponse('', status=200)

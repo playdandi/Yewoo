@@ -129,23 +129,80 @@ def save_resident_info(request):
             resident.parkingFee = param['parkingFee']
         else:
             resident.carNumber = ''
-            resident.parkingFee = 0
+            resident.parkingFee = int(0)
         resident.sendMsg = param['sendMsg']
         resident.itemCheckIn = param['itemCheckIn']
         resident.itemCheckOut = param['itemCheckOut']
         resident.memo = param['memo']
         
+        resident.save()
+
+
         roominfo = RoomInfo.objects.get(building_id = int(resident.buildingName), roomnum = int(resident.buildingRoomNumber))
         if not roominfo.nowResident == resident:
             resident.leaseNumber = roominfo.residentnum + 1
-        
-        resident.save()
 
+        # uncheck before person
+        if roominfo.nowResident != None:
+            beforeResident = RoomInfo.objects.get(building = int(resident.buildingName), roomnum = int(resident.buildingRoomNumber)).nowResident
+            beforeEM = None
+            try:
+                beforeEM = EachMonthInfo.objects.get(building = int(resident.buildingName), year = int(param['inDate'].split('.')[0]), month = int(param['inDate'].split('.')[1]), resident = beforeResident)
+                beforeEM.isLiving = False
+                beforeEM.save()
+            except:
+                pass
+        
+        # change roominfo (adjust new resident id to the room)
         if not roominfo.nowResident == resident:
             roominfo.nowResident = resident
             roominfo.isOccupied = True
             roominfo.residentnum = roominfo.residentnum + 1
             roominfo.save()
+
+        # create EachMonthInfo only for this year/month.
+        em = EachMonthInfo()
+        em.building = BuildingInfo.objects.get(id = int(resident.buildingName))
+        em.resident = resident
+        resident.inDate = param['inDate'].replace('.', '-')
+        em.year = int(param['inDate'].split('.')[0].strip())
+        em.month = int(param['inDate'].split('.')[1].strip())
+        em.noticeNumber = int(1)
+        em.leaseMoney = resident.leaseMoney
+        em.maintenanceFee = resident.maintenanceFee
+        em.surtax = resident.surtax
+        em.parkingFee = resident.parkingFee
+        em.electricityFee = 0
+        em.waterFee = 0
+        em.gasFee = 0
+        em.etcFee = 0
+        em.totalFee = int(em.leaseMoney)+int(em.maintenanceFee)+int(em.surtax)+int(em.parkingFee)
+        em.changedFee = 0
+        em.inputCheck = False
+        em.inputDate = None
+        em.noticeCheck = False
+        em.noticeDate = None
+        em.isLiving = True
+        em.save()
+        # EachMonthDetailInfo (modifyNumber = 0)
+        emd = EachMonthDetailInfo()
+        emd.eachMonth = em
+        emd.year = em.year
+        emd.month = em.month
+        emd.modifyNumber = int(0)
+        emd.leaseMoney = em.leaseMoney
+        emd.maintenanceFee = em.maintenanceFee
+        emd.surtax = em.surtax
+        emd.parkingFee = em.parkingFee
+        emd.electricityFee = 0
+        emd.gasFee = 0
+        emd.waterFee = 0
+        emd.totalFee = em.totalFee
+        emd.etcFee = 0
+        emd.changedFee = 0
+        emd.msg = ''
+        emd.changeDate = None
+        emd.save()
 
     return render_to_response('index.html')
 
@@ -228,7 +285,7 @@ def show_detail_resident_info(request, uid):
     import re
     result.inDate = re.sub('[년월일\-]+', '.', str(result.inDate))
     result.outDate = re.sub('[년월일\-]+', '.', str(result.outDate))
-    if result.checkout == 'y':
+    if result.itemCheckOut == 'y':
         if result.checkoutWhy == None:
             result.checkoutWhy = ''
         if result.checkoutDate == None:
@@ -274,7 +331,6 @@ def show_detail_resident_info(request, uid):
             result.buildingNameKor = b.name
 
     # 현재 빌딩에 따른 방 호실 가져오기
-    #floor = BuildingFloor.objects.filter(building_id = uid)
     floor = BuildingFloor.objects.filter(building_id = int(result.buildingName))
     rooms = []
     for r in floor:

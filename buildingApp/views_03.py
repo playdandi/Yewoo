@@ -257,6 +257,34 @@ def get_notice_info(request):
                 if beforeMonth == 0:
                     beforeYear -= 1
                     beforeMonth = 12
+                b_em = EachMonthInfo.objects.filter(building = bid, year = beforeYear, month = beforeMonth)
+                for b in b_em:
+                    if not b.isLiving:
+                        continue
+                    em = EachMonthInfo()
+                    em.building = b.building
+                    em.resident = b.resident
+                    em.year = y
+                    em.month = m
+                    em.noticeNumber = int(b.noticeNumber)+1
+                    em.leaseMoney = b.leaseMoney
+                    em.maintenanceFee = b.maintenanceFee
+                    em.surtax = b.surtax
+                    em.parkingFee = b.parkingFee
+                    em.electricityFee = 0
+                    em.gasFee = 0
+                    em.waterFee = 0
+                    em.etcFee = 0
+                    em.changedFee = 0
+                    em.totalFee = int(em.leaseMoney)+int(em.maintenanceFee)+int(em.sutax)+int(em.parkingFee)
+                    em.inputCheck = False
+                    em.inputDate = None
+                    em.noticeCheck = False
+                    em.noticeDate = None
+                    em.isLiving = True
+                    em.save()
+
+                """
                 room = RoomInfo.objects.filter(building = bid).order_by('roomnum', '-residentnum')
                 for i in range(len(room)):
                     if i > 0 and int(room[i].roomnum) == int(room[i-1].roomnum):
@@ -288,6 +316,7 @@ def get_notice_info(request):
                     em.noticeCheck = False
                     em.noticeDate = None
                     em.save()
+                """
     	    data = EachMonthInfo.objects.filter(year = y, month = m, building = bid)
         if is_empty == 'false':
             rooms = RoomInfo.objects.filter(building_id = bid, isOccupied = True)
@@ -765,6 +794,7 @@ def excel_file_delete(request):
             deleteObjs = WaterInfo.objects.filter(year = int(request.POST['year']), month = int(request.POST['month']), building = int(request.POST['bid']))
         # notice data update
         em = EachMonthInfo.objects.filter(building = int(request.POST['bid']), year = int(request.POST['year']), month = int(request.POST['month']))
+        """
         for obj in deleteObjs:
             for elem in em:
                 if int(elem.resident.id) == int(obj.resident.id):
@@ -779,6 +809,7 @@ def excel_file_delete(request):
                         elem.waterFee = 0
                     elem.save()
                     break
+        """
         deleteObjs.delete()
 
         return HttpResponse('file delete - SUCCESS')

@@ -127,6 +127,7 @@ class EachMonthInfo(models.Model):
     building = models.ForeignKey('BuildingInfo')
     year = models.IntegerField()
     month = models.IntegerField()
+    isLiving = models.BooleanField(default=False)
     noticeNumber = models.IntegerField()
     leaseMoney = models.IntegerField(blank=True, null=True)
     maintenanceFee = models.IntegerField(blank=True, null=True)
