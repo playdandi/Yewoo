@@ -267,7 +267,7 @@
 												</colgroup>
 												<tbody>
 													<tr>
-														<td colspan="7">
+														<td colspan="6">
 															<div class="must" style="margin-right:26px"><strong>건물명</strong></div>
 															<select id="buildingName" class="margin0" style="width:150px" disabled>
 																<option value="">선택</option>
@@ -278,17 +278,67 @@
 														</td>
 														<td colspan="4">
 															<div class="must"><strong>호    실</strong></div>
-															<select id="buildingRoomNumber" class="margin0" style="width:80px" disabled>
+															<select id="buildingRoomNumber" class="margin0" style="width:85px" disabled>
 																<option value="">선택</option>
 																{% for r in rooms %}
 																<option value="{{ r.num }}" {% if result.buildingRoomNumber == r.num %}selected{% endif %}>{{ r.kor }}</option>
 																{% endfor %}
 															</select>
 														</td>
-														<td colspan="9">
+														<td colspan="5">
+															<div class="must" style="margin-right:20px"><strong>관리비</strong></div>
+															<input id="maintenanceFee" class="margin0 input-small" value="{{ result.maintenanceFee }}" type="text" disabled />
+														</td>
+														<td colspan="5">
+															<div class="must" style="margin-right:20px"><strong>부가세</strong></div>
+															<input id="surtax" class="margin0 input-small" type="text" value="{{ result.surtax }}" disabled />
+														</td>
+													</tr>
+													<tr>
+														<td colspan="4">
+															<div class="must"><strong>입주자</strong></div>
+															<input id="residentName" class="margin0 input-small" type="text" value="{{ result.residentName }}" disabled />
+														</td>
+														<td colspan="3">
+															<div class="must"><strong>입주회차</strong></div>
+															<select id="leaseNumber" class="margin0 input-mini" disabled>
+																<option value="1" {% if result.leaseNumber == 1 %}selected{% endif %}>1회</option>
+																<option value="2" {% if result.leaseNumber == 2 %}selected{% endif %}>2회</option>
+																<option value="3" {% if result.leaseNumber == 3 %}selected{% endif %}>3회</option>
+																<option value="4" {% if result.leaseNumber == 4 %}selected{% endif %}>4회</option>
+																<option value="5" {% if result.leaseNumber == 5 %}selected{% endif %}>5회</option>
+																<option value="6" {% if result.leaseNumber == 6 %}selected{% endif %}>6회</option>
+																<option value="7" {% if result.leaseNumber == 7 %}selected{% endif %}>7회</option>
+																<option value="8" {% if result.leaseNumber == 8 %}selected{% endif %}>8회</option>
+																<option value="9" {% if result.leaseNumber == 9 %}selected{% endif %}>9회</option>
+																<option value="10" {% if result.leaseNumber == 10 %}selected{% endif %}>10회</option>
+															</select>
+														</td>
+														<td colspan="5">
+															<div class="must"><strong>입주기간</strong></div>
+															<select id="leaseContractPeriod" class="margin0 input-mini" style="float:left" disabled>
+																<option value="1" {% if result.leaseContractPeriod == 1 %}selected{% endif %}>1</option>
+																<option value="2" {% if result.leaseContractPeriod == 2 %}selected{% endif %}>2</option>
+																<option value="3" {% if result.leaseContractPeriod == 3 %}selected{% endif %}>3</option>
+																<option value="4" {% if result.leaseContractPeriod == 4 %}selected{% endif %}>4</option>
+																<option value="5" {% if result.leaseContractPeriod == 5 %}selected{% endif %}>5</option>
+																<option value="6" {% if result.leaseContractPeriod == 6 %}selected{% endif %}>6</option>
+																<option value="7" {% if result.leaseContractPeriod == 7 %}selected{% endif %}>7</option>
+																<option value="8" {% if result.leaseContractPeriod == 8 %}selected{% endif %}>8</option>
+																<option value="9" {% if result.leaseContractPeriod == 9 %}selected{% endif %}>9</option>
+																<option value="10" {% if result.leaseContractPeriod == 10 %}selected{% endif %}>10</option>
+																<option value="11" {% if result.leaseContractPeriod == 11 %}selected{% endif %}>11</option>
+																<option value="12" {% if result.leaseContractPeriod == 12 %}selected{% endif %}>12</option>
+															</select>
+															<select id="leaseContractPeriodUnit" class="margin0 input-mini" style="float:left" disabled>
+																<option value="년" {% if result.leaseContractPeriodUnit == '년' %}selected{% endif %}>년</option>
+																<option value="월" {% if result.leaseContractPeriodUnit == '월' %}selected{% endif %}>월</option>
+															</select>
+														</td>
+														<td colspan="8">
 															<div class="must" style="margin-right:26px"><strong>입주일</strong></div>
-															<input id="inDate" class="margin0 input-small datepicker" type="text" placeholder="입주일" value="{{ result.inDate }}" disabled />
-															<input id="outDate" class="margin0 input-small datepicker disabled" type="text" placeholder="만료일" value="{{ result.outDate }}" disabled />
+															<input id="inDate" class="margin0 input-small datepicker dateinput fontmini" type="text" placeholder="입주일" value="{{ result.inDate }}" disabled />
+															<input id="outDate" class="margin0 input-small datepicker fontmini disabled" type="text" placeholder="만료일" value="{{ result.outDate }}" disabled />
 														</td>
 													</tr>
 													<tr>
@@ -300,18 +350,18 @@
 																<option value="매매" {% if result.leaseType == '매매' %}selected{% endif %}>매매</option>
 															</select>
 														</td>
-														<td colspan="7">
+														<td colspan="8">
 															<div class="must"><strong>보증금</strong></div>
 															<input id="leaseDeposit" type="text" class="margin0" style="width:80px" value="{{ result.leaseDeposit }}" disabled />
 															<input id="leaseDeposit2" type="text" class="margin0" style="font-size:0.80em; width:140px" disabled />
 														</td>
-														<td colspan="9">
+														<td colspan="8">
 															<div class="must" style="margin-right:26px"><strong>임대료</strong></div>
 															<select id="leasePayWay" class="margin0 width2" disabled>
 																<option value="선불" {% if result.leasePayWay == '선불' %}selected{% endif %}>선불</option>
 																<option value="후불" {% if result.leasePayWay == '후불' %}selected{% endif %}>후불</option>
 															</select>
-															<select id="leasePayDate" class="margin0 width2" disabled >
+															<select id="leasePayDate" class="margin0 width2" disabled>
 																{% for i in range %}                         
 																<option value="{{ i }}" {% if result.leasePayDate == i %}selected{% endif %}>{{ i }}일</option>
 																{% endfor %}
@@ -320,24 +370,16 @@
 														</td>
 													</tr>
 													<tr>
-														<td colspan="11">
-															<div class="must"><strong>중개 정보</strong></div>
-															<select id="agency" class="" style="margin-right:5px; margin-bottom:0px; width:100px" disabled>
-																<option value="공인중개" {% if result.agency == '공인중개' %}selected{% endif %}>공인중개</option>
-																<option value="직거래" {% if result.agency == '직거래' %}selected{% endif %}>직거래</option>
-															</select>
-															<input id="agencyName" type="text" class="margin0" style="width:200px"  placeholder="중개 정보를 입력하세요." value="{{ result.agencyName }}" disabled />
-														</td>
-														<td colspan="9">
+														<td colspan="10">
 															<div class="must"><strong>입주 검침</strong></div>
 															<select id="checkType" class="margin0" style="width:82px; font-size:0.8em" disabled>
 																<option value="0" {% if result.checkType == 0 %}selected{% endif %}>일반</option>
 																<option value="1" {% if result.checkType == 1 %}selected{% endif %}>원격검침1</option>
 																<option value="2" {% if result.checkType == 2 %}selected{% endif %}>원격검침2</option>
 															</select>
-															<input id="checkE" type="text" class="margin0" style="width:28px" placeholder="전기" value="{{ result.checkE }}" disabled />
+															<input id="checkE" type="text" class="margin0" style="width:29px" placeholder="전기" value="{{ result.checkE }}" disabled />
 															<span id="checkStatus_0_2" {% if result.checkType == 1 %}style="display:none"{% endif %}>
-																<input id="checkG" type="text" class="margin0" style="width:28px" placeholder="가스" value="{{ result.checkG }}" disabled />
+																<input id="checkG" type="text" class="margin0" style="width:29px" placeholder="가스" value="{{ result.checkG }}" disabled />
 																<input id="checkW" type="text" class="margin0" style="width:45px" placeholder="상하수도" value="{{ result.checkW }}" disabled />
 															</span>
 															<span id="checkStatus_1" {% if result.checkType != 1 %}style="display:none"{% endif %}>
@@ -348,7 +390,64 @@
 																<a href="#" title="전기, 온수(가스), 난방(가스), 온수(수도), 난방(수도)" data-rel="tooltip" class="margin0"><i class="icon-question-sign"></i></a>
 															</span>
 														</td>
-													  </tr>
+														<td colspan="4">
+															<input id="readDate" class="margin0 span12 datepicker dateinput" type="text" placeholder="검침 날짜" value="{{ result.readDate }}" disabled />
+														</td>
+														<td colspan="6">
+															<input id="readContent" class="margin0 span12" type="text" placeholder="검침 사항" value="{{ result.readContent }}" disabled />
+														</td>
+													</tr>
+													<tr>
+														<td colspan="20">
+															<div class="must" width="10%"><strong>중개 정보</strong></div>
+															<select id="agency" class="" style="margin-right:5px; margin-bottom:0px" width="10%" disabled>
+																<option value="공인중개" {% if result.agency == '공인중개' %}selected{% endif %}>공인중개</option>
+																<option value="직거래" {% if result.agency == '직거래' %}selected{% endif %}>직거래</option>
+															</select>
+															<input id="agencyName" type="text" class="margin0" width="80%"  placeholder="중개 정보를 입력하세요." value="{{ result.agencyName }}" disabled />
+														</td>
+													</tr>
+													<tr>
+														<td colspan="2">
+															<div class="must">재실 정보</div>
+														</td>
+														<td colspan="1">
+															<div class="must">입실</div>
+														</td>
+														<td colspan="4">
+															<label class="radio">확인
+																<input type="radio" name="checkIn" id="checkInDateY" value="y" {% if result.checkIn == 'y' %}checked{% endif %} disabled />
+															</label>
+															<label class="radio">미확인
+																<input type="radio" name="checkIn" id="checkInDateN" value="n" {% if result.checkIn == 'n' %}checked{% endif %} disabled />
+															</label>
+														</td>
+														<td colspan="4">
+															<input id="realInDate" class="margin0 span12 datepicker dateinput" type="text" placeholder="입실일" value="{{ result.realInDate }}" disabled />
+														</td>
+														<td colspan="1">
+															<div class="must">퇴실</div>
+														</td>
+														<td colspan="4">
+															<label class="radio">확인
+																<input type="radio" name="checkOut" id="checkOutDateY" value="y" {% if result.checkOut == 'y' %}checked{% endif %} disabled />
+															</label>
+															<label class="radio">미확인
+																<input type="radio" name="checkOut" id="checkOutDateN" value="n" {% if result.checkOut == 'n' %}checked{% endif %} disabled />
+															</label>
+														</td>
+														<td colspan="4">
+															<input id="realOutDate" class="margin0 span12 datepicker dateinput" type="text" placeholder="퇴실일" value="{{ result.realOutDate }}" disabled />
+														</td>
+													</tr>
+													<tr>
+														<td colspan="2">
+															<div class="optional">퇴실 사유</div>
+														</td>
+														<td colspan="18">
+															<input id="outReason" class="margin0 span12" type="text" placeholder="(예) 개인 사유로 퇴실함" value="{{ result.outReason }}" disabled />
+														</td>
+													</tr>
 												</tbody>
 											 </table>  
 										</div>
@@ -390,8 +489,8 @@
 															<div class="must" style="margin-right:33px"><strong>성명</strong></div>
 															<input id="contractorName" class="margin0 input-medium" type="text" placeholder="임대계약자 이름을 입력하세요." value="{{ result.contractorName }}" disabled />
 															<select id="contractorGender" class="margin0 width2" style="margin-right:10px; margin-bottom:0px" disabled>
-																<option value="남" {% if resut.contractorGender == '남' %}selected{% endif %}>남</option>
-																<option value="여" {% if resut.contractorGender == '여' %}selected{% endif %}>여</option>
+																<option value="남" {% if result.contractorGender == '남' %}selected{% endif %}>남</option>
+																<option value="여" {% if result.contractorGender == '여' %}selected{% endif %}>여</option>
 															</select>
 														</td>
 														<td colspan="10">
@@ -470,7 +569,7 @@
 													<tr>
 														<td colspan="10">
 															<div class="must" style="margin-right:65px"><strong>성명</strong></div>
-															<input id="residentName" class="margin0 input-medium" type="text" placeholder="거주자 이름을 입력하세요." value="{{ result.residentName }}" disabled />
+															<input id="realResidentName" class="margin0 input-medium" type="text" placeholder="거주자 이름을 입력하세요." value="{{ result.realResidentName }}" disabled />
 															<select id="residentGender" class="width2" style="margin-right:10px; margin-bottom:0px" disabled>
 																<option value="남" {% if result.residentGender == '남' %}selected{% endif %}>남</option>
 																<option value="여" {% if result.residentGender == '여' %}selected{% endif %}>여</option>
@@ -630,30 +729,20 @@
 															<div class="must"><strong>품목체크리스트</strong></div>
 															<label class="radio">
 																입실확인
-																<input type="radio" name="checkin" id="checkinY" value="y" {% if result.checkin == 'y' %}checked{% endif %} disabled />
+																<input type="radio" name="itemCheckIn" id="itemCheckInY" value="y" {% if result.itemCheckIn == 'y' %}checked{% endif %} disabled />
 															</label>
 															<label class="radio">
 																미확인
-																<input type="radio" name="checkin" id="checkinN" value="n" {% if result.checkin == 'n' %}checked{% endif %} disabled />
+																<input type="radio" name="itemCheckIn" id="itemCheckInN" value="n" {% if result.itemCheckIn == 'n' %}checked{% endif %} disabled />
 															</label>
 															<label class="radio" style="margin-left:20px">
 																퇴실확인
-																<input type="radio" name="checkout" id="checkoutY" value="y" {% if result.checkout == 'y' %}checked{% endif %} disabled />
+																<input type="radio" name="itemCheckOut" id="itemCheckOutY" value="y" {% if result.itemCheckOut == 'y' %}checked{% endif %} disabled />
 															</label>
 															<label class="radio">
 																미확인
-																<input type="radio" name="checkout" id="checkoutN" value="n" {% if result.checkout == 'n' %}checked{% endif %} disabled />
+																<input type="radio" name="itemCheckOut" id="itemCheckOutN" value="n" {% if result.itemCheckOut == 'n' %}checked{% endif %} disabled />
 															</label>
-														</td>
-													</tr>
-													<tr id="checkoutDetail" {% if result.checkout == 'n' %}style="display:none"{% endif %}>
-														<td colspan="15">
-															<div class="optional"><strong>퇴실 사유</strong></div>
-															<input type="text" id="checkoutWhy" class="margin0" style="width:550px" placeholder="예) 개인 사유로 퇴실함." value="{{ result.checkoutWhy }}" disabled />
-														</td>
-														<td colspan="5">
-															<div class="optional"><strong>퇴실 날짜</strong></div>
-															<input id="checkoutDate" class="margin0 input-small datepicker disabled" type="text" placeholder="퇴실 날짜" value="{{ result.checkoutDate }}" disabled />
 														</td>
 													</tr>
 												</tbody>
@@ -859,6 +948,19 @@
 					else {
 						getBuildingRooms($(this).val());
 					}
+					});
+
+				$('#realInDate').change(function() {
+					var mdy = $(this).val().split('/');
+					$(this).val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
+				});
+				$('#realOutDate').change(function() {
+					var mdy = $(this).val().split('/');
+					$(this).val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
+				});
+				$('#readDate').change(function() {
+					var mdy = $(this).val().split('/');
+					$(this).val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
 				});
 
 				$('#inDate').change(function() {
@@ -866,7 +968,6 @@
 					$('#inDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
 					$('#outDate').attr('disabled', false);
 				});
-				
 				$('#outDate').change(function() {
 					var mdy = $('#outDate').val().split('/');
 					$('#outDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);

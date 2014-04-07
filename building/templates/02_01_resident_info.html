@@ -783,46 +783,107 @@
 								<col width="5%"></col>
 							</colgroup>
 							<tbody>
-								<tr>
-									<td colspan="7">
-										<div class="must" style="margin-right:26px"><strong>건물명</strong></div>
-										<div id="buildingName_modal" class="margin0"></div>
-									</td>
-									<td colspan="4">
-										<div class="must"><strong>호    실</strong></div>
-										<div id="buildingRoomNumber_modal" class="margin0"></div>
-									</td>
-									<td colspan="9">
-										<div class="must" style="margin-right:26px"><strong>입주일</strong></div>
-										<div id="inOutDate_modal" class="margin0"></div>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="4"> 
-										<div class="must"><strong>임대 구분</strong></div>
-										<div id="leaseType_modal" class="margin0"></div>
-									</td>
-									<td colspan="7">
-										<div class="must"><strong>보증금</strong></div>
-										<div id="leaseDeposit_modal" class="margin0"></div>
-									</td>
-									<td colspan="9">
-										<div class="must" style="margin-right:26px"><strong>임대료</strong></div>
-										<div id="leasePay_modal" class="margin0"></div>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="11">
-										<div class="must"><strong>중개 정보</strong></div>
-										<div id="agency_modal" class="margin0"></div>
-									</td>
-									<td colspan="9">
-										<div class="must"><strong>입주 검침</strong></div>
-										<div id="checkType_modal" class="margin0" style="float:left; margin-right:10px"></div>
-										<div id="checkEHWHW_modal" class="margin0" style="float:left; margin-left:10px"></div>
-										<div id="checkEGW_modal" class="margin0" style="float:left"></div>
-									</td>
-								  </tr>
+								  	<tr>
+										<td colspan="6">
+											<div class="must" style="margin-right:26px"><strong>건물명</strong></div>
+											<div id="buildingName_modal" class="margin0"></div>
+								  		</td>
+										<td colspan="4">
+											<div class="must"><strong>호    실</strong></div>
+											<div id="buildingRoomNumber_modal" class="margin0"></div>
+										</td>
+										<td colspan="5">
+											<div class="must" style="margin-right:20px"><strong>관리비</strong></div>
+											<div id="maintenanceFee_modal" class="margin0"></div>
+										</td>
+										<td colspan="5">
+											<div class="must" style="margin-right:20px"><strong>부가세</strong></div>
+											<div id="surtax_modal" class="margin0"></div>
+										</td>
+								  	</tr>
+									<tr>
+										<td colspan="4">
+											<div class="must"><strong>입주자</strong></div>
+											<div id="residentName_modal" class="margin0"></div>
+										</td>
+										<td colspan="3">
+											<div class="must"><strong>입주회차</strong></div>
+											<div id="leaseNumber_modal" class="margin0">
+										</td>
+										<td colspan="5">
+											<div class="must"><strong>입주기간</strong></div>
+											<div id="leaseContractPeriod_modal" class="margin0"></div>
+										</td>
+										<td colspan="8">
+											<div class="must" style="margin-right:26px"><strong>입주일</strong></div>
+											<div id="inOutDate_modal" class="margin0"></div>
+										</td>
+									</tr>
+									<tr>
+								  		<td colspan="4"> 
+								  			<div class="must"><strong>임대 구분</strong></div>
+											<div id="leaseType_modal" class="margin0"></div>
+								  		</td>
+								  		<td colspan="8">
+								  			<div class="must"><strong>보증금</strong></div>
+											<div id="leaseDeposit_modal" class="margin0"></div>
+								  		</td>
+								  		<td colspan="8">
+								  			<div class="must" style="margin-right:26px"><strong>임대료</strong></div>
+											<div id="leasePay_modal" class="margin0"></div>
+								  		</td>
+								  	</tr>
+								  	<tr>
+										<td colspan="10">
+											<div class="must"><strong>입주 검침</strong></div>
+											<div id="checkType_modal" class="margin0" style="float:left; margin-right:10px"></div>
+											<div id="checkEHWHW_modal" class="margin0" style="float:left; margin-left:10px"></div>
+											<div id="checkEGW_modal" class="margin0" style="float:left"></div>
+										</td>
+										<td colspan="4">
+											<div id="readDate_modal" class="margin0"></div>
+										</td>
+										<td colspan="6">
+											<div id="readContent_modal" class="margin0"></div>
+										</td>
+									</tr>
+									<tr>
+								  		<td colspan="20">
+											<div class="must" width="10%"><strong>중개 정보</strong></div>
+											<div id="agency_modal" class="margin0"></div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<div class="must">재실 정보</div>
+										</td>
+										<td colspan="2">
+											<div class="must">입실</div>
+										</td>
+										<td colspan="3">
+											<div id="checkIn_modal"></div>
+										</td>
+										<td colspan="4">
+											<div id="realInDate_modal" class="margin0"></div>
+										</td>
+										<td colspan="2">
+											<div class="must">퇴실</div>
+										</td>
+										<td colspan="3">
+											<div id="checkOut_modal"></div>
+										</td>
+										<td colspan="4">
+											<div id="realOutDate_modal" class="margin0"></div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<div class="optional">퇴실 사유</div>
+										</td>
+										<td colspan="18">
+											<div id="outReason_modal" class="margin0"></div>
+										</td>
+									</tr>
 							</tbody>
 						 </table>  
 					</div>
@@ -1155,13 +1216,6 @@
 					if ($(this).attr('id') == "inDate")
 						$('#outDate').attr('disabled', false);
 				});
-				/*
-				$('#inDate').change(function() {
-					var mdy = $('#inDate').val().split('/');
-					$('#inDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
-					$('#outDate').attr('disabled', false);
-				});
-				*/
 				$('#outDate').change(function() {
 					var mdy = $('#outDate').val().split('/');
 					$('#outDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
@@ -1215,7 +1269,7 @@
 						$('#residentContactNumber2_2').val( $('#contractorContactNumber2_2').val() );
 						$('#residentContactNumber2_3').val( $('#contractorContactNumber2_3').val() );
 						$('#residentAddress').val( $('#contractorAddress').val() );
-						$('#residentName').val( $('#contractorName').val() );
+						$('#realResidentName').val( $('#contractorName').val() );
 						$('#residentGender').val( $('#contractorGender').val() );
 						$('#relToContractor').val('본인');
 					}

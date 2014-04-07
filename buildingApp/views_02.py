@@ -96,6 +96,14 @@ def save_resident_info(request):
         resident.agency = param['agency']
         resident.agencyName = param['agencyName']
 
+        resident.checkIn = param['checkIn']
+        resident.realInDate = param['realInDate'].replace('.', '-')
+        resident.checkOut = param['checkOut']
+        resident.realOutDate = param['realOutDate'].replace('.', '-')
+        if resident.realOutDate == '':
+            resident.realOutDate = None
+        resident.outReason = param['outReason']
+
         resident.contractorName = param['contractorName']
         resident.contractorGender = param['contractorGender']
         resident.contractorRegNumber = param['contractorRegNumber']
@@ -141,17 +149,14 @@ def save_resident_info(request):
         roominfo = RoomInfo.objects.get(building_id = int(resident.buildingName), roomnum = int(resident.buildingRoomNumber))
         if not roominfo.nowResident == resident:
             resident.leaseNumber = roominfo.residentnum + 1
-
-        # uncheck before person
-        if roominfo.nowResident != None:
-            beforeResident = RoomInfo.objects.get(building = int(resident.buildingName), roomnum = int(resident.buildingRoomNumber)).nowResident
-            beforeEM = None
-            try:
-                beforeEM = EachMonthInfo.objects.get(building = int(resident.buildingName), year = int(param['inDate'].split('.')[0]), month = int(param['inDate'].split('.')[1]), resident = beforeResident)
-                beforeEM.isLiving = False
-                beforeEM.save()
-            except:
-                pass
+            # uncheck before person
+            if roominfo.nowResident != None:
+                try:
+                    beforeEM = EachMonthInfo.objects.get(building = int(resident.buildingName), year = int(param['inDate'].split('.')[0]), month = int(param['inDate'].split('.')[1]), resident = roominfo.nowResident)
+                    beforeEM.isLiving = False
+                    beforeEM.save()
+                except:
+                    pass
         
         # change roominfo (adjust new resident id to the room)
         if not roominfo.nowResident == resident:
@@ -161,48 +166,60 @@ def save_resident_info(request):
             roominfo.save()
 
         # create EachMonthInfo only for this year/month.
-        em = EachMonthInfo()
-        em.building = BuildingInfo.objects.get(id = int(resident.buildingName))
-        em.resident = resident
-        resident.inDate = param['inDate'].replace('.', '-')
-        em.year = int(param['inDate'].split('.')[0].strip())
-        em.month = int(param['inDate'].split('.')[1].strip())
-        em.noticeNumber = int(1)
-        em.leaseMoney = resident.leaseMoney
-        em.maintenanceFee = resident.maintenanceFee
-        em.surtax = resident.surtax
-        em.parkingFee = resident.parkingFee
-        em.electricityFee = 0
-        em.waterFee = 0
-        em.gasFee = 0
-        em.etcFee = 0
-        em.totalFee = int(em.leaseMoney)+int(em.maintenanceFee)+int(em.surtax)+int(em.parkingFee)
-        em.changedFee = 0
-        em.inputCheck = False
-        em.inputDate = None
-        em.noticeCheck = False
-        em.noticeDate = None
-        em.isLiving = True
-        em.save()
-        # EachMonthDetailInfo (modifyNumber = 0)
-        emd = EachMonthDetailInfo()
-        emd.eachMonth = em
-        emd.year = em.year
-        emd.month = em.month
-        emd.modifyNumber = int(0)
-        emd.leaseMoney = em.leaseMoney
-        emd.maintenanceFee = em.maintenanceFee
-        emd.surtax = em.surtax
-        emd.parkingFee = em.parkingFee
-        emd.electricityFee = 0
-        emd.gasFee = 0
-        emd.waterFee = 0
-        emd.totalFee = em.totalFee
-        emd.etcFee = 0
-        emd.changedFee = 0
-        emd.msg = ''
-        emd.changeDate = None
-        emd.save()
+        if param['type'] == 'save':
+            em = EachMonthInfo()
+            em.building = BuildingInfo.objects.get(id = int(resident.buildingName))
+            em.resident = resident
+            em.room = roominfo
+            em.year = int(param['inDate'].split('.')[0].strip())
+            em.month = int(param['inDate'].split('.')[1].strip())
+            em.noticeNumber = int(1)
+            em.leaseMoney = resident.leaseMoney
+            em.maintenanceFee = resident.maintenanceFee
+            em.surtax = resident.surtax
+            em.parkingFee = resident.parkingFee
+            em.electricityFee = 0
+            em.waterFee = 0
+            em.gasFee = 0
+            em.etcFee = 0
+            em.totalFee = int(em.leaseMoney)+int(em.maintenanceFee)+int(em.surtax)+int(em.parkingFee)
+            em.changedFee = 0
+            em.inputCheck = False
+            em.inputDate = None
+            em.noticeCheck = False
+            em.noticeDate = None
+            em.isLiving = True
+            em.save()
+            # EachMonthDetailInfo (modifyNumber = 0)
+            emd = EachMonthDetailInfo()
+            emd.eachMonth = em
+            emd.year = em.year
+            emd.month = em.month
+            emd.modifyNumber = int(0)
+            emd.leaseMoney = em.leaseMoney
+            emd.maintenanceFee = em.maintenanceFee
+            emd.surtax = em.surtax
+            emd.parkingFee = em.parkingFee
+            emd.electricityFee = 0
+            emd.gasFee = 0
+            emd.waterFee = 0
+            emd.totalFee = em.totalFee
+            emd.etcFee = 0
+            emd.changedFee = 0
+            emd.msg = ''
+            emd.changeDate = None
+            emd.save()
+        else:
+            em = EachMonthInfo.objects.filter(building_id = int(resident.buildingName), resident_id = int(resident.id)).order_by('-id')[0]
+            print(em.id)
+            print(resident.maintenanceFee)
+            em.totalFee -= (int(em.leaseMoney) + int(em.maintenanceFee) + int(em.surtax) + int(em.parkingFee))
+            em.totalFee += (int(resident.leaseMoney) + int(resident.maintenanceFee) + int(resident.surtax) + int(resident.parkingFee))
+            em.leaseMoney = resident.leaseMoney
+            em.maintenanceFee = resident.maintenanceFee
+            em.surtax = resident.surtax
+            em.parkingFee = resident.parkingFee
+            em.save()
 
     return render_to_response('index.html')
 
@@ -285,15 +302,23 @@ def show_detail_resident_info(request, uid):
     import re
     result.inDate = re.sub('[년월일\-]+', '.', str(result.inDate))
     result.outDate = re.sub('[년월일\-]+', '.', str(result.outDate))
-    if result.itemCheckOut == 'y':
-        if result.checkoutWhy == None:
-            result.checkoutWhy = ''
-        if result.checkoutDate == None:
-            result.checkoutDate = ''
-        result.checkoutDate = re.sub('[년월일\-]+', '.', str(result.checkoutDate))
+    result.realInDate = re.sub('[년월일\-]+', '.', str(result.realInDate))
+    if result.realOutDate != None:
+        result.realOutDate = re.sub('[년월일\-]+', '.', str(result.realOutDate))
     else:
-        result.checkoutWhy = ''
-        result.checkoutDate = ''
+        result.realOutDate = ''
+
+    result.readDate = re.sub('[년월일\-]+', '.', str(result.readDate))
+
+    #if result.itemCheckOut == 'y':
+    #    if result.checkoutWhy == None:
+    #        result.checkoutWhy = ''
+    #    if result.checkoutDate == None:
+    #         result.checkoutDate = ''
+    #    result.checkoutDate = re.sub('[년월일\-]+', '.', str(result.checkoutDate))
+    #else:
+    #    result.checkoutWhy = ''
+    #    result.checkoutDate = ''
     result.roomNumber = result.buildingRoomNumber
     if result.buildingRoomNumber < 0:
         result.roomNumber = 'B ' + str(-result.buildingRoomNumber)
@@ -350,6 +375,8 @@ def serialize(result):
     serialized = []
     buildingAll = BuildingInfo.objects.all()
     for res in result:
+        if int(res.id) == 0: # fake resident info
+            continue
         data = {}
         data['id'] = res.id
         data['buildingName'] = res.buildingName
@@ -363,8 +390,10 @@ def serialize(result):
         data['leaseType'] = res.leaseType
         data['leaseDeposit'] = res.leaseDeposit
         data['leaseMoney'] = res.leaseMoney
-        data['inDate'] = res.inDate.isoformat().replace('-', '.')
-        data['outDate'] = res.outDate.isoformat().replace('-', '.')
+        #data['inDate'] = res.inDate.isoformat().replace('-', '.')
+        #data['outDate'] = res.outDate.isoformat().replace('-', '.')
+        data['inDate'] = str(res.inDate).replace('-', '.')
+        data['outDate'] = str(res.outDate).replace('-', '.')
         serialized.append(data)
     return serialized
 

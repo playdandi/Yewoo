@@ -21,28 +21,34 @@ function Revise(done)
 	}
 
 	// disabled / enabled
-	var names = new Array('buildingName', 'buildingRoomNumber', 'inDate', 'outDate', 'leaseType', 'leaseDeposit', 'leasePayWay',
+	var names = new Array('inDate', 'outDate', 'leaseType', 'leaseDeposit', 'leasePayWay',
 		'leasePayDate', 'leaseMoney', 'agency', 'agencyName', 'checkType', 'checkE', 'checkG', 'checkW', 'checkHWG', 'checkHG', 'checkHWW', 'checkHW',
 		'contractorName', 'contractorGender', 'contractorRegNumber_1', 'contractorRegNumber_2', 'contractorContactNumber1_1',
 		'contractorContactNumber1_2', 'contractorContactNumber1_3', 'contractorContactNumber2_1', 'contractorContactNumber2_2',
-		'contractorContactNumber2_3', 'contractorAddress', 'residentName', 'residentGender', 'residentRegNumber_1',
+		'contractorContactNumber2_3', 'contractorAddress', 'realResidentName', 'residentGender', 'residentRegNumber_1',
 		'residentRegNumber_2', 'relToContractor', 'residentPeopleNumber', 'residentAddress', 'residentContactNumber1_1',
 		'residentContactNumber1_2', 'residentContactNumber1_3', 'residentContactNumber2_1', 'residentContactNumber2_2',
 		'residentContactNumber2_3', 'residentOfficeName', 'residentOfficeLevel', 'residentOfficeAddress',
 		'residentOfficeContactNumber_1', 'residentOfficeContactNumber_2', 'residentOfficeContactNumber_3',
-		'residentEmail', 'carNumber', 'parkingFee', 'sendMsg', 'checkin', 'checkout', 'checkoutWhy', 'checkoutDate', 'memo');
+		'residentEmail', 'carNumber', 'parkingFee', 'sendMsg', 'itemCheckIn', 'itemCheckOut', 'checkoutWhy', 'checkoutDate', 'memo',
+		'leaseNumber', 'leaseContractPeriod', 'leaseContractPeriodUnit', 'maintenanceFee', 'surtax',
+		'readDate', 'readContent', 'realInDate', 'realOutDate', 'outReason');
 	for (i = 0; i < names.length; i++) {
 		$('#'+names[i]).attr('disabled', done);
 	}
 	if (!done) { // 수정할 때 disabled/enabled 잘 고려해야 할 사항들
+		$('#checkInDateY').attr('disabled', done);
+		$('#checkInDateN').attr('disabled', done);
+		$('#checkOutDateY').attr('disabled', done);
+		$('#checkOutDateN').attr('disabled', done);
 		$('#haveCarY').attr('disabled', done);
 		$('#haveCarN').attr('disabled', done);
 		$('#sendMsgY').attr('disabled', done);
 		$('#sendMsgN').attr('disabled', done);
-		$('#checkinY').attr('disabled', done);
-		$('#checkinN').attr('disabled', done);
-		$('#checkoutY').attr('disabled', done);
-		$('#checkoutN').attr('disabled', done);
+		$('#itemCheckInY').attr('disabled', done);
+		$('#itemCheckInN').attr('disabled', done);
+		$('#itemCheckOutY').attr('disabled', done);
+		$('#itemCheckOutN').attr('disabled', done);
 	}
 
 	if (!done && $(':radio[name="haveCar"]:checked').val() == 'y') {
@@ -60,6 +66,12 @@ function UpdateResidentInfo()
 	var data = {};
 	data['buildingName'] = $('#buildingName').val().replace('b', '');
 	data['buildingRoomNumber'] = $('#buildingRoomNumber').val();
+	data['maintenanceFee'] = $('#maintenanceFee').val().trim();
+	data['surtax'] = $('#surtax').val().trim();
+	data['residentName'] = $('#residentName').val().trim();
+	data['leaseNumber'] = $('#leaseNumber').val().trim();
+	data['leaseContractPeriod'] = $('#leaseContractPeriod').val().trim();
+	data['leaseContractPeriodUnit'] = $('#leaseContractPeriodUnit').val().trim();
 	data['inDate'] = $('#inDate').val();
 	data['outDate'] = $('#outDate').val();
 	data['leaseType'] = $('#leaseType').val();
@@ -67,8 +79,6 @@ function UpdateResidentInfo()
 	data['leasePayWay'] = $('#leasePayWay').val();
 	data['leasePayDate'] = $('#leasePayDate').val();
 	data['leaseMoney'] = $('#leaseMoney').val();
-	data['agency'] = $('#agency').val();
-	data['agencyName'] = $('#agencyName').val();
 	data['checkType'] = $('#checkType').val();
 	data['checkE'] = $('#checkE').val();
 	if (data['checkType'] == '1') {
@@ -81,6 +91,16 @@ function UpdateResidentInfo()
 		data['checkG'] = $('#checkG').val();
 		data['checkW'] = $('#checkW').val();
 	}
+	data['readDate'] = $('#readDate').val().trim();
+	data['readContent'] = $('#readContent').val().trim();
+	data['agency'] = $('#agency').val();
+	data['agencyName'] = $('#agencyName').val();
+	data['checkIn'] = $(':radio[name="checkIn"]:checked').val();
+	data['checkOut'] = $(':radio[name="checkOut"]:checked').val();
+	data['realInDate'] = $('#realInDate').val().trim();
+	data['realOutDate'] = $('#realOutDate').val().trim();
+	data['outReason'] = $('#outReason').val().trim();
+
 	data['contractorName'] = $('#contractorName').val();
 	data['contractorGender'] = $('#contractorGender').val();
 	data['contractorRegNumber'] = $('#contractorRegNumber_1').val() + '-' + $('#contractorRegNumber_2').val();
@@ -88,7 +108,7 @@ function UpdateResidentInfo()
 	data['contractorContactNumber2'] = $('#contractorContactNumber2_1').val() + '-' + $('#contractorContactNumber2_2').val() + '-' + $('#contractorContactNumber2_3').val();
 	data['contractorAddress'] = $('#contractorAddress').val();
 	
-	data['residentName'] = $('#residentName').val();
+	data['realResidentName'] = $('#realResidentName').val();
 	data['residentGender'] = $('#residentGender').val();
 	data['residentRegNumber'] = $('#residentRegNumber_1').val() + '-' + $('#residentRegNumber_2').val();
 	data['relToContractor'] = $('#relToContractor').val();
@@ -106,12 +126,8 @@ function UpdateResidentInfo()
 	data['carNumber'] = $('#carNumber').val();
 	data['parkingFee'] = $('#parkingFee').val();
 	data['sendMsg'] = $(':radio[name="sendMsg"]:checked').val();
-	data['checkin'] = $(':radio[name="checkin"]:checked').val();
-	data['checkout'] = $(':radio[name="checkout"]:checked').val();
-	if (data['checkout'] == 'y') {
-		data['checkoutWhy'] == $('#checkoutWhy').val();
-		data['checkoutDate'] == $('#checkoutDate').val();
-	}
+	data['itemCheckIn'] = $(':radio[name="itemCheckIn"]:checked').val();
+	data['itemCheckOut'] = $(':radio[name="itemCheckOut"]:checked').val();
 	data['memo'] = $('#memo').val();
 	
 	// check
@@ -135,7 +151,8 @@ function UpdateResidentInfo()
 		// 그리고 차가 없다면 차량번호, 주차비용 까지 빈칸으로 두어도 무방하도록 하자.
 		if (name == 'contractorContactNumber2' || name == 'residentContactNumber2' ||
 			name == 'residentOfficeName' || name == 'residentOfficeLevel' ||
-			name == 'residentOfficeAddress' || name == 'residentOfficeContactNumber' || name == 'memo')
+			name == 'residentOfficeAddress' || name == 'residentOfficeContactNumber' || name == 'memo' ||
+			name == 'realOutDate' || name == 'outReason')
 			continue;
 		if (data['haveCar'] == 'n') {
 			if (name == 'carNumber' || name == 'parkingFee')
@@ -145,7 +162,8 @@ function UpdateResidentInfo()
 		// 숫자여야만 하는 부분은 따로 체크해준다.
 		if (name == 'leaseDeposit' || name == 'leaseMoney' || 
 			name == 'checkE' || name == 'checkG' || name == 'checkW' || name == 'checkHWG' || name == 'checkHG' ||
-			name == 'checkHWW' || name == 'checkHW' || name == 'residentPeopleNumber') {
+			name == 'checkHWW' || name == 'checkHW' || name == 'residentPeopleNumber' ||
+		  	name == 'maintenanceFee' || name == 'surtax') {
 			if (!IsNumberRight(name, data[name]))
 				return false;
 		}
@@ -164,6 +182,18 @@ function UpdateResidentInfo()
 		}
 	}
 
+	// 입주일은 지금 폼을 입력하는 그 달에만 가능하다.
+	var date = new Date();
+	mm = Number(date.getMonth() + 1);
+	yy = Number(date.getFullYear());
+	input_yy = Number(data['inDate'].split('.')[0]);
+   	input_mm = Number(data['inDate'].split('.')[1]);
+	if (!(yy == input_yy && mm == input_mm)) {
+		alert('입주자 정보 입력은 이번 달에 입주하는 사람에 한해 등록 가능합니다.');
+		$('#inDate').focus();
+		return;
+	}
+	
 //	if (confirm('저장하시겠습니까? (미리보기로 꼭 확인해주세요)'))
 	doUpdateResidentInfo(data);
 }

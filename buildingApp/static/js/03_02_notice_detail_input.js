@@ -78,7 +78,7 @@ var doAjaxDetailAllInfo = function(bid, rid) {
 	param['csrfmiddlewaretoken'] = csrftoken;
 	param['building_id'] = Number(bid);
 	param['resident_id'] = Number(rid);
-	postData['is_empty'] = $('#search_isEmpty').parent().hasClass('checked');
+	param['is_empty'] = $('#search_isEmpty').parent().hasClass('checked');
 
 	$.ajax({
 		type : 'POST',

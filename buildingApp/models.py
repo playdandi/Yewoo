@@ -40,8 +40,8 @@ class ResidentInfo(models.Model):
     checkIn = models.CharField(max_length=1)
     realInDate = models.DateField()
     checkOut = models.CharField(max_length=1)
-    realOutDate = models.DateField()
-    outReason = models.CharField(max_length=200)
+    realOutDate = models.DateField(null=True)
+    outReason = models.CharField(max_length=200, null=True)
 
     contractorName = models.CharField(max_length=10)
     contractorGender = models.CharField(max_length=1)
@@ -123,8 +123,9 @@ class ExcelFiles(models.Model):
     uploadDate = models.DateField()
 
 class EachMonthInfo(models.Model):
-    resident = models.ForeignKey('ResidentInfo')
     building = models.ForeignKey('BuildingInfo')
+    resident = models.ForeignKey('ResidentInfo', blank=True, null=True)
+    room = models.ForeignKey('RoomInfo')
     year = models.IntegerField()
     month = models.IntegerField()
     isLiving = models.BooleanField(default=False)

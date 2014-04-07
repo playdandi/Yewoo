@@ -44,7 +44,53 @@ def makeRoomInfo(floor):
         room.roomnum = calRoomNum(int(floor.floor), i)
         room.residentnum = 0
         room.isOccupied = False
-        room.save() 
+        room.save()
+
+def makeEachMonthInfo(floor):
+    for i in range(1, int(floor.roomNum)+1):
+        em = EachMonthInfo()
+        em.building = floor.building
+        em.resident = None
+        em.room = RoomInfo.objects.get(building = floor.building, roomnum = calRoomNum(int(floor.floor), i))
+        import datetime
+        em.year = int(str(datetime.datetime.now().year))
+        em.month = int(str(datetime.datetime.now().month))
+        em.noticeNumber = 0
+        em.leaseMoney = 0
+        em.maintenanceFee = 0
+        em.surtax = 0
+        em.parkingFee = 0
+        em.electricityFee = 0
+        em.waterFee = 0
+        em.gasFee = 0
+        em.etcFee = 0
+        em.totalFee = 0
+        em.changedFee = 0
+        em.inputCheck = False
+        em.inputDate = None
+        em.noticeCheck = False
+        em.noticeDate = None
+        em.isLiving = False
+        em.save()
+        # EachMonthDetailInfo (modifyNumber = 0)
+        emd = EachMonthDetailInfo()
+        emd.eachMonth = em
+        emd.year = em.year
+        emd.month = em.month
+        emd.modifyNumber = int(0)
+        emd.leaseMoney = em.leaseMoney
+        emd.maintenanceFee = em.maintenanceFee
+        emd.surtax = em.surtax
+        emd.parkingFee = em.parkingFee
+        emd.electricityFee = 0
+        emd.gasFee = 0
+        emd.waterFee = 0
+        emd.totalFee = em.totalFee
+        emd.etcFee = 0
+        emd.changedFee = 0
+        emd.msg = ''
+        emd.changeDate = None
+        emd.save()
 
 
 def building_register_html(request):
@@ -112,7 +158,11 @@ def building_save(request):
             bFloor.hasParking = f['hasParking']
             bFloor.parkingNum = f['parkingNum']
             bFloor.save()
+            # RoomInfo
             makeRoomInfo(bFloor)
+            # EachMonthInfo
+            makeEachMonthInfo(bFloor)
+
         return HttpResponse('', status=200)
 
 

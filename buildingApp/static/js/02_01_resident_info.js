@@ -55,7 +55,7 @@ function SaveResidentInfo()
 	data['contractorAddress'] = $('#contractorAddress').val().trim();
 
 	// 3.
-	data['realResidentName'] = $('#residentName').val().trim();
+	data['realResidentName'] = $('#realResidentName').val().trim();
 	data['residentGender'] = $('#residentGender').val().trim();
 	data['residentRegNumber'] = $('#residentRegNumber_1').val().trim() + '-' + $('#residentRegNumber_2').val().trim();
 	data['relToContractor'] = $('#relToContractor').val().trim();
@@ -102,7 +102,8 @@ function SaveResidentInfo()
 		// 그리고 차가 없다면 차량번호, 주차비용 까지 빈칸으로 두어도 무방하도록 하자.
 		if (name == 'contractorContactNumber2' || name == 'residentContactNumber2' ||
 			name == 'residentOfficeName' || name == 'residentOfficeLevel' ||
-			name == 'residentOfficeAddress' || name == 'residentOfficeContactNumber' || name == 'memo')
+			name == 'residentOfficeAddress' || name == 'residentOfficeContactNumber' || name == 'memo' ||
+			name == 'realOutDate' || name == 'outReason')
 			continue;
 		if (data['haveCar'] == 'n') {
 			if (name == 'carNumber' || name == 'parkingFee')
@@ -284,11 +285,16 @@ function setPreviewInfo()
 	if (roomNumber < 0)
 		roomNumber = String(roomNumber).replace('-', 'B ');
 	$('#buildingRoomNumber_modal').html(roomNumber);
+	$('#maintenanceFee_modal').html($('#maintenanceFee').val().trim());
+	$('#surtax_modal').html($('#surtax').val().trim());
+	$('#residentName_modal').html($('#residentName').val().trim());
+	$('#leaseNumber_modal').html($('#leaseNumber').val().trim()+'회');
+	$('#leaseContractPeriod_modal').html($('#leaseContractPeriod').val()+$('#leaseContractPeriodUnit').val());
 	$('#inOutDate_modal').html($('#inDate').val() + ' ~ ' + $('#outDate').val());
+
 	$('#leaseType_modal').html($('#leaseType').val());
 	$('#leaseDeposit_modal').html($('#leaseDeposit').val() + ' (' + $('#leaseDeposit2').val() + ')');
 	$('#leasePay_modal').html($('#leasePayWay').val() + ', ' + $('#leasePayDate').val() + '일, ' + $('#leaseMoney').val() + '원');
-	$('#agency_modal').html($('#agency').val() + ' (' + $('#agencyName').val() + ')');
 	$('#checkType_modal').html('[' + $('#checkType option:selected').text() + ']  ');
 	if ($('#checkType').val() == '1') { // 원격검침1
 		$('#checkEHWHW_modal').html('전기(' + $('#checkE').val() + '), 온수가스(' + $('#checkHWG').val() + '), 난방가스(' + $('#checkHG').val() + '), 온수수도(' + $('#checkHWW').val() + '), 난방수도(' + $('#checkHW').val() + ')');
@@ -298,6 +304,18 @@ function setPreviewInfo()
 		$('#checkEHWHW_modal').html('');
 		$('#checkEGW_modal').html('전기(' + $('#checkE').val() + '), 가스(' + $('#checkG').val() + '), 상하수도(' + $('#checkW').val() + ')');
 	}
+	$('#readDate_modal').html($('#readDate').val());
+	$('#readContent_modal').html($('#readContent').val());
+
+	$('#agency_modal').html($('#agency').val() + ' (' + $('#agencyName').val() + ')');
+	
+	var checkIn = $(':radio[name="checkIn"]:checked').val() == 'y' ? '확인' : '미확인';
+	var checkOut = $(':radio[name="checkOut"]:checked').val() == 'y' ? '확인' : '미확인';
+	$('#checkIn_modal').html(checkIn);
+	$('#checkOut_modal').html(checkOut);
+	$('#realInDate_modal').html($('#realInDate').val());
+	$('#realOutDate_modal').html($('#realOutDate').val());
+	$('#outReason_modal').html($('#outReason').val());
 	
 	$('#contractorNameGender_modal').html($('#contractorName').val() + ' (' + $('#contractorGender').val() + ')');
 	$('#contractorRegNumber_modal').html($('#contractorRegNumber_1').val() + '-' + $('#contractorRegNumber_2').val());
