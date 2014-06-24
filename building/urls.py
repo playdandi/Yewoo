@@ -7,6 +7,10 @@ from buildingApp.views_03 import *
 from django.contrib import admin
 admin.autodiscover()
 
+# django-cron job
+#import django_cron
+#django_cron.autodiscover()
+
 urlpatterns = patterns('',
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -25,9 +29,13 @@ urlpatterns = patterns('',
     url(r'^building/search/rooms/$', building_search_rooms_html),
 
     url(r'^resident/info/$', resident_info_html),
+    url(r'^resident/infoFile/$', resident_infoFile_html),
+    url(r'^resident/getAllResidentInfo/$', get_all_residentInfo_bname_roomnum),
     url(r'^resident/show/(?P<uid>\d+)/$', show_detail_resident_info),
     url(r'^resident/show/$', resident_show_html),
+    url(r'^resident/modify/(?P<rid>\d+)/$', show_modify_resident_info),
     url(r'^resident/save/$', save_resident_info),
+    url(r'^resident/saveByFile/$', save_resident_info_by_file),
     url(r'^resident/search/$', show_resident_info),
 
     url(r'^lease/show/lease/$', lease_show_html),
@@ -45,8 +53,8 @@ urlpatterns = patterns('',
     url(r'^lease/input/saveNoticeCheck/$', save_notice),
     url(r'^lease/input/notice/$', notice_input_html),
     url(r'^lease/input/notice/detail/save/$', notice_detail_save),
-    url(r'^lease/input/notice/detail/(?P<bid>\d+)/(?P<rid>\d+)/(?P<eid>\d+)/(?P<tab>\d+)/$', notice_detail_input_html),
-    url(r'^lease/input/notice/detail/getListInfo/$', notice_detail_tab2),
+    url(r'^lease/input/notice/detail/(?P<bid>\d+)/(?P<rid>\d+)/(?P<eid>\d+)/(?P<year>\d+)/(?P<month>\d+)/(?P<tab>\d+)/$', notice_detail_input_html),
+    url(r'^lease/input/notice/detail/getInfoTab2/$', notice_detail_tab2),
     url(r'^lease/input/notice/detail/detailInfo/$', notice_detail_tab2_detail),
     url(r'^lease/input/electricity/$', electricity_input_html),
     url(r'^lease/input/gas/$', gas_input_html),
@@ -58,9 +66,10 @@ urlpatterns = patterns('',
     url(r'^lease/payment/$', payment_input_html),
     url(r'^lease/payment/getInfo/$', payment_input_getinfo),
     url(r'^lease/payment/savePaymentCheck/$', payment_check),
-    url(r'^lease/payment/detail/(?P<bid>\d+)/(?P<rid>\d+)/(?P<tab>\d+)/$', payment_detail_html),
+    url(r'^lease/payment/detail/(?P<bid>\d+)/(?P<rid>\d+)/(?P<year>\d+)/(?P<month>\d+)/(?P<tab>\d+)/$', payment_detail_html),
     url(r'^lease/payment/detail/getAllInfo/$', payment_detail_allInfo),
-    url(r'^lease/payment/detail/getModifyInfo/$', payment_detail_modifyinfo),
+    url(r'^lease/payment/detail/getInfoTab2/$', payment_detail_info_tab2),
+    #url(r'^lease/payment/detail/getModifyInfo/$', payment_detail_modifyinfo),
     url(r'^lease/payment/detail/saveInput/$', payment_detail_saveInput),
     url(r'^lease/payment/detail/saveModify/$', payment_detail_saveModify),
 )

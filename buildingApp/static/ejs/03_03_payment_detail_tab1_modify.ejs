@@ -1,0 +1,92 @@
+<% var max_modify_num = 0; %>
+<% var max_idx; %>
+<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+	<tr>
+		<th colspan="2" style="text-align:center; vertical-align:middle" width="6%">내역수정</th>
+		<th style="text-align:center; vertical-align:middle" width="6%">년도/월</th>
+		<th style="text-align:center; vertical-align:middle" width="4%">회차</th>
+		<th style="text-align:center; vertical-align:middle" width="7%">합계금액</th>
+		<th style="text-align:center; vertical-align:middle" width="9%">납부예정일</th>
+		<th style="text-align:center; vertical-align:middle" width="4%">누적</th>
+		<th style="text-align:center; vertical-align:middle" width="9%">납부확인</th>
+		<th style="text-align:center; vertical-align:middle" width="8%">입금일</th>
+		<th style="text-align:center; vertical-align:middle" width="9%">입금</th>
+		<th style="text-align:center; vertical-align:middle" width="9%">미납</th>
+		<th style="text-align:center; vertical-align:middle" width="9%">누적처리</th>
+		<th style="text-align:center; vertical-align:middle" width="9%">다음 연체료</th>
+		<th style="text-align:center; vertical-align:middle" width="9%">다음 총 부과금액</th>
+		<th style="text-align:center; vertical-align:middle" width="8%">납부처리일</th>
+	</tr>
+	<% for (i = 0; i < data.length; i++) { %>
+	<% if (data[i].payment_id != id) { continue; } %>
+	<% max_modify_num = data[i].modifyNumber; %>
+	<% max_idx = i; %>
+	<tr>
+		<td style="text-align:center; vertical-align:middle">수정</td>
+		<td style="text-align:center; vertical-align:middle"><%= data[i].modifyNumber %>회</td>
+		<td style="text-align:center; vertical-align:middle"><%= param.yymm %></td>
+		<td style="text-align:center; vertical-align:middle"><%= param.noticeNumber %></td>
+		<td style="text-align:center; vertical-align:middle"><%= param.totalFee.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center; vertical-align:middle"><%= param.nextPayDate %></td>
+		<td style="text-align:center; vertical-align:middle"><%= data[i].accumNumber %>회</td>
+		<td style="text-align:center; vertical-align:middle"><% if (data[i].payStatus == -1) { %>완납<% } else { %><%= data[i].payStatus %>회<% } %></td>
+		<td style="text-align:center; vertical-align:middle"><%= data[i].payDate %></td>
+		<td style="text-align:center; vertical-align:middle"><%= data[i].amountPay.toLocaleString().replace('.00','') %>원</td>
+		<td style="text-align:center; vertical-align:middle"><%= data[i].amountNoPay.toLocaleString().replace('.00','') %>원</td>
+		<td style="text-align:center; vertical-align:middle"><%= data[i].accumNumber %>회</td>
+		<td style="text-align:center; vertical-align:middle"><%= data[i].delayFee.toLocaleString().replace('.00','') %>원</td>
+		<td style="text-align:center; vertical-align:middle"><%= (data[i].amountNoPay+data[i].delayFee).toLocaleString().replace('.00','') %>원</td>
+		<td style="text-align:center; vertical-align:middle"><%= data[i].confirmDate %></td>
+	</tr>
+	<% } %>
+	<tr>
+		<td style="text-align:center; vertical-align:middle">수정</td>
+		<td style="text-align:center; vertical-align:middle"><div id="modify_modifyNumber"><%= max_modify_num+1 %>회</div></td>
+		<td style="text-align:center; vertical-align:middle"><%= param.yymm %></td>
+		<td style="text-align:center; vertical-align:middle"><%= param.noticeNumber %></td>
+		<td style="text-align:center; vertical-align:middle"><%= param.totalFee.toLocaleString().replace('.00','') %></div></td>
+		<td style="text-align:center; vertical-align:middle; color:blue"><%= param.nextPayDate %></td>
+		<td style="text-align:center; vertical-align:middle"><%= data[max_idx].accumNumber %>회</td>
+		<td style="text-align:center; vertical-align:middle">
+			<select id="modify_payStatus" class="margin0 span12 fontmini2" style="width:100%">
+				<option value="-1" <% if (data[max_idx].payStatus == -1) { %>selected<% } %>>완납</option>
+			<% for (i = 0; i < 10; i++) { %>
+				<option value="<%= i %>" <% if (data[max_idx].payStatus == i) { %>selected<% } %>><%= i %>회</option>
+			<% } %>
+			</select>
+		</td>
+		<td style="text-align:center; vertical-align:middle">
+			<input id="modify_payDate" type="text" class="margin0 span12 fontmini datepicker" value="<%= data[max_idx].payDate %>" />
+		</td>
+		<td style="text-align:center; vertical-align:middle">
+			<input id="modify_amountPay" type="text" class="margin0 span9 fontmini" style="font-color:red" value="<%= data[max_idx].amountPay.toLocaleString().replace('.00','') %>" />원
+			<input id="modify_amountPayOriginal" type="hidden" value="<%= data[max_idx].amountPay %>" />
+			<input id="modify_amountPaySum" type="hidden" value="<%= data[max_idx].amountPaySum %>" />
+		</td>
+		<td style="text-align:center; vertical-align:middle">
+			<input id="modify_amountNoPay" type="text" class="margin0 span9 fontmini" style="font-color:red" value="<%= data[max_idx].amountNoPay.toLocaleString().replace('.00','') %>" disabled />원
+			<input id="modify_amountNoPayOriginal" type="hidden" value="<%= data[max_idx].amountNoPay %>" />
+		</td>
+		<td style="text-align:center; vertical-align:middle">
+			<select id="modify_confirmAccum" class="margin0 span12 fontmini2">
+				<% for (i = 0; i < 10; i++) { %>
+				<option value="<%= i %>" <% if (data[max_idx].accumNumber+1 == i) { %>selected<% } %>><%= i %>회</option>
+				<% } %>
+			</select>
+		</td>
+		<td style="text-align:center; vertical-align:middle"><input id="modify_delayFee" type="text" class="margin0 span9 fontmini" value="<%= data[max_idx].delayFee.toLocaleString().replace('.00','') %>" disabled />원</td>
+		<td style="text-align:center; vertical-align:middle"><input id="modify_imposeFee" type="text" class="margin0 span9 fontmini" value="<%= (data[max_idx].amountNoPay+data[max_idx].delayFee).toLocaleString().replace('.00','') %>" disabled />원</td>
+		<td style="text-align:center; vertical-align:middle">
+			<input id="modify_confirmDate" type="text" class="margin0 span12 fontmini datepicker" value="<%= data[max_idx].confirmDate %>" />
+		</td>
+	</tr>
+	<tr>
+		<th colspan="4">내역 수정 사유</th>
+		<td colspan="11"><input id="modify_modifyMsg" type="text" class="margin0 span12" placeholder="사유를 입력해주세요." /></td>
+	</tr>
+	<tr>
+		<td colspan="15" style="text-align:center">
+			<button class="btn" onclick="saveModifyInfo();">저  장</button>
+		</td>
+	</tr>
+</table>

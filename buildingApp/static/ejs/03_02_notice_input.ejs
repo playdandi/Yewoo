@@ -1,4 +1,10 @@
+<% var w = new Array(3, 3, 3, 4, 4, 3, 10, 5,5,5,5,5,5,5,5,5,4, 3,3,3, 4,4,4); %>
 <table class="table table-bordered table-condensed">
+	<colgroup>
+	<% for (i = 0; i < w.length; i++) { %>
+		<col width="<%= w[i] %>%">
+	<% } %>
+	</colgroup>
 	<tr>
 		<th rowspan="2" style="text-align:center; vertical-align:middle">고지 확인</th>
 		<th rowspan="2" style="text-align:center; vertical-align:middle">고지 확인일</th>
@@ -10,10 +16,11 @@
 
 		<th colspan="4" style="text-align:center; vertical-align:middle">임대료 및 관리비</th>
 		<th colspan="3" style="text-align:center; vertical-align:middle">공과금<button class="btn btn-small" onclick="showEGWModal();">입력</button></th>
-		<th colspan="3" style="text-align:center; vertical-align:middle">연체료</th>
 		<th rowspan="2" style="text-align:center; vertical-align:middle">기타 금액</th>
-
 		<th colspan="2" style="text-align:center; vertical-align:middle">변동 금액 입력</th>
+		<th colspan="3" style="text-align:center; vertical-align:middle">연체내역
+			<a id="tooltip" href="#" class="margin0"><i class="icon-question-sign"></i></a>
+		</th>
 		<th rowspan="2" style="text-align:center; vertical-align:middle">고지서 확인</th>
 		<th rowspan="2" style="text-align:center; vertical-align:middle">상세 내역 확인</th>
 		<th rowspan="2" style="text-align:center; vertical-align:middle">선택</th>
@@ -26,11 +33,10 @@
 		<th style="text-align:center; vertical-align:middle">전기</th>
 		<th style="text-align:center; vertical-align:middle">수도</th>
 		<th style="text-align:center; vertical-align:middle">가스</th>
-		<th style="text-align:center; vertical-align:middle">미납금</th>
-		<th style="text-align:center; vertical-align:middle">연체료</th>
-		<th style="text-align:center; vertical-align:middle">회차</th>
 		<th style="text-align:center; vertical-align:middle">금액</th>
 		<th style="text-align:center; vertical-align:middle">입력</th>
+		<th colspan="2" style="text-align:center; vertical-align:middle">미납회차</th>
+		<th style="text-align:center; vertical-align:middle">누적</th>
 	</tr>
 	<% for (i = 0; i < data.length; i++) { %>
 	<% if ((radio == 1 && !data[i].noticeCheck) || (radio == 2 && data[i].noticeCheck)) { %>
@@ -48,20 +54,26 @@
 		<td style="text-align:center"><%= data[i].name %></td>
 		<td style="text-align:center"><%= data[i].yearmonth %></td>
 		<td style="text-align:center"><%= data[i].noticeNumber %></td>
-		<td style="text-align:center"><%= data[i].totalFee %></td>
-		<td style="text-align:center"><%= data[i].lease %></td>
-		<td style="text-align:center"><%= data[i].maintenance %></td>
-		<td style="text-align:center"><%= data[i].surtax %></td>
-		<td style="text-align:center"><%= data[i].parking %></td>
-		<td style="text-align:center"><%= data[i].electricityFee %></td>
-		<td style="text-align:center"><%= data[i].waterFee %></td>
-		<td style="text-align:center"><%= data[i].gasFee %></td>
-		<td style="text-align:center"></td>
-		<td style="text-align:center"></td>
-		<td style="text-align:center"></td>
-		<td style="text-align:center"><%= data[i].etcFee %></td>
-		<td style="text-align:center; color:red"><%= data[i].changedFee %></td>
+		<td style="text-align:center"><%= data[i].totalFee.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].lease.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].maintenance.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].surtax.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].parking.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].electricityFee.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].waterFee.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].gasFee.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].etcFee.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center; color:red"><%= data[i].changedFee.toLocaleString().replace('.00','') %></td>
 		<td style="text-align:center"><button class="btn btn-mini" onclick="goDetail('<%= data[i].building_id %>', '<%= data[i].resident_id %>', '<%= data[i].id %>');">입력</button></td>
+		<% if (data[i].delayNumber > 0) { %>
+		<td style="text-align:center; background-color:red; color:white">미납</td>
+		<td style="text-align:center; background-color:red; color:white"><%= data[i].delayNumber %></td>
+		<td style="text-align:center"><%= data[i].accumNumber %>회</td>
+		<% } else { %>
+		<td style="text-align:center">고지</td>
+		<td style="text-align:center"><%= data[i].noticeNumber %></td>
+		<td style="text-align:center">0회</td>
+		<% } %>
 		<td style="text-align:center"><button class="btn btn-mini" onclick="" disabled>확인</button></td>
 		<td style="text-align:center"><button class="btn btn-mini" onclick="goDetail2('<%= data[i].building_id %>', '<%= data[i].resident_id %>', '<%= data[i].id %>');">확인</button></td>
 		<td style="text-align:center; vertical-align:middle">

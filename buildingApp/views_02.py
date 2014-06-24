@@ -11,6 +11,7 @@ from django.conf import settings
 import os
 
 
+### 02.01 ###
 def resident_info_html(request):
     csrf_token = get_token(request)
     building = BuildingInfo.objects.all()
@@ -19,6 +20,17 @@ def resident_info_html(request):
         building_name_id.append({'name' : b.name, 'id' : b.id})
 
     return render(request, '02_01_resident_info.html', {'range' : range(1, 31+1), 'building_name_id' : building_name_id})
+
+### 02.03 ###
+def resident_infoFile_html(request):
+    csrf_token = get_token(request)
+    building = BuildingInfo.objects.all()
+    building_name_id = []
+    for b in building:
+        building_name_id.append({'name' : b.name, 'id' : b.id})
+
+    return render(request, '02_03_resident_infoFile.html', {'range' : range(1, 31+1), 'building_name_id' : building_name_id})
+
 
 def building_get_rooms(request):
     if request.method == "POST":
@@ -35,20 +47,37 @@ def building_get_rooms(request):
         return toJSON(result)
 
 
-
 def resident_show_html(request):
     csrf_token = get_token(request)
     building = BuildingInfo.objects.all()
     building_name_id = []
     for b in building:
         building_name_id.append({'name' : b.name, 'id' : b.id})
-    return render(request, '02_02_resident_show.html', {'building' : building_name_id})
+    return render(request, '02_02_resident_show.html', {'building_name_id' : building_name_id, 'numOfBuilding' : len(building_name_id)})
 
-def save_resident_info(request):
+
+### 02.03 : 저장하기 버튼 누른 경우 ###
+def save_resident_info_by_file(request):
+    if request.method == 'POST':
+        length = int(request.POST['length'])
+        for l in range(length):
+            param = {}
+            for name in request.POST:
+                if name.startswith(str(l)+'_'):
+                    n = name.replace(str(l)+'_', '')
+                    param[n] = request.POST.get(name, '').strip()
+            save_resident_info(request, param)
+        return HttpResponse('OK')
+    return HttpResponse('NOT POST')
+
+def save_resident_info(request, data = None):
     if request.method == "POST":
         param = {}
-        for name in request.POST:
-            param[name] = request.POST.get(name, '').strip()
+        if data == None:
+            for name in request.POST:
+                param[name] = request.POST.get(name, '').strip()
+        else:
+            param = data
 
         resident = None
         if param['type'] == 'save':
@@ -56,15 +85,20 @@ def save_resident_info(request):
         else:
             resident = ResidentInfo.objects.get(id = int(param['uid']))
 
+        # 있는 호실인지 검사
+        ri = RoomInfo.objects.get(building_id = int(param['buildingName']), roomnum = int(param['buildingRoomNumber']))
+
         resident.buildingName = int(param['buildingName'])
+        resident.manager = str(param['manager'])
         resident.buildingRoomNumber = param['buildingRoomNumber']
         resident.maintenanceFee = int(param['maintenanceFee'])
         resident.surtax = int(param['surtax'])
         
         resident.residentName = str(param['residentName'])
+        total = ResidentInfo.objects.filter(buildingName = int(param['buildingName']), buildingRoomNumber = int(param['buildingRoomNumber']))
+        resident.leaseNumberTotal = len(total) + 1
         resident.leaseNumber = int(param['leaseNumber'])
         resident.leaseContractPeriod = int(param['leaseContractPeriod'])
-        resident.leaseContractPeriodUnit = str(param['leaseContractPeriodUnit'])
         resident.inDate = param['inDate'].replace('.', '-')
         resident.outDate = param['outDate'].replace('.', '-')
 
@@ -166,13 +200,17 @@ def save_resident_info(request):
             roominfo.save()
 
         # create EachMonthInfo only for this year/month.
+        import datetime
+        ymd = datetime.datetime.now()
         if param['type'] == 'save':
             em = EachMonthInfo()
             em.building = BuildingInfo.objects.get(id = int(resident.buildingName))
             em.resident = resident
             em.room = roominfo
-            em.year = int(param['inDate'].split('.')[0].strip())
-            em.month = int(param['inDate'].split('.')[1].strip())
+            #em.year = int(param['inDate'].split('.')[0].strip())
+            #em.month = int(param['inDate'].split('.')[1].strip())
+            em.year = int(ymd.year)
+            em.month = int(ymd.month)
             em.noticeNumber = int(1)
             em.leaseMoney = resident.leaseMoney
             em.maintenanceFee = resident.maintenanceFee
@@ -211,8 +249,6 @@ def save_resident_info(request):
             emd.save()
         else:
             em = EachMonthInfo.objects.filter(building_id = int(resident.buildingName), resident_id = int(resident.id)).order_by('-id')[0]
-            print(em.id)
-            print(resident.maintenanceFee)
             em.totalFee -= (int(em.leaseMoney) + int(em.maintenanceFee) + int(em.surtax) + int(em.parkingFee))
             em.totalFee += (int(resident.leaseMoney) + int(resident.maintenanceFee) + int(resident.surtax) + int(resident.parkingFee))
             em.leaseMoney = resident.leaseMoney
@@ -230,32 +266,39 @@ def show_resident_info(request):
         for name in request.POST:
             param[name] = request.POST.get(name, '').strip()
 
-        if int(param['type']) == 2:
-            # show all residents
-            result = ResidentInfo.objects.all()
-            return toJSON(serialize(result))
-        elif int(param['type']) == 0:
+        result = []
+        if int(param['type']) == 0: # 일반 검색
             # search
-            word = param['keyword']
+            word = str(param['keyword'])
+            bid = ''
+            if param['bid'] != '':
+                bid = int(param['bid'])
             # get building id 
-            bInfo = BuildingInfo.objects.filter(name = word)
-            bid = -1
-            if len(bInfo) > 0:
-                bid = bInfo[0].id
-
-            result = []
+            #bInfo = BuildingInfo.objects.filter(name = word)
+            #bid = -1
+            #if len(bInfo) > 0:
+            #    bid = bInfo[0].id
+            
             import re
-            if re.sub('[0-9]+', '', word) == '':
-                result = ResidentInfo.objects.filter(
-                    Q(buildingName=bid) | Q(buildingRoomNumber=word) | Q(contractorName=word))
-            else:
-                result = ResidentInfo.objects.filter(
-                    Q(buildingName=bid) | Q(contractorName=word))
-
-            return toJSON(serialize(result))
-
-        else:
-            # search detail
+            if bid == '': # 모든 건물
+                if word == '': # 키워드 x
+                    result = ResidentInfo.objects.all()
+                else:
+                    if re.sub('[0-9]+', '', word) == '': # 숫자만 있는 경우
+                        result = ResidentInfo.objects.filter(Q(buildingRoomNumber=word) | Q(residentName=word))
+                    else:
+                        result = ResidentInfo.objects.filter(Q(residentName=word))
+            else: # 특정 건물 1개
+                result = ResidentInfo.objects.filter(buildingName = bid)
+                if word == '': # 키워드 x
+                    pass
+                else:
+                    if re.sub('[0-9]+', '', word) == '': # 숫자만 있는 경우
+                        result = result.filter(Q(buildingRoomNumber=word) | Q(residentName=word))
+                    else:
+                        result = result.filter(Q(residentName=word))
+            
+        else: # 상세 검색
             result = ResidentInfo.objects
             for p in param:
                 if param[p] != '':
@@ -263,8 +306,8 @@ def show_resident_info(request):
                         result = result.filter(buildingName = int(param[p]))
                     elif p == 'buildingRoomNumber':
                         result = result.filter(buildingRoomNumber=param[p])
-                    elif p == 'contractorName':
-                        result = result.filter(contractorName = param[p])
+                    elif p == 'residentName':
+                        result = result.filter(residentName = param[p])
                     elif p == 'contractorGender':
                         result = result.filter(contractorGender = param[p])
                     elif p == 'leaseDeposit':
@@ -279,19 +322,91 @@ def show_resident_info(request):
                         result = result.filter(outDate = param[p])
                     elif p == 'isParking':
                         result = result.filter(haveCar = param[p])
-            buildingAll = BuildingInfo.objects.all()
-            for r in result:
-                for b in buildingAll:
-                    if b.id == r.buildingName:
-                        r.buildingNameKor = b.name
-                        break
 
-            return toJSON(serialize(result))
-
+        # return result
+        buildingAll = BuildingInfo.objects.all()
+        for r in result:
+            for b in buildingAll:
+                if b.id == r.buildingName:
+                    r.buildingNameKor = b.name
+                    break
+        return toJSON(serialize(result))
 
     return render_to_response('index.html')
     
 
+### 02.02 : 입주자 목록에서 '수정'버튼 누른 경우
+def show_modify_resident_info(request, rid):
+    '''
+    /resident/modify/<rid>\d
+    '''
+    result = ResidentInfo.objects.get(id = rid)
+
+    # 표기법 달리할 것들 처리하기
+    import re
+    result.inDate = re.sub('[년월일\-]+', '.', str(result.inDate))
+    result.outDate = re.sub('[년월일\-]+', '.', str(result.outDate))
+    result.realInDate = re.sub('[년월일\-]+', '.', str(result.realInDate))
+    if result.realOutDate != None:
+        result.realOutDate = re.sub('[년월일\-]+', '.', str(result.realOutDate))
+    else:
+        result.realOutDate = ''
+
+    result.readDate = re.sub('[년월일\-]+', '.', str(result.readDate))
+
+    result.roomNumber = result.buildingRoomNumber
+    if result.buildingRoomNumber < 0:
+        result.roomNumber = 'B ' + str(-result.buildingRoomNumber)
+
+    result.contractorRegNumber_1 = result.contractorRegNumber.split('-')[0]
+    result.contractorRegNumber_2 = result.contractorRegNumber.split('-')[1]
+    result.contractorContactNumber1_1 = result.contractorContactNumber1.split('-')[0]
+    result.contractorContactNumber1_2 = result.contractorContactNumber1.split('-')[1]
+    result.contractorContactNumber1_3 = result.contractorContactNumber1.split('-')[2]
+    if result.contractorContactNumber2 != '':
+        result.contractorContactNumber2_1 = result.contractorContactNumber2.split('-')[0]
+        result.contractorContactNumber2_2 = result.contractorContactNumber2.split('-')[1]
+        result.contractorContactNumber2_3 = result.contractorContactNumber2.split('-')[2]
+
+    result.residentRegNumber_1 = result.residentRegNumber.split('-')[0]
+    result.residentRegNumber_2 = result.residentRegNumber.split('-')[1]
+    result.residentContactNumber1_1 = result.residentContactNumber1.split('-')[0]
+    result.residentContactNumber1_2 = result.residentContactNumber1.split('-')[1]
+    result.residentContactNumber1_3 = result.residentContactNumber1.split('-')[2]
+    if result.residentContactNumber2 != '':
+        result.residentContactNumber2_1 = result.residentContactNumber2.split('-')[0]
+        result.residentContactNumber2_2 = result.residentContactNumber2.split('-')[1]
+        result.residentContactNumber2_3 = result.residentContactNumber2.split('-')[2]
+    if result.residentOfficeContactNumber != '':
+        result.residentOfficeContactNumber_1 = result.residentOfficeContactNumber.split('-')[0]
+        result.residentOfficeContactNumber_2 = result.residentOfficeContactNumber.split('-')[1]
+        result.residentOfficeContactNumber_3 = result.residentOfficeContactNumber.split('-')[2]
+
+    # 모든 건물 정보 가져오기
+    building = BuildingInfo.objects.all()
+    building_name_id = []
+    for b in building:
+        building_name_id.append({'name' : b.name, 'id' : b.id})
+        if result.buildingName == b.id:
+            result.buildingNameKor = b.name
+
+    # 현재 빌딩에 따른 방 호실 가져오기
+    floor = BuildingFloor.objects.filter(building_id = int(result.buildingName))
+    rooms = []
+    for r in floor:
+        for n in range(1, r.roomNum+1):
+            zero = ''
+            if n < 10:
+                zero = '0'
+            if r.floor > 0:
+                rooms.append({'num' : int(str(r.floor)+zero+str(n)), 'kor' : int(str(r.floor)+zero+str(n))})
+            else:
+                rooms.append({'num' : int(str(r.floor)+zero+str(n)), 'kor' : 'B '+str(-r.floor)+zero+str(n)})
+
+    return render(request, '02_02_resident_modify.html', {'result' : result, 'rooms' : rooms, 'building_name_id' : building_name_id, 'uid' : rid, 'range' : range(1, 32)})
+
+
+### 02.02 : 입주자 목록에서 '보기'버튼 누른 경우
 def show_detail_resident_info(request, uid):
     '''
     /resident/show/<id>\d
@@ -371,6 +486,47 @@ def show_detail_resident_info(request, uid):
     return render(request, '02_02_resident_show_detail.html', {'result' : result, 'rooms' : rooms, 'building_name_id' : building_name_id, 'uid' : uid, 'range' : range(1, 32)})
 
 
+### 02.03 : 엑셀 파일 불러올 때 실행되는 함수
+def get_all_residentInfo_bname_roomnum(request):
+    if request.method == 'POST':
+        result = []
+        buildingAll = BuildingInfo.objects.all()
+        residentAll = ResidentInfo.objects.all()
+
+        usedBuildingName = []
+
+        # 현 입주자들의 건물명/건물id/호실/입주자id를 얻는다.
+        for r in residentAll:
+            for b in buildingAll:
+                if int(b.id) == int(r.buildingName):
+                    p = {}
+                    p['buildingName'] = str(b.name).strip()
+                    p['bid'] = int(b.id)
+                    p['roomNumber'] = int(r.buildingRoomNumber)
+                    p['rid'] = int(r.id)
+                    result.append(p)
+                    usedBuildingName.append(int(b.id))
+                    break
+        
+        # DB의 입주자들과 매치되는 건물이 없을 때
+        for b in buildingAll:
+            flag = False
+            for b_id in usedBuildingName:
+                if b_id == int(b.id):
+                    flag = True
+                    break
+            if not flag:
+                p = {}
+                p['buildingName'] = str(b.name).strip()
+                p['bid'] = int(b.id)
+                p['roomNumber'] = int(-1)
+                p['rid'] = int(-1)
+                result.append(p)
+        
+        return toJSON(result)
+    return 'HTTP - NOT POST'
+
+
 def serialize(result):
     serialized = []
     buildingAll = BuildingInfo.objects.all()
@@ -385,13 +541,14 @@ def serialize(result):
                 data['buildingNameKor'] = b.name
                 break
         data['buildingRoomNumber'] = res.buildingRoomNumber
-        data['contractorName'] = res.contractorName
+        if res.checkOut == 'n':
+            data['livingState'] = '재실'
+        else:
+            data['livingState'] = '퇴실'
+        data['residentName'] = res.residentName
         data['contractorGender'] = res.contractorGender
+        data['leaseNumber'] = res.leaseNumber
         data['leaseType'] = res.leaseType
-        data['leaseDeposit'] = res.leaseDeposit
-        data['leaseMoney'] = res.leaseMoney
-        #data['inDate'] = res.inDate.isoformat().replace('-', '.')
-        #data['outDate'] = res.outDate.isoformat().replace('-', '.')
         data['inDate'] = str(res.inDate).replace('-', '.')
         data['outDate'] = str(res.outDate).replace('-', '.')
         serialized.append(data)

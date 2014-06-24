@@ -22,7 +22,7 @@ def setPostData(request, typestr = ''):
         ym = datetime.datetime.now()
         param['search_year'] = int(ym.year)
         param['search_month'] = int(ym.month)
-        param['search_building_id'] = 1
+        param['search_building_id'] = int(BuildingInfo.objects.all().order_by('id')[0].id)
     	param['search_is_empty'] = 'false'
     elif request.method == 'POST':
         param['search_year'] = int(request.POST['year'])
@@ -111,11 +111,10 @@ def serialize_allInfo(lease, notice, payment, leasePayDate):
     serialized_lease = []
     serialized_notice = []
     serialized_payment = []
-    
-    for r in lease:
+    for r in lease: # 임대 상세 탭의 정보
         data = {}
         data['leaseNumber'] = r.leaseNumber
-        data['leasePeriod'] = str(r.leaseContractPeriod) + r.leaseContractPeriodUnit
+        data['leasePeriod'] = str(r.leaseContractPeriod)
         data['inDate'] = prettyDate(r.inDate)
         data['outDate'] = prettyDate(r.outDate)
         data['leaseType'] = r.leaseType
@@ -126,7 +125,7 @@ def serialize_allInfo(lease, notice, payment, leasePayDate):
         data['parkingFee'] = r.parkingFee
         data['surtax'] = r.surtax
         serialized_lease.append(data)
-    for n in notice:
+    for n in notice: # 고지 상세 탭의 정보
         data = {}
         data['id'] = int(n.id)
         data['year'] = int(n.year)
@@ -146,10 +145,9 @@ def serialize_allInfo(lease, notice, payment, leasePayDate):
             data['changedFee'] = int(n.changedFee)
         data['noticeDate'] = ''
         if n.noticeDate != None:
-            #data['noticeDate'] = str(n.noticeDate.month)+'.'+str(n.noticeDate.day)
             data['noticeDate'] = '.'.join(str(n.noticeDate).split('.')[1:])
         serialized_notice.append(data)
-    for p in payment:
+    for p in payment: # 납부 상세 탭의 정보
         data = {}
         data['id'] = int(p.id)
         data['year'] = int(p.year)
@@ -162,38 +160,36 @@ def serialize_allInfo(lease, notice, payment, leasePayDate):
         data['amountNoPay'] = int(p.amountNoPay)
         data['confirmStatus'] = int(p.confirmStatus)
         data['payStatus'] = int(p.payStatus)
-        data['delayNumberNow'] = int(p.delayNumberNow)
-        data['delayNumberNext'] = int(p.delayNumberNext)
+        data['delayNumber'] = int(p.delayNumber)
         data['payMsg'] = str(p.payMsg)
         data['modifyNumber'] = int(p.modifyNumber)
         data['leasePayDate'] = int(leasePayDate)
         data['payDate'] = ''
         data['confirmDate'] = ''
         if p.payDate != None:
-            #data['payDate'] = str(p.payDate.year)+'.'+str(p.payDate.month)+'.'+str(p.payDate.day)
             data['payDate'] = str(p.payDate)
         if p.confirmDate != None:
-            #data['confirmDate'] = str(p.confirmDate.year)+'.'+str(p.confirmDate.month)+'.'+str(p.confirmDate.day)
             data['confirmDate'] = str(p.confirmDate)
         serialized_payment.append(data)
 
     return [serialized_lease, serialized_notice, serialized_payment]
-    #return serialized
 
+### 03.01 : 임대/고지/납부 상세내역보기 데이터 (tab 1,2,3 정보 모두 들고온다)
 def lease_notice_detail_getAllInfo(request):
     if request.method == 'POST':
         bid = int(request.POST['building_id'])
         rid = int(request.POST['resident_id'])
         leasePayDate = ResidentInfo.objects.get(id = int(rid)).leasePayDate
 
-        roomNum = ResidentInfo.objects.get(id = int(rid)).buildingRoomNumber
+        resident = ResidentInfo.objects.get(id = int(rid))
+        roomNum = resident.buildingRoomNumber
+        
         lease = ResidentInfo.objects.filter(buildingName = int(bid), buildingRoomNumber = roomNum)
+        notice = []
+        payment = []
+        """
         notice = EachMonthInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
         payment = PaymentInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
-
-        #for l in param['lease_list']:
-        #    l.inDate = str(l.inDate.year)+'.'+str(l.inDate.month)+'.'+str(l.inDate.day)
-        #    l.outDate = str(l.outDate.year)+'.'+str(l.outDate.month)+'.'+str(l.outDate.day)
         for l in notice:
             if l.noticeDate != None:
                 l.noticeDate = str(l.noticeDate.year)+'.'+str(l.noticeDate.month)+'.'+str(l.noticeDate.day)
@@ -204,9 +200,10 @@ def lease_notice_detail_getAllInfo(request):
                 l.payDate = str(l.payDate.year)+'.'+str(l.payDate.month)+'.'+str(l.payDate.day)
             if l.confirmDate != None:
                 l.confirmDate = str(l.confirmDate.year)+'.'+str(l.confirmDate.month)+'.'+str(l.confirmDate.day)
-        #return HttpResponse(simplejson.dumps(param))
+        """
     	return toJSON(serialize_allInfo(lease, notice, payment, leasePayDate))
     return HttpResponse('NOT POST')
+
 
 def lease_notice_detail_show_html(request, bid, rid, tab):
     param = {}
@@ -216,6 +213,8 @@ def lease_notice_detail_show_html(request, bid, rid, tab):
     param['building_id'] = int(bid)
     param['simpleLeaseDeposit'] = int(param['resident'].leaseDeposit) / int(10000)
     param['simpleLeaseMoney'] = int(param['resident'].leaseMoney) / int(10000)
+    param['leaseNumberTotal'] = int(param['resident'].leaseNumberTotal)
+    param['leaseNumberList'] = range(1, param['leaseNumberTotal']+1)
     return render(request, '03_01_lease_notice_detail_show.html', param)
 
 def notice_show_html(request):
@@ -237,6 +236,7 @@ def get_lease_info(request):
     	return toJSON(serialize_lease(data))
     return HttpResponse('NOT POST')
 
+### 03.01 : 최종고지내역 데이터 받는 부분 ###
 def get_notice_info(request):
     if request.method == 'POST':
         y = int(request.POST['year'])
@@ -302,40 +302,6 @@ def get_notice_info(request):
                     emd.totalFee = int(emd.leaseMoney)+int(emd.maintenanceFee)+int(emd.surtax)+int(emd.parkingFee)
                     emd.changedFee = 0
                     emd.save()
-
-                """
-                room = RoomInfo.objects.filter(building = bid).order_by('roomnum', '-residentnum')
-                for i in range(len(room)):
-                    if i > 0 and int(room[i].roomnum) == int(room[i-1].roomnum):
-                        continue
-                    em = EachMonthInfo()
-                    em.building = room[i].building
-                    em.resident = room[i].nowResident
-                    em.year = y
-                    em.month = m
-                    beforeInfo = EachMonthInfo.objects.get(year = beforeYear, month = beforeMonth, building = bid, resident = em.resident)
-                    if em.resident != None:
-                        em.noticeNumber = int(beforeInfo.noticeNumber) + 1
-                        em.leaseMoney = int(em.resident.leaseMoney)
-                        em.maintenanceFee = int(em.resident.maintenanceFee)
-                        em.surtax = int(em.resident.surtax)
-                    else:
-                        em.noticeNumber = 0
-                        em.leaseMoney = 0
-                        em.maintenanceFee = 0
-                        em.surtax = 0
-                    em.electricityFee = 0
-                    em.waterFee = 0
-                    em.gasFee = 0
-                    em.etcFee = 0
-                    em.totalFee = int(em.noticeNumber)+int(em.leaseMoney)+int(em.maintenanceFee)+int(em.surtax)
-                    em.changedFee = 0
-                    em.inputCheck = False
-                    em.inputDate = None
-                    em.noticeCheck = False
-                    em.noticeDate = None
-                    em.save()
-                """
     	    data = EachMonthInfo.objects.filter(year = y, month = m, building = bid)
         if is_empty == 'false':
             rooms = RoomInfo.objects.filter(building_id = bid, isOccupied = True)
@@ -418,7 +384,8 @@ def serialize_lease(result):
             serialized.append(data)
     return serialized
 
-## prettify data for notice
+### prettify data for notice ###
+### 사용하는 부분 : 03.01.최종고지내역, ... ###
 def serialize_notice(result, rooms, fromWhere, is_empty):
     serialized = []
     #under = rooms.filter(roomnum__lt = 0).order_by('-roomnum') 
@@ -459,24 +426,34 @@ def serialize_notice(result, rooms, fromWhere, is_empty):
             data['maintenance'] = res.maintenanceFee
             data['surtax'] = res.surtax
             data['parking'] = res.parkingFee
-
             data['electricityFee'] = res.electricityFee
             data['gasFee'] = res.gasFee
             data['waterFee'] = res.waterFee
-
             data['etcFee'] = res.etcFee
             data['changedFee'] = res.changedFee
             data['totalFee'] = res.totalFee
+            
+            # 이 거주자에 대한 납부내역 리스트(검색한 년/월 이전 것만)에서 완납되지 않은 달의 개수를 구한다.
+            data['delayNumber'] = 0;
+            data['accumNumber'] = 0;
+            if data['resident_id'] != None:
+                yy = int(res.year)
+                mm = int(res.month)
+                allPayments = PaymentInfo.objects.filter(building = int(data['buildingnum']), resident = int(data['resident_id']))
+                allPayments = allPayments.filter( Q(year__lt = yy) | Q(year = yy, month__lte = mm) ).order_by('-number', '-id')
+                cnt = int(0)
+                for i in range(len(allPayments)):
+                    if i > 0 and int(allPayments[i].number) == int(allPayments[i-1].number):
+                        continue
+                    if int(allPayments[i].payStatus) != -1 and int(allPayments[i].accumNumber) > 0:
+                        cnt += 1
+                data['delayNumber'] = cnt
+                if len(allPayments) == 0: #아직 고지 체크를 하지 않은 경우 (즉, 납부 내역이 아직 만들어지지 않은 경우)
+                    data['accumNumber'] = 0
+                else:
+                    data['accumNumber'] = allPayments[0].accumNumber
 
             serialized.append(data)
-            #else:
-            #    print(fromWhere)
-            #    if fromWhere == 1:
-            #        print('not : ', room.roomnum)
-            #        data = {}
-            #        data['id'] = -1
-            #        data['roomnum'] = room.roomnum
-            #        serialized.append(data)
     return serialized
 
 ## prettify data for electricity
@@ -852,6 +829,8 @@ def check_input_html(request):
 def notice_input_html(request):
     return render(request, '03_02_notice_input.html', setPostData(request))
 
+
+### 03.02 고지 상세 입력 : tab1의 변동금액 저장할 때 호출됨 ###
 def notice_detail_save(request):
     if request.method == 'POST':
         em = EachMonthInfo.objects.get(id = int(request.POST['em_id']))
@@ -919,10 +898,13 @@ def serialize_notice_input_detail(notice):
     return serialized
 
 
-def serialize_detail_tab2(data):
+
+def serialize_notice_detail_tab2Info(data, modifyData, bid, rid):
     serialized = []
+    # 기본 리스트
     for d in data:
         p = {}
+        p['type'] = 'basic'
         p['id'] = int(d.id)
         p['noticeNumber'] = d.noticeNumber
         p['year'] = d.year
@@ -934,27 +916,77 @@ def serialize_detail_tab2(data):
         p['electricityFee'] = d.electricityFee
         p['gasFee'] = d.gasFee
         p['waterFee'] = d.waterFee
-        #p[''] = d.
-        #p[''] = d.
-        #p[''] = d.
         p['etcFee'] = d.etcFee
-        if d.changedFee == None:
-            p['changedFee'] = int(0)
-        else:
-            p['changedFee'] = int(d.changedFee)
+        p['changedFee'] = d.changedFee
         p['totalFee'] = d.totalFee
+        p['inputDate'] = ''
+        if d.inputDate != None:
+            p['inputDate'] = str(d.inputDate.year)+'.'+str(d.inputDate.month)+'.'+str(d.inputDate.day)
         p['noticeDate'] = ''
         if d.noticeDate != None:
-            p['noticeDate'] = str(d.noticeDate.month)+'.'+str(d.noticeDate.day)
+            p['noticeDate'] = str(d.noticeDate.year)+'.'+str(d.noticeDate.month)+'.'+str(d.noticeDate.day)
+        # 이 거주자에 대한 납부내역 리스트(검색한 년/월 이전 것만)에서 완납되지 않은 달의 개수를 구한다.
+        yy = int(p['year'])
+        mm = int(p['month'])
+        allPayments = PaymentInfo.objects.filter(building = int(bid), resident = int(rid))
+        allPayments = allPayments.filter( Q(year__lt = yy) | Q(year = yy, month__lte = mm) ).order_by('-number', '-id')
+        cnt = int(0)
+        for i in range(len(allPayments)):
+            if i > 0 and int(allPayments[i].number) == int(allPayments[i-1].number):
+                continue
+            if int(allPayments[i].payStatus) != -1 and int(allPayments[i].accumNumber) > 0:
+                cnt += 1
+        p['delayNumber'] = cnt
+        p['accumNumber'] = allPayments[0].accumNumber
+        serialized.append(p)
+    # 변동 수정 리스트
+    for d in modifyData:
+        p = {}
+        p['type'] = 'modify'
+        p['id'] = int(d.id)
+        p['eid'] = int(d.eachMonth_id)
+        p['modifyNumber'] = d.modifyNumber
+        p['year'] = d.year
+        p['month'] = d.month
+        p['leaseMoney'] = d.leaseMoney
+        p['maintenanceFee'] = d.maintenanceFee
+        p['surtax'] = d.surtax
+        p['parkingFee'] = d.parkingFee
+        p['electricityFee'] = d.electricityFee
+        p['gasFee'] = d.gasFee
+        p['waterFee'] = d.waterFee
+        p['etcFee'] = d.etcFee
+        p['changedFee'] = d.changedFee
+        p['totalFee'] = d.totalFee
+        #p['noticeDate'] = ''
+        #if d.noticeDate != None:
+        #    p['noticeDate'] = str(d.noticeDate.month)+'.'+str(d.noticeDate.day)
         serialized.append(p)
     return serialized
 
+### 03.02 notice 상세 tab2 화면의 임대x회차 조회 버튼 클릭 시 동작함.
 def notice_detail_tab2(request):
     if request.method == 'POST':
         bid = int(request.POST['building_id'])
-        rid = int(request.POST['resident_id'])
-        data = EachMonthInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
-        return toJSON(serialize_detail_tab2(data))
+        roomNum = int(request.POST['roomNum'])
+        lnt = int(request.POST['leaseNumberTotal'])
+        noModify = int(request.POST['noModify'])
+
+        # 임대 x회차였던 사람의 resident_id 를 구한다.
+        try:
+            rid = ResidentInfo.objects.get(buildingName = bid, buildingRoomNumber = roomNum, leaseNumberTotal = lnt).id
+            # 있으면 Eachmonth 정보를 들고온다.
+            EMs = EachMonthInfo.objects.filter(building_id = bid, resident_id = rid).order_by('-id')
+            EMIDs = EMs.values('id')
+            modifies = []
+            if noModify == 0:
+                modifies = EachMonthDetailInfo.objects.filter(eachMonth__in = EMIDs).order_by('eachMonth', '-modifyNumber')
+            return toJSON(serialize_notice_detail_tab2Info(EMs, modifies, bid, rid))
+        except Exception as e:
+            print(e)
+            # 없으면 empty list를 return
+            return toJSON(serialize_notice_detail_tab2Info([], [], '', ''))
+        return HttpResponse('?')
     return HttpResponse('NOT POST')
 
 
@@ -972,9 +1004,6 @@ def serialize_detail_tab2_detail(data):
         p['electricityFee'] = d.electricityFee
         p['gasFee'] = d.gasFee
         p['waterFee'] = d.waterFee
-        #p[''] = d.
-        #p[''] = d.
-        #p[''] = d.
         p['etcFee'] = d.etcFee
         p['changedFee'] = d.changedFee
         p['totalFee'] = d.totalFee
@@ -1012,7 +1041,7 @@ def notice_detail_tab2_detail(request):
         return toJSON(serialize_detail_tab2_detail(emd))
     return HttpResponse('NOT POST')
 
-def notice_detail_input_html(request, bid, rid, eid, tab):
+def notice_detail_input_html(request, bid, rid, eid, year, month, tab):
     param = {}
     param['tab'] = int(tab)
     res = ResidentInfo.objects.get(id = int(rid))
@@ -1023,18 +1052,15 @@ def notice_detail_input_html(request, bid, rid, eid, tab):
     param['simpleLeaseMoney'] = int(param['resident'].leaseMoney) / int(10000)
     param['building_name'] = BuildingInfo.objects.get(id = int(bid)).name
     param['building_id'] = int(bid)
+    param['year'] = int(year)
+    param['month'] = int(month)
+    param['leaseNumberTotal'] = int(param['resident'].leaseNumberTotal)
+    param['leaseNumberList'] = range(1, param['leaseNumberTotal']+1)
 
-    ### for tab2 ###
-    param['eachMonth'] = EachMonthInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
-    for n in param['eachMonth']:
-        if n.changedFee != None:
-            n.changedFee = int(n.changedFee)
-        if n.noticeDate != None:
-            n.noticeDate = str(n.noticeDate.month)+'.'+str(n.noticeDate.day)
-        else:
-            n.noticeDate = ''
-    ################
+    # 납부 내역 리스트를 가져온다.
+    #PaymentInfo.objects.filter(building = int(bid), resident = int(rid), )
 
+    # EachMonth의 수정 내역 리스트를 불러온다.
     original = EachMonthInfo.objects.get(id = int(eid))
     param['yymm'] = str(original.year)+'.'+str(original.month)
     param['noticeNumber'] = int(original.noticeNumber)
@@ -1059,6 +1085,17 @@ def notice_detail_input_html(request, bid, rid, eid, tab):
 
     param['list_last'] = param['list'][0]
     param['list_last'].nextModifyNumber = int(param['list_last'].modifyNumber) + 1
+    
+    ######## for tab2 ########
+    param['eachMonth'] = EachMonthInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
+    for n in param['eachMonth']:
+        if n.changedFee != None:
+            n.changedFee = int(n.changedFee)
+        if n.noticeDate != None:
+            n.noticeDate = str(n.noticeDate.month)+'.'+str(n.noticeDate.day)
+        else:
+            n.noticeDate = ''
+    ###########################
 
     return render(request, '03_02_notice_detail_input.html', param)
 
@@ -1075,6 +1112,15 @@ def save_input(request):
         return HttpResponse('OK')
     return HttpResponse('NOT POST')
 
+def pretty(y, m, d):
+    mm = m
+    if int(mm) < 10:
+        mm = '0' + m
+    dd = d
+    if int(dd) < 10:
+        dd = '0' + d
+    return int(str(y)+str(mm)+str(dd))
+    
 def save_notice(request):
     if request.method == 'POST':
         data = EachMonthInfo.objects.get(id = int(request.POST['eid']))
@@ -1092,8 +1138,8 @@ def save_notice(request):
             for t in temp:
                 t.noticeCheck = True
                 t.save()
-            print(len(temp))
             if len(temp) == 0:
+                import datetime
                 info = PaymentInfo.objects.filter(building = data.building, resident = data.resident).order_by('-id')
                 # make new 'payment object
                 pay = PaymentInfo()
@@ -1107,35 +1153,40 @@ def save_notice(request):
                 pay.amountPaySum = 0
                 pay.amountPay = 0
                 pay.amountNoPay = int(data.totalFee)
-                if pay.number > 1 :
-                    pay.amountNoPay += int(info[0].amountNoPay)
+                #if pay.number > 1 :
+                #    pay.amountNoPay += int(info[0].amountNoPay)
                 pay.totalFee = pay.amountNoPay
                 pay.confirmStatus = '0'
+                pay.delayFee = 0
+
+                pay.accumNumber = 0
+                d = datetime.datetime.now()
+                if int(pretty(str(d.year), str(d.month), str(d.day))) > int(pretty(str(data.year), str(data.month), str(data.resident.leasePayDate))): 
+                    pay.accumNumber = 1
                 pay.payStatus = 0
                 if pay.number == 1:
-                    pay.delayNumberNow = 1
+                    pay.delayNumber = 1
                 else:
                     if info[0].payStatus == -1:
-                        pay.delayNumberNow = info[0].delayNumberNow
+                        pay.delayNumber = info[0].delayNumber
                     else:
-                        pay.delayNumberNow = info[0].delayNumberNow + 1
-                pay.delayNumberNext = pay.delayNumberNow + 1
+                        pay.delayNumber = info[0].delayNumber + 1
                 pay.modifyNumber = 0
                 pay.save()
 
                 # insert new modify info
-                import datetime
                 elem = PaymentModifyInfo()
                 elem.payment = PaymentInfo.objects.get(id = int(pay.id))
                 elem.modifyNumber = int(0)
                 elem.year = pay.year
                 elem.month = pay.month
                 elem.payStatus = pay.payStatus
-                elem.delayNumberNow = pay.delayNumberNow
-                elem.delayNumberNext = pay.delayNumberNext
+                elem.delayNumber = pay.delayNumber
                 elem.amountPaySum = pay.amountPaySum
                 elem.amountPay = pay.amountPay
                 elem.amountNoPay = pay.amountNoPay
+                elem.accumNumber = pay.accumNumber
+                elem.delayFee = int(0)
                 elem.modifyMsg = ''
                 elem.save()
 
@@ -1153,27 +1204,22 @@ def gas_input_html(request):
     return render(request, '03_02_gas_input.html', setPostData(request, "gas"))
 
 def water_input_html(request):
-    '''
-    csrf_token = get_token(request)
-    building = BuildingInfo.objects.all()
-    building_name_id = []
-    for b in building:
-        building_name_id.append({'name' : b.name, 'id' : b.id})
-    # get excel file
-    # ...
-    return render(request, '03_02_water_input.html', {'building_name_id' : building_name_id})
-    '''
     return render(request, '03_02_water_input.html', setPostData(request, "water"))
 
 
-##### 03_03 : payment #####
+
+
+
+
+########################################################
+################### 03_03 : payment ####################
+########################################################
 
 def payment_input_html(request):
-
     return render(request, '03_03_payment.html', setPostData(request, 'payment'))
 
 ## prettify data for payment
-def serialize_payment(result):
+def serialize_payment(result, bid, yy, mm):
     serialized = []
     for i in range(len(result)):
         if i > 0 and int(result[i].resident.id) == int(result[i-1].resident.id):
@@ -1194,14 +1240,25 @@ def serialize_payment(result):
         data['amountPaySum'] = result[i].amountPaySum
         data['amountPay'] = result[i].amountPay
         data['amountNoPay'] = result[i].amountNoPay
-        date = result[i].payDate
-        if date == None:
-            data['payDate'] = ''
-        else:
-            data['payDate'] = str(date.year)+'.'+str(date.month)+'.'+str(date.day)
-        data['delayNumberNow'] = result[i].delayNumberNow
-        data['delayNumberNext'] = result[i].delayNumberNext
+        data['delayFee'] = result[i].delayFee
+        data['delayNumber'] = result[i].delayNumber
+        data['accumNumber'] = result[i].accumNumber
         data['modifyNumber'] = result[i].modifyNumber
+        data['payDate'] = ''
+        if result[i].payDate != None:
+            data['payDate'] = str(result[i].payDate.year)+'.'+str(result[i].payDate.month)+'.'+str(result[i].payDate.day)
+        
+        # 이 거주자에 대한 납부내역 리스트(검색한 년/월 이전 것만)에서 완납되지 않은 달의 개수를 구한다.
+        allPayments = PaymentInfo.objects.filter(building = int(bid), resident = int(data['resident_id']))
+        allPayments = allPayments.filter( Q(year__lt = yy) | Q(year = yy, month__lte = mm) ).order_by('-number', '-id')
+        cnt = int(0)
+        for i in range(len(allPayments)):
+            if i > 0 and int(allPayments[i].number) == int(allPayments[i-1].number):
+                continue
+            if int(allPayments[i].payStatus) != -1 and int(allPayments[i].accumNumber) > 0:
+                cnt += 1
+        data['delayNumber'] = cnt
+        
         serialized.append(data)
 
     # sort (by roomnum)
@@ -1213,11 +1270,11 @@ def serialize_payment(result):
 
 def payment_input_getinfo(request):
     if request.method == 'POST':
+        bid = int(request.POST['building_id'])
         y = int(request.POST['year'])
         m = int(request.POST['month'])
-        bid = int(request.POST['building_id'])
         data = PaymentInfo.objects.filter(building = bid, year = y, month = m).order_by('resident', '-id')
-        return toJSON(serialize_payment(data))
+        return toJSON(serialize_payment(data, bid, y, m))
     return HttpResponse('NOT POST')
 
 def payment_check(request):
@@ -1228,19 +1285,18 @@ def payment_check(request):
         else:
             data.checked = True
         data.save()
-
         return HttpResponse('OK')
     return HttpResponse('NOT POST')
 
 
 
-
-
-def payment_detail_html(request, bid, rid, tab):
+def payment_detail_html(request, bid, rid, year, month, tab):
     param = {}
     param['tab'] = int(tab)
     param['bid'] = int(bid)
     param['rid'] = int(rid)
+    param['year'] = int(year)
+    param['month'] = int(month)
 
     param['resident'] = ResidentInfo.objects.get(id = int(rid))
     param['resident'].bName = BuildingInfo.objects.get(id = int(bid)).name
@@ -1250,60 +1306,21 @@ def payment_detail_html(request, bid, rid, tab):
     param['resident'].outDate = str(out.year)+'.'+str(out.month)+'.'+str(out.day)
     param['simpleLeaseDeposit'] = int(param['resident'].leaseDeposit) / int(10000)
     param['simpleLeaseMoney'] = int(param['resident'].leaseMoney) / int(10000)
-
-    # payment history list
-    param['list'] = PaymentInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
-    no = len(param['list'])
-    for p in param['list']:
-        if p.payDate == None:
-            p.payDate = ''
-        else:
-            p.payDate = str(p.payDate.year)+'.'+str(p.payDate.month)+'.'+str(p.payDate.day)
-        if p.confirmDate == None:
-            p.confirmDate = ''
-        else:
-            p.confirmDate = str(p.confirmDate.year)+'.'+str(p.confirmDate.month)+'.'+str(p.confirmDate.day)
-        p.no = no
-        no -= 1
-    param['list_last'] = param['list'][0]
-    param['list_delay'] = range(max(0, int(param['list_last'].delayNumberNow)-3), int(param['list_last'].delayNumberNow)+3+1)
-
-    # modify history list (only for the last payment)
-    param['modify_list'] = PaymentModifyInfo.objects.filter(payment = int(param['list'][0].id))
-    for p in param['modify_list']:
-        if p.payDate == None:
-            p.payDate = ''
-        else:
-            p.payDate = str(p.payDate.year)+'.'+str(p.payDate.month)+'.'+str(p.payDate.day)
-        if p.confirmDate == None:
-            p.confirmDate = ''
-        else:
-            p.confirmDate = str(p.confirmDate.year)+'.'+str(p.confirmDate.month)+'.'+str(p.confirmDate.day)
-    param['modify_list_last'] = param['modify_list'][len(param['modify_list'])-1]
-    param['modify_list_delay'] = range(max(0, int(param['modify_list_last'].delayNumberNow)-3), int(param['modify_list_last'].delayNumberNow)+3+1)
-    param['modify_max_num'] = int(param['modify_list_last'].modifyNumber) + 1
-
-    # modify messages
-    param['modify_msg'] = []
-    for i in range(1, len(param['modify_list'])):
-        d = {}
-        d['no'] = i
-        d['year'] = param['modify_list'][i].year
-        d['month'] = param['modify_list'][i].month
-        d['modifyNumber'] = param['modify_list'][i].modifyNumber
-        d['modifyMsg'] = param['modify_list'][i].modifyMsg
-        time = param['modify_list'][i].modifyTime
-        d['modifyTime'] = str(time.year)+'.'+str(time.month)+'.'+str(time.day)
-        param['modify_msg'].append(d)
-
+    param['roomNum'] = int(param['resident'].buildingRoomNumber)
+    param['leaseNumberTotal'] = int(param['resident'].leaseNumberTotal)
+    param['leaseNumberList'] = range(1, param['leaseNumberTotal']+1)
+    #original = EachMonthInfo.objects.get(id = int(eid))
+    temp = PaymentInfo.objects.filter(building_id = int(bid), resident_id = int(rid), year = int(year), month = int(month))[0]
+    param['noticeNumber'] = int(temp.number)
     return render(request, '03_03_payment_detail.html', param)
 
 
-# serialize data for payment detail all info
-def serialize_paymentDetailAllInfo(result):
+def serialize_payment_detail_allInfo(result, modify_result):
     serialized = []
+    # serialize payment data
     for i in range(len(result)):
         data = {}
+        data['type'] = 'basic'
         data['id'] = result[i].id
         data['checked'] = result[i].checked
         data['year'] = result[i].year
@@ -1311,54 +1328,72 @@ def serialize_paymentDetailAllInfo(result):
         data['number'] = result[i].number
         data['totalFee'] = result[i].totalFee
         data['leasePayDate'] = result[i].resident.leasePayDate
-        data['payDate'] = ''
-        if result[i].payDate != None:
-            data['payDate'] = str(result[i].payDate.year)+'.'+str(result[i].payDate.month)+'.'+str(result[i].payDate.day)
+        data['amountPaySum'] = result[i].amountPaySum
         data['amountPay'] = result[i].amountPay
         data['amountNoPay'] = result[i].amountNoPay
+        data['delayFee'] = result[i].delayFee
+        data['payStatus'] = result[i].payStatus
+        data['confirmStatus'] = result[i].confirmStatus
+        data['delayNumber'] = result[i].delayNumber
+        data['modifyNumber'] = result[i].modifyNumber
+        data['accumNumber'] = result[i].accumNumber
+        data['payMsg'] = result[i].payMsg
+        data['payDate'] = ''
+        data['payDateDay'] = int(0)
+        if result[i].payDate != None:
+            data['payDate'] = str(result[i].payDate.year)+'.'+str(result[i].payDate.month)+'.'+str(result[i].payDate.day)
+            data['payDateDay'] = int(result[i].payDate.day)
         data['confirmDate'] = ''
         if result[i].confirmDate != None:
             data['confirmDate'] = str(result[i].confirmDate.year)+'.'+str(result[i].confirmDate.month)+'.'+str(result[i].confirmDate.day)
-        data['delayNumberNow'] = result[i].delayNumberNow
-        data['payStatus'] = result[i].payStatus
-        data['modifyNumber'] = result[i].modifyNumber
+        serialized.append(data)
+
+    # serialize modify(payment detail) data
+    for m in modify_result:
+        data = {}
+        data['type'] = 'modify'
+        data['id'] = m.id
+        data['payment_id'] = m.payment.id
+        data['modifyNumber'] = m.modifyNumber
+        data['accumNumber'] = m.accumNumber
+        data['year'] = m.year
+        data['month'] = m.month
+        data['payStatus'] = m.payStatus
+        data['delayNumber'] = m.delayNumber
+        data['amountPaySum'] = m.amountPaySum
+        data['amountPay'] = m.amountPay
+        data['amountNoPay'] = m.amountNoPay
+        data['delayFee'] = m.delayFee
+        data['modifyTime'] = ''
+        if m.modifyTime != None:
+            data['modifyTime'] = str(m.modifyTime.year)+'.'+str(m.modifyTime.month)+'.'+str(m.modifyTime.day)
+        data['modifyMsg'] = m.modifyMsg
+        data['payDate'] = ''
+        if m.payDate != None:
+            data['payDate'] = str(m.payDate.year)+'.'+str(m.payDate.month)+'.'+str(m.payDate.day)
+        data['confirmDate'] = ''
+        if m.confirmDate != None:
+            data['confirmDate'] = str(m.confirmDate.year)+'.'+str(m.confirmDate.month)+'.'+str(m.confirmDate.day)
         serialized.append(data)
     return serialized
+
 def payment_detail_allInfo(request):
     if request.method == 'POST':
         bid = int(request.POST['building_id'])
         rid = int(request.POST['resident_id'])
-        data = PaymentInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id')
-        return toJSON(serialize_paymentDetailAllInfo(data))
+        yy = int(request.POST['year'])
+        mm = int(request.POST['month'])
+        
+        # 검색한 년/월 까지만 뽑아낸다.
+        allData = PaymentInfo.objects.filter(building_id = int(bid), resident_id = int(rid))
+        allData = allData.filter( Q(year__lt = yy) | Q(year = yy, month__lte = mm) ).order_by('-number', '-id')
+
+        # 위의 한 payment당 모든 modify정보를 뽑아낸다.
+        paymentIDs = allData.values('id')
+        modifyData = PaymentModifyInfo.objects.filter(payment__in = paymentIDs).order_by('payment', 'modifyNumber')
+
+        return toJSON(serialize_payment_detail_allInfo(allData, modifyData))
     return HttpResponse('NOT POST')
-
-# serialize data for payment modify info
-def serialize_paymentModifyInfo(result):
-    serialized = []
-    for i in range(len(result)):
-        if int(result[i].modifyNumber) == 0:
-            continue
-        data = {}
-        data['pid'] = result[i].payment.id
-        data['no'] = len(result) - i
-        data['year'] = result[i].year
-        data['month'] = result[i].month
-        data['modifyNumber'] = result[i].modifyNumber
-        data['modifyMsg'] = result[i].modifyMsg
-        time = result[i].modifyTime
-        data['modifyTime'] = str(time.year)+'.'+str(time.month)+'.'+str(time.day)
-        serialized.append(data)
-    return serialized
-
-def payment_detail_modifyinfo(request):
-    if request.method == 'POST':
-        bid = int(request.POST['building_id'])
-        rid = int(request.POST['resident_id'])
-        paymentIds = PaymentInfo.objects.filter(building_id = int(bid), resident_id = int(rid)).order_by('-id').values('id')
-        data = PaymentModifyInfo.objects.filter(payment__in = paymentIds).order_by('-id')
-        return toJSON(serialize_paymentModifyInfo(data))
-    return HttpResponse('NOT POST')
-
 
 
 def payment_detail_saveInput(request):
@@ -1375,39 +1410,36 @@ def payment_detail_saveInput(request):
         elem.amountPaySum = int(request.POST['amountPaySum'])
         elem.amountPay = int(request.POST['amountPay'])
         elem.amountNoPay = int(request.POST['amountNoPay'])
-        if elem.amountPaySum == elem.totalFee:
-            elem.payStatus = int(-1)
-        else:
-            elem.payStatus = int(request.POST['payStatus'])
+        elem.delayFee = int(0)
+        elem.payStatus = int(request.POST['payStatus'])
         elem.payDate = request.POST['payDate'].replace('.', '-')
         elem.confirmDate = request.POST['confirmDate'].replace('.', '-')
-        elem.delayNumberNow = int(request.POST['delayNumberNow'])
-        elem.delayNumberNext = int(request.POST['delayNumberNext'])
+        elem.delayNumber = int(request.POST['delayNumber'])
+        elem.accumNumber = int(request.POST['accumNumber'])
         elem.payMsg = str(request.POST['payMsg'])
         elem.modifyNumber = int(0)
-        elem.confirmStatus = str(1)
+        elem.confirmStatus = '1'
         elem.checked = False
         elem.save()
 
         #make 0-th modified info
         m = PaymentModifyInfo()
-        m.payment = PaymentInfo.objects.get(id = int(elem.id))
+        #m.payment = PaymentInfo.objects.get(id = int(elem.id))
+        m.payment = elem
         m.modifyNumber = int(0)
         m.year = elem.year
         m.month = elem.month
         m.payStatus = elem.payStatus
         m.payDate = elem.payDate
-        m.delayNumberNow = elem.delayNumberNow
-        m.delayNumberNext = elem.delayNumberNext
+        m.delayNumber = elem.delayNumber
+        m.accumNumber = elem.accumNumber
         m.amountPaySum = elem.amountPaySum
         m.amountPay = elem.amountPay
         m.amountNoPay = elem.amountNoPay
+        m.delayFee = int(0)
         m.confirmDate = elem.confirmDate
         m.modifyMsg = ''
         m.modifyTime = None
-
-        #save
-        #elem.save()
         m.save()
 
         return HttpResponse('OK')
@@ -1421,12 +1453,13 @@ def payment_detail_saveModify(request):
         elem = PaymentModifyInfo()
         elem.payment = PaymentInfo.objects.get(id = int(request.POST['payment_id']))
         elem.modifyNumber = int(request.POST['modifyNumber'])
+        elem.accumNumber = int(request.POST['accumNumber'])
         elem.year = int(request.POST['year'])
         elem.month = int(request.POST['month'])
         elem.payStatus = int(request.POST['payStatus'])
         elem.payDate = request.POST['payDate'].replace('.', '-')
-        elem.delayNumberNow = int(request.POST['delayNumberNow'])
-        elem.delayNumberNext = int(request.POST['delayNumberNext'])
+        elem.delayNumber = int(request.POST['delayNumber'])
+        elem.delayFee = int(request.POST['delayFee'])
         elem.amountPaySum = int(request.POST['amountPaySum'])
         elem.amountPay = int(request.POST['amountPay'])
         elem.amountNoPay = int(request.POST['amountNoPay'])
@@ -1439,13 +1472,12 @@ def payment_detail_saveModify(request):
         pay = elem.payment
         pay.payStatus = elem.payStatus
         pay.payDate = elem.payDate
-        pay.delayNumberNow = elem.delayNumberNow
-        pay.delayNumberNext = elem.delayNumberNext
         pay.amountPaySum = elem.amountPaySum
         pay.amountPay = elem.amountPay
         pay.amountNoPay = elem.amountNoPay
         pay.confirmDate = elem.confirmDate
         pay.modifyNumber = elem.modifyNumber
+        pay.delayFee = elem.delayFee
         pay.confirmStatus = '2'
 
         #save
@@ -1455,7 +1487,26 @@ def payment_detail_saveModify(request):
         return HttpResponse('OK')
     return HttpResponse('NOT POST')
 
+######### 03.03 payment detail (tab2) ##############
+def payment_detail_info_tab2(request):
+    if request.method == 'POST':
+        bid = int(request.POST['building_id'])
+        roomNum = int(request.POST['roomNum'])
+        lnt = int(request.POST['leaseNumberTotal'])
+        noModify = int(request.POST['noModify'])
 
-
-
-
+        # 임대 x회차였던 사람의 resident_id 를 구한다.
+        try:
+            rid = ResidentInfo.objects.get(buildingName = bid, buildingRoomNumber = roomNum, leaseNumberTotal = lnt).id
+            # 있으면 payment, paymentModify 정보 들고간다.
+            payments = PaymentInfo.objects.filter(building_id = bid, resident_id = rid).order_by('-number', '-id')
+            paymentIDs = payments.values('id')
+            modifies = []
+            if noModify == 0:
+                modifies = PaymentModifyInfo.objects.filter(payment__in = paymentIDs).order_by('payment', 'modifyNumber')
+            return toJSON(serialize_payment_detail_allInfo(payments, modifies))
+        except:
+            # 없으면 empty list를 return
+            return toJSON(serialize_payment_detail_allInfo([], []))
+        return HttpResponse('?')
+    return HttpResponse('NOT POST')

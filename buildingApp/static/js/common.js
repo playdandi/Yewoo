@@ -1,3 +1,22 @@
+// IE 8에서 trim()함수가 지원되지 않음. 그에 대한 해결방안.
+if (typeof String.prototype.trim !== 'function') {
+	String.prototype.trim = function() {
+		return this.replace(/^\s+|\s+$/g, '');
+	}
+}
+
+//  입주자 정보 카테고리에서 페이지 이동 공통함수
+function movePage(type)
+{
+	if (type == '1')
+		$(location).attr('href', '/resident/info/');
+	else if (type == '2')
+		$(location).attr('href', '/resident/infoFile/');
+	else if (type == '3')
+		$(location).attr('href', '/resident/show/');
+}
+
+
 function getBaseUrl()
 {
 	return location.host;
@@ -62,21 +81,21 @@ function show_sidebar()
 		$('#building').popover({
 			html : 'true',
 			placement : 'right',
-			title : '[건물 관리]',
+			title : '[건물 관리 시스템]',
 			content : '<ul class="nav nav-tab main-menu" style="margin-bottom:-1px"><li><a href="/building/register/"><i class="icon-hand-right" style="margin-right:5px"></i>건물 정보 등록</a></li><li><a href="/building/search/building/"><i class="icon-hand-right" style="margin-right:5px"></i>등록 건물 정보 확인</a></li><li><a href="/building/search/rooms/"><i class="icon-hand-right" style="margin-right:5px"></i>등록 호수 정보 확인</a></li></ul>'
 		});
 
 		$('#resident').popover({
 			html : 'true',
 			placement : 'right',
-			title : '[입주자 관리]',
-			content : '<ul class="nav nav-tab main-menu" style="margin-bottom:-1px"><li><a href="/resident/info/"><i class="icon-hand-right" style="margin-right:5px"></i>입주자 정보 입력</a></li><li><a href="/resident/show/"><i class="icon-hand-right" style="margin-right:5px"></i>입주자 정보 확인</a></li></ul>'
+			title : '[입주자 관리 시스템]',
+			content : '<ul class="nav nav-tab main-menu" style="margin-bottom:-1px"><li><a href="/resident/show/"><i class="icon-hand-right" style="margin-right:5px"></i>입주자 정보 확인(목록)</a></li><li><a href="/resident/info/"><i class="icon-hand-right" style="margin-right:5px"></i>입주자 정보 입력(개별)</a></li><li><a href="/resident/infoFile/"><i class="icon-hand-right" style="margin-right:5px"></i>입주자 정보 입력(파일)</a></li></ul>'
 		});
 
 		$('#lease').popover({
 			html : 'true',
 			placement : 'right',
-			title : '[임대 (내역) 관리]',
+			title : '[통합 내역 관리 시스템]',
 			content : '<ul class="nav nav-tab main-menu" style="margin-bottom:-1px"><li><a href="/lease/show/lease"><i class="icon-hand-right" style="margin-right:5px"></i>임대 내역 관리 (확인)</a></li><li><a href="/lease/input/notice"><i class="icon-hand-right" style="margin-right:5px"></i>고지 내역 관리 (입력)</a></li><li><a href="#"><i class="icon-hand-right" style="margin-right:5px"></i>납부 내역 관리 (입력)</a></li></ul>'
 		});
 
@@ -135,9 +154,6 @@ $('input[id=fileInput]').change(function() {
 		return;
 	
 	fname = fname.split('\\')[2].trim();
-
-	//$('#filename').val(fname);
-	//$('#filename_modal').val(fname);
 
 	// xls copy로 parse하기
 	var fileInput = document.getElementsByName('file');
@@ -409,4 +425,11 @@ var curMonth;
 
 
 
+
+
+////////////////////////////////////////
+/* 각종 tooltip 메시지들 모음 변수 */
+////////////////////////////////////////
+
+//var 03_02_tip_1 = "<고지 내역 입력>\n이달에 고지해야 할 총 금액을 확인할 수 있습니다.\n1. 고지 내역 입력(상단)\n1)"; 
 

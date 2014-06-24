@@ -1,0 +1,36 @@
+<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+	<tr>
+		<th style="text-align:center" width="3%"><input id="selCheck_all" type="checkbox" onclick="filter('0');" /></th>
+		<th style="text-align:center" width="6%">구분</th>
+		<th style="text-align:center" width="11%">건물명</th>
+		<th style="text-align:center" width="7%">호실</th>
+		<th style="text-align:center" width="8%">재실여부</th>
+		<th style="text-align:center" width="9%">입주자</th>
+		<th style="text-align:center" width="5%">성별</th>
+		<th style="text-align:center" width="8%">입주 회차</th>
+		<th style="text-align:center" width="8%">임대 구분</th>
+		<th style="text-align:center" width="13%">입주일</th>
+		<th style="text-align:center" width="13%">만료일</th>
+		<th style="text-align:center" width="9%">미리보기</th>
+	</tr>
+	<% for (var i = 0; i < data.length; i++) { %>
+	<tr id="sel<%= i %>">
+		<td style="text-align:center"><input id="selCheck<%= i %>" type="checkbox" /></td>
+		<% if (data[i].category == '갱신') { %>
+		<td style="text-align:center"><font style="color:red">갱신</font></td>
+		<% } else { %>
+		<td style="text-align:center">신규</td>
+		<% } %>
+		<td style="text-align:center"><%= data[i].buildingName %></td>
+		<td style="text-align:center"><%= data[i].buildingRoomNumber %></td>
+		<td style="text-align:center"><%= data[i].livingState %></td>
+		<td style="text-align:center"><%= data[i].residentName %></td>
+		<td style="text-align:center"><%= data[i].contractorGender %></td>
+		<td style="text-align:center"><%= data[i].leaseNumber %>회</td>
+		<td style="text-align:center"><%= data[i].leaseType %></td>
+		<td style="text-align:center"><%= data[i].inDate %></td>
+		<td style="text-align:center"><%= data[i].outDate %></td>
+		<td style="text-align:center"><button class="btn btn-small" onclick="setPreviewInfo('<%= i %>');">보기</button></td>
+	</tr>
+	<% } %>
+</table>

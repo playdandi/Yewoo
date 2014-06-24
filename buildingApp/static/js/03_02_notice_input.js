@@ -115,6 +115,11 @@ var doAjaxNoticeInfo = function() {
 			noticeList = result;
 			var template = new EJS({url : '/static/ejs/03_02_notice_input.ejs'}).render({'data' : noticeList, 'radio' : Number(0)});
 			$('#contents').html(template);
+			
+			$('#tooltip').tooltip({
+				html : true,
+				title : "<연체 내역><br>연체 내역을 확인하는 정보입니다.<br><br>미납이나 연체 내역이 있는 경우 [미납회차] 항목에 '미납' 과 '미납회차' 가 표시됩니다.<br>[누적] 항목에 누적된 회수가 표시됩니다.<br><br>미납이나 연체 내역이 없는 경우, [미납회차] 항목에 '고지'와 '고지회차' 가 표시됩니다."
+			});
 		},
 		error : function(msg) {
 			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
@@ -171,12 +176,12 @@ function goEGWInput()
 function goDetail(bid, rid, id)
 {
 	// 변동 금액 입력 버튼 눌렀을 시 이동
-	$(location).attr('href', '/lease/input/notice/detail/'+bid+'/'+rid+'/'+id+'/'+'0'+'/');
+	$(location).attr('href', '/lease/input/notice/detail/'+bid+'/'+rid+'/'+id+'/'+curYear+'/'+curMonth+'/0/');
 }
 function goDetail2(bid, rid, id)
 {
 	// 상세 내역 확인 버튼 눌렀을 시 이동
-	$(location).attr('href', '/lease/input/notice/detail/'+bid+'/'+rid+'/'+id+'/'+'1'+'/');
+	$(location).attr('href', '/lease/input/notice/detail/'+bid+'/'+rid+'/'+id+'/'+curYear+'/'+curMonth+'/1/');
 }
 
 function showBill(bid, rid)

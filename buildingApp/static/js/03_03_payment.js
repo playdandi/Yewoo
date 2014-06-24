@@ -55,7 +55,6 @@ function showLeaseInfo(isForReload)
 	csrf.value = $.cookie('csrftoken');
 	form.appendChild(csrf);
 
-	//postData['room_num'] = (r_num != '') ? Number(r_num) : '';
 	form.submit();
 }
 
@@ -65,15 +64,8 @@ function InitForm()
 	$('#search_year').find('option:eq(0)').prop('selected', true);
 	$('#search_month').find('option:eq(0)').prop('selected', true);
 	$('#search_room_num').find('option:eq(0)').prop('selected', true);
-	//$('input[id=search_isEmpty]:checkbox').attr('checked', false);
-	//$('#search_isEmpty').attr('checked', false);
 }
-/*
-function showDetail(tab)
-{
-	$(location).attr('href', '/lease/payment/detail/');
-}
-*/
+
 function setCurInfo()
 {
 	curType = $('#search_type option:selected').text().replace('요금', '').trim();
@@ -105,6 +97,11 @@ var doAjaxContents = function() {
 			paymentList = result;
 			var template = new EJS({url : '/static/ejs/03_03_payment.ejs'}).render({'data' : paymentList, 'bid' : curBid, 'radio' : Number(0)});
 			$('#contents').html(template);
+
+			$('#tooltip').tooltip({
+				html : true,
+				title : "<연체 내역><br>연체 내역을 확인하는 정보입니다.<br><br>미납이나 연체 내역이 있는 경우 [미납회차] 항목에 '미납' 과 '미납회차' 가 표시됩니다.<br>[누적] 항목에 누적된 회수가 표시됩니다.<br><br>미납이나 연체 내역이 없는 경우, [미납회차] 항목에 '고지'와 '고지회차' 가 표시됩니다."
+			});
 		},
 		error : function(msg) {
 			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
@@ -112,12 +109,12 @@ var doAjaxContents = function() {
 	});
 }
 
-function goDetail(bid, rid, type)
+function goDetail(bid, rid, year, month, tab)
 {
-	$(location).attr('href', '/lease/payment/detail/'+bid+'/'+rid+'/'+type+'/');
+	$(location).attr('href', '/lease/payment/detail/'+bid+'/'+rid+'/'+year+'/'+month+'/'+tab+'/');
 }
 
-
+/*
 function simpleInput(id)
 {
 	for (i = 0; i < paymentList.length; i++) {
@@ -238,7 +235,7 @@ function functions()
 		});
 	}
 }
-
+*/
 
 // check button누를 때 동작
 function InputCheck(type, id)
@@ -247,6 +244,21 @@ function InputCheck(type, id)
 		alert('입력 확인 날짜를 선택해주세요.');
 		return;
 	}
+
+	if (type == '1') { // 확인 체크를 할 때는 팝업창 최종확인이 필요
+		var idx;
+		for (i = 0; i < paymentList.length; i++) {
+			if (paymentList[i].id == Number(id)) {
+				idx = i;
+				break;
+			}
+		}
+		if (!confirm(paymentList[idx].roomnum + '호 ' + paymentList[idx].name + ' 님의 ' + paymentList[idx].year+'.'+paymentList[idx].month + ' (' + paymentList[idx].number + '회차)\n납부예정일('+paymentList[idx].year+'.'+paymentList[idx].month+'.'+paymentList[idx].leasePayDate + '), 입금액(' + paymentList[idx].totalFee.toLocaleString().replace('.00','') + '원)\n맞습니까?')) {
+			$('#selbox_'+idx).attr('checked', false);
+			return;
+		}
+	}
+// 101호  김호근 님의 2014.4 (10회차)\n 입금일(2014년3월31일), 입금액(300,000원)\n 맞습니까?'
 
 	doAjaxInputCheck(type, id);
 }

@@ -4,6 +4,7 @@ function SaveResidentInfo()
 
 	// 건물명, 호실, 관리비, 부가세
 	data['buildingName'] = $('#buildingName').val().replace('b', '').trim();
+	data['manager'] = $('#manager').val().trim();
 	data['buildingRoomNumber'] = $('#buildingRoomNumber').val().trim();
 	data['maintenanceFee'] = $('#maintenanceFee').val().trim();
 	data['surtax'] = $('#surtax').val().trim();
@@ -11,7 +12,7 @@ function SaveResidentInfo()
 	data['residentName'] = $('#residentName').val().trim();
 	data['leaseNumber'] = $('#leaseNumber').val().trim();
 	data['leaseContractPeriod'] = $('#leaseContractPeriod').val().trim();
-	data['leaseContractPeriodUnit'] = $('#leaseContractPeriodUnit').val().trim();
+	//data['leaseContractPeriodUnit'] = $('#leaseContractPeriodUnit').val().trim();
 	data['inDate'] = $('#inDate').val().trim();
 	data['outDate'] = $('#outDate').val().trim();
 	// 임대구분, 보증금, 임대료방법, 임대료날짜, 임대료
@@ -281,7 +282,8 @@ function setPreviewInfo()
 {
 	var data = {};
 	$('#buildingName_modal').html($('#buildingName option:selected').text());
-	var roomNumber = Number($('#buildingRoomNumber').val());
+	$('#manager_modal').html($('#manager').val().trim());
+	var roomNumber = Number($('#buildingRoomNumber').val().trim());
 	if (roomNumber < 0)
 		roomNumber = String(roomNumber).replace('-', 'B ');
 	$('#buildingRoomNumber_modal').html(roomNumber);
@@ -289,7 +291,8 @@ function setPreviewInfo()
 	$('#surtax_modal').html($('#surtax').val().trim());
 	$('#residentName_modal').html($('#residentName').val().trim());
 	$('#leaseNumber_modal').html($('#leaseNumber').val().trim()+'회');
-	$('#leaseContractPeriod_modal').html($('#leaseContractPeriod').val()+$('#leaseContractPeriodUnit').val());
+	//$('#leaseContractPeriod_modal').html($('#leaseContractPeriod').val()+$('#leaseContractPeriodUnit').val());
+	$('#leaseContractPeriod_modal').html($('#leaseContractPeriod').val().trim()+'개월');
 	$('#inOutDate_modal').html($('#inDate').val() + ' ~ ' + $('#outDate').val());
 
 	$('#leaseType_modal').html($('#leaseType').val());
@@ -363,20 +366,3 @@ function setPreviewInfo()
 }
 
 
-/*
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-*/

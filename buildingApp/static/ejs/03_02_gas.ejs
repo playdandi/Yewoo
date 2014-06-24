@@ -34,28 +34,28 @@
 		<td style="text-align:center"><%= data[i].roomnum %></td>
 		<td style="text-align:center"><%= data[i].name %></td>
 		<td style="text-align:center"><%= data[i].date %></td>
-		<td style="text-align:center"><%= data[i].checkG %></td>
-		<td style="text-align:center"><%= data[i].usePeriod %></td>
+		<td style="text-align:center"><%= data[i].checkG.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].usePeriod.toLocaleString().replace('.00','') %></td>
 		<% if (bid != 8) { %>
-		<td style="text-align:center"><%= data[i].readBefore %></td>
-		<td style="text-align:center"><%= data[i].readNow %></td>
-		<td style="text-align:center"><%= data[i].capacityBefore %></td>
-		<td style="text-align:center"><%= data[i].capacityNow %></td>
+		<td style="text-align:center"><%= data[i].readBefore.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].readNow.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].capacityBefore.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].capacityNow.toLocaleString().replace('.00','') %></td>
 		<% } else { %>
-		<td style="text-align:center"><%= data[i].readBeforeHotWater %></td>
-		<td style="text-align:center"><%= data[i].readBeforeHeat %></td>
-		<td style="text-align:center"><%= data[i].readNowHotWater %></td>
-		<td style="text-align:center"><%= data[i].readNowHeat %></td>
-		<td style="text-align:center"><%= data[i].capacityBeforeHotWater %></td>
-		<td style="text-align:center"><%= data[i].capacityBeforeHeat %></td>
-		<td style="text-align:center"><%= data[i].capacityNowHotWater %></td>
-		<td style="text-align:center"><%= data[i].capacityNowHeat %></td>
+		<td style="text-align:center"><%= data[i].readBeforeHotWater.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].readBeforeHeat.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].readNowHotWater.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].readNowHeat.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].capacityBeforeHotWater.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].capacityBeforeHeat.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].capacityNowHotWater.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].capacityNowHeat.toLocaleString().replace('.00','') %></td>
 		<% } %>
-		<td style="text-align:center"><%= data[i].basicCharge %></td>
-		<td style="text-align:center"><%= data[i].useCharge %></td>
-		<td style="text-align:center"><%= data[i].vat %></td>
-		<td style="text-align:center"><%= data[i].trimmedFee %></td>
-		<td style="text-align:center"><%= data[i].totalFee %></td>
+		<td style="text-align:center"><%= data[i].basicCharge.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].useCharge.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].vat.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].trimmedFee.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].totalFee.toLocaleString().replace('.00','') %></td>
 	</tr>
 	<% } %>
 </table>

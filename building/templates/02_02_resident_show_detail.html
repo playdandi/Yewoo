@@ -175,6 +175,7 @@
 					</ul>
 				</div>
 				
+				{% load humanize %}	
 				<!-- 기본 정보 -->
 				<div class="row-fluid">
 					<div class="box span11" style="margin: 0px; padding: 0px">
@@ -201,10 +202,10 @@
 									<td>{{ result.contractorName }}</td>
 									<td>{{ result.contractorGender }}</td>
 									<td>{{ result.leaseType }}</td>
-									<td>{{ result.leaseDeposit }}</td>
-									<td>{{ result.leaseMoney }}</td>
+									<td>{{ result.leaseDeposit | intcomma }} 원</td>
+									<td>{{ result.leaseMoney | intcomma }} 원</td>
 									<td></td><!--<td>{{ result.연체 }}</td>-->
-									<td>{{ result.haveCar }}</td>
+									<td>{% if result.haveCar == 'y' %}있음{% else %}없음{% endif %}</td>
 								</tr>
 								<tr>
 									<th colspan="3">입주일 ~ 만료일</th>
@@ -267,7 +268,7 @@
 												</colgroup>
 												<tbody>
 													<tr>
-														<td colspan="6">
+														<td colspan="5">
 															<div class="must" style="margin-right:26px"><strong>건물명</strong></div>
 															<select id="buildingName" class="margin0" style="width:150px" disabled>
 																<option value="">선택</option>
@@ -277,6 +278,10 @@
 															</select>
 														</td>
 														<td colspan="4">
+															<div class="must" style="margin-right:20px"><strong>관리자</strong></div>
+															<input id="manager" class="margin0 input-small" value="{{ result.manager }}" type="text" disabled />
+														</td>
+														<td colspan="3">
 															<div class="must"><strong>호    실</strong></div>
 															<select id="buildingRoomNumber" class="margin0" style="width:85px" disabled>
 																<option value="">선택</option>
@@ -285,13 +290,13 @@
 																{% endfor %}
 															</select>
 														</td>
-														<td colspan="5">
+														<td colspan="4">
 															<div class="must" style="margin-right:20px"><strong>관리비</strong></div>
-															<input id="maintenanceFee" class="margin0 input-small" value="{{ result.maintenanceFee }}" type="text" disabled />
+															<input id="maintenanceFee" class="margin0 input-small" style="font-size:0.95em" value="&#8361; {{ result.maintenanceFee | intcomma }}" type="text" disabled />
 														</td>
-														<td colspan="5">
+														<td colspan="4">
 															<div class="must" style="margin-right:20px"><strong>부가세</strong></div>
-															<input id="surtax" class="margin0 input-small" type="text" value="{{ result.surtax }}" disabled />
+															<input id="surtax" class="margin0 input-small" style="font-size:0.95em" type="text" value="&#8361; {{ result.surtax | intcomma }}" disabled />
 														</td>
 													</tr>
 													<tr>
@@ -316,23 +321,31 @@
 														</td>
 														<td colspan="5">
 															<div class="must"><strong>입주기간</strong></div>
-															<select id="leaseContractPeriod" class="margin0 input-mini" style="float:left" disabled>
-																<option value="1" {% if result.leaseContractPeriod == 1 %}selected{% endif %}>1</option>
-																<option value="2" {% if result.leaseContractPeriod == 2 %}selected{% endif %}>2</option>
-																<option value="3" {% if result.leaseContractPeriod == 3 %}selected{% endif %}>3</option>
-																<option value="4" {% if result.leaseContractPeriod == 4 %}selected{% endif %}>4</option>
-																<option value="5" {% if result.leaseContractPeriod == 5 %}selected{% endif %}>5</option>
-																<option value="6" {% if result.leaseContractPeriod == 6 %}selected{% endif %}>6</option>
-																<option value="7" {% if result.leaseContractPeriod == 7 %}selected{% endif %}>7</option>
-																<option value="8" {% if result.leaseContractPeriod == 8 %}selected{% endif %}>8</option>
-																<option value="9" {% if result.leaseContractPeriod == 9 %}selected{% endif %}>9</option>
-																<option value="10" {% if result.leaseContractPeriod == 10 %}selected{% endif %}>10</option>
-																<option value="11" {% if result.leaseContractPeriod == 11 %}selected{% endif %}>11</option>
-																<option value="12" {% if result.leaseContractPeriod == 12 %}selected{% endif %}>12</option>
-															</select>
-															<select id="leaseContractPeriodUnit" class="margin0 input-mini" style="float:left" disabled>
-																<option value="년" {% if result.leaseContractPeriodUnit == '년' %}selected{% endif %}>년</option>
-																<option value="월" {% if result.leaseContractPeriodUnit == '월' %}selected{% endif %}>월</option>
+															<select id="leaseContractPeriod" class="margin0 input-small" disabled>
+																<option value="1" {% if result.leaseContractPeriod == 1 %}selected{% endif %}>1개월</option>
+																<option value="2" {% if result.leaseContractPeriod == 2 %}selected{% endif %}>2개월</option>
+																<option value="3" {% if result.leaseContractPeriod == 3 %}selected{% endif %}>3개월</option>
+																<option value="4" {% if result.leaseContractPeriod == 4 %}selected{% endif %}>4개월</option>
+																<option value="5" {% if result.leaseContractPeriod == 5 %}selected{% endif %}>5개월</option>
+																<option value="6" {% if result.leaseContractPeriod == 6 %}selected{% endif %}>6개월</option>
+																<option value="7" {% if result.leaseContractPeriod == 7 %}selected{% endif %}>7개월</option>
+																<option value="8" {% if result.leaseContractPeriod == 8 %}selected{% endif %}>8개월</option>
+																<option value="9" {% if result.leaseContractPeriod == 9 %}selected{% endif %}>9개월</option>
+																<option value="10" {% if result.leaseContractPeriod == 10 %}selected{% endif %}>10개월</option>
+																<option value="11" {% if result.leaseContractPeriod == 11 %}selected{% endif %}>11개월</option>
+																<option value="12" {% if result.leaseContractPeriod == 12 %}selected{% endif %}>12개월</option>
+																<option value="13" {% if result.leaseContractPeriod == 13 %}selected{% endif %}>13개월</option>
+																<option value="14" {% if result.leaseContractPeriod == 14 %}selected{% endif %}>14개월</option>
+																<option value="15" {% if result.leaseContractPeriod == 15 %}selected{% endif %}>15개월</option>
+																<option value="16" {% if result.leaseContractPeriod == 16 %}selected{% endif %}>16개월</option>
+																<option value="17" {% if result.leaseContractPeriod == 17 %}selected{% endif %}>17개월</option>
+																<option value="18" {% if result.leaseContractPeriod == 18 %}selected{% endif %}>18개월</option>
+																<option value="19" {% if result.leaseContractPeriod == 19 %}selected{% endif %}>19개월</option>
+																<option value="20" {% if result.leaseContractPeriod == 20 %}selected{% endif %}>20개월</option>
+																<option value="21" {% if result.leaseContractPeriod == 21 %}selected{% endif %}>21개월</option>
+																<option value="22" {% if result.leaseContractPeriod == 22 %}selected{% endif %}>22개월</option>
+																<option value="23" {% if result.leaseContractPeriod == 23 %}selected{% endif %}>23개월</option>
+																<option value="24" {% if result.leaseContractPeriod == 24 %}selected{% endif %}>24개월</option>
 															</select>
 														</td>
 														<td colspan="8">
@@ -352,7 +365,7 @@
 														</td>
 														<td colspan="8">
 															<div class="must"><strong>보증금</strong></div>
-															<input id="leaseDeposit" type="text" class="margin0" style="width:80px" value="{{ result.leaseDeposit }}" disabled />
+															<input id="leaseDeposit" type="text" class="margin0" style="width:80px; font-size:0.95em" value="&#8361; {{ result.leaseDeposit | intcomma }}" disabled />
 															<input id="leaseDeposit2" type="text" class="margin0" style="font-size:0.80em; width:140px" disabled />
 														</td>
 														<td colspan="8">
@@ -366,7 +379,7 @@
 																<option value="{{ i }}" {% if result.leasePayDate == i %}selected{% endif %}>{{ i }}일</option>
 																{% endfor %}
 															</select>
-															<input id="leaseMoney" type="text" class="margin0" style="width:127px" placeholder="임대료를 입력하세요." value="{{ result.leaseMoney }}" disabled />
+															<input id="leaseMoney" type="text" class="margin0" style="width:90px; font-size:0.95em" placeholder="임대료를 입력하세요." value="&#8361; {{ result.leaseMoney | intcomma }}" disabled />
 														</td>
 													</tr>
 													<tr>
@@ -670,10 +683,10 @@
 														</td>
 														<td colspan="6">
 															<div class="must"><strong>주차 비용</strong></div>
-															<select id="parkingFee" class="margin0 input-small" disabled >
-																<option value="30000" {% if result.parkingFee == 30000 %}selected{% endif %}>30,000</option>
-																<option value="20000" {% if result.parkingFee == 20000 %}selected{% endif %}>20,000</option>
-																<option value="10000" {% if result.parkingFee == 10000 %}selected{% endif %}>10,000</option>
+															<select id="parkingFee" class="margin0 input-small" style="font-size:0.95em" disabled >
+																<option value="30000" {% if result.parkingFee == 30000 %}selected{% endif %}>&#8361; 30,000</option>
+																<option value="20000" {% if result.parkingFee == 20000 %}selected{% endif %}>&#8361; 20,000</option>
+																<option value="10000" {% if result.parkingFee == 10000 %}selected{% endif %}>&#8361; 10,000</option>
 															</select>
 														</td> 
 													</tr>					
@@ -775,8 +788,7 @@
 								<div>
 									<form class="form-inline" onSubmit="return false;">
 										<div class="span11" style="margin-bottom:5px; text-align:center">
-											<button id="reviseStart" class="btn btn-inverse" onclick="Revise(false);">수정</button>
-											<button id="reviseDone" class="btn btn-inverse" onclick="Revise(true);" style="display:none">수정완료</button>
+											<button id="reviseStart" class="btn btn-small btn-inverse" onclick="javascript:history.go(-1);">목록으로 되돌아가기</button>
 										</div>	
 									</form>
 								</div>
@@ -1017,13 +1029,6 @@
 					}
 				});
 
-				// 보증금 한글표기
-				$('#leaseDeposit').keyup(function() {
-					var deposit = $('#leaseDeposit').val();
-					var koreanDeposit = moneyToKorean(deposit);
-					$('#leaseDeposit2').val(koreanDeposit+ '원');
-				});
-				
 				// 주차 유무
 				$(':radio[name="haveCar"]').click(function() {
 					if ($(this).val() == 'y') {
@@ -1034,6 +1039,20 @@
 						$('#carNumber').val('');
 						$('#carNumber').attr('disabled', true);
 						$('#parkingFee').attr('disabled', true);
+					}
+				});
+				
+				// 처음 퇴실 확인/미확인
+				$(':radio[name="checkOut"]').click(function() {
+					if ($(this).val() == 'y') {
+						$('#realOutDate').attr('disabled', false);
+						$('#outReason').attr('disabled', false);
+					}
+					else {
+						$('#realOutDate').attr('disabled', true);
+						$('#outReason').attr('disabled', true);
+						$('#realOutDate').val('');
+						$('#outReason').val('');
 					}
 				});
 

@@ -11,42 +11,29 @@ function getContents()
 	$('.nav-tabs a').on('shown', function (e) {
 	    window.location.hash = e.target.hash;
 	})
-	
-	//var year = $('#').val();
-	//var month = $('#').val();
-
-	// db에서 정보 뽑고
-
-	var template = new EJS({url : '/static/ejs/03_01_lease_notice_detail_show.ejs'}).render();
-	$('#contents').html(template);
-	$('#contents_modal').html(template);
 }
 */
 
-var curTab;
-
-function setCurInfo()
+var curRoomNum, curBid, curRid;
+function setCurInfo(rm, bid, rid)
 {
-	curType = $('#search_type option:selected').text().replace('요금', '').trim();
-	curBid = Number($('#search_building').val().replace('b', ''));
-	curBName = $('#search_building option:selected').text();
-	curYear = $('#search_year').val();
-	curMonth = $('#search_month').val();
+	curRoomNum = rm;
+	curBid = bid;
+	curRid = rid;
 }
 
-function getContents(bid, rid)
+
+function getContentsLease()
 {
-	doAjaxContentsGetAllInfo(bid, rid);
+	doAjaxContentsLease();
 }
 var lease;
-var notice;
-var payment;
-var doAjaxContentsGetAllInfo = function(bid, rid) {
+var doAjaxContentsLease = function() {
 	var postData = {};
 	var csrftoken = $.cookie('csrftoken');
 	postData['csrfmiddlewaretoken'] = csrftoken;
-	postData['building_id'] = bid;
-	postData['resident_id'] = rid;
+	postData['building_id'] = curBid;
+	postData['resident_id'] = curRid;
 
 	$.ajax({
 		type : 'POST',
@@ -54,21 +41,96 @@ var doAjaxContentsGetAllInfo = function(bid, rid) {
 		data : postData,
 		success : function(result) {
 			lease = result[0];
-			notice = result[1];
-			payment = result[2];
 			
 			var template = new EJS({url : '/static/ejs/03_01_detail_lease.ejs'}).render({'data' : lease});
 			$('#contents').html(template);
-			var template = new EJS({url : '/static/ejs/03_01_detail_notice.ejs'}).render({'data' : notice, 'radio' : Number(0)});
-			$('#contents2').html(template);
-			var template = new EJS({url : '/static/ejs/03_01_detail_payment.ejs'}).render({'data' : payment, 'radio' : Number(0)});
-			$('#contents3').html(template);
 		},
 		error : function(msg) {
 			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
 		},
 	});
 }
+
+// (tab2) : 상세 고지 내역 리스트 (임대x회차 조회 눌렀을 때)
+function getContentsNotice()
+{
+	doAjaxContentsNotice();
+}
+var notice;
+var doAjaxContentsNotice = function() {
+	var postData = {};
+	var csrftoken = $.cookie('csrftoken');
+	postData['csrfmiddlewaretoken'] = csrftoken;
+	postData['building_id'] = curBid;
+	postData['roomNum'] = curRoomNum;
+	postData['leaseNumberTotal'] = $('#leaseNumber_select_notice').val();
+	postData['noModify'] = Number(1);
+
+	$.ajax({
+		type : 'POST',
+		url : '/lease/input/notice/detail/getInfoTab2/',
+		data : postData,
+		success : function(result) {
+			notice = result;
+			
+			var template = new EJS({url : '/static/ejs/03_01_detail_notice.ejs'}).render({'data' : notice, 'radio' : Number(0)});
+			$('#contents2').html(template);
+
+			$('#tooltip').tooltip({
+				html : true,
+				title : "<연체 내역><br>연체 내역을 확인하는 정보입니다.<br><br>미납이나 연체 내역이 있는 경우 [미납회차] 항목에 '미납' 과 '미납회차' 가 표시됩니다.<br>[누적] 항목에 누적된 회수가 표시됩니다.<br><br>미납이나 연체 내역이 없는 경우, [미납회차] 항목에 '고지'와 '고지회차' 가 표시됩니다."
+			});
+		},
+		error : function(msg) {
+			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
+		},
+	});
+}
+
+// (tab3) : 상세 납부 내역 리스트 (임대x회차 조회 눌렀을 때)
+function getContentsPayment()
+{
+	doAjaxContentsPayment();
+}
+var payment;
+var doAjaxContentsPayment = function() {
+	var postData = {};
+	var csrftoken = $.cookie('csrftoken');
+	postData['csrfmiddlewaretoken'] = csrftoken;
+	postData['building_id'] = curBid;
+	postData['roomNum'] = curRoomNum;
+	postData['leaseNumberTotal'] = $('#leaseNumber_select_payment').val();
+	postData['noModify'] = Number(1);
+
+	$.ajax({
+		type : 'POST',
+		url : '/lease/payment/detail/getInfoTab2/',
+		data : postData,
+		success : function(result) {
+			payment = result;
+			for (i = 0; i < payment.length; i++) {
+				if (payment[i].payStatus == -1 || (i > 0 && payment[i].number == payment[i-1].number))
+					payment[i].fakeDone = Number(1);
+				else
+					payment[i].fakeDone = Number(0);
+			}
+			
+			var template = new EJS({url : '/static/ejs/03_01_detail_payment.ejs'}).render({'data' : payment, 'radio' : Number(0)});
+			$('#contents3').html(template);
+
+			$('#tooltip2').tooltip({
+				html : true,
+				title : "<연체 내역><br>연체 내역을 확인하는 정보입니다.<br><br>미납이나 연체 내역이 있는 경우 [미납회차] 항목에 '미납' 과 '미납회차' 가 표시됩니다.<br>[누적] 항목에 누적된 회수가 표시됩니다.<br><br>미납이나 연체 내역이 없는 경우, [미납회차] 항목에 '고지'와 '고지회차' 가 표시됩니다."
+			});
+		},
+		error : function(msg) {
+			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
+		},
+	});
+}
+
+
+
 
 
 // 라디오 버튼 구현

@@ -21,129 +21,6 @@
 	<link href="{{ STATIC_URL }}css/common.css" rel="stylesheet">
 	<!-- end: CSS -->
 
-	<!-- start: JavaScript-->
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery-1.9.1.min.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery-migrate-1.0.0.min.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery-ui-1.10.0.custom.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/bootstrap.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cookie.js"></script>
-	
-		<script src='{{ STATIC_URL }}bootstrap/js/fullcalendar.min.js'></script>
-	
-		<script src='{{ STATIC_URL }}bootstrap/js/jquery.dataTables.min.js'></script>
-
-		<script src="{{ STATIC_URL }}bootstrap/js/excanvas.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.min.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.pie.min.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.stack.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.resize.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.chosen.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uniform.min.js"></script>
-		
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cleditor.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.noty.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.elfinder.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.raty.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.iphone.toggle.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uploadify-3.1.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.gritter.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.imagesloaded.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.masonry.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/custom.js"></script>
-
-		<script src="{{ STATIC_URL }}ejs/ejs.js"></script>
-		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
-		<script src="{{ STATIC_URL }}ejs/view.js"></script>
-
-		<script src="{{ STATIC_URL }}js/02_02_resident_show.js"></script>
-		<script src="{{ STATIC_URL }}js/common.js"></script>
-		
-		<script type="text/javascript" language="JavaScript">
-			$(document).ready(function(){
-				/*
-				setTimeout("message_welcome1()",5000);
-				setTimeout("message_welcome2()",10000);	
-				setTimeout("message_welcome3()",15000);
-				setInterval(f_visits, 100);
-				setInterval(f_members, 2000);
-				setInterval(f_income, 5000);
-				setInterval(f_sales, 5000);
-				setInterval(live_notifications_center, 5000);
-				*/
-				// show sidebar
-				show_sidebar();
-
-				$('#search_buildingName').change(function() {
-					if ($(this).val() == '')
-						$('#search_buildingRoomNumber').attr('disabled', true);
-					else {
-						getBuildingRooms($(this).val(), 'search_buildingRoomNumber');
-					}
-				});
-				
-				$('#search_inDate').change(function() {
-					var mdy = $('#search_inDate').val().split('/');
-					$('#search_inDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
-					$('#search_outDate').attr('disabled', false);
-				});
-				
-				$('#search_outDate').change(function() {
-					var mdy = $('#search_outDate').val().split('/');
-					$('#search_outDate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
-					var mdyin = $('#search_inDate').val().split('.');
-					if (mdyin[0] > mdy[2] ||
-						(mdyin[0] == mdy[2] && mdyin[1] > mdy[0]) ||
-						(mdyin[0] == mdy[2] && mdyin[1] == mdy[0] && mdyin[2] > mdy[1]))
-					{
-						alert('만료일은 입주일 이후의 날짜만 입력 가능합니다.');
-						$('#search_outDate').val('');
-					}
-				});
-					
-				// 상세 버튼
-				$('#detail_btn').click(function() {
-					if ($('#search_detail').css('display') == 'none')
-						$('#search_detail').show();
-					else
-						$('#search_detail').hide(); 
-				});
-
-				// 주차 유무
-				$(':radio[name="haveCar"]').click(function() {
-					if ($(this).val() == 'y') {
-						$('#carNumber').attr('disabled', false);
-						$('#parkingFee').attr('disabled', false);
-					}
-					else {
-						$('#carNumber').val('');
-						$('#carNumber').attr('disabled', true);
-						$('#parkingFee').attr('disabled', true);
-					}
-				});
-				
-				$('#result_checkall').click(function() {
-					var chk = $(this).is(':checked');				
-					$('input[name=result_check]:checkbox').each(function() {
-						$(this).attr('checked', chk);
-					});
-				});
-
-				SearchAll();
-			});			
-		</script>
 	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]
 	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -284,7 +161,7 @@
 							<a href="#">입주자 관리</a> <span class="divider">></span>
 						</li>
 						<li>
-							<a href="#">입주자 정보 확인</a>
+							<a href="#">입주자 정보 확인 (목록)</a>
 						</li>
 					</ul>
 				</div>
@@ -294,46 +171,43 @@
 						<div class="span8" style="margin-bottom:5px">
 							<input id="searchWord" class="margin0 input-medium" type="text" />
 							<button class="btn btn-small" onclick="Search();">검색</button>
-							<button id="detail_btn" class="btn btn-small">상세</button>
-							<button class="btn btn-small" onclick="SearchAll();">전체보기</button>
+							<button id="detail_btn" class="btn btn-small" onclick="showDetailSearch();">상세</button>
+							<label style="margin-left:30px">건물별 보기</label>
+							<select id="buildingName" class="margin0" style="width:130px" onChange="Search();">
+								<option value="">전체보기</option>
+								{% for b in building_name_id %}
+								<option value="b{{ b.id }}">{{ b.name }}</option>
+								{% endfor %}
+							</select>
+							<label style="margin-left:10px">등록 건물 총 <strong><font color="red">{{ numOfBuilding }}</font></strong>개</label>
 						</div>	
 					</form>
 				</div>
 				
 				<!-- start: table -->
-				<div id="search_detail" class="row-fluid" style="display:none;">
+				<div id="search_detail" class="row-fluid" style="display:none">
 					<div class="span11" style="margin:0px 0px 0px 0px; padding:0px 0px 0px 0px">
 						<table class="table table-bordered table-condensed" style="margin-bottom:5px">
 							<colgroup>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
-								<col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
 							</colgroup>
 							<tbody>
 							  	<tr>
 									<td colspan="5">
 										<div class="optional"><strong>건물명</strong></div>
-										<select id="search_buildingName" class="margin0 input-medium">
+										<select id="search_buildingName" class="margin0 input-medium" onChange="getRooms($(this).val());">
 											<option value="">선택</option>
-											{% for b in building %}
-											<option value="{{ b.id }}">{{ b.name }}</option>
+											{% for b in building_name_id %}
+											<option value="b{{ b.id }}">{{ b.name }}</option>
 											{% endfor %}
 										</select>
 									</td>
@@ -345,8 +219,8 @@
 										</select>
 									</td>
 									<td colspan="5">
-										<div class="optional"><strong>임차인</strong></div>
-										<input id="search_contractorName" type="text" class="margin0 input-small" />
+										<div class="optional"><strong>입주자</strong></div>
+										<input id="search_residentName" type="text" class="margin0 input-small" />
 									</td>
 									<td colspan="5">
 										<div class="optional"><strong>성 별</strong></div>
@@ -379,8 +253,8 @@
 							  	<tr>
 							  		<td colspan="8">
 							  			<div class="optional"><strong>임대 기간</strong></div>
-							  			<input id="search_inDate" class="margin0 input-small datepicker" type="text" placeholder="입주일" />
-							  			<input id="search_outDate" class="margin0 input-small datepicker" type="text" placeholder="만료일" disabled="" />
+							  			<input id="search_inDate" class="margin0 input-small datepicker dateinput" type="text" placeholder="입주일" />
+							  			<input id="search_outDate" class="margin0 input-small datepicker dateinput" type="text" placeholder="만료일" />
 									</td>
 									<td colspan="4">
 										<div class="optional"><strong>주차 여부</strong></div>
@@ -422,31 +296,38 @@
 				</div>
 
 				<!-- 검색 결과 나타내기 -->
-				<div id="search_result" class="row-fluid" style="display:none;">
-					<div class="box span11" style="margin: 0px; padding: 0px">
-						<div class="box-header">
-							<h2><strong>입주자 정보 확인</strong></h2>
+				<div id="search_result" class="row-fluid" style="display:none">
+					<div class="box span11" style="margin:15px 0px 0px 0px; padding: 0px">
+						<div class="box-content" style="margin: 0px; padding: 3px; border:1; background-color:#f8f8f8">
+							<strong>목록 현황</strong>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="0" checked />전체</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="1" />재실</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="2" />퇴실</label>
+							<div style="text-align:right; float:right">
+								<button class="btn btn-small btn-inverse" onclick="pagePrint();">출력</button>
+							</div>
 						</div>
-						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8; font-size : 0.95em">
-							<table class="table table-bordered table-condensed table-hover">
-								<thead>
-									<tr>
-										<!--<th width="5%"><input id="result_checkall" type="checkbox"></th>-->
-										<th width="15%" style="text-align:center">건물명</th>
-										<th width="7%" style="text-align:center">호실</th>
-										<th width="7%" style="text-align:center">이름</th>
-										<th width="7%" style="text-align:center">성별</th>
-										<th width="10%" style="text-align:center">임대구분</th>
-										<th width="8%" style="text-align:center">보증금</th>
-										<th width="8%" style="text-align:center">임대료</th>
-										<th width="15%" style="text-align:center">입주일</th>
-										<th width="15%" style="text-align:center">만료일</th>
-										<th width="8%" style="text-align:center">연체</th>
-									</tr>
-								</thead>
-								<tbody id="search_result_content">
-								</tbody>
-							 </table>  
+					</div>
+					<div class="span11" style="margin:5px 0px 0px 0px; padding:0px">
+						<span id="labelall" class="label" onclick="filter('all');">전체</span>
+						<span id="label0" class="label" onclick="filter('0');">ㄱ</span>
+						<span id="label1" class="label" onclick="filter('1');">ㄴ</span>
+						<span id="label2" class="label" onclick="filter('2');">ㄷ</span>
+						<span id="label3" class="label" onclick="filter('3');">ㄹ</span>
+						<span id="label4" class="label" onclick="filter('4');">ㅁ</span>
+						<span id="label5" class="label" onclick="filter('5');">ㅂ</span>
+						<span id="label6" class="label" onclick="filter('6');">ㅅ</span>
+						<span id="label7" class="label" onclick="filter('7');">ㅇ</span>
+						<span id="label8" class="label" onclick="filter('8');">ㅈ</span>
+						<span id="label9" class="label" onclick="filter('9');">ㅊ</span>
+						<span id="label10" class="label" onclick="filter('10');">ㅋ</span>
+						<span id="label11" class="label" onclick="filter('11');">ㅌ</span>
+						<span id="label12" class="label" onclick="filter('12');">ㅍ</span>
+						<span id="label13" class="label" onclick="filter('13');">ㅎ</span>
+						<span id="" class="label">기타</span>
+					</div>
+					<div class="box span11" style="margin: 0px; padding: 0px">
+						<div id="search_result_content" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8; font-size : 0.95em">
 						</div>
 					</div>
 				</div>
@@ -482,6 +363,74 @@
 			
 </div><!--/.fluid-container-->
 
+	<!-- start: JavaScript-->
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-1.9.1.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-migrate-1.0.0.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-ui-1.10.0.custom.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/bootstrap.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cookie.js"></script>
+	
+		<script src='{{ STATIC_URL }}bootstrap/js/fullcalendar.min.js'></script>
+	
+		<script src='{{ STATIC_URL }}bootstrap/js/jquery.dataTables.min.js'></script>
+
+		<script src="{{ STATIC_URL }}bootstrap/js/excanvas.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.pie.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.stack.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.resize.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.chosen.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uniform.min.js"></script>
+		
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cleditor.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.noty.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.elfinder.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.raty.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.iphone.toggle.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uploadify-3.1.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.gritter.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.imagesloaded.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.masonry.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/custom.js"></script>
+
+		<script src="{{ STATIC_URL }}ejs/ejs.js"></script>
+		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
+		<script src="{{ STATIC_URL }}ejs/view.js"></script>
+
+		<script src="{{ STATIC_URL }}js/02_02_resident_show.js"></script>
+		<script src="{{ STATIC_URL }}js/common.js"></script>
+		
+		<script type="text/javascript" language="JavaScript">
+			$(document).ready(function(){
+				// show sidebar
+				show_sidebar();
+
+				$('.dateinput').change(function() {
+					var mdy = $(this).val().split('/');
+					$(this).val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
+				});
+			
+				// radio 버튼 클릭 시
+				$('input[name=radioN]').change(function() {
+					changeRadio(Number($(this).val()));
+				});
+
+				Search();
+			});			
+		</script>
 		<!-- end: JavaScript-->
 	
 </body>

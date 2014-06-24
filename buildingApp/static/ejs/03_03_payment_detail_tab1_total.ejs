@@ -1,0 +1,16 @@
+<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+	<tr>
+		<td width="20%" style="text-align:center; vertical-align:middle">
+			<span>
+				<input class="margin0 span6 fontmini" type="text" value="<%= year %>.<%= month %>" disabled />
+				<input class="margin0 span6 fontmini" type="text" value="<%= thisNumber %>회차" disabled />
+			</span>
+		</td>
+		<th width="10%" style="text-align:center; vertical-align:middle">미납 금액</th>
+		<td width="15%" style="text-align:center; vertical-align:middle"><input class="margin0 span12 fontmini2" type="text" value="<%= data[0].amountNoPay.toLocaleString().replace('.00','') %> 원" disabled /></td>
+		<th width="12%" style="text-align:center; vertical-align:middle">+ 최근 미납 금액</th>
+		<td width="15%" style="text-align:center; vertical-align:middle"><input class="margin0 span12 fontmini2" type="text" value="<%= totalAmountNoPay.toLocaleString().replace('.00','') %> 원" disabled /></td>
+		<th width="12%" style="text-align:center; vertical-align:middle">= 총 납부 금액</th>
+		<td width="16%" style="text-align:center; vertical-align:middle"><input class="margin0 span12 fontmini2" type="text" value="<%= (data[0].amountNoPay+totalAmountNoPay).toLocaleString().replace('.00','') %> 원" style="background-color:red; color:white" disabled /></td>
+	</tr>
+</table>

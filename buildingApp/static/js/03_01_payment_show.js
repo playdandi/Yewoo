@@ -95,6 +95,11 @@ var doAjaxContents = function() {
 			paymentList = result;
 			var template = new EJS({url : '/static/ejs/03_01_payment_show.ejs'}).render({'data' : paymentList, 'bid' : curBid, 'radio' : Number(0)});
 			$('#contents').html(template);
+
+			$('#tooltip').tooltip({
+				html : true,
+				title : "<연체 내역><br>연체 내역을 확인하는 정보입니다.<br><br>미납이나 연체 내역이 있는 경우 [미납회차] 항목에 '미납' 과 '미납회차' 가 표시됩니다.<br>[누적] 항목에 누적된 회수가 표시됩니다.<br><br>미납이나 연체 내역이 없는 경우, [미납회차] 항목에 '고지'와 '고지회차' 가 표시됩니다."
+			});
 		},
 		error : function(msg) {
 			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');

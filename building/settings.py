@@ -13,7 +13,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'building',                      # Or path to database file if using sqlite3.
+        'NAME': 'building_test',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'dandi',
         'PASSWORD': 'duswnsdlfwls',
@@ -135,6 +135,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'buildingApp',
+    #'django_crontab',
+    'django_cron',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
@@ -167,3 +169,14 @@ LOGGING = {
         },
     }
 }
+
+#CRONJOBS = [
+#    ('*/1 * * * *', 'buildingApp.cron.test'),
+#]
+
+CRON_CLASSES = [
+    'buildingApp.cron.CheckPaymentDelay',
+]
+
+
+

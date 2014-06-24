@@ -1,4 +1,4 @@
-<table class="table table-bordered table-condensed table-hover">
+<table class="table table-bordered table-condensed">
 	<colgroup>
 		<col width="3%">
 		<col width="5%">
@@ -57,12 +57,12 @@
 		</td>
 		<td style="text-align:center"><%= data[i].roomnum %></td>
 		<td style="text-align:center"><%= data[i].name %></td>
-		<td style="text-align:center"><%= data[i].deposit.toLocaleString() %></td>
-		<td style="text-align:center"><%= data[i].money.toLocaleString() %></td>
+		<td style="text-align:center"><%= data[i].deposit.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].money.toLocaleString().replace('.00','') %></td>
 		<td style="text-align:center"><%= data[i].payway %></td>
-		<td style="text-align:center"><%= data[i].maintenance.toLocaleString() %></td>
-		<td style="text-align:center"><%= data[i].surtax.toLocaleString() %></td>
-		<td style="text-align:center"><%= data[i].parking.toLocaleString() %></td>
+		<td style="text-align:center"><%= data[i].maintenance.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].surtax.toLocaleString().replace('.00','') %></td>
+		<td style="text-align:center"><%= data[i].parking.toLocaleString().replace('.00','') %></td>
 		<td style="text-align:center"><%if (data[i].paydate != '') { %><%= data[i].paydate %>일<% } %></td>
 		<td style="text-align:center"><%= data[i].indate %></td>
 		<td style="text-align:center"><%= data[i].outdate %></td>

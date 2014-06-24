@@ -1,3 +1,11 @@
+var roomNum, bid, rid;
+function setCurInfo(building_id, resident_id, roomnum)
+{
+	bid = Number(building_id);
+	rid = Number(resident_id);
+	roomNum = Number(roomnum);
+}
+
 function showLeaseInfo()
 {
 	var year = Number($('#search_year').val());
@@ -59,10 +67,10 @@ function InitForm()
 	$('#search_year').find('option:eq(0)').prop('selected', true);
 	$('#search_month').find('option:eq(0)').prop('selected', true);
 	$('#search_room_num').find('option:eq(0)').prop('selected', true);
-	//$('input[id=search_isEmpty]:checkbox').attr('checked', false);
-	//$('#search_isEmpty').attr('checked', false);
 }
 
+
+// 고지 상세 내역 리스트 모두 들고온다.
 function getContents(bid, rid, rn, n, leaseMoney, leasePayDate)
 {
 	roomnum = rn;
@@ -95,8 +103,7 @@ var doAjaxDetailAllInfo = function(bid, rid) {
 
 function showModifyForm()
 {
-	$('#detail_input_closed').hide();
-	$('#detail_input_show').show();
+	$('#changeFeeModal').modal();
 }
 
 
@@ -108,38 +115,36 @@ $('#c4').keyup(function() { changeCharge(4); });
 $('#c5').keyup(function() { changeCharge(5); });
 $('#c6').keyup(function() { changeCharge(6); });
 $('#c7').keyup(function() { changeCharge(7); });
-$('#c8').keyup(function() { changeCharge(8); });
-$('#c9').keyup(function() { changeCharge(9); });
 
 function changeCharge(num)
 {
-	var before = Number($('#before'+num).text().trim());
+	var before = Number($('#before'+num).text().split(',').join('').trim());
 	var variation = $('#c'+num).val().split(',').join('').trim();
 	if (variation == '' || variation == '-')
 		variation = '0';
 	var value = Number(variation.match(/[0-9\-]/g).join(''));
-
-	$('#after'+num).html(before + value);
-
+	
+	$('#after'+num).html((before + value).toLocaleString().replace('.00',''));
+	
 	// 변동금액 합 구하기
 	var varSum = Number(0);
-	for (i = 0; i <= 9; i++) {
+	for (i = 0; i <= 7; i++) {
 		v = $('#c'+i).val().split(',').join('').trim();
 		if (v == '' || v == '-')
 			v = '0';
 		varSum += Number(v.match(/[0-9\-]/g).join(''));
 	}
-	$('#changeFee').html(varSum);
+	$('#changeFee').html(varSum.toLocaleString().replace('.00',''));
 
 	// 합계금액 구하기
 	var allSum = Number(0);
-	for (i = 0; i <= 9; i++) {
-		v = $('#after'+i).html().trim();
+	for (i = 0; i <= 7; i++) {
+		v = $('#after'+i).html().split(',').join('').trim();
 		if (v == '' || v == '-')
 			v = '0';
 		allSum += Number(v.match(/[0-9\-]/g).join(''));
 	}
-	$('#afterTotalFee').html(allSum);
+	$('#afterTotalFee').html(allSum.toLocaleString().replace('.00',''));
 }
 
 
@@ -147,18 +152,16 @@ function saveChangedInfo()
 {
 	var param = {};
 	param['em_id'] = $('#em_id').val().trim();
-	param['leaseMoney'] = $('#after0').html().trim();
-	param['maintenanceFee'] = $('#after1').html().trim();
-	param['surtax'] = $('#after2').html().trim();
-	param['parkingFee'] = $('#after3').html().trim();
-	param['electricityFee'] = $('#after4').html().trim();
-	param['waterFee'] = $('#after5').html().trim();
-	param['gasFee'] = $('#after6').html().trim();
-	//
-	//
-	param['etcFee'] = $('#after9').html().trim();
-	param['changeFee'] = $('#changeFee').html().trim();
-	param['totalFee'] = $('#afterTotalFee').html().trim();
+	param['leaseMoney'] = $('#after0').html().trim().split(',').join('');
+	param['maintenanceFee'] = $('#after1').html().trim().split(',').join('');
+	param['surtax'] = $('#after2').html().trim().split(',').join('');
+	param['parkingFee'] = $('#after3').html().trim().split(',').join('');
+	param['electricityFee'] = $('#after4').html().trim().split(',').join('');
+	param['waterFee'] = $('#after5').html().trim().split(',').join('');
+	param['gasFee'] = $('#after6').html().trim().split(',').join('');
+	param['etcFee'] = $('#after7').html().trim().split(',').join('');
+	param['changeFee'] = $('#changeFee').html().trim().split(',').join('');
+	param['totalFee'] = $('#afterTotalFee').html().trim().split(',').join('');
 	param['modifyNumber'] = $('#nextModifyNumber').html().replace('회','').trim();
 	param['msg'] = $('#modifyMsg').val().trim();
 	param['modifyDate'] = $('#modifyDate').val().trim();
@@ -190,28 +193,136 @@ var doAjaxSaveChangedInfo = function(param) {
 	});
 };
 
-
-////////// in TAB 2 //////////////////////////////////////
-///////////////////////////////////////////////////////////
-function getNoticeDetail(bid, rid)
+// 일단 모든 납부내역리스트 + 그 리스트마다 모든 수정사항리스트까지 불러온다.
+function getPaymentContents(bid, rid, y, m)
 {
-	doAjaxNoticeDetail(bid, rid);
+	doAjaxPaymentList(bid, rid, y, m);
 }
-var noticeDetailList;
-var doAjaxNoticeDetail = function(bid, rid) {
-	param = {}
+var payments = new Array();
+var paymentDetails = new Array();
+var doAjaxPaymentList = function(bid, rid, y, m) {
+	var postData = {};
 	var csrftoken = $.cookie('csrftoken');
-	param['csrfmiddlewaretoken'] = csrftoken;
-	param['building_id'] = Number(bid);
-	param['resident_id'] = Number(rid);
+	postData['csrfmiddlewaretoken'] = csrftoken;
+	postData['building_id'] = bid;
+	postData['resident_id'] = rid;
+	postData['year'] = y;
+	postData['month'] = m;
 
 	$.ajax({
 		type : 'POST',
-		url : '/lease/input/notice/detail/getListInfo/',
+		url : '/lease/payment/detail/getAllInfo/',
+		data : postData,
+		success : function(result) {
+			var today = Number(new Date().getDate());
+			var thisYear = result[0].year;
+			var thisMonth = result[0].month;
+			var thisNumber = result[0].number;
+
+			// 연체리스트, 수정사항리스트 두 가지로 분리하기
+			for (i = 0; i < result.length; i++) {
+				if (result[i].type == 'basic') {
+					if (result[i].number == thisNumber) {
+						result[i].isThis = Number(1);
+					}
+					else {
+						result[i].isThis = Number(0);
+					}
+					payments.push(result[i]);
+				}
+				else
+					paymentDetails.push(result[i]); 
+			}
+			// 미납 년/월 범위 구하기, 현재 미납 달 횟수 구하기
+			var minym = '9999.12', maxym = '0.0', payCnt = 0;
+			var totalAmountNoPay = 0, totalDelayFee = 0;
+			for (i = 0; i < payments.length; i++) {
+				if (payments[i].payStatus != -1 && payments[i].isThis == 0) {
+					// 직전 항목과 고지회차가 다를 때만 미납액/연체료 계산을 해야 한다.
+					if (i == 0 || Number(payments[i-1].number) != Number(payments[i].number)) {
+						minym = AdjustPaymentYM(minym, payments[i].year, payments[i].month, 'min');
+						maxym = AdjustPaymentYM(maxym, payments[i].year, payments[i].month, 'max');
+						payCnt++;
+						totalAmountNoPay += Number(payments[i].amountNoPay);
+					}
+				}
+			}
+			if (minym == '9999.12') minym = '없음';
+			if (maxym == '0.0') maxym = '없음';
+
+			// 납부 상세 리스트 보여주기
+			var template = new EJS({url : '/static/ejs/03_02_notice_detail_tab1_payment.ejs'}).render({'data' : payments, 'minym' : minym, 'maxym' : maxym, 'payCnt' : payCnt, 'totalAmountNoPay' : totalAmountNoPay});
+			$('#payment_content').html(template);
+
+			// 고지 내역 부분에 총합 보여주기
+			$('#paymentFee').val(totalAmountNoPay.toLocaleString().replace('.00','') + ' 원');
+			$('#finalFee').val((Number($('#noticeFee').val().replace('원','').trim().split(',').join(''))+totalAmountNoPay).toLocaleString().replace('.00','') + ' 원');
+		},
+		error : function(msg) {
+			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
+		},
+	});
+}
+
+function AdjustPaymentYM(nowym, y, m, type)
+{
+	nowy = Number(nowym.split('.')[0].trim());
+	nowm = Number(nowym.split('.')[1].trim());
+	if (type == 'min') {
+		if (y < nowy || (y == nowy && m < nowm))
+			return y+'.'+m;
+	}
+	else {
+		if (y > nowy || (y == nowy && m > nowm))
+			return y+'.'+m;
+	}
+	return nowym;
+}
+
+function showPaymentModifyInfo(pid) // 팝업창으로 납부내역 수정 사유 보여주기
+{
+	var template = new EJS({url : '/static/ejs/03_03_payment_detail_tab2_modify.ejs'}).render({'data' : paymentDetails, 'id' : Number(pid)});
+	$('#payment_modify').html(template);
+	$('#paymentModifyModal').modal();
+}
+
+
+
+////////// in TAB 2 //////////////////////////////////////
+///////////////////////////////////////////////////////////
+function getContentsTab2()
+{
+	doAjaxContentsTab2();
+}
+var noticeTab2;
+var noticeDetailTab2;
+var doAjaxContentsTab2 = function() {
+	param = {}
+	var csrftoken = $.cookie('csrftoken');
+	param['csrfmiddlewaretoken'] = csrftoken;
+	param['building_id'] = bid;
+	param['roomNum'] = roomNum;
+	param['leaseNumberTotal'] = $('#leaseNumber_select').val();
+	param['noModify'] = Number(0);
+
+	$.ajax({
+		type : 'POST',
+		url : '/lease/input/notice/detail/getInfoTab2/',
 		data : param,
 		success : function(result) {
-			noticeDetailList = result;
-			var template = new EJS({url : '/static/ejs/03_02_notice_detail_tab2.ejs'}).render({'data' : noticeDetailList, 'radio' : Number(0)});
+			noticeTab2 = null;
+			noticeDetailTab2 = null;
+			noticeTab2 = new Array();
+			noticeDetailTab2 = new Array();
+			// 리스트, 수정리스트 두 가지로 분리하기
+			for (i = 0; i < result.length; i++) {
+				if (result[i].type == 'basic')
+					noticeTab2.push(result[i]);
+				else
+					noticeDetailTab2.push(result[i]); 
+			}
+			
+			var template = new EJS({url : '/static/ejs/03_02_notice_detail_tab2.ejs'}).render({'data' : noticeTab2, 'radio' : Number(0)});
 			$('#content_bill').html(template);
 		},
 		error : function(msg) {
@@ -220,7 +331,7 @@ var doAjaxNoticeDetail = function(bid, rid) {
 	});
 };
 
-
+/*
 // 고지서 데이터 가져오기
 function searchBill()
 {
@@ -250,18 +361,51 @@ var doAjaxSearchBill = function(param) {
 	});
 };
 
-var roomnum, name, lm, lpd;
 function showBillModal()
 {
 	//$('#billModal').modal();
 }
+*/
+
+var roomnum, name, lm, lpd;
 
 function showInputHistoryModal(eid, ym, noticeNumber)
 {
 	eid = Number(eid);
-	var template = new EJS({url : '/static/ejs/03_02_notice_detail_tab2_modify.ejs'}).render({'data' : modify, 'idx' : eid, 'ym' : ym, 'noticeNumber' : noticeNumber, 'roomnum' : roomnum, 'name' : name, 'leaseMoney' : lm, 'leasePayDate' : lpd});
+	var inputDate = '', noticeDate = '', status = Number(0), noticeFee = Number(0);
+	// 입력일, 고지일, 당월고지금액, 처리상태 구하기
+	for (i = 0; i < noticeTab2.length; i++) {
+		if (Number(noticeTab2[i].id) == eid) {
+			inputDate = noticeTab2[i].inputDate;
+			noticeDate = noticeTab2[i].noticeDate;
+			if (inputDate != '' && noticeDate != '')	
+				status = Number(1);
+			noticeFee = noticeTab2[i].totalFee;
+			break;
+		}
+	}
+	// 총금액, 납부금액 구하기
+	yy = Number(ym.split('.')[0].trim());
+	mm = Number(ym.split('.')[1].trim());
+	var totalAmountNoPay = 0, totalDelayFee = 0;
+	for (i = 0; i < payments.length; i++) {
+		if (payments[i].year > yy || (payments[i].year == yy && payments[i].month > mm))
+			continue;
+		if (payments[i].payStatus != -1) {
+			// 직전 항목과 고지회차가 다를 때만 미납액/연체료 계산을 해야 한다.
+			if (i == 0 || Number(payments[i-1].number) != Number(payments[i].number)) {
+				totalAmountNoPay += Number(payments[i].amountNoPay);
+				totalDelayFee += Number(payments[i].delayFee);
+			}
+		}
+	}
+	var paymentFee = totalAmountNoPay + totalDelayFee;
+
+	var template = new EJS({url : '/static/ejs/03_02_notice_detail_tab2_inputHistory.ejs'}).render({'data' : noticeDetailTab2, 'eid' : eid, 'ym' : ym, 'noticeNumber' : noticeNumber, 'roomnum' : roomnum, 'name' : name, 'leaseMoney' : lm, 'leasePayDate' : lpd, 'inputDate' : inputDate, 'noticeDate' : noticeDate, 'status' : status, 'noticeFee' : noticeFee, 'paymentFee' : paymentFee});
 	$('#content_modify').html(template);
-	$('#inputHistoryModal').modal();
+	$('#inputHistoryModal').modal({
+		//backdrop : false
+	});
 }
 
 
@@ -275,7 +419,7 @@ function changeRadio(val)
 
 	var template;
 	if (val <= 1)
-		template = new EJS({url : '/static/ejs/03_02_notice_detail_tab2.ejs'}).render({'data' : noticeDetailList, 'radio' : Number(val)});
+		template = new EJS({url : '/static/ejs/03_02_notice_detail_tab2.ejs'}).render({'data' : noticeTab2, 'radio' : Number(val)});
 	//else
 	//	template = new EJS({url : '/static/ejs/03_03_payment_detail_tab2.ejs'}).render({'data' : sortAllInfo, 'bid' : curBid, 'radio': val});
 	$('#content_bill').html(template);
@@ -299,7 +443,7 @@ function pagePrint()
 	objWin.document.close();
 	
 	if (radioValue == 1) {
-		for (i = 0; i < noticeDetailList.length; i++) {
+		for (i = 0; i < noticeTab2.length; i++) {
 			if ($('input:checkbox[id="selCheck'+i+'"]').is(':checked'))
 				continue;
 			var useless = objWin.document.getElementById('sel'+i);
