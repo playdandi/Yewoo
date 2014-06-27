@@ -13,6 +13,9 @@ import os
 def main_html(request):
     return render(request, 'main.html')
 
+def login_html(request):
+    return render(request, 'login.html')
+
 def calRoomNum(floorNum, roomNum):
     if floorNum < 0:
         return floorNum * 100 - roomNum

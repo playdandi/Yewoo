@@ -18,6 +18,8 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 
+    url(r'^login/', login_html), 
+
     url(r'^main/$', main_html),
     url(r'^building/register/$', building_register_html),
     url(r'^building/getrooms/$', building_get_rooms),
