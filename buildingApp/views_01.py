@@ -13,6 +13,9 @@ import os
 def main_html(request):
     return render(request, 'main.html')
 
+def newmain_html(request):
+    return render(request, 'newmain.html')
+
 def login_html(request):
     return render(request, 'login.html')
 

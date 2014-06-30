@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^login/', login_html), 
 
     url(r'^main/$', main_html),
+    url(r'^newmain/$', newmain_html),
     url(r'^building/register/$', building_register_html),
     url(r'^building/getrooms/$', building_get_rooms),
     url(r'^building/save/$', building_save),

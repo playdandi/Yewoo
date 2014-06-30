@@ -91,60 +91,88 @@
 </head>
 
 <body>
-	<!-- start: Header -->
-	<div class="navbar">
-		<div class="navbar-inner">
-			<div class="container-fluid">
-				<a class="btn btn-navbar" data-toggle="collapse" data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</a>
-				<a class="brand" href="index.html"> <img alt="Optimus Dashboard" src="{{ STATIC_URL }}bootstrap/img/logo20.png" /> <span>Optimus Dashboard</span></a>
-								
-				<!-- start: Header Menu -->
-				<div class="btn-group pull-right" >
-					<a class="btn" href="#">
-						<i class="icon-warning-sign"></i><span class="hidden-phone hidden-tablet"> notifications</span> <span class="label label-important hidden-phone">2</span> <span class="label label-success hidden-phone">11</span>
-					</a>
-					<a class="btn" href="#">
-						<i class="icon-tasks"></i><span class="hidden-phone hidden-tablet"> tasks</span> <span class="label label-warning hidden-phone">17</span>
-					</a>
-					<a class="btn" href="#">
-						<i class="icon-envelope"></i><span class="hidden-phone hidden-tablet"> messages</span> <span class="label label-success hidden-phone">9</span>
-					</a>
-					<a class="btn" href="#">
-						<i class="icon-wrench"></i><span class="hidden-phone hidden-tablet"> settings</span>
-					</a>
-					<!-- start: User Dropdown -->
-					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-						<i class="icon-user"></i><span class="hidden-phone hidden-tablet"> admin</span>
-						<span class="caret"></span>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Profile</a></li>
-						<li class="divider"></li>
-						<li><a href="login.html">Logout</a></li>
-					</ul>
-					<!-- end: User Dropdown -->
-				</div>
-				<!-- end: Header Menu -->
-				
-			</div>
-		</div>
-	</div>
-	
-	<div id="under-header">
-	</div>
-	<!-- start: Header -->
+    <!-- start:Header --!>
+    <div class="container">
+        <div class="pull-right" style="vertical-align:middle;">
+                <input type="text" class="search-query" placeholder="검색">
+        </div>
+        <div class="pull-right" style="margin-right:5px">
+            <div class="btn-group">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    통합검색
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a tabindex="-1" href="#">기타검색</a></li>
+                </ul>
+            </div>
+        </div>
+        <h1>Yewoo housing management system</h1>
+    </div>
+    <div class="navbar" style="margin:0">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <p class="navbar-text pull-left">
+              관리자 <a href="#" class="navbar-link">김지훈</a> 님 <button class="btn btn-mini">로그아웃</button>
+          </p>
+          <ul class="nav">
+            <li class="divider-vertical"></li>
+            <li class="disabled"><a href="#">업무 게시글쓰기</a></li>
+            <li class="disabled"><a href="#">안 읽은 글</a></li>
+            <li class="disabled"><a href="#">내 게시물</a></li>
+            <li class="disabled"><a href="#">통합 게시판</a></li>
+            <li class="disabled"><a href="#">내 일정 관리</a></li>
+            <li class="disabled"><a href="#">내 정보 관리</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <p class="navbar-text pull-left">
+              지난 로그인 2014.06.12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </p>
+          <ul class="nav">
+            <li class="divider-vertical"></li>
+            <li class="dropdown active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">건물 관리 시스템<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="/building/register/">건물 정보 등록</a></li>
+                <li><a href="/building/search/building/">등록 건물 정보 확인</a></li>
+                <li><a href="/building/search/rooms/">등록 호수 정보 확인</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">입주자 관리 시스템<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="/resident/show/">입주자 정보 확인(목록)</a></li>
+                <li><a href="/resident/info/">입주자 정보 입력(개별)</a></li>
+                <li><a href="/resident/infoFile/">입주자 정보 입력(파일)</a></li>
+              </ul>
+            </li>
+            <li class="disabled"><a href="#contact">시설 관리 시스템</a></li>
+            <li><a href="#contact">통합 내역 관리 시스템</a></li>
+            <li class="disabled"><a href="#contact">관리자 시스템</a></li>
+            <li class="disabled"><a href="#contact">통계 시스템</a></li>
+            <li class="disabled"><a href="#contact">사내 정보 시스템</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- end:Header --!>
 	
 	<div class="container-fluid">
 		<div class="row-fluid">
+        <div class="span2">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">사이드바 영역</li>
+                <p>사이드바 영역입니다.<br><br><br><br><br><br><br></p>
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
 						
-			<!-- Sidebar -->
-			<div id="sidebar">
-			</div>
-			<!-- end: Sidebar -->
 				
 			<noscript>
 				<div class="alert alert-block span10">
