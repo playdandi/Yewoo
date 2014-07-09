@@ -100,14 +100,14 @@
 		<div class="background"></div>
 		<h1 class="title">Yewoo<br>
 		housing management system</h1>
-        <form class="form-signin" role="form" action="/newmain/">
-            <input type="text" class="form-control" placeholder="ID" required autofocus>
-            <input type="password" class="form-control" placeholder="Password" required>
+        <form class="form-signin" role="form" action="javascript:tryLogin()">
+            <input id="username" type="text" class="form-control" placeholder="ID" required autofocus>
+            <input id="password" type="password" class="form-control" placeholder="Password" required>
             <button class="btn btn-primary btn-block text-right" type="submit">Log In</button><br>
             
         </form>
         <div class="form-signin" style="margin-top:0px">
-            <button class="btn btn-primary btn-block">회원가입</button>
+            <button class="btn btn-primary btn-block" onclick="location.href='/account/signup/'">회원가입</button>
             <button class="btn btn-primary btn-block">관리자 문의</button>
         </div>
 	</div>
@@ -168,6 +168,7 @@
 		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
 		<script src="{{ STATIC_URL }}/js/common.js"></script>
+		<script src="{{ STATIC_URL }}/js/login.js"></script>
 		
 		<!-- end: JavaScript-->
 	

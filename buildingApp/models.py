@@ -3,6 +3,16 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
+    passhint = models.CharField(max_length=50, null=True)
+    name = models.CharField(max_length = 6)
+    birthday = models.DateField()
+    gender = models.CharField(max_length=1)
+    department = models.CharField(max_length=20)
+    position = models.CharField(max_length=10)
+    joindate = models.DateField()
+    contact1 = models.CharField(max_length=15)
+    contact2 = models.CharField(max_length=15, null=True)
+    address = models.CharField(max_length=200)
 
 class ResidentInfo(models.Model):
     buildingName = models.IntegerField()

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<!-- start: Meta -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Yewoo Housing Management System</title>
+	<!-- end: Meta -->
+	
+	<!-- start: Mobile Specific -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- end: Mobile Specific -->
+
+	<!-- start: CSS -->
+	<link id="bootstrap-style" href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link id="base-style" href="{{ STATIC_URL }}bootstrap/css/style.css" rel="stylesheet">
+	<link id="base-style-responsive" href="{{ STATIC_URL }}bootstrap/css/style-responsive.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}bootstrap/css/datepicker.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}bootstrap/css/datepicker.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}css/common.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}css/signup.css" rel="stylesheet">
+	<!-- end: CSS -->
+
+	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	[endif]-->
+
+	<!-- start: Favicon -->
+	<link rel="shortcut icon" href="img/favicon.ico">
+	<!-- end: Favicon -->
+	
+	<style>
+    body {
+      padding-bottom: 40px;
+      font-size : 0.77em;
+      font-family : 'Malgun Gothic' !important;
+    }
+    .sidebar-nav {
+      padding: 9px 0;
+    }
+    @media (max-width: 980px) {
+      /* Enable use of floated navbar text */
+      .navbar-text.pull-right {
+        float: none;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+    }
+	</style>
+		
+</head>
+
+<body>
+    <!-- start:Header --!>
+    <div class="container">
+        <div class="span10">
+            <h2>Yewoo housing management system</h2>
+            <h1>시스템 가입 REGISTER</h1>
+            <hr>
+            <div style="width:95%;margin:auto;">
+                <div class="box center-block">
+                    <div class="box-header">
+                        <p>예우 시스템 가입을 신청합니다.</p>
+                    </div>
+                </div>
+                <hr>
+               
+
+				<div class="box center-block" style="margin: 0px; padding: 0px">
+					<div class="box-header">
+						<h2><strong>시스템 가입 정보</strong></h2>
+					</div>
+					<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+						<table class="table table-bordered table-condensed">
+							<colgroup>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="10%"></col>
+							</colgroup>
+							<tbody>
+							  	<tr>
+							  		<td colspan="3" class="must title">
+										<span><strong>시스템 아이디</strong></span>
+                                    </td>
+							  		<td colspan="3">
+										<input id="systemId" class="margin0 input-small" type="text" />
+                                    </td>
+							  		<td class="align-center" colspan="3">
+                                        <button class="btn width4" onclick="checkId();">중복 확인</button>
+                                    </td>
+							  		<td colspan="11">
+                                        <span>* 띄어쓰기 없이 영/숫자 6~10자</span>
+									</td>
+								</tr>
+							  	<tr>
+							  		<td colspan="3" class="must title">
+										<span><strong>비밀번호</strong></span>
+                                    </td>
+							  		<td colspan="3">
+										<input id="systemPass1" class="margin0 input-small" type="password"/>
+                                    </td>
+							  		<td class="align-center" colspan="3">
+                                        <span class="label label-success width4">안전</span>
+                                    </td>
+							  		<td colspan="11">
+                                        <span>* 비밀번호 도움말 6~15자의 영문 대/소문자, 숫자 및 특수문자 조합 
+</span>
+									</td>
+								</tr>
+							  	<tr>
+							  		<td colspan="3" class="must title">
+										<span><strong>비밀번호 확인</strong></span>
+                                    </td>
+							  		<td colspan="3">
+										<input id="systemPass2" class="margin0 input-small" type="password"/>
+                                    </td>
+							  		<td colspan="3" class="optional title">
+										<span><strong>비밀번호 힌트</strong></span>
+                                    </td>
+							  		<td colspan="11">
+										<input id="systemPassHint" class="margin0 input-large" type="text"/>
+									</td>
+								</tr>
+							</tbody>
+						 </table>  
+					</div>
+				</div>
+				<div class="box center-block" style="margin: 0px; padding: 0px">
+					<div class="box-header">
+						<h2><strong>직원 정보</strong></h2>
+					</div>
+					<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+						<table class="table table-bordered table-condensed">
+							<colgroup>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="10%"></col>
+							</colgroup>
+							<tbody>
+							  	<tr>
+							  		<td colspan="3" class="must title">
+										<span><strong>이름</strong></span>
+                                    </td>
+							  		<td colspan="3">
+										<input id="signupName" class="margin0 input-small" type="text"/>
+                                    </td>
+							  		<td colspan="3" class="must title">
+										<span><strong>생년월일</strong></span>
+                                    </td>
+							  		<td colspan="3">
+                                        <input id="signupBirthday" class="margin0 input-small datepicker dateinput fontmini" type="text"/>
+                                    </td>
+							  		<td colspan="3" class="must title">
+										<span><strong>성별</strong></span>
+                                    </td>
+                                    <td colspan="5">
+                                        <select id="signupGender" class="margin0 width2" style="margin-right:10px; margin-bottom:0px">
+                                            <option value="남">남</option>
+                                            <option value="여">여</option>
+                                        </select>
+                                    </td>
+								</tr>
+							  	<tr>
+							  		<td colspan="3" class="must title">
+										<span><strong>부서</strong></span>
+                                    </td>
+							  		<td colspan="3">
+										<input id="signupDepartment" class="margin0 input-small" type="text"/>
+                                    </td>
+							  		<td colspan="3" class="must title">
+										<span><strong>직급</strong></span>
+                                    </td>
+							  		<td colspan="3">
+										<input id="signupPosition" class="margin0 input-small" type="text"/>
+                                    </td>
+							  		<td colspan="3" class="must title">
+										<span><strong>입사일</strong></span>
+                                    </td>
+							  		<td colspan="5">
+                                        <input id="signupJoinDate" class="margin0 input-small datepicker dateinput fontmini" type="text"/>
+                                    </td>
+								</tr>
+							</tbody>
+						 </table>  
+					</div>
+				</div>
+				<div class="box center-block" style="margin: 0px; padding: 0px">
+					<div class="box-header">
+						<h2><strong>연락처 및 주소</strong></h2>
+					</div>
+					<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+						<table class="table table-bordered table-condensed">
+							<colgroup>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="5%"></col>
+								<col width="10%"></col>
+							</colgroup>
+							<tbody>
+							  	<tr>
+							  		<td colspan="3" class="must title">
+										<span><strong>연락처1</strong></span>
+                                    </td>
+							  		<td colspan="3">
+										<input id="signupContact1" class="margin0 input-small" type="text"/>
+                                    </td>
+							  		<td colspan="3" class="optional title">
+										<span><strong>연락처2</strong></span>
+                                    </td>
+							  		<td colspan="3">
+										<input id="signupContact2" class="margin0 input-small" type="text"/>
+                                    </td>
+							  		<td colspan="3" class="must title">
+										<span><strong>주소</strong></span>
+                                    </td>
+							  		<td colspan="5">
+										<input id="signupAddress" class="margin0 input-large" type="text"/>
+                                    </td>
+								</tr>
+							</tbody>
+						 </table>  
+					</div>
+				</div>
+
+                <div class="center-wrapper">
+                    <button align="center" class="btn" onclick="SignUp();">가입을 신청합니다</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+
+    </div><!--/.fluid-container-->
+
+
+
+	<!-- start: JavaScript-->
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-1.9.1.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-migrate-1.0.0.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-ui-1.10.0.custom.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/bootstrap.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cookie.js"></script>
+	
+		<script src='{{ STATIC_URL }}bootstrap/js/fullcalendar.min.js'></script>
+	
+		<script src='{{ STATIC_URL }}bootstrap/js/jquery.dataTables.min.js'></script>
+
+		<script src="{{ STATIC_URL }}bootstrap/js/excanvas.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.pie.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.stack.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.resize.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.chosen.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uniform.min.js"></script>
+		
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cleditor.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.noty.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.elfinder.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.raty.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.iphone.toggle.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uploadify-3.1.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.gritter.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.imagesloaded.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.masonry.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/custom.js"></script>
+
+		<script src="{{ STATIC_URL }}ejs/ejs.js"></script>
+		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
+		<script src="{{ STATIC_URL }}ejs/view.js"></script>
+		<script src="{{ STATIC_URL }}/js/common.js"></script>
+		<script src="{{ STATIC_URL }}/js/signup.js"></script>
+
+		
+		<script type="text/javascript" language="JavaScript">
+			$(document).ready(function(){
+				/*
+				setTimeout("message_welcome1()",5000);
+				setTimeout("message_welcome2()",10000);	
+				setTimeout("message_welcome3()",15000);
+				setInterval(f_visits, 100);
+				setInterval(f_members, 2000);
+				setInterval(f_income, 5000);
+				setInterval(f_sales, 5000);
+				setInterval(live_notifications_center, 5000);
+				 */
+
+				// show sidebar
+				show_sidebar();
+			});			
+		</script>
+		<!-- end: JavaScript-->
+	
+</body>
+</html>

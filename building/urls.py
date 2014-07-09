@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from buildingApp.views_01 import *
 from buildingApp.views_02 import *
 from buildingApp.views_03 import *
+from buildingApp.views_account import *
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -18,7 +19,10 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^login/', login_html), 
+    url(r'^account/signup/', signup),
+    url(r'^account/checkid/', checkid),
+    url(r'^login/', login_request), 
+    url(r'^logout/', logout_request), 
 
     url(r'^main/$', main_html),
     url(r'^newmain/$', newmain_html),

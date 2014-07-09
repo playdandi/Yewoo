@@ -1,0 +1,68 @@
+table {
+    table-layout: fixed;
+}
+table th, table td {
+	overflow: hidden;
+    vertical-align: middle !important;
+}
+
+.must {
+	color: red;
+}
+.optional {
+	color: black;
+}
+.margin0 {
+	margin-left: 0px !important;
+	margin-right: 0px !important;
+	margin-top: 0px !important;
+	margin-bottom: 0px !important;
+}
+.width4 {
+	width: 95px;
+}
+.width3 {
+	width: 80px;
+}
+.width2 {
+	width: 70px;
+}
+input {
+	font-family : 'Malgun Gothic' !important;
+}
+::-webkit-input-placeholder {
+	font-size : 0.8em !important;
+	font-family : 'Malgun Gothic' !important;
+}
+::-moz-placeholder {
+	font-size : 0.8em !important;
+	font-family : 'Malgun Gothic' !important;
+}
+:-moz-placeholder {
+	font-size : 0.8em !important;
+	font-family : 'Malgun Gothic' !important;
+}
+:-ms-input-placeholder {
+	font-size : 0.8em !important;
+	font-family : 'Malgun Gothic' !important;
+}
+:-input {
+	margin-bottom:0px !important;
+	font-family : 'Malgun Gothic' !important;
+}
+td.title {
+    white-space: nowrap;
+    text-align: center;
+    padding: 0 15px 0 15px;
+}
+.label {
+    color: black;
+    text-align: center;
+    padding: 4px 0 4px 0;
+}
+td.align-center {
+    text-align: center;
+}
+.center-wrapper {
+    text-align: center;
+}
