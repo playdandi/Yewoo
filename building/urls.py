@@ -1,8 +1,12 @@
 from django.conf.urls import patterns, include, url
+from django.core.urlresolvers import reverse_lazy
+from django.views.generic import RedirectView
 from buildingApp.views_01 import *
 from buildingApp.views_02 import *
 from buildingApp.views_03 import *
 from buildingApp.views_account import *
+
+
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -18,6 +22,8 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^$', RedirectView.as_view(url='/login/')),
 
     url(r'^account/signup/', signup),
     url(r'^account/checkid/', checkid),
