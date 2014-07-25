@@ -17,7 +17,6 @@
 	<link id="base-style" href="{{ STATIC_URL }}bootstrap/css/style.css" rel="stylesheet">
 	<link id="base-style-responsive" href="{{ STATIC_URL }}bootstrap/css/style-responsive.css" rel="stylesheet">
 	<link href="{{ STATIC_URL }}bootstrap/css/datepicker.css" rel="stylesheet">
-	<link href="{{ STATIC_URL }}bootstrap/css/datepicker.css" rel="stylesheet">
 	<link href="{{ STATIC_URL }}css/common.css" rel="stylesheet">
 	<!-- end: CSS -->
 
@@ -31,23 +30,78 @@
 	<!-- end: Favicon -->
 	
 	<style>
+    table {
+    	table-layout: fixed;
+    }
+    table th, table td {
+    	overflow: hidden;
+    }
+    .must {
+    	color: red;
+    	float: left;
+		margin-right: 10px;
+    }
+    .optional {
+    	color: black;
+    	float: left;
+    	margin-right: 10px;
+    }
+    .margin0 {
+    	margin-left: 0px !important;
+    	margin-right: 0px !important;
+    	margin-top: 0px !important;
+    	margin-bottom: 0px !important;
+	}
+	.width4 {
+		width: 95px;
+	}
+	.width3 {
+		width: 80px;
+	}
+	.width2 {
+		width: 70px;
+	}
+	select {
+		font-family : 'Malgun Gothic' !important;
+	}
     body {
-      padding-bottom: 40px;
-      font-size : 0.77em;
-      font-family : 'Malgun Gothic' !important;
+		font-size : 0.77em;
+		font-family : 'Malgun Gothic' !important;
+	}
+	input {
+		font-family : 'Malgun Gothic' !important;
+	}
+	::-webkit-input-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	::-moz-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	:-moz-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	:-ms-input-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	:-input {
+		margin-bottom:0px !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	#myModal {
+		top : 10%;
+		width : 80%;
+		margin : 0px 0px 0px 0px;
+		padding : 0px 0px 0px 0px;
+		left : 10%;
+	}
+    .table-center td{
+        text-align:center;
+        vertical-align:middle;
     }
-    .sidebar-nav {
-      padding: 9px 0;
-    }
-    @media (max-width: 980px) {
-      /* Enable use of floated navbar text */
-      .navbar-text.pull-right {
-        float: none;
-        padding-left: 5px;
-        padding-right: 5px;
-      }
-    }
-
 	</style>
 		
 </head>
@@ -75,7 +129,7 @@
       <div class="navbar-inner">
         <div class="container-fluid">
           <p class="navbar-text pull-left">
-              관리자 <a href="#" class="navbar-link">{{ username }}</a> 님 <button class="btn btn-mini" onclick="location.href='/logout/'">로그아웃</button>
+              관리자 <a href="#" class="navbar-link">김지훈</a> 님 <button class="btn btn-mini">로그아웃</button>
           </p>
           <ul class="nav">
             <li class="divider-vertical"></li>
@@ -130,9 +184,9 @@
       </div>
     </div>
     <!-- end:Header --!>
-
-    <div class="container-fluid">
-      <div class="row-fluid">
+	<div class="container-fluid">
+        <div class="row-fluid">
+						
         <div class="span2">
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
@@ -141,15 +195,132 @@
             </ul>
           </div><!--/.well -->
         </div><!--/span-->
-        <div class="span10">
-            <h2>게시판 알림 영역</h2>
-            <p>이곳은 게시판 알림 영역입니다.</p>
-        </div><!--/span-->
-      </div><!--/row-->
+				
+			<noscript>
+				<div class="alert alert-block span10">
+					<h4 class="alert-heading">Warning!</h4>
+					<p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
+				</div>
+			</noscript>
+			
+			<!-- start: Content -->	
+			<div id="content" class="span10">
+				<div class="span11">
+					<ul class="breadcrumb">
+						<li>
+							<a href="#">관리자 지스템 > 회원 승인 관리</a>
+						</li>
+					</ul>
+				</div>
+					<div class="box span11" style="margin: 0px; padding: 0px">
+						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+								<tr>
+									<td width="20%"><a href="/manage/activate/">1. 회원 승인 관리</a></td>
+									<td width="20%" style="background-color:#dbdbd2"><a href="/manage/accountinfo/">2. 회원 정보 관리</a></td>
+									<td width="20%"><a href="#">3. 회원 권한 관리</a></td>
+									<td width="20%"><a href="#">4. 시스템 설정</a></td>
+									<td width="20%"></td>
+								</tr>
+							</table>
+						</div>
+					</div>
 
-    </div><!--/.fluid-container-->
 
+				<div class="row-fluid">
+                    <div class="span11">
+                        <span><h3>사원 목록 현황/주소록</h3></span>
+                        <hr style="margin-top:10px;margin-bottom:10px;">
+                    </div>
+					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
+						<div class="box-header" style="padding:7px 10px 7px 10px;">
+							<span><strong>전체 사원 현황</strong> <font color="red">4</font>건 (신규 회원 정보 <font color="red">4</font>건 / 중복 정보 <font color="red">0</font>건) 중 승인 가능한 회원 정보는 <font color="red">4</font>건 입니다.</span>
+						</div>
+                    </div>
+					<div class="span11" style="margin:5px 0px 0px 0px; padding:0px">
+						<span id="labelall" class="label label-inverse" onclick="filter('all');">전체</span>
+						<span id="label0" class="label" onclick="filter('0');">ㄱ</span>
+						<span id="label1" class="label" onclick="filter('1');">ㄴ</span>
+						<span id="label2" class="label" onclick="filter('2');">ㄷ</span>
+						<span id="label3" class="label" onclick="filter('3');">ㄹ</span>
+						<span id="label4" class="label" onclick="filter('4');">ㅁ</span>
+						<span id="label5" class="label" onclick="filter('5');">ㅂ</span>
+						<span id="label6" class="label" onclick="filter('6');">ㅅ</span>
+						<span id="label7" class="label" onclick="filter('7');">ㅇ</span>
+						<span id="label8" class="label" onclick="filter('8');">ㅈ</span>
+						<span id="label9" class="label" onclick="filter('9');">ㅊ</span>
+						<span id="label10" class="label" onclick="filter('10');">ㅋ</span>
+						<span id="label11" class="label" onclick="filter('11');">ㅌ</span>
+						<span id="label12" class="label" onclick="filter('12');">ㅍ</span>
+						<span id="label13" class="label" onclick="filter('13');">ㅎ</span>
+						<span id="" class="label">기타</span>
+						<span id="" class="label">재직</span>
+						<span id="" class="label">퇴사</span>
+					</div>
+					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
+						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;">
+								<tr style="background:#d0d0d0;">
+                                    <td width="5%"><input type="checkbox"/></td>
+									<td width="8%">이름</td>
+									<td width="8%">사번</td>
+									<td width="8%">부서</td>
+									<td width="8%">직급</td>
+									<td width="8%">재직 현황</td>
+									<td width="9%">입사일</td>
+									<td width="9%">퇴사일</td>
+									<td width="13%">연락처</td>
+									<td width="14%">이메일</td>
+									<td width="9%">수정하기</td>
+									<td width="9%">상세 보기</td>
+								</tr>
+								<tr>
+                                    <td><input type="checkbox"/></td>
+									<td>이지희 ▩</b></td>
+									<td>01</td>
+									<td>총무팀</td>
+									<td>대리</td>
+									<td>재직</td>
+									<td>2014.06.15</td>
+									<td>2014.06.15</td>
+									<td>010-2833-5679</td>
+									<td>jungklee@naver.com</td>
+									<td><button class="btn btn-small">수정</button></td>
+									<td><button class="btn btn-small">보기▲</button></td>
+								</tr>
+								<tr>
+                                    <td><input type="checkbox"/></td>
+									<td>김민철 ▩</b></td>
+									<td>02</td>
+									<td>시설관리팀</td>
+									<td>사원</td>
+									<td>재직</td>
+									<td>2014.06.16</td>
+									<td>2014.06.16</td>
+									<td>010-1234-5678</td>
+									<td>minchul@gmail.com</td>
+									<td><button class="btn btn-small">수정</button></td>
+									<td><button class="btn btn-small">보기▼</button></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
 
+			</div>
+			<!-- end: Content -->
+		</div>
+	</div>
+	
+	<div class="clearfix"></div>
+	<hr>
+	
+	<footer>
+		<p class="pull-left">&copy; <a href="" target="_blank">creativeLabs</a> 2013</p>
+		<p class="pull-right">Powered by: <a href="#">Optimus Dashboard</a></p>
+	</footer>
+			
+</div><!--/.fluid-container-->
 
 	<!-- start: JavaScript-->
 		<script src="{{ STATIC_URL }}bootstrap/js/jquery-1.9.1.min.js"></script>
@@ -197,24 +368,15 @@
 		<script src="{{ STATIC_URL }}ejs/ejs.js"></script>
 		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
-		<script src="{{ STATIC_URL }}/js/common.js"></script>
 
+		<!--<script src="{{ STATIC_URL }}js/03_01_electricity_show.js"></script>!-->
+		<script src="{{ STATIC_URL }}js/common.js"></script>
 		
 		<script type="text/javascript" language="JavaScript">
 			$(document).ready(function(){
-				/*
-				setTimeout("message_welcome1()",5000);
-				setTimeout("message_welcome2()",10000);	
-				setTimeout("message_welcome3()",15000);
-				setInterval(f_visits, 100);
-				setInterval(f_members, 2000);
-				setInterval(f_income, 5000);
-				setInterval(f_sales, 5000);
-				setInterval(live_notifications_center, 5000);
-				 */
-
 				// show sidebar
 				show_sidebar();
+
 			});			
 		</script>
 		<!-- end: JavaScript-->

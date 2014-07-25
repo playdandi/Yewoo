@@ -4,6 +4,7 @@ from django.views.generic import RedirectView
 from buildingApp.views_01 import *
 from buildingApp.views_02 import *
 from buildingApp.views_03 import *
+from buildingApp.views_04 import *
 from buildingApp.views_account import *
 
 
@@ -85,4 +86,7 @@ urlpatterns = patterns('',
     #url(r'^lease/payment/detail/getModifyInfo/$', payment_detail_modifyinfo),
     url(r'^lease/payment/detail/saveInput/$', payment_detail_saveInput),
     url(r'^lease/payment/detail/saveModify/$', payment_detail_saveModify),
+
+    url(r'^manage/activate/$', activate_html), 
+    url(r'^manage/accountinfo/$', accountinfo_html), 
 )
