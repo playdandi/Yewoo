@@ -134,7 +134,7 @@
 				<div class="span11">
 					<ul class="breadcrumb" style="margin: 5px 0px 5px 0px;">
 						<li>
-							<a href="#">관리자 시스템 > 회원 정보 관리</a>
+							<a href="#">관리자 시스템 > 회원 권한 관리</a>
 						</li>
 					</ul>
 				</div>
@@ -143,8 +143,8 @@
 							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 								<tr>
 									<td width="20%"><a href="/manage/activate/">1. 회원 승인 관리</a></td>
-									<td width="20%" style="background-color:#dbdbd2"><a href="/manage/accountinfo/">2. 회원 정보 관리</a></td>
-									<td width="20%"><a href="/manage/right/">3. 회원 권한 관리</a></td>
+									<td width="20%"><a href="/manage/accountinfo/">2. 회원 정보 관리</a></td>
+									<td width="20%" style="background-color:#dbdbd2"><a href="/manage/right/">3. 회원 권한 관리</a></td>
 									<td width="20%"><a href="/manage/setting/department/">4. 시스템 설정</a></td>
 									<td width="20%"></td>
 								</tr>
@@ -155,7 +155,7 @@
 
 				<div class="row-fluid">
                     <div class="span11">
-                        <span><h3>사원 목록 현황/주소록</h3></span>
+                        <span><h3>사원 목록 현황</h3></span>
                         <hr style="margin-top:10px;margin-bottom:10px;">
                     </div>
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
@@ -192,13 +192,9 @@
 									<td width="8%">사번</td>
 									<td width="8%">부서</td>
 									<td width="8%">직급</td>
-									<td width="8%">재직 현황</td>
-									<td width="9%">입사일</td>
-									<td width="9%">퇴사일</td>
-									<td width="13%">연락처</td>
-									<td width="14%">이메일</td>
-									<td width="9%">수정하기</td>
-									<td width="9%">상세 보기</td>
+									<td width="8%">시스템 권한</td>
+									<td width="45%">시스템 권한 목록</td>
+									<td width="10%">권한 부여하기</td>
 								</tr>
 								<tr>
                                     <td><input type="checkbox"/></td>
@@ -206,13 +202,58 @@
 									<td>01</td>
 									<td>총무팀</td>
 									<td>대리</td>
-									<td>재직</td>
-									<td>2014.06.15</td>
-									<td>2014.06.15</td>
-									<td>010-2833-5679</td>
-									<td>jungklee@naver.com</td>
-									<td><a class="btn btn-small" href="/manage/accountinfo/detail/">수정</a></td>
-									<td><a class="btn btn-small" href="/manage/accountinfo/detail/">보기</a></td>
+									<td>총 2개</td>
+									<td>입주자 관리 시스템, 통합 내역 시스템</td>
+									<td><a class="btn btn-small">보기▲</a></td>
+								</tr>
+								<tr>
+                                    <td colspan="8" style="text-align:left;">
+                                    <div style="padding:5px;">
+                                        <span><strong>시스템 권한 부여 설정</strong> 2개 권한 부여중</span>
+                                        <hr style="margin-top:10px;margin-bottom:10px;">
+							            <table class="table table-bordered table-condensed table-center borderless" style="margin-bottom:0px;background-color:transparent;">
+                                            <tr>
+                                                <td width="16%"><strong>전체 선택</strong></td>
+                                                <td width="16%"><strong>관리자 시스템</strong></td>
+                                                <td width="16%"><strong>건물 관리 시스템</strong></td>
+                                                <td width="16%"><strong>입주자 관리 시스템</strong></td>
+                                                <td width="16%"><strong>시설 관리 시스템</strong></td>
+                                                <td width="16%"><strong>통합 내역 관리 시스템</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding:0px;"><span height="100%" class="label" style="display:block;padding:7px 4px;">▽</span></td>
+                                                <td style="padding:0px;"><span height="100%" class="label" style="display:block;padding:7px 4px;">▽</span></td>
+                                                <td style="padding:0px;"><span height="100%" class="label" style="display:block;padding:7px 4px;">▽</span></td>
+                                                <td style="padding:0px;"><span height="100%" class="label" style="display:block;padding:7px 4px;">▽</span></td>
+                                                <td style="padding:0px;"><span height="100%" class="label" style="display:block;padding:7px 4px;">▽</span></td>
+                                                <td style="padding:0px;"><span height="100%" class="label" style="display:block;padding:7px 4px;">▽</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>
+                                                <table class="table-center" style="border: none;">
+                                                    <tr style="border:none;">
+                                                        <td style="border:none;" width="20%"><input type="checkbox" checked/></td>
+                                                        <td style="border:none;" width="80%">입주자 정보 확인(목록)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="border:none;"><input type="checkbox"/></td>
+                                                        <td style="border:none;">입주자 정보 입력(개별)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="border:none;"><input type="checkbox"/></td>
+                                                        <td style="border:none;">입주자 정보 입력(파일)</td>
+                                                    </tr>
+                                                </table>
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    </td>
 								</tr>
 								<tr>
                                     <td><input type="checkbox"/></td>
@@ -220,13 +261,9 @@
 									<td>02</td>
 									<td>시설관리팀</td>
 									<td>사원</td>
-									<td>재직</td>
-									<td>2014.06.16</td>
-									<td>2014.06.16</td>
-									<td>010-1234-5678</td>
-									<td>minchul@gmail.com</td>
-									<td><a class="btn btn-small" href="/manage/accountinfo/detail/">수정</a></td>
-									<td><a class="btn btn-small" href="/manage/accountinfo/detail/">보기</a></td>
+									<td>총 2개</td>
+									<td>입주자 관리 시스템, 통합 내역 시스템</td>
+									<td><a class="btn btn-small">보기▼</a></td>
 								</tr>
 							</table>
 						</div>

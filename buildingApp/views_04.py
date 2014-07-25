@@ -15,3 +15,15 @@ def activate_html(request):
 
 def accountinfo_html(request):
     return render(request, '04_02_accountinfo.html')
+
+def accountinfo_detail_html(request):
+    return render(request, '04_02_accountinfo_detail.html')
+
+def right_html(request):
+    return render(request, '04_03_right.html')
+
+def setting_department_html(request):
+    return render(request, '04_04_setting_department.html')
+
+def setting_delay_html(request):
+    return render(request, '04_04_setting_delay.html')
