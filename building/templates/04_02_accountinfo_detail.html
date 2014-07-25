@@ -35,6 +35,7 @@
     }
     table th, table td {
     	overflow: hidden;
+        white-space: nowrap;
     }
     .must {
     	color: red;
@@ -134,7 +135,7 @@
 				<div class="span11">
 					<ul class="breadcrumb" style="margin: 5px 0px 5px 0px;">
 						<li>
-							<a href="#">관리자 시스템 > 회원 정보 관리</a>
+							<a href="#">개인정보 관리 > 개인 프로필</a>
 						</li>
 					</ul>
 				</div>
@@ -153,84 +154,149 @@
 					</div>
 
 
-				<div class="row-fluid">
-                    <div class="span11">
-                        <span><h3>사원 목록 현황/주소록</h3></span>
-                        <hr style="margin-top:10px;margin-bottom:10px;">
+				<div class="span11 bordered" style="padding:7px 7px 7px 7px;margin:5px 0px 5px 0px;">
+                    <div>
+					    <ul class="breadcrumb" style="margin: 5px 0px 5px 0px;">
+    						<li>
+    							<a href="#">개인정보 관리 > 회원 정보 관리 > 1. 개인 프로필</a>
+    						</li>
+    					</ul>
                     </div>
-					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
-						<div class="box-header" style="padding:7px 10px 7px 10px;">
-							<span><strong>전체 사원 현황</strong> <font color="red">4</font>건 (신규 회원 정보 <font color="red">4</font>건 / 중복 정보 <font color="red">0</font>건) 중 승인 가능한 회원 정보는 <font color="red">4</font>건 입니다.</span>
-						</div>
-                    </div>
-					<div class="span11" style="margin:5px 0px 0px 0px; padding:0px">
-						<span id="labelall" class="label label-inverse" onclick="filter('all');">전체</span>
-						<span id="label0" class="label" onclick="filter('0');">ㄱ</span>
-						<span id="label1" class="label" onclick="filter('1');">ㄴ</span>
-						<span id="label2" class="label" onclick="filter('2');">ㄷ</span>
-						<span id="label3" class="label" onclick="filter('3');">ㄹ</span>
-						<span id="label4" class="label" onclick="filter('4');">ㅁ</span>
-						<span id="label5" class="label" onclick="filter('5');">ㅂ</span>
-						<span id="label6" class="label" onclick="filter('6');">ㅅ</span>
-						<span id="label7" class="label" onclick="filter('7');">ㅇ</span>
-						<span id="label8" class="label" onclick="filter('8');">ㅈ</span>
-						<span id="label9" class="label" onclick="filter('9');">ㅊ</span>
-						<span id="label10" class="label" onclick="filter('10');">ㅋ</span>
-						<span id="label11" class="label" onclick="filter('11');">ㅌ</span>
-						<span id="label12" class="label" onclick="filter('12');">ㅍ</span>
-						<span id="label13" class="label" onclick="filter('13');">ㅎ</span>
-						<span id="" class="label">기타</span>
-						<span id="" class="label">재직</span>
-						<span id="" class="label">퇴사</span>
-					</div>
-					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
-						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
-							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;">
-								<tr style="background:#d0d0d0;">
-                                    <td width="5%"><input type="checkbox"/></td>
-									<td width="8%">이름</td>
-									<td width="8%">사번</td>
-									<td width="8%">부서</td>
-									<td width="8%">직급</td>
-									<td width="8%">재직 현황</td>
-									<td width="9%">입사일</td>
-									<td width="9%">퇴사일</td>
-									<td width="13%">연락처</td>
-									<td width="14%">이메일</td>
-									<td width="9%">수정하기</td>
-									<td width="9%">상세 보기</td>
-								</tr>
+					<div class="box" style="margin: 0px; padding: 0px">
+						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 								<tr>
-                                    <td><input type="checkbox"/></td>
-									<td>이지희 ▩</b></td>
-									<td>01</td>
-									<td>총무팀</td>
-									<td>대리</td>
-									<td>재직</td>
-									<td>2014.06.15</td>
-									<td>2014.06.15</td>
-									<td>010-2833-5679</td>
-									<td>jungklee@naver.com</td>
-									<td><a class="btn btn-small" href="/manage/accountinfo/detail/">수정</a></td>
-									<td><a class="btn btn-small" href="/manage/accountinfo/detail/">보기</a></td>
-								</tr>
-								<tr>
-                                    <td><input type="checkbox"/></td>
-									<td>김민철 ▩</b></td>
-									<td>02</td>
-									<td>시설관리팀</td>
-									<td>사원</td>
-									<td>재직</td>
-									<td>2014.06.16</td>
-									<td>2014.06.16</td>
-									<td>010-1234-5678</td>
-									<td>minchul@gmail.com</td>
-									<td><a class="btn btn-small" href="/manage/accountinfo/detail/">수정</a></td>
-									<td><a class="btn btn-small" href="/manage/accountinfo/detail/">보기</a></td>
+									<td width="20%" style="background-color:#dbdbd2"><a href="#">1. 개인 프로필</a></td>
+									<td width="20%"><a href="#">2. 근태 관리</a></td>
+									<td width="20%"><a href="#">3. 업무 평가</a></td>
+									<td width="20%"><a href="#">4. 시스템 로그인 정보</a></td>
+									<td width="20%"></td>
 								</tr>
 							</table>
 						</div>
 					</div>
+                    <button class="pull-right btn btn-small">사원 정보 수정하기 ▶</button>
+                    <h3 style="margin:5px;">1. 개인 프로필</h3>
+                    <hr style="margin-top:10px;margin-bottom:10px;">
+                    
+                    <button class="pull-right btn btn-small" style="margin:0px 3px 0px 0px;">수정</button>
+                    <h6 style="margin:20px 5px 10px 5px;padding:0px 3px 0px 3px;">개인 프로필</h6>
+                    <hr style="margin-top:10px;margin-bottom:10px;padding:0px 3px 0px 3px;">
+					<div class="box" style="margin:0px;padding:0px 3px 0px 3px;">
+						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;table-layout:fixed;">
+								<tr>
+                                    <td width="14%" rowspan="5"><img width="auto" height="auto" src="/static/img/김태희.jpg" style="max-height:136px"/></td>
+									<td width="10%"><strong>이름</strong></td>
+									<td width="10%">이지희</td>
+									<td width="10%"><strong>생년월일</strong></td>
+									<td width="10%">1989.03.06</td>
+									<td width="10%"><strong>성별</strong></td>
+									<td width="10%">여</td>
+									<td width="10%"><strong>재직여부</strong></td>
+									<td width="10%">재직</td>
+								</tr>
+								<tr>
+									<td><strong>부서</strong></td>
+									<td>총무팀</td>
+									<td><strong>직급</strong></td>
+									<td>대리</td>
+									<td><strong>입사일</strong></td>
+									<td>2014.06.15</td>
+									<td><strong>퇴사일</strong></td>
+									<td>2014.06.15</td>
+								</tr>
+								<tr>
+									<td><strong>사번</strong></td>
+									<td>01</td>
+									<td><strong>연락처1</strong></td>
+									<td>010-2833-5679</td>
+									<td><strong>연락처2</strong></td>
+									<td>02-833-5679</td>
+									<td><strong>이메일</strong></td>
+									<td>jungklee@naver.com</td>
+								</tr>
+								<tr>
+									<td><strong>주소1</strong></td>
+									<td colspan="3">서울특별시 동작구 사당5동 378-2 효원빌라 201호</td>
+									<td><strong>주소2</strong></td>
+									<td colspan="3">이지희</td>
+								</tr>
+								<tr>
+									<td><strong>시스템 아이디</strong></td>
+									<td>yewoo99</td>
+									<td><strong>시스템 비밀번호</strong></td>
+									<td>*******</td>
+									<td><strong>시스템 승인일</strong></td>
+									<td>2014.06.15</td>
+									<td><strong>가입 승인자</strong></td>
+									<td>김지훈</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+                    <button class="pull-right btn btn-small" style="margin:10px 3px 0px 0px;">수정</button>
+                    <h6 style="margin:20px 5px 10px 5px;padding:0px 3px 0px 3px;">학력 사항</h6>
+                    <hr style="margin-top:10px;margin-bottom:10px;padding:0px 3px 0px 3px;">
+					<div class="box" style="margin:0px;padding:0px 3px 0px 3px;">
+						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;table-layout:fixed;">
+								<tr>
+                                    <td width="24%"><strong>재학기간</strong></td>
+									<td width="10%"><strong>학교명</strong></td>
+									<td width="10%"><strong>소재지</strong></td>
+									<td width="10%"><strong>전공</strong></td>
+									<td width="10%"><strong>학점</strong></td>
+									<td width="30%"><strong>기타 사항</strong></td>
+								</tr>
+								<tr>
+                                    <td>2008년 입학~2012년 02월 졸업</td>
+									<td>숭실대학교</td>
+									<td>서울</td>
+									<td>전산/통계학</td>
+									<td>3.74/4.3</strong></td>
+									<td>동아리 활동, 음악 듣기가 취미</strong></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+                    <button class="pull-right btn btn-small" style="margin:10px 3px 0px 0px;">수정</button>
+                    <h6 style="margin:20px 5px 10px 5px;padding:0px 3px 0px 3px;">경력 사항</h6>
+                    <hr style="margin-top:10px;margin-bottom:10px;padding:0px 3px 0px 3px;">
+					<div class="box" style="margin:0px;padding:0px 3px 0px 3px;">
+						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;table-layout:fixed;">
+								<tr>
+                                    <td width="24%"><strong>재직기간</strong></td>
+									<td width="10%"><strong>회사명</strong></td>
+									<td width="20%"><strong>부서/직급/직책</strong></td>
+									<td width="40%"><strong>담당업무</strong></td>
+								</tr>
+								<tr>
+                                    <td>2012년 03월~2013년 08월</td>
+									<td>그린 환경 사무소</td>
+									<td>총무팀 대리</td>
+									<td></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+                    <button class="pull-right btn btn-small" style="margin:10px 3px 0px 0px;">수정</button>
+                    <h6 style="margin:20px 5px 10px 5px;padding:0px 3px 0px 3px;">자기 소개</h6>
+                    <hr style="margin-top:10px;margin-bottom:10px;padding:0px 3px 0px 3px;">
+					<div class="box" style="margin:0px;padding:0px 3px 0px 3px;">
+						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed" style="margin-bottom:0px;table-layout:fixed;">
+								<tr>
+                                    <td width="100%">열심히 하겠습니다.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
 				</div>
 
 			</div>
