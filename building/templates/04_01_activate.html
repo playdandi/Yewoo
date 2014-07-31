@@ -161,7 +161,7 @@
                     </div>
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
 						<div class="box-header" style="padding:7px 10px 7px 10px;">
-							<span><strong>신규 회원 정보</strong> <font color="red">3</font>건 (신규 회원 정보 <font color="red">3</font>건 / 중복 정보 <font color="red">0</font>건) 중 승인 가능한 회원 정보는 <font color="red">3</font>건 입니다.</span>
+							<span><strong>신규 회원 정보</strong> <font color="red">{{ newbies|length }}</font>건 (신규 회원 정보 <font color="red">{{ newbies|length }}</font>건 / 중복 정보 <font color="red">0</font>건) 중 승인 가능한 회원 정보는 <font color="red">{{ newbies|length }}</font>건 입니다.</span>
 						</div>
                     </div>
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
@@ -180,15 +180,16 @@
 									<td width="9%">가입 승인</td>
 									<td width="9%">상세 보기</td>
 								</tr>
+                                {% for newbie in newbies %}
 								<tr>
                                     <td><input type="checkbox"/></td>
 									<td>신규</td>
-									<td>이지희</td>
-									<td>총무팀</td>
-									<td>대리</td>
-									<td>2014.06.15</td>
-									<td>010-2833-5679</td>
-									<td>jungklee@naver.com</td>
+									<td>{{ newbie.userprofile.name }}</td>
+									<td>{{ newbie.userprofile.department }}</td>
+									<td>{{ newbie.userprofile.position }}</td>
+									<td>{{ newbie.userprofile.joindate }}</td>
+									<td>{{ newbie.userprofile.contact1 }}</td>
+									<td></td>
 									<td>미정</td>
 									<td><button class="btn btn-small">승인</button></td>
 									<td><button class="btn btn-small">보기▲</button></td>
@@ -201,23 +202,23 @@
 							            <table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;">
                                             <tr>
                                                 <td><strong>이름</strong></td>
-                                                <td>이지희</td>
+                                                <td>{{ newbie.userprofile.name }}</td>
                                                 <td><strong>시스템 아이디</strong></td>
-                                                <td>yewoo99</td>
+                                                <td>{{ newbie.username }}</td>
                                                 <td><strong>시스템 비밀번호</strong></td>
-                                                <td>*******</td>
+                                                <td></td>
                                                 <td><strong>생년월일</strong></td>
-                                                <td>1980.3.17</td>
+                                                <td>{{ newbie.userprofile.birthday }}</td>
                                                 <td><strong>성별</strong></td>
-                                                <td>여</td>
+                                                <td>{{ newbie.userprofile.gender }}</td>
                                             </tr>
                                             <tr>
                                                 <td><strong>부서</strong></td>
-                                                <td>총무팀</td>
+                                                <td>{{ newbie.userprofile.department }}</td>
                                                 <td><strong>직급</strong></td>
-                                                <td>대리</td>
+                                                <td>{{ newbie.userprofile.position }}</td>
                                                 <td><strong>입사일</strong></td>
-                                                <td>2014.06.15</td>
+                                                <td>{{ newbie.userprofile.joindate }}</td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -229,11 +230,11 @@
 							            <table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;">
                                             <tr>
                                                 <td width="10%"><strong>연락처1</strong></td>
-                                                <td width="10%">010-2833-5679</td>
+                                                <td width="10%">{{ newbie.userprofile.contact1 }}</td>
                                                 <td width="10%"><strong>연락처2</strong></td>
-                                                <td width="10%">02-833-5679</td>
+                                                <td width="10%">{{ newbie.userprofile.contact2 }}</td>
                                                 <td width="10%"><strong>주소</strong></td>
-                                                <td width="50%">서울특별시 동작구 사당5동 378-2 호원빌라 201호</td>
+                                                <td width="50%">{{ newbie.userprofile.address }}</td>
                                             </tr>
                                         </table>
                                         <span><h6>가입 승인</h6></span>
@@ -241,7 +242,7 @@
 							            <table class="table table-bordered table-condensed table-center" style="width:20%;margin-bottom:0px;">
                                             <tr>
                                                 <td><strong>승인 담당자</strong></td>
-                                                <td>김지훈</td>
+                                                <td>{{ username }}</td>
                                             </tr>
                                         </table>
                                         <hr style="margin-top:10px;margin-bottom:10px;">
@@ -252,19 +253,7 @@
                                     </div>
                                     </td>
                                 </tr>
-								<tr>
-                                    <td><input type="checkbox"/></td>
-									<td>신규</td>
-									<td>김민철</td>
-									<td>시설관리팀</td>
-									<td>사원</td>
-									<td>2014.06.16</td>
-									<td>010-1234-5678</td>
-									<td>minchul@gmail.com</td>
-									<td>미정</td>
-									<td><button class="btn btn-small">승인</button></td>
-									<td><button class="btn btn-small">보기▼</button></td>
-								</tr>
+                                {% endfor %}
 							</table>
 						</div>
 					</div>

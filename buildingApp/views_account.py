@@ -8,6 +8,7 @@ from buildingApp.models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 import re
+from django.db import transaction
 
 def main_html(request):
     return render(request, 'main.html')
@@ -52,6 +53,7 @@ def logout_request(request):
     logout(request)
     return redirect('/login/')
 
+@transaction.commit_manually
 def signup(request, data = None):
     if request.method == "POST":
         param = {}
@@ -88,6 +90,8 @@ def signup(request, data = None):
             
         try:
             user = User.objects.create_user(systemId, password=systemPass)
+            user.is_active = False
+            user.save()
             profile = UserProfile()
             profile.user = user
             profile.passhint = systemPassHint
@@ -100,8 +104,11 @@ def signup(request, data = None):
             profile.contact1 = signupContact1
             profile.contact2 = signupContact2
             profile.address = signupAddress
+            profile.status = 0 # NEWBIE
             profile.save() 
+            transaction.commit()
         except:
+            transaction.rollback()
             return HttpResponse("회원가입에 실패하였습니다.", status=404)
 
         return render(request, 'index.html')

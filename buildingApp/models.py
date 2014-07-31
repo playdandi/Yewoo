@@ -13,6 +13,10 @@ class UserProfile(models.Model):
     contact1 = models.CharField(max_length=15)
     contact2 = models.CharField(max_length=15, null=True)
     address = models.CharField(max_length=200)
+    status = models.IntegerField()
+    #0 - NEWBIE
+    #1 - NORMAL
+    #2 - DIABLED
 
 class ResidentInfo(models.Model):
     buildingName = models.IntegerField()
