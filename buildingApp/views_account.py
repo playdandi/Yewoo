@@ -88,11 +88,19 @@ def signup(request, data = None):
             
         try:
             user = User.objects.create_user(systemId, password=systemPass)
-#            profile = UserProfile()
-#            profile.user = user
-#            profile.passhint = systemPassHint
-#            profile.name = signupName
-#            profile.save() 
+            profile = UserProfile()
+            profile.user = user
+            profile.passhint = systemPassHint
+            profile.name = signupName
+            profile.birthday = signupBirthday
+            profile.gender = signupGender
+            profile.department = signupDepartment
+            profile.position = signupPosition
+            profile.joindate = signupJoinDate
+            profile.contact1 = signupContact1
+            profile.contact2 = signupContact2
+            profile.address = signupAddress
+            profile.save() 
         except:
             return HttpResponse("회원가입에 실패하였습니다.", status=404)
 

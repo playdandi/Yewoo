@@ -351,6 +351,10 @@
 
 				// show sidebar
 				show_sidebar();
+				$('.dateinput').change(function() {
+					var mdy = $(this).val().split('/');
+					$(this).val(mdy[2]+'-'+mdy[0]+'-'+mdy[1]);
+				});
 			});			
 		</script>
 		<!-- end: JavaScript-->
