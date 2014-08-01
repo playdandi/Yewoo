@@ -191,10 +191,10 @@
 									<td>{{ newbie.userprofile.contact1 }}</td>
 									<td></td>
 									<td>미정</td>
-									<td><button class="btn btn-small">승인</button></td>
-									<td><button class="btn btn-small">보기▲</button></td>
+									<td><button class="btn btn-small" onclick="activate({{ newbie.id }});">승인</button></td>
+									<td><button class="btn btn-small showdetail">보기▼</button></td>
 								</tr>
-                                <tr>
+                                <tr style="display:none;">
                                     <td colspan="11" style="text-align:left;">
                                     <div style="padding:5px;">
                                         <span><h6>직원 정보</h6></span>
@@ -248,7 +248,7 @@
                                         <hr style="margin-top:10px;margin-bottom:10px;">
 
                                         <div style="text-align:center;">
-                                            <button class="btn btn-success">가입 승인</button>
+                                            <button class="btn btn-success" onclick="activate({{ newbie.id }})" >가입 승인</button>
                                         </div>
                                     </div>
                                     </td>
@@ -445,11 +445,37 @@
 		<script src="{{ STATIC_URL }}js/common.js"></script>
 		
 		<script type="text/javascript" language="JavaScript">
+            function activate(user_id) {
+                var csrftoken = $.cookie('csrftoken');
+                var postData = {};
+                postData['csrfmiddlewaretoken'] = csrftoken;
+                postData['user_id'] = user_id;
+                $.ajax({
+                    type : 'POST',
+                    url : '/manage/activate/',
+                    data : postData,
+                    success : function() {
+                        alert('승인되었습니다.');
+                        $(location).attr('href', '/manage/activate/');
+                    },
+                    error : function(msg) {
+                        alert('error : ' + msg);
+                    },
+                });
+            }
 			$(document).ready(function(){
-				// show sidebar
+				// show sideba
 				show_sidebar();
-
-			});			
+                $('.showdetail').click(function() {
+                    if ((this).parentNode.parentNode.nextSibling.nextSibling.style.display == 'none') {
+                        (this).parentNode.parentNode.nextSibling.nextSibling.style.display = '';
+                        (this).firstChild.data = "보기▲";
+                    } else {
+                        (this).parentNode.parentNode.nextSibling.nextSibling.style.display = 'none';
+                        (this).firstChild.data = "보기▼";
+                    }
+                });
+			});
 		</script>
 		<!-- end: JavaScript-->
 	

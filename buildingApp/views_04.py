@@ -12,14 +12,30 @@ import os
 from django.contrib.auth.models import User
 
 def activate_html(request):
-    newbies = User.objects.filter(is_active=False, userprofile__status=0)
-    try:
-       username = request.user.userprofile.name
-    except:
-        username = ""
-    return render_to_response('04_01_activate.html', \
-                                {'newbies' : newbies, 'username' : username} , \
-                                context_instance=RequestContext(request))
+    if request.method == "POST":
+        param = {}
+        for name in request.POST:
+            param[name] = request.POST.get(name, '').strip()
+
+        user_id = request.POST['user_id']
+        try:
+            newbie = User.objects.get(id=user_id)
+            newbie.is_active = True
+            newbie.userprofile.status = 1
+            newbie.userprofile.save()
+            newbie.save()
+            return render(request, 'index.html')
+        except:
+            return HttpResponse("에러가 발생하였습니다.", status=404)
+    else:
+        newbies = User.objects.filter(is_active=False, userprofile__status=0)
+        try:
+           username = request.user.userprofile.name
+        except:
+            username = ""
+        return render_to_response('04_01_activate.html', \
+                                    {'newbies' : newbies, 'username' : username} , \
+                                    context_instance=RequestContext(request))
 
 def accountinfo_html(request):
     return render(request, '04_02_accountinfo.html')
