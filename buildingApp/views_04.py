@@ -8,7 +8,7 @@ from django.db.models import Q
 import json
 from buildingApp.models import *
 from django.conf import settings
-import os
+import os, datetime
 from django.contrib.auth.models import User
 
 def activate_html(request):
@@ -22,6 +22,8 @@ def activate_html(request):
             newbie = User.objects.get(id=user_id)
             newbie.is_active = True
             newbie.userprofile.status = 1
+            newbie.userprofile.activatedate = datetime.date.today()
+            newbie.userprofile.activateadmin = request.user.userprofile.name
             newbie.userprofile.save()
             newbie.save()
             return render(request, 'index.html')
@@ -38,10 +40,27 @@ def activate_html(request):
                                     context_instance=RequestContext(request))
 
 def accountinfo_html(request):
-    return render(request, '04_02_accountinfo.html')
+    users = User.objects.filter(is_superuser=False).exclude(userprofile__status=0)
+    try:
+       username = request.user.userprofile.name
+    except:
+        username = ""
+    return render_to_response('04_02_accountinfo.html', \
+                                {'users' : users, 'username' : username} , \
+                                context_instance=RequestContext(request))
 
-def accountinfo_detail_html(request):
-    return render(request, '04_02_accountinfo_detail.html')
+def accountinfo_detail_html(request, uid):
+    try:
+       username = request.user.userprofile.name
+    except:
+        username = ""
+    try:
+        user = User.objects.get(id=uid)
+        return render_to_response('04_02_accountinfo_detail.html', \
+                                    {'user' : user, 'username' : username} , \
+                                    context_instance=RequestContext(request))
+    except:
+        return HttpResponse("에러가 발생하였습니다.", status=404)
 
 def right_html(request):
     return render(request, '04_03_right.html')

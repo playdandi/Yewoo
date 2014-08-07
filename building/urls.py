@@ -89,7 +89,7 @@ urlpatterns = patterns('',
 
     url(r'^manage/activate/$', activate_html), 
     url(r'^manage/accountinfo/$', accountinfo_html), 
-    url(r'^manage/accountinfo/detail/$', accountinfo_detail_html), 
+    url(r'^manage/accountinfo/detail/(?P<uid>\d+)/$', accountinfo_detail_html), 
     url(r'^manage/right/$', right_html), 
     url(r'^manage/setting/department/$', setting_department_html), 
     url(r'^manage/setting/delay/$', setting_delay_html), 

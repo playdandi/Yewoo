@@ -102,6 +102,9 @@ def signup(request, data = None):
             profile.contact1 = signupContact1
             profile.contact2 = signupContact2
             profile.address = signupAddress
+            profile.address2 = ""
+            profile.email = ""
+            profile.introduce = ""
             profile.status = 0 # NEWBIE
             profile.save() 
         except:
