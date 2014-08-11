@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<!-- start: Meta -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Yewoo Housing Management System</title>
+	<!-- end: Meta -->
+	
+	<!-- start: Mobile Specific -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- end: Mobile Specific -->
+
+	<!-- start: CSS -->
+	<link id="bootstrap-style" href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link id="base-style" href="{{ STATIC_URL }}bootstrap/css/style.css" rel="stylesheet">
+	<link id="base-style-responsive" href="{{ STATIC_URL }}bootstrap/css/style-responsive.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}bootstrap/css/datepicker.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}css/common.css" rel="stylesheet">
+	<!-- end: CSS -->
+
+	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	[endif]-->
+
+	<!-- start: Favicon -->
+	<link rel="shortcut icon" href="img/favicon.ico">
+	<!-- end: Favicon -->
+	
+	<style>
+    table {
+    	table-layout: fixed;
+    }
+    table th, table td {
+    	overflow: hidden;
+    }
+    .must {
+    	color: red;
+    	float: left;
+		margin-right: 10px;
+    }
+    .optional {
+    	color: black;
+    	float: left;
+    	margin-right: 10px;
+    }
+    .margin0 {
+    	margin-left: 0px !important;
+    	margin-right: 0px !important;
+    	margin-top: 0px !important;
+    	margin-bottom: 0px !important;
+	}
+	.width4 {
+		width: 95px;
+	}
+	.width3 {
+		width: 80px;
+	}
+	.width2 {
+		width: 70px;
+	}
+	select {
+		font-family : 'Malgun Gothic' !important;
+	}
+    body {
+		font-size : 0.77em;
+		font-family : 'Malgun Gothic' !important;
+	}
+	input {
+		font-family : 'Malgun Gothic' !important;
+	}
+	::-webkit-input-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	::-moz-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	:-moz-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	:-ms-input-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	:-input {
+		margin-bottom:0px !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	#myModal {
+		top : 10%;
+		width : 80%;
+		margin : 0px 0px 0px 0px;
+		padding : 0px 0px 0px 0px;
+		left : 10%;
+	}
+    .table-center td{
+        text-align:center;
+        vertical-align:middle;
+    }
+	.minifont {
+		font-size : 0.8em;
+		font-family : 'Malgun Gothic' !important;
+	}
+	</style>
+		
+</head>
+
+<body>
+    <!-- start:Header --!>
+    {% include "header.html" with menu="manage" %}
+    <!-- end:Header --!>
+	<div class="container-fluid">
+        <div class="row-fluid">
+						
+        <div class="span2">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">사이드바 영역</li>
+                <p>사이드바 영역입니다.<br><br><br><br><br><br><br></p>
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
+				
+			<noscript>
+				<div class="alert alert-block span10">
+					<h4 class="alert-heading">Warning!</h4>
+					<p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
+				</div>
+			</noscript>
+			
+			<!-- start: Content -->	
+			<div id="content" class="span10">
+				<div class="span11">
+					<ul class="breadcrumb" style="margin: 5px 0px 5px 0px;">
+						<li>
+							<a href="#">관리자 시스템 > 시스템 설정</a>
+						</li>
+					</ul>
+				</div>
+					<div class="box span11" style="margin: 0px; padding: 0px">
+						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+								<tr>
+									<td width="20%"><a href="/manage/activate/">1. 회원 승인 관리</a></td>
+									<td width="20%"><a href="/manage/accountinfo/">2. 회원 정보 관리</a></td>
+									<td width="20%"><a href="/manage/right/">3. 회원 권한 관리</a></td>
+									<td width="20%" style="background-color:#dbdbd2"><a href="/manage/setting/department/">4. 시스템 설정</a></td>
+									<td width="20%"></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+
+				<div class="row-fluid">
+                    <div class="span11">
+                        <div class="pull-right" style="margin:3px 0px 0px 0px;">
+                            <strong>시스템 선택</strong>
+    						<select class="margin0" style="width:160px" onchange="move($(this).val());">
+    							<option value="1">1. 관리자 시스템</option>
+    							<option value="2" selected>2. 통합내역 시스템</option>
+    						</select>
+                            <strong>세부 기능 선택</strong>
+    						<select class="margin0" style="width:130px" disabled>
+    							<option value="1" selected>고지내역 연체료</option>
+    						</select>
+                        </div>
+                        <h3>시스템 목록 현황</h3>
+                        <hr style="margin-top:10px;margin-bottom:10px;">
+                    </div>
+					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
+						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;">
+								<tr style="background:#d0d0d0;">
+                                    <td width="5%"><input type="checkbox"/></td>
+									<td width="15%">시스템 설정 기능</td>
+									<td width="15%">건물 연체료 설정</td>
+									<td width="55%"></td>
+									<td width="10%">설정하기</td>
+								</tr>
+								<tr>
+                                    <td><input type="checkbox"/></td>
+									<td>건물 연체료 설정</td>
+									<td>총 <font color="red">{{ numOfBuilding }}</font>개 건물 적용 중</td>
+									<td></td>
+									<td><button class="btn btn-small" onclick="show();">변경▲</button></td>
+								</tr>
+							</table>
+						</div>
+						<div class="box-content" style="margin: 5px 0px 0px 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<div class="" style="overflow-x:auto">
+								{% for b in buildingList %}
+								<div style="float:left; width:220px; margin-right:7px">
+									<table class="table table-bordered table-condensed table-center" style="text-align:center">
+										<tr>
+											<th id="{{ b.id }}_{{ b.cnt }}" colspan="2" style="text-align:center; background-color:#efefef"><a href="#" onclick="show('{{ b.id }}', '{{ b.cnt }}');">{{ b.name }}</a></th>
+										</tr>
+										{% for m in b.months %}
+										<tr id="{{ b.id }}_{{ m.id }}">
+											<td>{% if m.month == -1 %}최대{% else %}{{ m.month }}개월{% endif %}</td>
+											<td><input id="{{ m.id }}_d" type="text" style="text-align:center" class="{{ b.cnt }}_input span12 margin0 minifont" value="{{ m.delayRate }}%" disabled /></td>
+											<td class="show_{{ b.cnt }}" style="display:none">
+												<button class="btn btn-mini btn-block margin0" onclick="change_start('{{ m.id }}', '{{ b.id }}', $(this));">수정</button>
+												<button class="btn btn-mini btn-block margin0" style="display:none" onclick="change_end('{{ m.id }}', '{{ b.id }}', $(this));">완료</button>
+											</td>
+											<td class="show_{{ b.cnt }}" style="display:none"><button class="btn btn-mini btn-block margin0" onclick="del('{{ m.id }}', $(this));">삭제</button></td>
+										</tr>
+										{% endfor %}
+
+										<tr class="show_{{ b.cnt }}" style="display:none">
+											<td colspan="2">
+												<select id="{{ b.id }}_select" class="margin0 span12">
+													<option value="1">1개월</option>	
+													<option value="2">2개월</option>	
+													<option value="3">3개월</option>	
+													<option value="4">4개월</option>	
+													<option value="5">5개월</option>	
+													<option value="6">6개월</option>	
+													<option value="7">7개월</option>	
+													<option value="8">8개월</option>	
+													<option value="9">9개월</option>	
+													<option value="10">10개월</option>	
+													<option value="11">11개월</option>	
+													<option value="12">12개월</option>	
+													<option value="-1">최대</option>	
+												</select>
+											</td>
+											<td><input id="{{ b.id }}_newrate" type="text" class="span12 margin0 minifont" value="" /></td>
+											<td><button class="btn btn-mini btn-block margin0" onclick="add('{{ b.id }}', $(this));">추가</button></td>
+										</tr>
+										<tr class="show_{{ b.cnt }}" style="display:none">
+											<td colspan="2"><button class="btn btn-small btn-block span12" onclick="cancel();">취소</button></td>
+											<td colspan="2"><button id="{{ b.id }}_done" class="btn btn-small btn-block span12" onclick="done('{{ b.id }}');">완료</button></td>
+										</tr>
+										<!--
+										<tr class="show_{{ b.cnt }}" style="display:none">
+											<td colspan="2">
+												<select id="{{ b.id }}_select" class="margin0 span12">
+													{% for p in b.possibleSelect %}
+													<option value="{{ p }}">{{ p }}개월</option>
+													{% endfor %}
+												</select>
+											</td>
+											<td><input id="{{ b.id }}_newrate" type="text" class="span12 margin0 minifont" value="" /></td>
+											<td><button class="btn btn-mini btn-block margin0" onclick="add('{{ b.id }}');">추가</button></td>
+										</tr>
+										-->
+									</table>
+								</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+			<!-- end: Content -->
+		</div>
+	</div>
+	
+	<input type="hidden" value="{{ csrf_token }}" />	
+	<div class="clearfix"></div>
+	<hr>
+	
+	<footer>
+		<p class="pull-left">&copy; <a href="" target="_blank">creativeLabs</a> 2013</p>
+		<p class="pull-right">Powered by: <a href="#">Optimus Dashboard</a></p>
+	</footer>
+			
+</div><!--/.fluid-container-->
+
+	<!-- start: JavaScript-->
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-1.9.1.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-migrate-1.0.0.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-ui-1.10.0.custom.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/bootstrap.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cookie.js"></script>
+	
+		<script src='{{ STATIC_URL }}bootstrap/js/fullcalendar.min.js'></script>
+	
+		<script src='{{ STATIC_URL }}bootstrap/js/jquery.dataTables.min.js'></script>
+
+		<script src="{{ STATIC_URL }}bootstrap/js/excanvas.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.pie.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.stack.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.resize.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.chosen.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uniform.min.js"></script>
+		
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cleditor.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.noty.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.elfinder.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.raty.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.iphone.toggle.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uploadify-3.1.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.gritter.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.imagesloaded.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.masonry.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/custom.js"></script>
+
+		<script src="{{ STATIC_URL }}ejs/ejs.js"></script>
+		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
+		<script src="{{ STATIC_URL }}ejs/view.js"></script>
+
+		<!--<script src="{{ STATIC_URL }}js/03_01_electricity_show.js"></script>!-->
+		<script src="{{ STATIC_URL }}js/common.js"></script>
+		<script src="{{ STATIC_URL }}js/04_04_setting_adjustment.js"></script>
+		
+		<script type="text/javascript" language="JavaScript">
+			$(document).ready(function(){
+				// show sidebar
+				show_sidebar();
+
+				numOfBuilding = {{ numOfBuilding }};
+
+				spid = {{ sp_id }};
+				spmt = {{ sp_month }};
+				spdr = {{ sp_delayRate }};
+			});			
+		</script>
+		<!-- end: JavaScript-->
+	
+</body>
+</html>

@@ -283,12 +283,13 @@ class PaymentModifyInfo(models.Model):
     class Meta:
         unique_together = ('payment', 'modifyNumber')
 
+class TeamPosition(models.Model):
+	category = models.IntegerField() # 1:team , 2:position
+	name = models.CharField(max_length=16)
 
-
-
-
-
-
-
+class SettingPayment(models.Model):
+	building = models.ForeignKey('BuildingInfo')
+	month = models.IntegerField()
+	delayRate = models.FloatField()
 
 
