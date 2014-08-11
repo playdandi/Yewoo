@@ -109,7 +109,7 @@
 
 <body>
     <!-- start:Header --!>
-    {% include "header.html" with menu="manage" %}
+    {% include "header.html" with menu="manage" username=username %}
     <!-- end:Header --!>
 	<div class="container-fluid">
         <div class="row-fluid">
@@ -189,7 +189,7 @@
 									<td>{{ newbie.userprofile.position }}</td>
 									<td>{{ newbie.userprofile.joindate }}</td>
 									<td>{{ newbie.userprofile.contact1 }}</td>
-									<td></td>
+									<td>{{ newbie.userprofile.email }}</td>
 									<td>미정</td>
 									<td><button class="btn btn-small" onclick="activate({{ newbie.id }});">승인</button></td>
 									<td><button class="btn btn-small showdetail">보기▼</button></td>

@@ -2,7 +2,7 @@
 
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, render, redirect
-#from django.template import RequestContext, loader
+from django.template import RequestContext, loader
 from django.middleware.csrf import get_token
 from buildingApp.models import *
 from django.contrib.auth.models import User
@@ -102,6 +102,9 @@ def signup(request, data = None):
             profile.contact1 = signupContact1
             profile.contact2 = signupContact2
             profile.address = signupAddress
+            profile.address2 = ""
+            profile.email = ""
+            profile.introduce = ""
             profile.status = 0 # NEWBIE
             profile.save() 
         except:
@@ -112,7 +115,11 @@ def signup(request, data = None):
         ret = render(request, 'index.html')
         return ret 
     else:
-        return render(request, 'signup.html')
+        departments = DepartmentList.objects.all()
+        positions = PositionList.objects.all()
+        return render_to_response('signup.html', \
+                                    {'departments' : departments, 'positions' : positions} , \
+                                    context_instance=RequestContext(request))
 
 def checkid(request, data = None):
     if request.method == "POST":

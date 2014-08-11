@@ -7,16 +7,24 @@ class UserProfile(models.Model):
     name = models.CharField(max_length = 6)
     birthday = models.DateField()
     gender = models.CharField(max_length=1)
-    department = models.CharField(max_length=20)
-    position = models.CharField(max_length=10)
+    department = models.CharField(max_length=20, null=True)
+    position = models.CharField(max_length=10, null=True)
     joindate = models.DateField()
+    exitdate = models.DateField(null=True)
+    activatedate = models.DateField(null=True)
+    activateadmin = models.CharField(max_length = 6, null=True)
     contact1 = models.CharField(max_length=15)
     contact2 = models.CharField(max_length=15, null=True)
     address = models.CharField(max_length=200)
+    address2 = models.CharField(max_length=200, null=True)
     status = models.IntegerField()
-    #0 - NEWBIE
-    #1 - NORMAL
-    #2 - DIABLED
+    companynumber = models.IntegerField(null=True)
+    email = models.CharField(max_length=20, null=True)
+    introduce = models.CharField(max_length = 200, null=True)
+
+    #0 - newbie
+    #1 - working
+    #2 - retired
 
 class ResidentInfo(models.Model):
     buildingName = models.IntegerField()
@@ -283,13 +291,15 @@ class PaymentModifyInfo(models.Model):
     class Meta:
         unique_together = ('payment', 'modifyNumber')
 
-class TeamPosition(models.Model):
-	category = models.IntegerField() # 1:team , 2:position
-	name = models.CharField(max_length=16)
+
+class DepartmentList(models.Model):
+    name = models.CharField(max_length = 10)
+
+class PositionList(models.Model):
+    name = models.CharField(max_length = 10)
 
 class SettingPayment(models.Model):
 	building = models.ForeignKey('BuildingInfo')
 	month = models.IntegerField()
 	delayRate = models.FloatField()
-
 

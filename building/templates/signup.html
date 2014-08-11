@@ -201,13 +201,21 @@
 										<span><strong>부서</strong></span>
                                     </td>
 							  		<td colspan="3">
-										<input id="signupDepartment" class="margin0 input-small" type="text"/>
+                                        <select id="signupDepartment" class="margin0" style="width:104px">
+                                            {% for department in departments %}
+                                            <option value="{{ department.name }}">{{ department.name }}</option>
+                                            {% endfor %}
+                                        </select>
                                     </td>
 							  		<td colspan="3" class="must title">
 										<span><strong>직급</strong></span>
                                     </td>
 							  		<td colspan="3">
-										<input id="signupPosition" class="margin0 input-small" type="text"/>
+                                        <select id="signupPosition" class="margin0" style="width:104px">
+                                            {% for position in positions %}
+                                            <option value="{{ position.name }}">{{ position.name }}</option>
+                                            {% endfor %}
+                                        </select>
                                     </td>
 							  		<td colspan="3" class="must title">
 										<span><strong>입사일</strong></span>

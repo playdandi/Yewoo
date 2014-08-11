@@ -177,34 +177,34 @@
 								<tr style="background:#d0d0d0;">
                                     <td width="5%"><input type="checkbox" disabled /></td>
 									<td width="15%">시스템 설정 기능</td>
-									<td width="15%">부서 생성</td>
-									<td width="55%">부서명</td>
+									<td width="15%">직급 생성</td>
+									<td width="55%">직급명</td>
 									<td width="10%">설정하기</td>
 								</tr>
 								<tr>
                                     <td><input type="checkbox" disabled /></td>
-									<td>부서 정보 설정</td>
-									<td>총 <font color="red">{{ departments|length }}</font>개 부서 생성 중</td>
-									<td>{% for department in departments %}
-                                    {{ department.name }} 
+									<td>직급 정보 설정</td>
+									<td>총 <font color="red">{{ positions|length }}</font>개 직급 생성 중</td>
+									<td>{% for position in positions %}
+                                    {{ position.name }} 
                                     {% endfor %}</td>
 									<td><a class="btn btn-small disabled">변경▲</a></td>
 								</tr>
 								<tr>
                                     <td colspan="5" style="text-align:left;">
                                     <div style="padding:5px;">
-                                        <span>총 <font color="red">{{ departments|length }}</font>개 부서 생성 중</span>
+                                        <span>총 <font color="red">{{ positions|length }}</font>개 직급 생성 중</span>
                                         <hr style="margin-top:10px;margin-bottom:10px;">
 							            <table class="table table-bordered table-condensed table-center borderless" style="margin-bottom:0px;background-color:transparent;">
-                                            {% for department_in in department_out %}
+                                            {% for position_in in position_out %}
                                             <tr>
-                                                {% for department in department_in %}
+                                                {% for position in position_in %}
         											
-                                                <td width="15%" style="text-align:left"><label style="display: inline-block"><input type="radio" name="depselect" value="{{ department.id }}"/></label>{{ department.name }}</td>
+                                                <td width="15%" style="text-align:left"><label style="display: inline-block"><input type="radio" name="posselect" value="{{ position.id }}"/></label>{{ position.name }}</td>
                                                 {% endfor %}
                                                 <td width="10%"></td>
                                                 {% if forloop.first %}
-                                                <td rowspan="{{ department_out|length }}" width="10%"><button class="btn btn-small btn-block" onclick="del();">삭제</button></td>
+                                                <td rowspan="{{ position_out|length }}" width="10%"><button class="btn btn-small btn-block" onclick="del();">삭제</button></td>
                                                 {% endif %}
                                             </tr>
                                             {% endfor %}
@@ -292,7 +292,7 @@
 		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
 
-		<script src="{{ STATIC_URL }}js/04_04_setting_department.js"></script>
+		<script src="{{ STATIC_URL }}js/04_04_setting_position.js"></script>
 		<script src="{{ STATIC_URL }}js/common.js"></script>
 		
 		<script type="text/javascript" language="JavaScript">
@@ -300,7 +300,7 @@
 				// show sidebar
 				show_sidebar();
 				// radio btn 클릭 시 동작
-				$('input[name=depselect]').change(function() {
+				$('input[name=posselect]').change(function() {
 					changeRadio($(this).parent().parent().parent().parent().text());
 				});
                 $('#changesystem').change(function() {

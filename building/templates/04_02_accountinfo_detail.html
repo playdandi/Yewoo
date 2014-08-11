@@ -109,7 +109,7 @@
 
 <body>
     <!-- start:Header --!>
-    {% include "header.html" with menu="manage" %}
+    {% include "header.html" with menu="manage" username=username %}
     <!-- end:Header --!>
 	<div class="container-fluid">
         <div class="row-fluid">
@@ -188,49 +188,58 @@
 								<tr>
                                     <td width="14%" rowspan="5"><img width="auto" height="auto" src="/static/img/김태희.jpg" style="max-height:136px"/></td>
 									<td width="10%"><strong>이름</strong></td>
-									<td width="10%">이지희</td>
+									<td width="10%">{{ user.userprofile.name }}</td>
 									<td width="10%"><strong>생년월일</strong></td>
-									<td width="10%">1989.03.06</td>
+									<td width="10%">{{ user.userprofile.birthday | date:"Y.m.d" }}</td>
 									<td width="10%"><strong>성별</strong></td>
-									<td width="10%">여</td>
+									<td width="10%">{{ user.userprofile.gender }}</td>
 									<td width="10%"><strong>재직여부</strong></td>
-									<td width="10%">재직</td>
+									<td width="10%">{% if user.userprofile.status == 1 %}
+                                    재직
+                                    {% elif user.userprofile.status == 2 %}
+                                    퇴사
+                                    {% else %}
+                                    알수없음
+                                    {% endif %}</td>
 								</tr>
 								<tr>
 									<td><strong>부서</strong></td>
-									<td>총무팀</td>
+									<td>{{ user.userprofile.department }}</td>
 									<td><strong>직급</strong></td>
-									<td>대리</td>
+									<td>{{ user.userprofile.position }}</td>
 									<td><strong>입사일</strong></td>
-									<td>2014.06.15</td>
+									<td>{{ user.userprofile.joindate | date:"Y.m.d" }}</td>
 									<td><strong>퇴사일</strong></td>
-									<td>2014.06.15</td>
+									<td>{{ user.userprofile.exitdate | date:"Y.m.d" }}</td>
 								</tr>
 								<tr>
 									<td><strong>사번</strong></td>
-									<td>01</td>
+									<td>{% if user.userprofile.companynumber %}
+                                    {{ user.userprofile.companynumber }}
+                                    {% else %}
+                                    {% endif %}</td>
 									<td><strong>연락처1</strong></td>
-									<td>010-2833-5679</td>
+									<td>{{ user.userprofile.contact1 }}</td>
 									<td><strong>연락처2</strong></td>
-									<td>02-833-5679</td>
+									<td>{{ user.userprofile.contact2 }}</td>
 									<td><strong>이메일</strong></td>
-									<td>jungklee@naver.com</td>
+									<td>{{ user.userprofile.email }}</td>
 								</tr>
 								<tr>
 									<td><strong>주소1</strong></td>
-									<td colspan="3">서울특별시 동작구 사당5동 378-2 효원빌라 201호</td>
+									<td colspan="3">{{ user.userprofile.address }}</td>
 									<td><strong>주소2</strong></td>
-									<td colspan="3">이지희</td>
+									<td colspan="3">{{ user.userprofile.address2 }}</td>
 								</tr>
 								<tr>
 									<td><strong>시스템 아이디</strong></td>
-									<td>yewoo99</td>
+									<td>{{ user.username }}</td>
 									<td><strong>시스템 비밀번호</strong></td>
-									<td>*******</td>
+									<td></td>
 									<td><strong>시스템 승인일</strong></td>
-									<td>2014.06.15</td>
+									<td>{{ user.userprofile.activatedate | date:"Y.m.d" }}</td>
 									<td><strong>가입 승인자</strong></td>
-									<td>김지훈</td>
+									<td>{{ user.userprofile.activateadmin }}</td>
 								</tr>
 							</table>
 						</div>
@@ -291,7 +300,7 @@
 						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed" style="margin-bottom:0px;table-layout:fixed;">
 								<tr>
-                                    <td width="100%">열심히 하겠습니다.</td>
+                                    <td width="100%">{{ user.userprofile.introduce }}</td>
 								</tr>
 							</table>
 						</div>

@@ -108,7 +108,7 @@
 
 <body>
     <!-- start:Header --!>
-    {% include "header.html" with menu="manage" %}
+    {% include "header.html" with menu="manage" username=username%}
     <!-- end:Header --!>
 	<div class="container-fluid">
         <div class="row-fluid">
@@ -160,7 +160,7 @@
                     </div>
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
 						<div class="box-header" style="padding:7px 10px 7px 10px;">
-							<span><strong>전체 사원 현황</strong> <font color="red">4</font>건 (신규 회원 정보 <font color="red">4</font>건 / 중복 정보 <font color="red">0</font>건) 중 승인 가능한 회원 정보는 <font color="red">4</font>건 입니다.</span>
+							<span><strong>전체 사원 현황</strong> <font color="red">{{ users|length }}</font>건</span>
 						</div>
                     </div>
 					<div class="span11" style="margin:5px 0px 0px 0px; padding:0px">
@@ -200,34 +200,31 @@
 									<td width="9%">수정하기</td>
 									<td width="9%">상세 보기</td>
 								</tr>
+                                {% for user in users %}
 								<tr>
                                     <td><input type="checkbox"/></td>
-									<td>이지희 ▩</b></td>
-									<td>01</td>
-									<td>총무팀</td>
-									<td>대리</td>
-									<td>재직</td>
-									<td>2014.06.15</td>
-									<td>2014.06.15</td>
-									<td>010-2833-5679</td>
-									<td>jungklee@naver.com</td>
-									<td><a class="btn btn-small" href="/manage/accountinfo/detail/">수정</a></td>
-									<td><a class="btn btn-small" href="/manage/accountinfo/detail/">보기</a></td>
+									<td>{{ user.userprofile.name }} ▩</b></td>
+									<td>{% if user.userprofile.companynumber %}
+                                    {{ user.userprofile.companynumber }}
+                                    {% else %}
+                                    {% endif %}</td>
+									<td>{{ user.userprofile.department }}</td>
+									<td>{{ user.userprofile.position }}</td>
+									<td>{% if user.userprofile.status == 1 %}
+                                    재직
+                                    {% elif user.userprofile.status == 2 %}
+                                    퇴사
+                                    {% else %}
+                                    알수없음
+                                    {% endif %}</td>
+									<td>{{ user.userprofile.joindate | date:"Y.m.d" }}</td>
+									<td>{{ user.userprofile.exitdate | date:"Y.m.d" }}</td>
+									<td>{{ user.userprofile.contact1 }}</td>
+									<td>{{ user.userprofile.email }}</td>
+									<td><a class="btn btn-small" href="/manage/accountinfo/detail/{{ user.id }}">수정</a></td>
+									<td><a class="btn btn-small" href="/manage/accountinfo/detail/{{ user.id }}">보기</a></td>
 								</tr>
-								<tr>
-                                    <td><input type="checkbox"/></td>
-									<td>김민철 ▩</b></td>
-									<td>02</td>
-									<td>시설관리팀</td>
-									<td>사원</td>
-									<td>재직</td>
-									<td>2014.06.16</td>
-									<td>2014.06.16</td>
-									<td>010-1234-5678</td>
-									<td>minchul@gmail.com</td>
-									<td><a class="btn btn-small" href="/manage/accountinfo/detail/">수정</a></td>
-									<td><a class="btn btn-small" href="/manage/accountinfo/detail/">보기</a></td>
-								</tr>
+                                {% endfor %}
 							</table>
 						</div>
 					</div>
