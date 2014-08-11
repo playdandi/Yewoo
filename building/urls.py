@@ -94,7 +94,5 @@ urlpatterns = patterns('',
     url(r'^manage/setting/department/$', setting_department_html), 
     url(r'^manage/setting/position/$', setting_position_html), 
     url(r'^manage/setting/adjustment/$', setting_adjustment_html),
-    url(r'^manage/setting/adjustment/add/$', setting_adjustment_add),
-    url(r'^manage/setting/adjustment/change/$', setting_adjustment_change),
-    url(r'^manage/setting/adjustment/delete/$', setting_adjustment_delete),
+    url(r'^manage/setting/adjustment/confirm/$', setting_adjustment_confirm),
 )

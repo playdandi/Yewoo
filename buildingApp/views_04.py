@@ -166,24 +166,10 @@ def setting_adjustment_html(request):
 		months = []
 		for s in sp:
 			months.append( {'id' : int(s.id), 'month' : int(s.month), 'delayRate' : float(s.delayRate)} )
-			#all_sp.append( {'id' : int(s.id), 'month' : int(s.month), 'delayRate' : int(s.delayRate)} )
 			all_sp_id.append( int(s.id) )
 			all_sp_mt.append( int(s.month) )
 			all_sp_dr.append( float(s.delayRate) )
 		buildingList.append( {'id' : int(b.id), 'name' : str(b.name), 'months' : months, 'cnt' : int(cnt)} )
-
-		'''
-		possibleSelect = []
-		for i in range(1, 12+1):
-			flag = True
-			for m in months:
-				if int(m['month']) == int(i):
-					flag = False
-					break
-			if flag:
-				possibleSelect.append(i)
-		buildingList.append( {'id' : int(b.id), 'name' : str(b.name), 'months' : months, 'possibleSelect' : possibleSelect, 'cnt' : int(cnt)} )
-		'''
 
 	param = {}
 	param['numOfBuilding'] = len(buildingList)
@@ -193,36 +179,48 @@ def setting_adjustment_html(request):
 	param['sp_delayRate'] = json.dumps(all_sp_dr)
 	return render_to_response('04_04_setting_adjustment.html', param, context_instance=RequestContext(request))
 
-### 관리자시스템 - 시스템설정 : 고지내역 연체 추가 ###
-def setting_adjustment_add(request):
+def setting_adjustment_confirm(request):
 	if request.method == 'POST':
 		bid = int(request.POST['bid'])
-		month = int(request.POST['month'])
-		delayRate = float(request.POST['delayRate'])
-		sp = SettingPayment()
-		sp.building = BuildingInfo.objects.get(id = bid)
-		sp.month = month
-		sp.delayRate = delayRate
-		sp.save()
+		spid = request.POST.getlist('spid[]')
+		spmt = request.POST.getlist('spmt[]')
+		spdr = request.POST.getlist('spdr[]')
+
+		objs_new = []
+		objs_chg = []
+		objs_del = []
+		for i in range(len(spid)):
+			if int(spid[i]) == 0: # 새로 추가
+				sp = SettingPayment()
+				sp.building = BuildingInfo.objects.get(id = int(bid))
+				sp.month = int(spmt[i])
+				sp.delayRate = float(spdr[i])
+				objs_new.append(sp)
+			elif int(spid[i]) > -10000000 and int(spid[i]) < 0: # 삭제
+				sp = SettingPayment.objects.get(id = -int(spid[i]))
+				objs_del.append(sp)
+			else: # 변경
+				sp = None
+				try:
+					sp = SettingPayment.objects.get(building_id = int(bid), id = int(spid[i]))
+				except:
+					pass
+				if sp != None:
+					sp.month = int(spmt[i])
+					sp.delayRate = float(spdr[i])
+					objs_chg.append(sp)
+
+		for o in objs_new:
+			o.save()
+		for o in objs_chg:
+			o.save()
+		for o in objs_del:
+			o.delete()
+
 		return HttpResponse('OK')
 	return HttpResponse('NOT POST')
 
 
-### 관리자시스템 - 시스템설정 : 고지내역 연체 변경 ###
-def setting_adjustment_change(request):
-	if request.method == 'POST':
-		spid = int(request.POST['spid'])
-		delayRate = float(request.POST['delayRate'])
-		sp = SettingPayment.objects.get(id = spid)
-		sp.delayRate = delayRate
-		sp.save()
-		return HttpResponse('OK')
-	return HttpResponse('NOT POST')
 
-### 관리자시스템 - 시스템설정 : 고지내역 연체 삭제 ###
-def setting_adjustment_delete(request):
-	if request.method == 'POST':
-		spid = int(request.POST['spid'])
-		SettingPayment.objects.get(id = spid).delete()
-		return HttpResponse('OK')
-	return HttpResponse('NOT POST')
+
+

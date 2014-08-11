@@ -188,7 +188,7 @@
 									<td>건물 연체료 설정</td>
 									<td>총 <font color="red">{{ numOfBuilding }}</font>개 건물 적용 중</td>
 									<td></td>
-									<td><button class="btn btn-small" onclick="show();">변경▲</button></td>
+									<td><button class="btn btn-small" onclick="">변경▲</button></td>
 								</tr>
 							</table>
 						</div>
@@ -202,8 +202,8 @@
 										</tr>
 										{% for m in b.months %}
 										<tr id="{{ b.id }}_{{ m.id }}">
-											<td>{% if m.month == -1 %}최대{% else %}{{ m.month }}개월{% endif %}</td>
-											<td><input id="{{ m.id }}_d" type="text" style="text-align:center" class="{{ b.cnt }}_input span12 margin0 minifont" value="{{ m.delayRate }}%" disabled /></td>
+											<td>{% if m.month == 13 %}최대{% else %}{{ m.month }}개월{% endif %}</td>
+											<td><input id="{{ m.id }}_d" type="text" style="text-align:center; font-size:0.9em" class="{{ b.cnt }}_input span12 margin0" value="{{ m.delayRate }}%" disabled /></td>
 											<td class="show_{{ b.cnt }}" style="display:none">
 												<button class="btn btn-mini btn-block margin0" onclick="change_start('{{ m.id }}', '{{ b.id }}', $(this));">수정</button>
 												<button class="btn btn-mini btn-block margin0" style="display:none" onclick="change_end('{{ m.id }}', '{{ b.id }}', $(this));">완료</button>
@@ -220,14 +220,14 @@
 													<option value="3">3개월</option>	
 													<option value="4">4개월</option>	
 													<option value="5">5개월</option>	
-													<option value="6">6개월</option>	
+													<option value="6">6개월</option>
 													<option value="7">7개월</option>	
 													<option value="8">8개월</option>	
 													<option value="9">9개월</option>	
 													<option value="10">10개월</option>	
 													<option value="11">11개월</option>	
 													<option value="12">12개월</option>	
-													<option value="-1">최대</option>	
+													<option value="13">최대</option>	
 												</select>
 											</td>
 											<td><input id="{{ b.id }}_newrate" type="text" class="span12 margin0 minifont" value="" /></td>
@@ -237,19 +237,6 @@
 											<td colspan="2"><button class="btn btn-small btn-block span12" onclick="cancel();">취소</button></td>
 											<td colspan="2"><button id="{{ b.id }}_done" class="btn btn-small btn-block span12" onclick="done('{{ b.id }}');">완료</button></td>
 										</tr>
-										<!--
-										<tr class="show_{{ b.cnt }}" style="display:none">
-											<td colspan="2">
-												<select id="{{ b.id }}_select" class="margin0 span12">
-													{% for p in b.possibleSelect %}
-													<option value="{{ p }}">{{ p }}개월</option>
-													{% endfor %}
-												</select>
-											</td>
-											<td><input id="{{ b.id }}_newrate" type="text" class="span12 margin0 minifont" value="" /></td>
-											<td><button class="btn btn-mini btn-block margin0" onclick="add('{{ b.id }}');">추가</button></td>
-										</tr>
-										-->
 									</table>
 								</div>
 								{% endfor %}
