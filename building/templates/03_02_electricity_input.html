@@ -517,12 +517,9 @@
 				show_sidebar();
 
 				// 건물을 하나 선택할 때, 그 건물에 속한 '호수' 전체 불러오기
-				$('#buildingName').change(function() {
-					if ($(this).val() == '')
-						$('#buildingRoomNumber').attr('disabled', true);
-					else {
-						getBuildingRooms($(this).val(), 'buildingRoomNumber');
-					}
+				getBuildingRooms('b{{ min_building_id }}', 'search_room_num');
+				$('#search_building').change(function() {
+					getBuildingRooms($(this).val(), 'search_room_num');
 				});
 
 				// 업로드 날짜 datepicker

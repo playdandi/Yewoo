@@ -38,6 +38,11 @@ function showLeaseInfo()
 	f_bid.name = 'building_id';
 	f_bid.value = building_id;
 	form.appendChild(f_bid);
+	
+	var f_room = document.createElement('input');
+	f_room.name = 'room_num';
+	f_room.value = room_num;
+	form.appendChild(f_room);
 
 	var f_isempty = document.createElement('input');
 	f_isempty.name = 'is_empty';

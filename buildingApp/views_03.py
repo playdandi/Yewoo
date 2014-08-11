@@ -23,20 +23,23 @@ def setPostData(request, typestr = ''):
         param['search_year'] = int(ym.year)
         param['search_month'] = int(ym.month)
         param['search_building_id'] = int(BuildingInfo.objects.all().order_by('id')[0].id)
+        param['search_room_num'] = ''
     	param['search_is_empty'] = 'false'
     elif request.method == 'POST':
         param['search_year'] = int(request.POST['year'])
         param['search_month'] = int(request.POST['month'])
         param['search_building_id'] = int(request.POST['building_id'])
+        param['search_room_num'] = str(request.POST['room_num'])
     	param['search_is_empty'] = request.POST['is_empty']
 
-    building = BuildingInfo.objects.all()
+    building = BuildingInfo.objects.all().order_by('id')
     building_name_id = []
     for b in building:
         building_name_id.append({'name' : b.name, 'id' : b.id})
         if int(b.id) == int(param['search_building_id']):
             param['cur_building_name'] = str(b.name)
 
+	param['min_building_id'] = building_name_id[0]['id']
     param['building_name_id'] = building_name_id
     search_year_list = []
     for i in range(2013, 2017):
@@ -84,19 +87,33 @@ def setPostData(request, typestr = ''):
     param['total_maintenance'] = total_maintenance
     param['total_parking'] = total_parking
     param['total_surtax'] = total_surtax
+
+
+    roomid = ''
+    if param['search_room_num'] != '':
+        roomid = RoomInfo.objects.filter(building_id = int(param['search_building_id']), roomnum = int(param['search_room_num']))[0]
+        roomid = roomid.id
+
     #고지 정보
     completeNotice = EachMonthInfo.objects.filter(year = param['search_year'], month = param['search_month'], building_id = param['search_building_id'], inputCheck = True, noticeCheck = True)
+    if roomid != '':
+        completeNotice = completeNotice.filter(room_id = int(roomid))
+		
     param['num_of_complete_notice'] = len(completeNotice)
     param['num_of_ncomplete_notice'] = len(occRooms) - len(completeNotice)
     import datetime
     param['num_of_complete_notice_today'] = len(completeNotice.filter(noticeDate = datetime.date.today()))
     #납부 정보
     completePayment = PaymentInfo.objects.filter(year = param['search_year'], month = param['search_month'], building_id = param['search_building_id'], payStatus = -1)
+    #if room_id != '':
+    #        completePayment = completePayment.filter(room_id = int(room_id))
     param['num_of_comp_pay'] = len(completePayment)
     param['num_of_ncomp_pay'] = len(occRooms) - len(completePayment)
     param['num_of_comp_pay_today'] = len(completePayment.filter(payDate = datetime.date.today()))
     #입력 정보
     completeInput = EachMonthInfo.objects.filter(year = param['search_year'], month = param['search_month'], building_id = param['search_building_id'], inputCheck = True)
+    if roomid != '':
+        completeInput = completeInput.filter(room_id = int(roomid))
     param['num_of_comp_input'] = len(completeInput)
     param['num_of_ncomp_input'] = len(occRooms) - len(completeInput)
     param['num_of_comp_input_today'] = len(completeInput.filter(inputDate = datetime.date.today()))
