@@ -291,9 +291,11 @@ class PaymentModifyInfo(models.Model):
     class Meta:
         unique_together = ('payment', 'modifyNumber')
 
+class DepartmentList(models.Model):
+    name = models.CharField(max_length = 10)
 
-
-
+class PositionList(models.Model):
+    name = models.CharField(max_length = 10)
 
 
 
