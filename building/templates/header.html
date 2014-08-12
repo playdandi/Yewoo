@@ -16,9 +16,9 @@
         <h1>Yewoo housing management system</h1>
     </div>
     <div class="navbar" style="margin:0">
-      <div class="navbar-inner">
+      <div class="navbar-inner" style="padding:0">
         <div class="container-fluid">
-          <p class="navbar-text pull-left">
+          <p class="navbar-text pull-left" style="width:250px">
               관리자 <a href="#" class="navbar-link">{{ username }}</a> 님 <button class="btn btn-mini" onclick="location.href='/logout/'">로그아웃</button>
           </p>
           <ul class="nav">
@@ -34,10 +34,10 @@
       </div>
     </div>
     <div class="navbar">
-      <div class="navbar-inner">
+      <div class="navbar-inner" style="padding:0">
         <div class="container-fluid">
-          <p class="navbar-text pull-left">
-              지난 로그인 2014.06.12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <p class="navbar-text pull-left" style="width:250px;">
+              최근 접속일자 2014.06.12 23:00:11
           </p>
           <ul class="nav">
             <li class="divider-vertical"></li>
@@ -47,7 +47,7 @@
             <li class="dropdown">
             {% endif %}
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">건물 관리 시스템<b class="caret"></b></a>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu dropdown-header3">
                 <li><a href="/building/register/">건물 정보 등록</a></li>
                 <li><a href="/building/search/building/">등록 건물 정보 확인</a></li>
                 <li><a href="/building/search/rooms/">등록 호수 정보 확인</a></li>
@@ -59,7 +59,7 @@
             <li class="dropdown">
             {% endif %}
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">입주자 관리 시스템<b class="caret"></b></a>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu dropdown-header3" style="left:-100px">
                 <li><a href="/resident/show/">입주자 정보 확인(목록)</a></li>
                 <li><a href="/resident/info/">입주자 정보 입력(개별)</a></li>
                 <li><a href="/resident/infoFile/">입주자 정보 입력(파일)</a></li>
@@ -72,7 +72,7 @@
             <li class="dropdown">
             {% endif %}
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">통합 내역 관리 시스템<b class="caret"></b></a>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu dropdown-header3" style="left:-100px">
                 <li><a href="/lease/show/lease/">통합 내역 관리(확인)</a></li>
                 <li><a href="/lease/input/check/">고지 내역 관리(입력)</a></li>
                 <li><a href="/lease/payment/">납부 내역 관리(입력)</a></li>
@@ -84,7 +84,7 @@
             <li class="dropdown">
             {% endif %}
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">관리자 시스템<b class="caret"></b></a>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu dropdown-header4" style="left:-200px">
                 <li><a href="/manage/activate/">회원 승인 관리</a></li>
                 <li><a href="/manage/accountinfo/">회원 정보 관리</a></li>
                 <li><a href="/manage/right/">회원 권한 관리</a></li>

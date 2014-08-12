@@ -47,7 +47,6 @@
         padding-right: 5px;
       }
     }
-
 	</style>
 		
 </head>
@@ -59,15 +58,10 @@
 
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span2">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">사이드바 영역</li>
-                <p>사이드바 영역입니다.<br><br><br><br><br><br><br></p>
-            </ul>
-          </div><!--/.well -->
+        <div class="span3" style="width:250px">
+          {% include "sidebar.html" %}
         </div><!--/span-->
-        <div class="span10">
+        <div class="span9">
             <h2>게시판 알림 영역</h2>
             <p>이곳은 게시판 알림 영역입니다.</p>
         </div><!--/span-->
@@ -141,6 +135,13 @@
 
 				// show sidebar
 				show_sidebar();
+				$('#tabmenu a').click(function(e) {
+					e.preventDefault();
+					$(this).tab('show');
+				});
+                $("#side-datepicker").datepicker();
+                $("#side-datepicker2").datepicker();
+                $("#side-datepicker3").datepicker();
 			});			
 		</script>
 		<!-- end: JavaScript-->
