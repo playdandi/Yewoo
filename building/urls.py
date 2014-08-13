@@ -93,6 +93,7 @@ urlpatterns = patterns('',
     url(r'^manage/right/$', right_html), 
     url(r'^manage/setting/department/$', setting_department_html), 
     url(r'^manage/setting/position/$', setting_position_html), 
+    url(r'^manage/setting/companynum/$', setting_companynumber_html), 
     url(r'^manage/setting/adjustment/$', setting_adjustment_html),
     url(r'^manage/setting/adjustment/confirm/$', setting_adjustment_confirm),
 )

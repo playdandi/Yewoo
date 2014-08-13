@@ -7,9 +7,10 @@ var SignUp = function() {
     data['systemPassHint'] = $('#systemPassHint').val().trim();
 
     data['signupName'] = $('#signupName').val().trim();
-    var mdy = $('#signupBirthday').val().split('/');
-    $('#signupBirthday').val(mdy[2]+'-'+mdy[0]+'-'+mdy[1]);
-    data['signupBirthday'] = $('#signupBirthday').val().trim();
+    var year = $('#signupBirthdayYear').val().trim()
+    var month = $('#signupBirthdayMonth').val().trim()
+    var day = $('#signupBirthdayDay').val().trim()
+    data['signupBirthday'] = year + '-' + month + '-' + day;
     data['signupGender'] = $('#signupGender').val().trim();
     data['signupDepartment'] = $('#signupDepartment').val().trim();
     data['signupPosition'] = $('#signupPosition').val().trim();

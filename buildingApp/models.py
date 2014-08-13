@@ -303,3 +303,6 @@ class SettingPayment(models.Model):
 	month = models.IntegerField()
 	delayRate = models.FloatField()
 
+class SystemSettings(models.Model):
+    name = models.CharField(max_length = 20)
+    value = models.CharField(max_length = 20)

@@ -56,8 +56,11 @@ def accountinfo_detail_html(request, uid):
         username = ""
     try:
         user = User.objects.get(id=uid)
+        departments = DepartmentList.objects.all()
+        positions = PositionList.objects.all()
         return render_to_response('04_02_accountinfo_detail.html', \
-                                    {'user' : user, 'username' : username} , \
+                                    {'user' : user, 'username' : username, \
+                                    'departments' : departments, 'positions' : positions} , \
                                     context_instance=RequestContext(request))
     except:
         return HttpResponse("에러가 발생하였습니다.", status=404)
@@ -151,6 +154,46 @@ def setting_position_html(request):
                                     {'positions' : positions, 'position_out' : position_out} , \
                                     context_instance=RequestContext(request))
 
+def setting_companynumber_html(request):
+    if request.method == "POST":
+        param = {}
+        for name in request.POST:
+            param[name] = request.POST.get(name, '').strip()
+
+        new_min_number = int(request.POST['min_number'])
+        new_max_number = int(request.POST['max_number'])
+        if new_min_number < 0:
+            return HttpResponse("사번은 양수여야 합니다.", status=404)
+        if new_min_number > new_max_number:
+            return HttpResponse("최대값이 최소값보다 커야합니다.", status=404)
+        min_setting = SystemSettings.objects.get(name="companynum_min")
+        min_setting.value = new_min_number
+        min_setting.save()
+        max_setting = SystemSettings.objects.get(name="companynum_max")
+        max_setting.value = new_max_number
+        max_setting.save()
+        return render(request, 'index.html')
+    else:
+        try:
+            min_number = int(SystemSettings.objects.get(name="companynum_min").value)
+        except:
+            min_setting = SystemSettings()
+            min_setting.name = "companynum_min"
+            min_setting.value = "1"
+            min_setting.save()
+            min_number = 1
+        try:
+            max_number = int(SystemSettings.objects.get(name="companynum_max").value)
+        except:
+            max_setting = SystemSettings()
+            max_setting.name = "companynum_max"
+            max_setting.value = "100"
+            max_setting.save()
+            max_number = 100
+        return render_to_response('04_04_setting_companynum.html', \
+                                    {'min_number' : min_number, 'max_number' : max_number} , \
+                                    context_instance=RequestContext(request))
+            
 
 
 def setting_adjustment_html(request):
