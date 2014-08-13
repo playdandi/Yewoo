@@ -19,7 +19,7 @@
       <div class="navbar-inner" style="padding:0">
         <div class="container-fluid">
           <p class="navbar-text pull-left" style="width:250px">
-              관리자 <a href="#" class="navbar-link">{{ username }}</a> 님 <button class="btn btn-mini" onclick="location.href='/logout/'">로그아웃</button>
+              {% if user.is_superuser %}총괄 관리자{% else %}일반{% endif %} <a href="#" class="navbar-link">{{ user.userprofile.name }}</a> 님 <button class="btn btn-mini" onclick="location.href='/logout/'">로그아웃</button>
           </p>
           <ul class="nav">
             <li class="divider-vertical"></li>
@@ -37,7 +37,7 @@
       <div class="navbar-inner" style="padding:0">
         <div class="container-fluid">
           <p class="navbar-text pull-left" style="width:250px;">
-              최근 접속일자 2014.06.12 23:00:11
+              최근 접속일자 {{ user.last_login|date:"Y.m.d H:i:s" }}
           </p>
           <ul class="nav">
             <li class="divider-vertical"></li>
