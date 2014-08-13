@@ -9,8 +9,10 @@ import json
 from buildingApp.models import *
 from django.conf import settings
 import os, datetime
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
+from django.contrib.auth.decorators import permission_required
 
+@permission_required('buildingApp.manage_activate', login_url='/login/')
 def activate_html(request):
     if request.method == "POST":
         param = {}
@@ -39,6 +41,7 @@ def activate_html(request):
                                     {'newbies' : newbies, 'username' : username} , \
                                     context_instance=RequestContext(request))
 
+@permission_required('buildingApp.manage_accountinfo', login_url='/login/')
 def accountinfo_html(request):
     users = User.objects.filter(is_superuser=False).exclude(userprofile__status=0)
     try:
@@ -49,6 +52,7 @@ def accountinfo_html(request):
                                 {'users' : users, 'username' : username} , \
                                 context_instance=RequestContext(request))
 
+@permission_required('buildingApp.manage_accountinfo', login_url='/login/')
 def accountinfo_detail_html(request, uid):
     if request.method == "POST":
         param = {}
@@ -116,11 +120,93 @@ def accountinfo_detail_html(request, uid):
         except:
             return HttpResponse("에러가 발생하였습니다.", status=404)
 
+@permission_required('buildingApp.manage_right', login_url='/login/')
 def right_html(request):
-    return render(request, '04_03_right.html')
+    if request.method == "POST":
+        param = {}
+        for name in request.POST:
+            param[name] = request.POST.get(name, '').strip()
 
+        user = User.objects.get(id=request.POST['uid'])
+        user.user_permissions.clear()
+        print request.POST['perm[0]'] == 'true'
+        if request.POST['perm[0]'] == 'true':
+            user.user_permissions.add(Permission.objects.get(codename="building_register"))
+        if request.POST['perm[1]'] == 'true':
+            user.user_permissions.add(Permission.objects.get(codename="building_search_building"))
+        if request.POST['perm[2]'] == 'true':
+            user.user_permissions.add(Permission.objects.get(codename="building_search_room"))
+        if request.POST['perm[3]'] == 'true':
+            user.user_permissions.add(Permission.objects.get(codename="resident_show"))
+        if request.POST['perm[4]'] == 'true':
+            user.user_permissions.add(Permission.objects.get(codename="resident_info"))
+        if request.POST['perm[5]'] == 'true':
+            user.user_permissions.add(Permission.objects.get(codename="resident_infofile"))
+        if request.POST['perm[6]'] == 'true':
+            user.user_permissions.add(Permission.objects.get(codename="lease_show"))
+        if request.POST['perm[7]'] == 'true':
+            user.user_permissions.add(Permission.objects.get(codename="lease_input"))
+        if request.POST['perm[8]'] == 'true':
+            user.user_permissions.add(Permission.objects.get(codename="lease_payment"))
+        if request.POST['perm[9]'] == 'true':
+            user.user_permissions.add(Permission.objects.get(codename="manage_activate"))
+        if request.POST['perm[10]'] == 'true':
+            user.user_permissions.add(Permission.objects.get(codename="manage_accountinfo"))
+        if request.POST['perm[11]'] == 'true':
+            user.user_permissions.add(Permission.objects.get(codename="manage_right"))
+        if request.POST['perm[12]'] == 'true':
+            user.user_permissions.add(Permission.objects.get(codename="manage_setting"))
+        return render(request, 'index.html')
+    else:
+        users = User.objects.filter(is_superuser=False).exclude(userprofile__status=0)
+        for user in users:
+            user.permcount = 0
+            user.perm = []
+            user.permstr = ""
+            user.perm.append(user.has_perm("buildingApp.building_register"))
+            user.perm.append(user.has_perm("buildingApp.building_search_building"))
+            user.perm.append(user.has_perm("buildingApp.building_search_room"))
+            user.perm.append(user.has_perm("buildingApp.resident_show"))
+            user.perm.append(user.has_perm("buildingApp.resident_info"))
+            user.perm.append(user.has_perm("buildingApp.resident_infofile"))
+            user.perm.append(user.has_perm("buildingApp.lease_show"))
+            user.perm.append(user.has_perm("buildingApp.lease_input"))
+            user.perm.append(user.has_perm("buildingApp.lease_payment"))
+            user.perm.append(user.has_perm("buildingApp.manage_activate"))
+            user.perm.append(user.has_perm("buildingApp.manage_accountinfo"))
+            user.perm.append(user.has_perm("buildingApp.manage_right"))
+            user.perm.append(user.has_perm("buildingApp.manage_setting"))
+            for pe in user.perm:
+                if pe:
+                    user.permcount = user.permcount + 1
+            for i in range(0,3):
+                if user.perm[i]:
+                    user.permstr = user.permstr + "건물 관리 시스템, "
+                    break
+            for i in range(3,6):
+                if user.perm[i]:
+                    user.permstr = user.permstr + "입주자 관리 시스템, "
+                    break
+            for i in range(6,9):
+                if user.perm[i]:
+                    user.permstr = user.permstr + "통합 내역 관리 시스템, "
+                    break
+            for i in range(9,13):
+                if user.perm[i]:
+                    user.permstr = user.permstr + "관리자 시스템, "
+                    break
+            if len(user.permstr) != 0:
+                user.permstr = user.permstr[0:-2] 
+        try:
+           username = request.user.userprofile.name
+        except:
+            username = ""
+        return render_to_response('04_03_right.html', \
+                                    {'users' : users, 'username' : username} , \
+                                    context_instance=RequestContext(request))
 
 ################### 부서와 직급 설정 ###################
+@permission_required('buildingApp.manage_setting', login_url='/login/')
 def setting_department_html(request):
     if request.method == "POST":
         param = {}
@@ -163,6 +249,7 @@ def setting_department_html(request):
                                     {'departments' : departments, 'department_out' : department_out} , \
                                     context_instance=RequestContext(request))
 
+@permission_required('buildingApp.manage_setting', login_url='/login/')
 def setting_position_html(request):
     if request.method == "POST":
         param = {}
@@ -205,6 +292,7 @@ def setting_position_html(request):
                                     {'positions' : positions, 'position_out' : position_out} , \
                                     context_instance=RequestContext(request))
 
+@permission_required('buildingApp.manage_setting', login_url='/login/')
 def setting_companynumber_html(request):
     if request.method == "POST":
         param = {}
@@ -247,6 +335,7 @@ def setting_companynumber_html(request):
             
 
 
+@permission_required('buildingApp.manage_setting', login_url='/login/')
 def setting_adjustment_html(request):
 	bi = BuildingInfo.objects.all()
 	buildingList = []
@@ -273,6 +362,7 @@ def setting_adjustment_html(request):
 	param['sp_delayRate'] = json.dumps(all_sp_dr)
 	return render_to_response('04_04_setting_adjustment.html', param, context_instance=RequestContext(request))
 
+@permission_required('buildingApp.manage_setting', login_url='/login/')
 def setting_adjustment_confirm(request):
 	if request.method == 'POST':
 		bid = int(request.POST['bid'])

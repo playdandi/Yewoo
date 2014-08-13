@@ -7,11 +7,13 @@ from django.middleware.csrf import get_token
 from buildingApp.models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 import re
 
-def main_html(request):
-    return render(request, 'main.html')
+#def main_html(request):
+#    return render(request, 'main.html')
 
+@login_required(login_url='/login/')
 def newmain_html(request):
     if not request.user.is_authenticated():
         username = u"김지훈"

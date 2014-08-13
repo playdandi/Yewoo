@@ -9,9 +9,11 @@ import json
 from buildingApp.models import *
 from django.conf import settings
 import os
+from django.contrib.auth.decorators import permission_required
 
 
 ### 02.01 ###
+@permission_required('buildingApp.resident_info', login_url='/login/')
 def resident_info_html(request):
     csrf_token = get_token(request)
     building = BuildingInfo.objects.all()
@@ -22,6 +24,7 @@ def resident_info_html(request):
     return render(request, '02_01_resident_info.html', {'range' : range(1, 31+1), 'building_name_id' : building_name_id})
 
 ### 02.03 ###
+@permission_required('buildingApp.resident_infofile', login_url='/login/')
 def resident_infoFile_html(request):
     csrf_token = get_token(request)
     building = BuildingInfo.objects.all()
@@ -47,6 +50,7 @@ def building_get_rooms(request):
         return toJSON(result)
 
 
+@permission_required('buildingApp.resident_show', login_url='/login/')
 def resident_show_html(request):
     csrf_token = get_token(request)
     building = BuildingInfo.objects.all()
@@ -57,6 +61,7 @@ def resident_show_html(request):
 
 
 ### 02.03 : 저장하기 버튼 누른 경우 ###
+@permission_required('buildingApp.resident_infofile', login_url='/login/')
 def save_resident_info_by_file(request):
     if request.method == 'POST':
         length = int(request.POST['length'])
@@ -70,6 +75,7 @@ def save_resident_info_by_file(request):
         return HttpResponse('OK')
     return HttpResponse('NOT POST')
 
+@permission_required('buildingApp.resident_info', login_url='/login/')
 def save_resident_info(request, data = None):
     if request.method == "POST":
         param = {}
@@ -260,6 +266,7 @@ def save_resident_info(request, data = None):
     return render_to_response('index.html')
 
 
+@permission_required('buildingApp.resident_show', login_url='/login/')
 def show_resident_info(request):
     if request.method == "POST":
         param = {}
@@ -336,6 +343,7 @@ def show_resident_info(request):
     
 
 ### 02.02 : 입주자 목록에서 '수정'버튼 누른 경우
+@permission_required('buildingApp.resident_show', login_url='/login/')
 def show_modify_resident_info(request, rid):
     '''
     /resident/modify/<rid>\d
@@ -407,6 +415,7 @@ def show_modify_resident_info(request, rid):
 
 
 ### 02.02 : 입주자 목록에서 '보기'버튼 누른 경우
+@permission_required('buildingApp.resident_show', login_url='/login/')
 def show_detail_resident_info(request, uid):
     '''
     /resident/show/<id>\d
@@ -487,6 +496,7 @@ def show_detail_resident_info(request, uid):
 
 
 ### 02.03 : 엑셀 파일 불러올 때 실행되는 함수
+@permission_required('buildingApp.resident_infofile', login_url='/login/')
 def get_all_residentInfo_bname_roomnum(request):
     if request.method == 'POST':
         result = []

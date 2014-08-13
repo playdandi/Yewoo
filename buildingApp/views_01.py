@@ -9,6 +9,7 @@ import json
 from buildingApp.models import *
 from django.conf import settings
 import os
+from django.contrib.auth.decorators import permission_required
 
 def calRoomNum(floorNum, roomNum):
     if floorNum < 0:
@@ -90,6 +91,7 @@ def makeEachMonthInfo(floor):
         emd.save()
 
 
+@permission_required('buildingApp.building_register', login_url='/login/')
 def building_register_html(request):
     csrf_token = get_token(request)
     buildingAll = BuildingInfo.objects.all()
@@ -106,6 +108,7 @@ def building_register_html(request):
     
     return render(request, '01_01_building_register.html', {'range' : range(1, 20+1), 'building_info' : building_info})
 
+@permission_required('buildingApp.building_register', login_url='/login/')
 def building_save(request):
     if request.method == "POST":
         param = {}
@@ -163,6 +166,7 @@ def building_save(request):
         return HttpResponse('', status=200)
 
 
+@permission_required('buildingApp.building_search_building', login_url='/login/')
 def building_search_building_html(request):
     csrf_token = get_token(request)
     building = BuildingInfo.objects.all()
@@ -171,6 +175,7 @@ def building_search_building_html(request):
         buildings.append({'name' : b.name, 'number' : b.number})
     return render(request, '01_02_building_search.html', {'range' : range(1, 20+1), 'buildings' : buildings})
 
+@permission_required('buildingApp.building_search_building', login_url='/login/')
 def building_search(request):
     if request.method == "POST":
         param = {}
@@ -218,6 +223,7 @@ def building_search(request):
             return toJSON(serialize_building(result))
 
 
+@permission_required('buildingApp.building_search_building', login_url='/login/')
 def building_show_contents_html(request, uid):
     #csrf_token = get_token(request)
     building = BuildingInfo.objects.get(id = uid)
@@ -249,6 +255,7 @@ def building_show_contents_html(request, uid):
     return render(request, '01_04_building_show_contents.html',
             {'range' : range(1, 20+1), 'building_info' : building_info, 'building' : building, 'floors' : floors, 'building_id' : uid})
 
+@permission_required('buildingApp.building_search_building', login_url='/login/')
 def building_update(request, uid):
     if request.method == "POST":
         param = {}
@@ -351,6 +358,7 @@ def building_update(request, uid):
 
         return HttpResponse('', status=200)
 
+@permission_required('buildingApp.building_search_room', login_url='/login/')
 def building_search_rooms_html(request):
     csrf_token = get_token(request)
     building = BuildingInfo.objects.all()
