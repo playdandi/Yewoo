@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<!-- start: Meta -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Yewoo Housing Management System</title>
+	<!-- end: Meta -->
+	
+	<!-- start: Mobile Specific -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- end: Mobile Specific -->
+
+	<!-- start: CSS -->
+	<link id="bootstrap-style" href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link id="base-style" href="{{ STATIC_URL }}bootstrap/css/style.css" rel="stylesheet">
+	<link id="base-style-responsive" href="{{ STATIC_URL }}bootstrap/css/style-responsive.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}bootstrap/css/datepicker.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}css/common.css" rel="stylesheet">
+	<!-- end: CSS -->
+
+	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	[endif]-->
+
+	<!-- start: Favicon -->
+	<link rel="shortcut icon" href="img/favicon.ico">
+	<!-- end: Favicon -->
+	
+	<style>
+    table {
+    	table-layout: fixed;
+    }
+    table th, table td {
+    	overflow: hidden;
+    }
+    .white {
+    	background-color: #ffffff;
+    }
+    .must {
+    	color: red;
+    	float: left;
+    	margin-right: 10px;
+    }
+    .optional {
+    	color: black;
+    	float: left;
+    	margin-right: 10px;
+    }
+    .margin0 {
+    	margin-left: 0px !important;
+    	margin-right: 0px !important;
+    	margin-top: 0px !important;
+		margin-bottom: 0px !important;
+	}
+	select {
+		font-family : 'Malgun Gothic' !important;
+	}
+    body {
+		font-size : 0.77em;
+		font-family : 'Malgun Gothic' !important;
+	}
+	input {
+		font-family : 'Malgun Gothic' !important;
+	}
+	::-webkit-input-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	::-moz-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	:-moz-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	:-ms-input-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	:-input {
+		margin-bottom:0px !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	</style>
+		
+</head>
+
+<body>
+    <!-- start:Header --!>
+    {% include "header.html" with menu="lease" %}
+    <!-- end:Header --!>
+	
+	<div class="container-fluid">
+		<div class="row-fluid">
+        <div class="span2">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">사이드바 영역</li>
+                <p>사이드바 영역입니다.<br><br><br><br><br><br><br></p>
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
+						
+			<noscript>
+				<div class="alert alert-block span10">
+					<h4 class="alert-heading">Warning!</h4>
+					<p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
+				</div>
+			</noscript>
+			
+			<!-- start: Content -->	
+			<div id="content" class="span10">
+				<div class="span11">
+					<ul class="breadcrumb">
+						<li>
+							<a href="#">입주자 관리</a> <span class="divider">></span>
+						</li>
+						<li>
+							<a href="#">입주자 정보 확인 (목록)</a>
+						</li>
+					</ul>
+				</div>
+				
+				<div>
+					<form class="form-inline" onSubmit="return false;">
+						<div class="span8" style="margin-bottom:5px">
+							<input id="searchWord" class="margin0 input-medium" type="text" />
+							<button class="btn btn-small" onclick="Search();">검색</button>
+							<button id="detail_btn" class="btn btn-small" onclick="showDetailSearch();">상세</button>
+							<label style="margin-left:30px">건물별 보기</label>
+							<select id="buildingName" class="margin0" style="width:130px" onChange="Search();">
+								<option value="">전체보기</option>
+								{% for b in building_name_id %}
+								<option value="b{{ b.id }}">{{ b.name }}</option>
+								{% endfor %}
+							</select>
+							<label style="margin-left:10px">등록 건물 총 <strong><font color="red">{{ numOfBuilding }}</font></strong>개</label>
+						</div>	
+					</form>
+				</div>
+				
+				<!-- start: table -->
+				<div id="search_detail" class="row-fluid" style="display:none">
+					<div class="span11" style="margin:0px 0px 0px 0px; padding:0px 0px 0px 0px">
+						<table class="table table-bordered table-condensed" style="margin-bottom:5px">
+							<colgroup>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+								<col width="5%"></col><col width="5%"></col>
+							</colgroup>
+							<tbody>
+							  	<tr>
+									<td colspan="5">
+										<div class="optional"><strong>건물명</strong></div>
+										<select id="search_buildingName" class="margin0 input-medium" onChange="getRooms($(this).val());">
+											<option value="">선택</option>
+											{% for b in building_name_id %}
+											<option value="b{{ b.id }}">{{ b.name }}</option>
+											{% endfor %}
+										</select>
+									</td>
+									<td colspan="5">
+										<div class="optional"><strong>호 실</strong></div>
+										<select id="search_buildingRoomNumber" class="margin0 input-small" disabled>
+											<option value="">선택</option>
+											
+										</select>
+									</td>
+									<td colspan="5">
+										<div class="optional"><strong>입주자</strong></div>
+										<input id="search_residentName" type="text" class="margin0 input-small" />
+									</td>
+									<td colspan="5">
+										<div class="optional"><strong>성 별</strong></div>
+										<select id="search_contractorGender" class="margin0 input-small">
+											<option value="">선택</option>
+											<option value="남">남</option>
+											<option value="여">여</option>
+										</select>
+									</td>
+								</tr>
+							  	<tr>
+							  		<td colspan="5"> 
+							  			<div class="optional"><strong>보증금</strong></div>
+							  			<input id="search_leaseDeposit" type="text" class="margin0 input-small" />
+							  		</td>
+							  		<td colspan="5"> 
+							  			<div class="optional"><strong>임대료</strong></div>
+							  			<input id="search_leaseMoney" type="text" class="margin0 input-small" />
+							  		</td>
+							  		<td colspan="10"> 
+							  			<div class="optional"><strong>임대 구분</strong></div>
+							  			<select id="search_leaseType" class="margin0 input-small">
+											<option value="">전체</option>
+											<option value="월세">월세</option>
+											<option value="전세">전세</option>
+											<option value="매매">매매</option>
+										</select>
+							  		</td>
+							  	</tr>
+							  	<tr>
+							  		<td colspan="8">
+							  			<div class="optional"><strong>임대 기간</strong></div>
+							  			<input id="search_inDate" class="margin0 input-small datepicker dateinput" type="text" placeholder="입주일" />
+							  			<input id="search_outDate" class="margin0 input-small datepicker dateinput" type="text" placeholder="만료일" />
+									</td>
+									<td colspan="4">
+										<div class="optional"><strong>주차 여부</strong></div>
+										<select id="search_isParking" class="margin0 input-small">
+											<option value="">선택</option>
+											<option value="y">예</option>
+											<option value="n">아니요</option>
+										</select>
+									</td>
+									<td colspan="4">
+										<div class="optional"><strong>공실 여부</strong></div>
+										<select id="search_isEmptyRoom" class="margin0 input-small">
+											<option value="">선택</option>
+											<option value="y">예</option>
+											<option value="n">아니요</option>
+										</select>
+									</td>
+									<td colspan="4">
+										<div class="optional"><strong>연체 여부</strong></div>
+										<select id="search_isOverdue" class="margin0 input-small">
+											<option value="">선택</option>
+											<option value="y">예</option>
+											<option value="n">아니요</option>
+										</select>
+									</td>
+								  </tr>
+							</tbody>
+						 </table>
+						 
+						 <div style="text-align:center">
+							<form class="form-inline" onSubmit="return false;">
+								<div style="margin-bottom:5px">
+									<button class="btn btn-small" onclick="SearchDetail();">조회</button>
+									<button class="btn btn-small">초기화</button>
+								</div>	
+							</form>
+						 </div>
+					</div>
+				</div>
+
+				<!-- 검색 결과 나타내기 -->
+				<div id="search_result" class="row-fluid" style="display:none">
+					<div class="box span11" style="margin:15px 0px 0px 0px; padding: 0px">
+						<div class="box-content" style="margin: 0px; padding: 3px; border:1; background-color:#f8f8f8">
+							<strong>목록 현황</strong>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="0" checked />전체</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="1" />재실</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="2" />퇴실</label>
+							<div style="text-align:right; float:right">
+								<button class="btn btn-small btn-inverse" onclick="pagePrint();">출력</button>
+							</div>
+						</div>
+					</div>
+					<div class="span11" style="margin:5px 0px 0px 0px; padding:0px">
+						<span id="labelall" class="label" onclick="filter('all');">전체</span>
+						<span id="label0" class="label" onclick="filter('0');">ㄱ</span>
+						<span id="label1" class="label" onclick="filter('1');">ㄴ</span>
+						<span id="label2" class="label" onclick="filter('2');">ㄷ</span>
+						<span id="label3" class="label" onclick="filter('3');">ㄹ</span>
+						<span id="label4" class="label" onclick="filter('4');">ㅁ</span>
+						<span id="label5" class="label" onclick="filter('5');">ㅂ</span>
+						<span id="label6" class="label" onclick="filter('6');">ㅅ</span>
+						<span id="label7" class="label" onclick="filter('7');">ㅇ</span>
+						<span id="label8" class="label" onclick="filter('8');">ㅈ</span>
+						<span id="label9" class="label" onclick="filter('9');">ㅊ</span>
+						<span id="label10" class="label" onclick="filter('10');">ㅋ</span>
+						<span id="label11" class="label" onclick="filter('11');">ㅌ</span>
+						<span id="label12" class="label" onclick="filter('12');">ㅍ</span>
+						<span id="label13" class="label" onclick="filter('13');">ㅎ</span>
+						<span id="" class="label">기타</span>
+					</div>
+					<div class="box span11" style="margin: 0px; padding: 0px">
+						<div id="search_result_content" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8; font-size : 0.95em">
+						</div>
+					</div>
+				</div>
+				<!-- end: table -->
+			</div>
+			<!-- end: Content -->
+		</div>
+	</div>
+	
+	
+				
+	<div class="modal hide fade" id="myModal">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">×</button>
+			<h3>Settings</h3>
+		</div>
+		<div class="modal-body">
+			<p>Here settings can be configured...</p>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">Close</a>
+			<a href="#" class="btn btn-primary">Save changes</a>
+		</div>
+	</div>
+	
+	<div class="clearfix"></div>
+	<hr>
+	
+	<footer>
+		<p class="pull-left">&copy; <a href="" target="_blank">creativeLabs</a> 2013</p>
+		<p class="pull-right">Powered by: <a href="#">Optimus Dashboard</a></p>
+	</footer>
+			
+</div><!--/.fluid-container-->
+
+	<!-- start: JavaScript-->
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-1.9.1.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-migrate-1.0.0.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-ui-1.10.0.custom.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/bootstrap.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cookie.js"></script>
+	
+		<script src='{{ STATIC_URL }}bootstrap/js/fullcalendar.min.js'></script>
+	
+		<script src='{{ STATIC_URL }}bootstrap/js/jquery.dataTables.min.js'></script>
+
+		<script src="{{ STATIC_URL }}bootstrap/js/excanvas.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.pie.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.stack.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.resize.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.chosen.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uniform.min.js"></script>
+		
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cleditor.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.noty.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.elfinder.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.raty.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.iphone.toggle.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uploadify-3.1.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.gritter.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.imagesloaded.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.masonry.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/custom.js"></script>
+
+		<script src="{{ STATIC_URL }}ejs/ejs.js"></script>
+		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
+		<script src="{{ STATIC_URL }}ejs/view.js"></script>
+
+		<script src="{{ STATIC_URL }}js/leave_main.js"></script>
+		<script src="{{ STATIC_URL }}js/common.js"></script>
+		
+		<script type="text/javascript" language="JavaScript">
+			$(document).ready(function(){
+				// show sidebar
+				show_sidebar();
+
+				$('.dateinput').change(function() {
+					var mdy = $(this).val().split('/');
+					$(this).val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
+				});
+			
+				// radio 버튼 클릭 시
+				$('input[name=radioN]').change(function() {
+					changeRadio(Number($(this).val()));
+				});
+
+				Search();
+			});			
+		</script>
+		<!-- end: JavaScript-->
+	
+</body>
+</html>
