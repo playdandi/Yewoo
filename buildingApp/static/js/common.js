@@ -96,7 +96,7 @@ function show_sidebar()
 			html : 'true',
 			placement : 'right',
 			title : '[통합 내역 관리 시스템]',
-			content : '<ul class="nav nav-tab main-menu" style="margin-bottom:-1px"><li><a href="/lease/show/lease"><i class="icon-hand-right" style="margin-right:5px"></i>임대 내역 관리 (확인)</a></li><li><a href="/lease/input/notice"><i class="icon-hand-right" style="margin-right:5px"></i>고지 내역 관리 (입력)</a></li><li><a href="#"><i class="icon-hand-right" style="margin-right:5px"></i>납부 내역 관리 (입력)</a></li></ul>'
+			content : '<ul class="nav nav-tab main-menu" style="margin-bottom:-1px"><li><a href="/lease/show/lease"><i class="icon-hand-right" style="margin-right:5px"></i>임대 내역 관리 (확인)</a></li><li><a href="/lease/input/notice"><i class="icon-hand-right" style="margin-right:5px"></i>고지 내역 관리 (입력)</a></li><li><a href="#"><i class="icon-hand-right" style="margin-right:5px"></i>납부 내역 관리 (입력)</a></li><li><a href="/lease/leave/"><i class="icon-hand-right" style="margin-right:5px"></i>퇴거 정산서 관리 (입력/확인)</a></li></ul>'
 		});
 
 		// popover를 열 때, 다른 모든 popover를 끈다. (중복되지 않기 위하여)
