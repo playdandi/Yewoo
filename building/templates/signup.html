@@ -17,7 +17,6 @@
 	<link id="base-style" href="{{ STATIC_URL }}bootstrap/css/style.css" rel="stylesheet">
 	<link id="base-style-responsive" href="{{ STATIC_URL }}bootstrap/css/style-responsive.css" rel="stylesheet">
 	<link href="{{ STATIC_URL }}bootstrap/css/datepicker.css" rel="stylesheet">
-	<link href="{{ STATIC_URL }}bootstrap/css/datepicker.css" rel="stylesheet">
 	<link href="{{ STATIC_URL }}css/common.css" rel="stylesheet">
 	<link href="{{ STATIC_URL }}css/signup.css" rel="stylesheet">
 	<!-- end: CSS -->
@@ -73,7 +72,7 @@
 						<h2><strong>시스템 가입 정보</strong></h2>
 					</div>
 					<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
-						<table class="table table-bordered table-condensed">
+						<table class="table table-bordered table-condensed" style="table-layout:fixed">
 							<colgroup>
 								<col width="5%"></col>
 								<col width="5%"></col>
@@ -149,7 +148,7 @@
 						<h2><strong>직원 정보</strong></h2>
 					</div>
 					<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
-						<table class="table table-bordered table-condensed">
+						<table class="table table-bordered table-condensed" style="table-layout:fixed">
 							<colgroup>
 								<col width="5%"></col>
 								<col width="5%"></col>
@@ -233,7 +232,7 @@
 						<h2><strong>연락처 및 주소</strong></h2>
 					</div>
 					<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
-						<table class="table table-bordered table-condensed">
+						<table class="table table-bordered table-condensed" style="table-layout:fixed">
 							<colgroup>
 								<col width="5%"></col>
 								<col width="5%"></col>
@@ -342,6 +341,7 @@
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
 		<script src="{{ STATIC_URL }}/js/common.js"></script>
 		<script src="{{ STATIC_URL }}/js/signup.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/bootstrap-datepicker.js"></script>
 
 		
 		<script type="text/javascript" language="JavaScript">

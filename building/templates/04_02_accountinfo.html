@@ -112,14 +112,8 @@
     <!-- end:Header --!>
 	<div class="container-fluid">
         <div class="row-fluid">
-						
-        <div class="span2">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">사이드바 영역</li>
-                <p>사이드바 영역입니다.<br><br><br><br><br><br><br></p>
-            </ul>
-          </div><!--/.well -->
+        <div class="span3" style="width:250px">
+          {% include "sidebar.html" %}
         </div><!--/span-->
 				
 			<noscript>
@@ -130,7 +124,7 @@
 			</noscript>
 			
 			<!-- start: Content -->	
-			<div id="content" class="span10">
+			<div id="content" class="span9">
 				<div class="span11">
 					<ul class="breadcrumb" style="margin: 5px 0px 5px 0px;">
 						<li>
@@ -179,9 +173,9 @@
 						<span id="label11" class="label" onclick="filter('11');">ㅌ</span>
 						<span id="label12" class="label" onclick="filter('12');">ㅍ</span>
 						<span id="label13" class="label" onclick="filter('13');">ㅎ</span>
-						<span id="" class="label">기타</span>
-						<span id="" class="label">재직</span>
-						<span id="" class="label">퇴사</span>
+						<span id="labeletc" class="label" onclick="filter('etc');">기타</span>
+						<span id="labelwork" class="label" onclick="filter('work');">재직</span>
+						<span id="labelexit" class="label" onclick="filter('exit');">퇴사</span>
 					</div>
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
 						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
@@ -201,22 +195,13 @@
 									<td width="9%">상세 보기</td>
 								</tr>
                                 {% for user in users %}
-								<tr>
+								<tr class="datas">
                                     <td><input type="checkbox"/></td>
 									<td>{{ user.userprofile.name }} ▩</b></td>
-									<td>{% if user.userprofile.companynumber %}
-                                    {{ user.userprofile.companynumber }}
-                                    {% else %}
-                                    {% endif %}</td>
+									<td>{% if user.userprofile.companynumber %}{{ user.userprofile.companynumber }}{% else %}{% endif %}</td>
 									<td>{{ user.userprofile.department }}</td>
 									<td>{{ user.userprofile.position }}</td>
-									<td>{% if user.userprofile.status == 1 %}
-                                    재직
-                                    {% elif user.userprofile.status == 2 %}
-                                    퇴사
-                                    {% else %}
-                                    알수없음
-                                    {% endif %}</td>
+									<td>{% if user.userprofile.status == 1 %}재직{% elif user.userprofile.status == 2 %}퇴사{% else %}알수없음{% endif %}</td>
 									<td>{{ user.userprofile.joindate | date:"Y.m.d" }}</td>
 									<td>{{ user.userprofile.exitdate | date:"Y.m.d" }}</td>
 									<td>{{ user.userprofile.contact1 }}</td>
@@ -292,14 +277,20 @@
 		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
 
-		<!--<script src="{{ STATIC_URL }}js/03_01_electricity_show.js"></script>!-->
+		<script src="{{ STATIC_URL }}js/04_02_accountinfo.js"></script>
 		<script src="{{ STATIC_URL }}js/common.js"></script>
 		
 		<script type="text/javascript" language="JavaScript">
 			$(document).ready(function(){
 				// show sidebar
 				show_sidebar();
-
+				$('#tabmenu a').click(function(e) {
+					e.preventDefault();
+					$(this).tab('show');
+				});
+                $("#side-datepicker").datepicker();
+                $("#side-datepicker2").datepicker();
+                $("#side-datepicker3").datepicker();
 			});			
 		</script>
 		<!-- end: JavaScript-->

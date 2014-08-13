@@ -112,14 +112,8 @@
     <!-- end:Header --!>
 	<div class="container-fluid">
         <div class="row-fluid">
-						
-        <div class="span2">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">사이드바 영역</li>
-                <p>사이드바 영역입니다.<br><br><br><br><br><br><br></p>
-            </ul>
-          </div><!--/.well -->
+        <div class="span3" style="width:250px">
+          {% include "sidebar.html" %}
         </div><!--/span-->
 				
 			<noscript>
@@ -130,7 +124,7 @@
 			</noscript>
 			
 			<!-- start: Content -->	
-			<div id="content" class="span10">
+			<div id="content" class="span9">
 				<div class="span11">
 					<ul class="breadcrumb" style="margin: 5px 0px 5px 0px;">
 						<li>
@@ -339,6 +333,13 @@
 			$(document).ready(function(){
 				// show sidebar
 				show_sidebar();
+				$('#tabmenu a').click(function(e) {
+					e.preventDefault();
+					$(this).tab('show');
+				});
+                $("#side-datepicker").datepicker();
+                $("#side-datepicker2").datepicker();
+                $("#side-datepicker3").datepicker();
 
 			});			
 		</script>

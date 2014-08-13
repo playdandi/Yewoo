@@ -42,3 +42,39 @@
 .borderless td{
     border-color:transparent;
 }
+
+    .dropdown-header3 {
+    width:350%;
+    position: absolute;
+    left: 0px;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 0 auto;
+    text-align:center;
+    }
+
+    .dropdown-header4 {
+    width:450%;
+    position: absolute;
+    left: 0px;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 0 auto;
+    text-align:center;
+    }
+
+    .dropdown-header3 li {display:inline-block;}
+    .dropdown-header4 li {display:inline-block;}
+
+    .navbar .nav  li .dropdown-menu:before {
+        display:none;
+    }
+    .navbar .nav  li .dropdown-menu:after {
+        display:none;
+    }
