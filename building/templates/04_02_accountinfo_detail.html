@@ -168,29 +168,30 @@
 							</table>
 						</div>
 					</div>
-                    <button class="pull-right btn btn-small">사원 정보 수정하기 ▶</button>
+                    <button class="pull-right btn btn-small" disabled>사원 정보 수정하기 ▶</button>
                     <h3 style="margin:5px;">1. 개인 프로필</h3>
                     <hr style="margin-top:10px;margin-bottom:10px;">
                     
-                    <button class="pull-right btn btn-small" style="margin:0px 3px 0px 0px;">수정</button>
+                    <button id="revise1Start" class="pull-right btn btn-small" onclick="Revise1(false,{{ user.id }});" style="margin:0px 3px 0px 0px;">수정</button>
+                    <button id="revise1Done" class="pull-right btn btn-small" onclick="Revise1(true, {{user.id }});" style="margin:0px 3px 0px 0px;display:none;">수정완료</button>
                     <h6 style="margin:20px 5px 10px 5px;padding:0px 3px 0px 3px;">개인 프로필</h6>
                     <hr style="margin-top:10px;margin-bottom:10px;padding:0px 3px 0px 3px;">
 					<div class="box" style="margin:0px;padding:0px 3px 0px 3px;">
-						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+						<div id="revise1Box" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;table-layout:fixed;">
 								<tr>
                                     <td width="14%" rowspan="5"><img width="auto" height="auto" src="/static/img/김태희.jpg" style="max-height:136px"/></td>
 									<td width="10%"><strong>이름</strong></td>
-									<td width="10%"><input id="name" class="margin0 width3" type="text" value="{{ user.userprofile.name }}"/></td>
+									<td width="10%"><input id="name" class="margin0 width3" type="text" value="{{ user.userprofile.name }}" disabled/></td>
 									<td width="10%"><strong>생년월일</strong></td>
 									<td width="10%">
-                                        <input id="birthdayYear" class="input-small fontmini" style="margin:0px 0px 3px 0px" type="text" placeholder="생년" value={{ user.userprofile.birthday | date:"Y"}} />
-                                        <input id="birthdayMonth" class="margin0 input-small" style="width:36px" type="text" placeholder="월" value={{ user.userprofile.birthday | date:"m"}} />
-                                        <input id="birthdayDay" class="margin0 input-small" style="width:36px" type="text" placeholder="일" value={{ user.userprofile.birthday | date:"d"}} />
+                                        <input id="birthdayYear" class="input-small fontmini" style="margin:0px 0px 3px 0px" type="text" placeholder="생년" value={{ user.userprofile.birthday | date:"Y"}} disabled/>
+                                        <input id="birthdayMonth" class="margin0 input-small" style="width:36px" type="text" placeholder="월" value={{ user.userprofile.birthday | date:"m"}} disabled/>
+                                        <input id="birthdayDay" class="margin0 input-small" style="width:36px" type="text" placeholder="일" value={{ user.userprofile.birthday | date:"d"}} disabled/>
                                     </td>
 									<td width="10%"><strong>성별</strong></td>
 									<td width="10%">
-                                        <select id="gender" class="margin0 width2" style="margin-right:10px; margin-bottom:0px">
+                                        <select id="gender" class="margin0 width2" style="margin-right:10px; margin-bottom:0px" disabled>
                                             {% if user.userprofile.gender == '남' %}
                                             <option value="남" selected>남</option>
                                             <option value="여">여</option>
@@ -202,7 +203,7 @@
                                     </td>
 									<td width="10%"><strong>재직여부</strong></td>
 									<td width="10%">
-                                        <select id="gender" class="margin0 width2" style="margin-right:10px; margin-bottom:0px">
+                                        <select id="status" class="margin0 width2" style="margin-right:10px; margin-bottom:0px" disabled>
                                         {% if user.userprofile.status == 1 %}
                                             <option value="1" selected>재직</option>
                                             <option value="2">퇴사</option>
@@ -216,7 +217,7 @@
 								<tr>
 									<td><strong>부서</strong></td>
 									<td>
-                                        <select id="department" class="margin0 width4">
+                                        <select id="department" class="margin0 width4" disabled>
                                             {% for department in departments %}
                                                 {% if department.name == user.userprofile.department %}
                                                 <option value="{{ department.name }}" selected>{{ department.name }}</option>
@@ -228,7 +229,7 @@
                                     </td>
 									<td><strong>직급</strong></td>
 									<td>
-                                        <select id="position" class="margin0 width4">
+                                        <select id="position" class="margin0 width4" disabled>
                                             {% for position in positions %}
                                                 {% if position.name == user.userprofile.position %}
                                                 <option value="{{ position.name }}" selected>{{ position.name }}</option>
@@ -240,50 +241,58 @@
                                     </td>
 									<td><strong>입사일</strong></td>
 									<td>
-                                        <input id="joinYear" class="input-small fontmini" style="margin:0px 0px 3px 0px" type="text" placeholder="입사년" value={{ user.userprofile.joindate | date:"Y"}} />
-                                        <input id="joinMonth" class="margin0 input-small" style="width:36px" type="text" placeholder="월" value={{ user.userprofile.joindate | date:"m"}} />
-                                        <input id="joinDay" class="margin0 input-small" style="width:36px" type="text" placeholder="일" value={{ user.userprofile.joindate | date:"d"}} />
+                                        <input id="joinYear" class="input-small fontmini" style="margin:0px 0px 3px 0px" type="text" placeholder="입사년" value={{ user.userprofile.joindate | date:"Y"}} disabled/>
+                                        <input id="joinMonth" class="margin0 input-small" style="width:36px" type="text" placeholder="월" value={{ user.userprofile.joindate | date:"m"}} disabled/>
+                                        <input id="joinDay" class="margin0 input-small" style="width:36px" type="text" placeholder="일" value={{ user.userprofile.joindate | date:"d"}} disabled/>
                                     </td>
 									<td><strong>퇴사일</strong></td>
 									<td>
                                         {% if user.userprofile.exitdate %}
-                                        <input id="exitYear" class="input-small fontmini" style="margin:0px 0px 3px 0px" type="text" placeholder="퇴사년" value={{ user.userprofile.exitdate | date:"Y"}} />
-                                        <input id="exitMonth" class="margin0 input-small" style="width:36px" type="text" placeholder="월" value={{ user.userprofile.exitdate | date:"m"}} />
-                                        <input id="exitDay" class="margin0 input-small" style="width:36px" type="text" placeholder="일" value={{ user.userprofile.exitdate | date:"d"}} />
+                                        <input id="exitYear" class="input-small fontmini" style="margin:0px 0px 3px 0px" type="text" placeholder="퇴사년" value={{ user.userprofile.exitdate | date:"Y"}} disabled/>
+                                        <input id="exitMonth" class="margin0 input-small" style="width:36px" type="text" placeholder="월" value={{ user.userprofile.exitdate | date:"m"}} disabled/>
+                                        <input id="exitDay" class="margin0 input-small" style="width:36px" type="text" placeholder="일" value={{ user.userprofile.exitdate | date:"d"}} disabled/>
                                         {% else %} 
-                                        <input id="exitYear" class="input-small fontmini" style="margin:0px 0px 3px 0px" type="text" placeholder="퇴사년"/>
-                                        <input id="exitMonth" class="margin0 input-small" style="width:36px" type="text" placeholder="월"/>
-                                        <input id="exitDay" class="margin0 input-small" style="width:36px" type="text" placeholder="일"/>
+                                        <input id="exitYear" class="input-small fontmini" style="margin:0px 0px 3px 0px" type="text" placeholder="퇴사년" disabled/>
+                                        <input id="exitMonth" class="margin0 input-small" style="width:36px" type="text" placeholder="월" disabled/>
+                                        <input id="exitDay" class="margin0 input-small" style="width:36px" type="text" placeholder="일" disabled/>
                                         {% endif %}
                                     </td>
 								</tr>
 								<tr>
 									<td><strong>사번</strong></td>
-									<td>{% if user.userprofile.companynumber %}
-                                    {{ user.userprofile.companynumber }}
-                                    {% else %}
-                                    {% endif %}</td>
+									<td>
+                                        <select id="companyNumber" class="margin0 width4" disabled>
+                                            <option value="" disabled selected style="display:none;"></option>
+                                            {% for number in avail_nums %}
+                                                {% if number == user.userprofile.companynumber %}
+                                                <option value="{{ number }}" selected>{{ number }}(현재)</option>
+                                                {% else %}
+                                                <option value="{{ number }}">{{ number }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </td>
 									<td><strong>연락처1</strong></td>
                                     <td>
-										<input id="contact1" class="margin0 input-small" type="text" value="{{ user.userprofile.contact1 }}"/>
+										<input id="contact1" class="margin0 input-small" type="text" value="{{ user.userprofile.contact1 }}" disabled/>
                                     </td>
 									<td><strong>연락처2</strong></td>
                                     <td>
-										<input id="contact2" class="margin0 input-small" type="text" value="{{ user.userprofile.contact2 }}"/>
+										<input id="contact2" class="margin0 input-small" type="text" value="{{ user.userprofile.contact2 }}" disabled/>
                                     </td>
 									<td><strong>이메일</strong></td>
                                     <td>
-										<input id="email" class="margin0 input-small" type="text" value="{{ user.userprofile.email }}"/>
+										<input id="email" class="margin0 input-small" type="text" value="{{ user.userprofile.email }}" disabled/>
                                     </td>
 								</tr>
 								<tr>
 									<td><strong>주소1</strong></td>
 									<td colspan="3">
-										<input id="address" class="margin0 input-large" type="text" style="width:90%" value="{{ user.userprofile.address }}"/>
+										<input id="address" class="margin0 input-large" type="text" style="width:90%" value="{{ user.userprofile.address }}" disabled/>
                                     </td>
 									<td><strong>주소2</strong></td>
 									<td colspan="3">
-										<input id="address2" class="margin0 input-large" type="text" style="width:90%" value="{{ user.userprofile.address2 }}"/>
+										<input id="address2" class="margin0 input-large" type="text" style="width:90%" value="{{ user.userprofile.address2 }}" disabled/>
                                     </td>
 								</tr>
 								<tr>
@@ -348,14 +357,17 @@
 						</div>
 					</div>
 
-                    <button class="pull-right btn btn-small" style="margin:10px 3px 0px 0px;">수정</button>
+                    <button id="revise4Start" class="pull-right btn btn-small" onclick="Revise4(false, {{ user.id }});" style="margin:10px 3px 0px 0px;">수정</button>
+                    <button id="revise4Done" class="pull-right btn btn-small" onclick="Revise4(true, {{user.id }});" style="margin:10px 3px 0px 0px;display:none;">수정완료</button>
                     <h6 style="margin:20px 5px 10px 5px;padding:0px 3px 0px 3px;">자기 소개</h6>
                     <hr style="margin-top:10px;margin-bottom:10px;padding:0px 3px 0px 3px;">
 					<div class="box" style="margin:0px;padding:0px 3px 0px 3px;">
-						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
-							<table class="table table-bordered table-condensed" style="margin-bottom:0px;table-layout:fixed;">
+						<div id="revise4Box" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;table-layout:fixed;">
 								<tr>
-                                    <td width="100%">{{ user.userprofile.introduce }}</td>
+                                    <td width="100%">
+										<input id="introduce" class="margin0 input-large" type="text" style="width:95%" value="{{ user.userprofile.introduce }}" disabled/>
+                                    </td>
 								</tr>
 							</table>
 						</div>
@@ -425,7 +437,7 @@
 		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
 
-		<!--<script src="{{ STATIC_URL }}js/03_01_electricity_show.js"></script>!-->
+		<script src="{{ STATIC_URL }}js/04_02_accountinfo_detail.js"></script>
 		<script src="{{ STATIC_URL }}js/common.js"></script>
 		
 		<script type="text/javascript" language="JavaScript">

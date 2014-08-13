@@ -50,20 +50,71 @@ def accountinfo_html(request):
                                 context_instance=RequestContext(request))
 
 def accountinfo_detail_html(request, uid):
-    try:
-       username = request.user.userprofile.name
-    except:
-        username = ""
-    try:
-        user = User.objects.get(id=uid)
-        departments = DepartmentList.objects.all()
-        positions = PositionList.objects.all()
-        return render_to_response('04_02_accountinfo_detail.html', \
-                                    {'user' : user, 'username' : username, \
-                                    'departments' : departments, 'positions' : positions} , \
-                                    context_instance=RequestContext(request))
-    except:
-        return HttpResponse("에러가 발생하였습니다.", status=404)
+    if request.method == "POST":
+        param = {}
+        for name in request.POST:
+            param[name] = request.POST.get(name, '').strip()
+
+        type = request.POST['type']
+        if type == '1':
+            user = User.objects.get(id=uid)
+            userprofile = user.userprofile
+            userprofile.name = request.POST['name']
+            userprofile.birthday = request.POST['birthday']
+            userprofile.gender = request.POST['gender']
+            userprofile.status = request.POST['status']
+            userprofile.department = request.POST['department']
+            userprofile.position = request.POST['position']
+            userprofile.joindate = request.POST['joindate']
+            if request.POST['exitdate'] == "":
+                userprofile.exitdate = None
+            else:
+                userprofile.exitdate = request.POST['exitdate']
+            if request.POST['companynumber'] == "":
+                userprofile.companynumber = None
+            else:
+                userprofile.companynumber = request.POST['companynumber']
+            userprofile.contact1 = request.POST['contact1']
+            userprofile.contact2 = request.POST['contact2']
+            userprofile.email = request.POST['email']
+            userprofile.address = request.POST['address']
+            userprofile.address2 = request.POST['address2']
+            userprofile.save()
+            return render(request, 'index.html')
+        elif type == '4':
+            user = User.objects.get(id=uid)
+            userprofile = user.userprofile
+            userprofile.introduce = request.POST['introduce']
+            userprofile.save()
+            return render(request, 'index.html')
+        else:
+            return HttpResponse("에러가 발생하였습니다.", status=404)
+
+    else:
+        try:
+           username = request.user.userprofile.name
+        except:
+            username = ""
+        try:
+            user = User.objects.get(id=uid)
+            departments = DepartmentList.objects.all()
+            positions = PositionList.objects.all()
+            available_companynum = []
+            min_number = int(SystemSettings.objects.get(name="companynum_min").value)
+            max_number = int(SystemSettings.objects.get(name="companynum_max").value)
+            for number in range(min_number, max_number+1):
+                try:
+                    cn_user = UserProfile.objects.get(companynumber = number)
+                    if cn_user.user == user:
+                        available_companynum.append(number)
+                except:
+                    available_companynum.append(number)
+            return render_to_response('04_02_accountinfo_detail.html', \
+                                        {'user' : user, 'username' : username, 'avail_nums' : available_companynum, \
+                                        'departments' : departments, 'positions' : positions} , \
+                                        context_instance=RequestContext(request))
+        except:
+            return HttpResponse("에러가 발생하였습니다.", status=404)
 
 def right_html(request):
     return render(request, '04_03_right.html')
