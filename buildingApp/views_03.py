@@ -10,6 +10,7 @@ from buildingApp.models import *
 from django.conf import settings
 from django.utils import simplejson
 import os
+from django.contrib.auth.decorators import permission_required
 
 ################################################
 #################### Chap.3 ####################
@@ -120,6 +121,7 @@ def setPostData(request, typestr = ''):
 
     return param
 
+@permission_required('buildingApp.lease_show', login_url='/login/')
 def lease_show_html(request):
     return render(request, '03_01_lease_show.html', setPostData(request))
 
@@ -192,6 +194,7 @@ def serialize_allInfo(lease, notice, payment, leasePayDate):
     return [serialized_lease, serialized_notice, serialized_payment]
 
 ### 03.01 : 임대/고지/납부 상세내역보기 데이터 (tab 1,2,3 정보 모두 들고온다)
+@permission_required('buildingApp.lease_show', login_url='/login/')
 def lease_notice_detail_getAllInfo(request):
     if request.method == 'POST':
         bid = int(request.POST['building_id'])
@@ -222,6 +225,7 @@ def lease_notice_detail_getAllInfo(request):
     return HttpResponse('NOT POST')
 
 
+@permission_required('buildingApp.lease_show', login_url='/login/')
 def lease_notice_detail_show_html(request, bid, rid, tab):
     param = {}
     param['tab'] = int(tab)
@@ -234,9 +238,11 @@ def lease_notice_detail_show_html(request, bid, rid, tab):
     param['leaseNumberList'] = range(1, param['leaseNumberTotal']+1)
     return render(request, '03_01_lease_notice_detail_show.html', param)
 
+@permission_required('buildingApp.lease_show', login_url='/login/')
 def notice_show_html(request):
     return render(request, '03_01_notice_show.html', setPostData(request))
 
+@permission_required('buildingApp.lease_show', login_url='/login/')
 def payment_show_html(request):
     return render(request, '03_01_payment_show.html', setPostData(request))
 
@@ -560,6 +566,7 @@ def toJSON(objs, status=200):
     j = json.dumps(objs, ensure_ascii=False)
     return HttpResponse(j, status=status, content_type='application/json; charset=utf-8')
 
+@permission_required('buildingApp.lease_show', login_url='/login/')
 def electricity_show_html(request):
     return render(request, '03_01_electricity_show.html', setPostData(request, "electricity"))
 
@@ -840,9 +847,11 @@ def excel_file_delete(request):
         return HttpResponse('file delete - SUCCESS')
     return HttpResponse('file delete - NOT POST')
 
+@permission_required('buildingApp.lease_input', login_url='/login/')
 def check_input_html(request):
     return render(request, '03_02_check_input.html', setPostData(request))
 
+@permission_required('buildingApp.lease_input', login_url='/login/')
 def notice_input_html(request):
     return render(request, '03_02_notice_input.html', setPostData(request))
 
@@ -1058,6 +1067,7 @@ def notice_detail_tab2_detail(request):
         return toJSON(serialize_detail_tab2_detail(emd))
     return HttpResponse('NOT POST')
 
+@permission_required('buildingApp.lease_input', login_url='/login/')
 def notice_detail_input_html(request, bid, rid, eid, year, month, tab):
     param = {}
     param['tab'] = int(tab)
@@ -1214,12 +1224,15 @@ def save_notice(request):
 
 
 
+@permission_required('buildingApp.lease_input', login_url='/login/')
 def electricity_input_html(request):
     return render(request, '03_02_electricity_input.html', setPostData(request, "electricity"))
 
+@permission_required('buildingApp.lease_input', login_url='/login/')
 def gas_input_html(request):
     return render(request, '03_02_gas_input.html', setPostData(request, "gas"))
 
+@permission_required('buildingApp.lease_input', login_url='/login/')
 def water_input_html(request):
     return render(request, '03_02_water_input.html', setPostData(request, "water"))
 
@@ -1232,6 +1245,7 @@ def water_input_html(request):
 ################### 03_03 : payment ####################
 ########################################################
 
+@permission_required('buildingApp.lease_payment', login_url='/login/')
 def payment_input_html(request):
     return render(request, '03_03_payment.html', setPostData(request, 'payment'))
 
@@ -1307,6 +1321,7 @@ def payment_check(request):
 
 
 
+@permission_required('buildingApp.lease_payment', login_url='/login/')
 def payment_detail_html(request, bid, rid, year, month, tab):
     param = {}
     param['tab'] = int(tab)

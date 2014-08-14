@@ -172,52 +172,19 @@
 								<tr style="background:#d0d0d0;">
                                     <td width="5%"><input type="checkbox" disabled /></td>
 									<td width="15%">시스템 설정 기능</td>
-									<td width="15%">직급 생성</td>
-									<td width="55%">직급명</td>
+									<td width="15%">사번 범위</td>
+									<td width="55%">사번 범위 변경</td>
 									<td width="10%">설정하기</td>
 								</tr>
 								<tr>
                                     <td><input type="checkbox" disabled /></td>
-									<td>직급 정보 설정</td>
-									<td>총 <font color="red">{{ positions|length }}</font>개 직급 생성 중</td>
-									<td>{% for position in positions %}
-                                    {{ position.name }} 
-                                    {% endfor %}</td>
-									<td><a class="btn btn-small disabled">변경▲</a></td>
-								</tr>
-								<tr>
-                                    <td colspan="5" style="text-align:left;">
-                                    <div style="padding:5px;">
-                                        <span>총 <font color="red">{{ positions|length }}</font>개 직급 생성 중</span>
-                                        <hr style="margin-top:10px;margin-bottom:10px;">
-							            <table class="table table-bordered table-condensed table-center borderless" style="margin-bottom:0px;background-color:transparent;">
-                                            {% for position_in in position_out %}
-                                            <tr>
-                                                {% for position in position_in %}
-        											
-                                                <td width="15%" style="text-align:left"><label style="display: inline-block"><input type="radio" name="posselect" value="{{ position.id }}"/></label>{{ position.name }}</td>
-                                                {% endfor %}
-                                                <td width="10%"></td>
-                                                {% if forloop.first %}
-                                                <td rowspan="{{ position_out|length }}" width="10%"><button class="btn btn-small btn-block" onclick="del();">삭제</button></td>
-                                                {% endif %}
-                                            </tr>
-                                            {% endfor %}
-                                        </table>
-                                        <hr style="margin-top:10px;margin-bottom:10px;">
-							            <table class="table table-bordered table-condensed table-center borderless" style="margin-bottom:0px;background-color:transparent;">
-                                            <tr>
-                                                <td width="20%"><input id="addtext" type="text" style="width:90%;margin:0px;"/></td>
-                                                <td width="10%"><button class="btn btn-small btn-block" onclick="add();">추가</button></td>
-                                                <td width="20%"><input id="modifytext" type="text" style="width:90%;margin:0px;"/></td>
-                                                <td width="10%"><button class="btn btn-small btn-block" onclick="modify();">이름 변경</button></td>
-                                                <td width="20%"></td>
-                                                <td width="10%"><button class="btn btn-small btn-block" disabled>취소</button></td>
-                                                <td width="10%"><button class="btn btn-small btn-block" disabled>확인</button></td>
-                                            </tr>
-                                        </table>
-                                    </div>
+									<td>사번 범위 설정</td>
+									<td>현재 {{ min_number }} ~ {{ max_number }} 로 설정</td>
+									<td>
+                                        <input id="min_number" class="input_large" type="number" value="{{ min_number }}" placeholder="최소값"/> ~ 
+                                        <input id="max_number" class="input_large" type="number" value="{{ max_number }}" placeholder="최대값"/>
                                     </td>
+									<td><a class="btn btn-small" onclick="modify();">변경</a></td>
 								</tr>
 							</table>
 						</div>
@@ -287,7 +254,7 @@
 		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
 
-		<script src="{{ STATIC_URL }}js/04_04_setting_position.js"></script>
+		<script src="{{ STATIC_URL }}js/04_04_setting_companynum.js"></script>
 		<script src="{{ STATIC_URL }}js/common.js"></script>
 		
 		<script type="text/javascript" language="JavaScript">
@@ -301,10 +268,6 @@
                 $("#side-datepicker").datepicker();
                 $("#side-datepicker2").datepicker();
                 $("#side-datepicker3").datepicker();
-				// radio btn 클릭 시 동작
-				$('input[name=posselect]').change(function() {
-					changeRadio($(this).parent().parent().parent().parent().text());
-				});
                 $('#changesystem').change(function() {
                     var changepage = $('#changepage');
                     while(changepage.children().length > 0) {

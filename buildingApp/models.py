@@ -25,6 +25,22 @@ class UserProfile(models.Model):
     #0 - newbie
     #1 - working
     #2 - retired
+    class Meta:
+        permissions = (
+            ("building_register", ""),
+            ("building_search_building", ""),
+            ("building_search_room", ""),
+            ("resident_show", ""),
+            ("resident_info", ""),
+            ("resident_infofile", ""),
+            ("lease_show", ""),
+            ("lease_input", ""),
+            ("lease_payment", ""),
+            ("manage_activate", ""),
+            ("manage_accountinfo", ""),
+            ("manage_right", ""),
+            ("manage_setting", ""),
+        )
 
 class ResidentInfo(models.Model):
     buildingName = models.IntegerField()
@@ -303,3 +319,6 @@ class SettingPayment(models.Model):
 	month = models.IntegerField()
 	delayRate = models.FloatField()
 
+class SystemSettings(models.Model):
+    name = models.CharField(max_length = 20)
+    value = models.CharField(max_length = 20)

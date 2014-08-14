@@ -117,7 +117,7 @@
 	<div class="container-fluid">
         <div class="row-fluid">
         <div class="span3" style="width:250px">
-          {% include "sidebar.html" %}
+          {% include "sidebar.html" with side_menu="department" %}
         </div><!--/span-->
 				
 			<noscript>
@@ -155,13 +155,14 @@
                     <div class="span11">
                         <div class="pull-right" style="margin:3px 0px 0px 0px;">
                             <strong>시스템 선택</strong>
-    						<select class="margin0" style="width:160px" onchange="move($(this).val());">
-    							<option value="1">1. 관리자 시스템</option>
-    							<option value="2" selected>2. 통합내역 시스템</option>
+    						<select id="changesystem" class="margin0" style="width:180px">
+    							<option value="0">1. 관리자 시스템</option>
+    							<option value="1" selected>2. 통합 내역 시스템</option>
     						</select>
                             <strong>세부 기능 선택</strong>
-    						<select class="margin0" style="width:130px" disabled>
-    							<option value="1" selected>고지내역 연체료</option>
+    						<select id="changepage" class="margin0" style="width:180px">
+                                <option value="" disabled selected style="display:none;"></option>
+    							<option value="adjustment">1. 고지내역 연체로</option>
     						</select>
                         </div>
                         <h3>시스템 목록 현황</h3>
@@ -324,6 +325,49 @@
 				spid = {{ sp_id }};
 				spmt = {{ sp_month }};
 				spdr = {{ sp_delayRate }};
+                $('#changesystem').change(function() {
+                    var changepage = $('#changepage');
+                    while(changepage.children().length > 0) {
+                        $(changepage.children()[0]).remove();
+                    }
+                    if($(this).val() == 0) {
+                        var option = document.createElement("option");
+                        option.text = "";
+                        option.value = "";
+                        option.setAttribute('disabled', 'true');
+                        option.setAttribute('selected', 'true');
+                        option.style.display="none";
+                        changepage.append(option);
+                        var option = document.createElement("option");
+                        option.text = "1. 부서 생성";
+                        option.value = "department";
+                        changepage.append(option);
+                        option = document.createElement("option");
+                        option.text = "2. 직급 생성";
+                        option.value = "position";
+                        changepage.append(option);
+                        option = document.createElement("option");
+                        option.text = "3. 사번 설정";
+                        option.value = "companynum";
+                        changepage.append(option);
+                    } 
+					else if($(this).val() == 1) {
+                        var option = document.createElement("option");
+                        option.text = "";
+                        option.value = "";
+                        option.setAttribute('disabled', 'true');
+                        option.setAttribute('selected', 'true');
+                        option.style.display="none";
+                        changepage.append(option);
+                        option = document.createElement("option");
+                        option.text = "1. 고지 내역 연체료";
+                        option.value = "adjustment";
+                        changepage.append(option);
+                    }
+                });
+                $('#changepage').change(function() {
+                    $(location).attr('href', '/manage/setting/' + $(this).val() + '/');
+                });
 			});			
 		</script>
 		<!-- end: JavaScript-->

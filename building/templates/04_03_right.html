@@ -113,7 +113,7 @@
 	<div class="container-fluid">
         <div class="row-fluid">
         <div class="span3" style="width:250px">
-          {% include "sidebar.html" %}
+          {% include "sidebar.html" with side_menu="department" %}
         </div><!--/span-->
 				
 			<noscript>
@@ -154,7 +154,7 @@
                     </div>
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
 						<div class="box-header" style="padding:7px 10px 7px 10px;">
-							<span><strong>전체 사원 현황</strong> <font color="red">4</font>건 (신규 회원 정보 <font color="red">4</font>건 / 중복 정보 <font color="red">0</font>건) 중 승인 가능한 회원 정보는 <font color="red">4</font>건 입니다.</span>
+							<span><strong>전체 사원 현황</strong> <font color="red">{{ users|length }}</font>건</span>
 						</div>
                     </div>
 					<div class="span11" style="margin:5px 0px 0px 0px; padding:0px">
@@ -173,46 +173,49 @@
 						<span id="label11" class="label" onclick="filter('11');">ㅌ</span>
 						<span id="label12" class="label" onclick="filter('12');">ㅍ</span>
 						<span id="label13" class="label" onclick="filter('13');">ㅎ</span>
-						<span id="" class="label">기타</span>
-						<span id="" class="label">재직</span>
-						<span id="" class="label">퇴사</span>
+						<span id="labeletc" class="label" onclick="filter('etc');">기타</span>
+						<span id="labelwork" class="label" onclick="filter('work');">재직</span>
+						<span id="labelexit" class="label" onclick="filter('exit');">퇴사</span>
 					</div>
 					<div class="box span11" style="margin:0px 0px 5px 0px; padding: 0px">
 						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;">
 								<tr style="background:#d0d0d0;">
-                                    <td width="5%"><input type="checkbox"/></td>
+                                    <td width="5%"><input type="checkbox" disabled/></td>
 									<td width="8%">이름</td>
 									<td width="8%">사번</td>
 									<td width="8%">부서</td>
 									<td width="8%">직급</td>
+                                    <td width="0%" style="display:none;">재직 현황</td>
 									<td width="8%">시스템 권한</td>
 									<td width="45%">시스템 권한 목록</td>
 									<td width="10%">권한 부여하기</td>
 								</tr>
-								<tr>
-                                    <td><input type="checkbox"/></td>
-									<td>이지희 ▩</b></td>
-									<td>01</td>
-									<td>총무팀</td>
-									<td>대리</td>
-									<td>총 2개</td>
-									<td>입주자 관리 시스템, 통합 내역 시스템</td>
-									<td><a class="btn btn-small">보기▲</a></td>
+                                {% for user in users %}
+								<tr class="datas">
+                                    <td><input type="checkbox" disabled/></td>
+									<td>{{ user.userprofile.name }} ▩</b></td>
+									<td>{% if user.userprofile.companynumber %}{{ user.userprofile.companynumber }}{% else %}{% endif %}</td>
+									<td>{{ user.userprofile.department }}</td>
+									<td>{{ user.userprofile.position }}</td>
+									<td style="display:none;">{% if user.userprofile.status == 1 %}재직{% elif user.userprofile.status == 2 %}퇴사{% else %}알수없음{% endif %}</td>
+									<td>총 {{ user.permcount }}개</td>
+									<td>{{ user.permstr }}</td>
+									<td><a class="btn btn-small showdetail">보기▼</a></td>
 								</tr>
-								<tr>
-                                    <td colspan="8" style="text-align:left;">
+								<tr class="datas_sub" style="display:none;">
+                                    <td colspan="9" style="text-align:left;">
                                     <div style="padding:5px;">
-                                        <span><strong>시스템 권한 부여 설정</strong> 2개 권한 부여중</span>
+                                        <span><strong>시스템 권한 부여 설정</strong> {{ user.permcount }}개 권한 부여중</span>
                                         <hr style="margin-top:10px;margin-bottom:10px;">
 							            <table class="table table-bordered table-condensed table-center borderless" style="margin-bottom:0px;background-color:transparent;">
                                             <tr>
                                                 <td width="16%"><strong>전체 선택</strong></td>
-                                                <td width="16%"><strong>관리자 시스템</strong></td>
                                                 <td width="16%"><strong>건물 관리 시스템</strong></td>
                                                 <td width="16%"><strong>입주자 관리 시스템</strong></td>
                                                 <td width="16%"><strong>시설 관리 시스템</strong></td>
                                                 <td width="16%"><strong>통합 내역 관리 시스템</strong></td>
+                                                <td width="16%"><strong>관리자 시스템</strong></td>
                                             </tr>
                                             <tr>
                                                 <td style="padding:0px;"><span height="100%" class="label" style="display:block;padding:7px 4px;">▽</span></td>
@@ -223,42 +226,86 @@
                                                 <td style="padding:0px;"><span height="100%" class="label" style="display:block;padding:7px 4px;">▽</span></td>
                                             </tr>
                                             <tr>
-                                                <td></td>
-                                                <td></td>
                                                 <td></td>
                                                 <td>
                                                 <table class="table-center" style="border: none;">
                                                     <tr style="border:none;">
-                                                        <td style="border:none;" width="20%"><input type="checkbox" checked/></td>
-                                                        <td style="border:none;" width="80%">입주자 정보 확인(목록)</td>
+                                                        <td style="border:none;" width="20%"><input id="check0_{{user.id}}" type="checkbox" {% if user.perm.0 %}checked{% endif %}/></td>
+                                                        <td style="border:none;" width="80%">건물 정보 등록</td>
                                                     </tr>
                                                     <tr>
-                                                        <td style="border:none;"><input type="checkbox"/></td>
-                                                        <td style="border:none;">입주자 정보 입력(개별)</td>
+                                                        <td style="border:none;"><input id="check1_{{user.id}}" type="checkbox" {% if user.perm.1 %}checked{% endif %}/></td>
+                                                        <td style="border:none;">등록 건물 정보 확인</td>
                                                     </tr>
                                                     <tr>
-                                                        <td style="border:none;"><input type="checkbox"/></td>
-                                                        <td style="border:none;">입주자 정보 입력(파일)</td>
+                                                        <td style="border:none;"><input id="check2_{{user.id}}" type="checkbox" {% if user.perm.2 %}checked{% endif %}/></td>
+                                                        <td style="border:none;">등록 호수 정보 확인</td>
                                                     </tr>
                                                 </table>
                                                 </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>
+                                                <table class="table-center" style="border: none;">
+                                                    <tr style="border:none;">
+                                                        <td style="border:none;" width="20%"><input id="check3_{{user.id}}" type="checkbox" {% if user.perm.3 %}checked{% endif %}/></td>
+                                                        <td style="border:none;" width="80%">입주자 정보 확인(목록)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="border:none;"><input id="check4_{{user.id}}" type="checkbox" {% if user.perm.4 %}checked{% endif %}/></td>
+                                                        <td style="border:none;">입주자 정보 입력(개별)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="border:none;"><input id="check5_{{user.id}}" type="checkbox" {% if user.perm.5 %}checked{% endif %}/></td>
+                                                        <td style="border:none;">임주자 정보 입력(파일)</td>
+                                                    </tr>
+                                                </table>
+                                                </td>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                <table class="table-center" style="border: none;">
+                                                    <tr style="border:none;">
+                                                        <td style="border:none;" width="20%"><input id="check6_{{user.id}}" type="checkbox" {% if user.perm.6 %}checked{% endif %}/></td>
+                                                        <td style="border:none;" width="80%">통합 내역 관리(확인)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="border:none;"><input id="check7_{{user.id}}" type="checkbox" {% if user.perm.7 %}checked{% endif %}/></td>
+                                                        <td style="border:none;">고지 내역 관리(입력)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="border:none;"><input id="check8_{{user.id}}" type="checkbox" {% if user.perm.8 %}checked{% endif %}/></td>
+                                                        <td style="border:none;">납부 내역 관리(입력)</td>
+                                                    </tr>
+                                                </table>
+                                                </td>
+                                                <td>
+                                                <table class="table-center" style="border: none;">
+                                                    <tr style="border:none;">
+                                                        <td style="border:none;" width="20%"><input id="check9_{{user.id}}" type="checkbox" {% if user.perm.9 %}checked{% endif %}/></td>
+                                                        <td style="border:none;" width="80%">회원 승인 관리</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="border:none;"><input id="check10_{{user.id}}" type="checkbox" {% if user.perm.10 %}checked{% endif %}/></td>
+                                                        <td style="border:none;">회원 정보 관리</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="border:none;"><input id="check11_{{user.id}}" type="checkbox" {% if user.perm.11 %}checked{% endif %}/></td>
+                                                        <td style="border:none;">회원 권한 관리</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="border:none;"><input id="check12_{{user.id}}" type="checkbox" {% if user.perm.12 %}checked{% endif %}/></td>
+                                                        <td style="border:none;">시스템 설정</td>
+                                                    </tr>
+                                                </table>
+                                                </td>
                                             </tr>
                                         </table>
+                                        <div style="text-align:center;">
+                                            <button class="btn" onclick="setperm({{ user.id }})" >설정</button>
+                                        </div>
                                     </div>
                                     </td>
 								</tr>
-								<tr>
-                                    <td><input type="checkbox"/></td>
-									<td>김민철 ▩</b></td>
-									<td>02</td>
-									<td>시설관리팀</td>
-									<td>사원</td>
-									<td>총 2개</td>
-									<td>입주자 관리 시스템, 통합 내역 시스템</td>
-									<td><a class="btn btn-small">보기▼</a></td>
-								</tr>
+                                {% endfor %}
 							</table>
 						</div>
 					</div>
@@ -326,7 +373,7 @@
 		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
 
-		<!--<script src="{{ STATIC_URL }}js/03_01_electricity_show.js"></script>!-->
+	    <script src="{{ STATIC_URL }}js/04_03_right.js"></script>
 		<script src="{{ STATIC_URL }}js/common.js"></script>
 		
 		<script type="text/javascript" language="JavaScript">
@@ -340,7 +387,15 @@
                 $("#side-datepicker").datepicker();
                 $("#side-datepicker2").datepicker();
                 $("#side-datepicker3").datepicker();
-
+                $('.showdetail').click(function() {
+                    if ((this).parentNode.parentNode.nextSibling.nextSibling.style.display == 'none') {
+                        (this).parentNode.parentNode.nextSibling.nextSibling.style.display = '';
+                        (this).firstChild.data = "보기▲";
+                    } else {
+                        (this).parentNode.parentNode.nextSibling.nextSibling.style.display = 'none';
+                        (this).firstChild.data = "보기▼";
+                    }
+                });
 			});			
 		</script>
 		<!-- end: JavaScript-->

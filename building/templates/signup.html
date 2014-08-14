@@ -183,7 +183,9 @@
 										<span><strong>생년월일</strong></span>
                                     </td>
 							  		<td colspan="3">
-                                        <input id="signupBirthday" class="margin0 input-small datepicker dateinput fontmini" type="text"/>
+                                        <input id="signupBirthdayYear" class="input-small fontmini" style="margin:0px 0px 3px 0px" type="text" placeholder="생년"/>
+                                        <input id="signupBirthdayMonth" class="margin0 input-small" style="width:36px" type="text" placeholder="월"/>
+                                        <input id="signupBirthdayDay" class="margin0 input-small" style="width:36px" type="text" placeholder="일"/>
                                     </td>
 							  		<td colspan="3" class="must title">
 										<span><strong>성별</strong></span>
@@ -220,7 +222,9 @@
 										<span><strong>입사일</strong></span>
                                     </td>
 							  		<td colspan="5">
-                                        <input id="signupJoinDate" class="margin0 input-small datepicker dateinput fontmini" type="text"/>
+                                        <input id="signupJoinYear" class="margin0 input-small fontmini" type="text" placeholder="입사년"/>
+                                        <input id="signupJoinMonth" class="margin0 input-small" style="width:36px" type="text" placeholder="월"/>
+                                        <input id="signupJoinDay" class="margin0 input-small" style="width:36px" type="text" placeholder="일"/>
                                     </td>
 								</tr>
 							</tbody>
@@ -359,10 +363,6 @@
 
 				// show sidebar
 				show_sidebar();
-				$('.dateinput').change(function() {
-					var mdy = $(this).val().split('/');
-					$(this).val(mdy[2]+'-'+mdy[0]+'-'+mdy[1]);
-				});
 			});			
 		</script>
 		<!-- end: JavaScript-->
