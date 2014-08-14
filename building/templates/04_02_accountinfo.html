@@ -181,7 +181,7 @@
 						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;">
 								<tr style="background:#d0d0d0;">
-                                    <td width="5%"><input type="checkbox"/></td>
+                                    <td width="5%"><input type="checkbox" disabled/></td>
 									<td width="8%">이름</td>
 									<td width="8%">사번</td>
 									<td width="8%">부서</td>
@@ -196,7 +196,7 @@
 								</tr>
                                 {% for user in users %}
 								<tr class="datas">
-                                    <td><input type="checkbox"/></td>
+                                    <td><input type="checkbox" disabled/></td>
 									<td>{{ user.userprofile.name }} ▩</b></td>
 									<td>{% if user.userprofile.companynumber %}{{ user.userprofile.companynumber }}{% else %}{% endif %}</td>
 									<td>{{ user.userprofile.department }}</td>

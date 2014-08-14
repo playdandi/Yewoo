@@ -222,7 +222,9 @@
 										<span><strong>입사일</strong></span>
                                     </td>
 							  		<td colspan="5">
-                                        <input id="signupJoinDate" class="margin0 input-small datepicker dateinput fontmini" type="text"/>
+                                        <input id="signupJoinYear" class="margin0 input-small fontmini" type="text" placeholder="입사년"/>
+                                        <input id="signupJoinMonth" class="margin0 input-small" style="width:36px" type="text" placeholder="월"/>
+                                        <input id="signupJoinDay" class="margin0 input-small" style="width:36px" type="text" placeholder="일"/>
                                     </td>
 								</tr>
 							</tbody>
@@ -361,10 +363,6 @@
 
 				// show sidebar
 				show_sidebar();
-				$('.dateinput').change(function() {
-					var mdy = $(this).val().split('/');
-					$(this).val(mdy[2]+'-'+mdy[0]+'-'+mdy[1]);
-				});
 			});			
 		</script>
 		<!-- end: JavaScript-->

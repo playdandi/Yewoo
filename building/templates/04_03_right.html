@@ -181,28 +181,30 @@
 						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;">
 								<tr style="background:#d0d0d0;">
-                                    <td width="5%"><input type="checkbox"/></td>
+                                    <td width="5%"><input type="checkbox" disabled/></td>
 									<td width="8%">이름</td>
 									<td width="8%">사번</td>
 									<td width="8%">부서</td>
 									<td width="8%">직급</td>
+                                    <td width="0%" style="display:none;">재직 현황</td>
 									<td width="8%">시스템 권한</td>
 									<td width="45%">시스템 권한 목록</td>
 									<td width="10%">권한 부여하기</td>
 								</tr>
                                 {% for user in users %}
-								<tr>
-                                    <td><input type="checkbox"/></td>
+								<tr class="datas">
+                                    <td><input type="checkbox" disabled/></td>
 									<td>{{ user.userprofile.name }} ▩</b></td>
 									<td>{% if user.userprofile.companynumber %}{{ user.userprofile.companynumber }}{% else %}{% endif %}</td>
 									<td>{{ user.userprofile.department }}</td>
 									<td>{{ user.userprofile.position }}</td>
+									<td style="display:none;">{% if user.userprofile.status == 1 %}재직{% elif user.userprofile.status == 2 %}퇴사{% else %}알수없음{% endif %}</td>
 									<td>총 {{ user.permcount }}개</td>
 									<td>{{ user.permstr }}</td>
 									<td><a class="btn btn-small showdetail">보기▼</a></td>
 								</tr>
-								<tr style="display:none;">
-                                    <td colspan="8" style="text-align:left;">
+								<tr class="datas_sub" style="display:none;">
+                                    <td colspan="9" style="text-align:left;">
                                     <div style="padding:5px;">
                                         <span><strong>시스템 권한 부여 설정</strong> {{ user.permcount }}개 권한 부여중</span>
                                         <hr style="margin-top:10px;margin-bottom:10px;">

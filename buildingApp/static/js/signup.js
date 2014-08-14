@@ -14,9 +14,10 @@ var SignUp = function() {
     data['signupGender'] = $('#signupGender').val().trim();
     data['signupDepartment'] = $('#signupDepartment').val().trim();
     data['signupPosition'] = $('#signupPosition').val().trim();
-    var mdy = $('#signupJoinDate').val().split('/');
-    $('#signupJoinDate').val(mdy[2]+'-'+mdy[0]+'-'+mdy[1]);
-    data['signupJoinDate'] = $('#signupJoinDate').val().trim();
+    var year = $('#signupJoinYear').val().trim()
+    var month = $('#signupJoinMonth').val().trim()
+    var day = $('#signupJoinDay').val().trim()
+    data['signupJoinDate'] = year + '-' + month + '-' + day;
     
     data['signupContact1'] = $('#signupContact1').val().trim();
     data['signupContact2'] = $('#signupContact2').val().trim();
