@@ -1,0 +1,49 @@
+<% var flag = false; %>
+<table class="table table-bordered table-condensed table-hover" style="margin-bottom:0px">
+	<tr>
+		<th width="3%" style="text-align:center"><input type="checkbox" onclick="selectAll(this.checked, '<%= data.length %>');" checked /></th>
+		<th width="10%" style="text-align:center">건물명</th>
+		<th width="7%" style="text-align:center">호실</th>
+		<th width="4%" style="text-align:center">재실여부</th>
+		<th width="6%" style="text-align:center">입주자</th>
+		<th width="4%" style="text-align:center">성별</th>
+		<th width="4%" style="text-align:center">입주 회차</th>
+		<th width="4%" style="text-align:center">임대 구분</th>
+		<th width="8%" style="text-align:center">입주일</th>
+		<th width="8%" style="text-align:center">만료일</th>
+		<th width="8%" colspan="2" style="text-align:center">퇴거 정산서 입력/수정</th>
+		<th width="7%" style="text-align:center">최종 처리 확인</th>
+		<th width="8%" colspan="2" style="text-align:center">임차인 퇴거 확인 처리</th>
+		<th width="7%" style="text-align:center">최종 처리 확인</th>
+	</tr>
+	<% for (i = 0; i < data.length; i++) { %>
+	<% if (!data[i].isShown || !data[i].isFiltered) { continue; } %>
+	<% flag = true; %>
+	<tr id="sel<%= i %>">
+		<td style="text-align:center"><input id="selCheck<%= i %>" type="checkbox" checked /></td>
+		<td style="text-align:center <% if (color == 3 && colorDtl['buildingName'] == 'y') { %>; background-color:#ffa07a<% } %>"><%= data[i].buildingNameKor %></td>
+		<td style="text-align:center <% if (color == 1 || (color == 3 && colorDtl['buildingRoomNumber'] == 'y')) { %>; background-color:#ffa07a<% } %>"><%= data[i].buildingRoomNumber %></td>
+		<td style="text-align:center"><%= data[i].livingState %></td>
+		<td style="text-align:center <% if (color == 2 || (color == 3 && colorDtl['residentName'] == 'y')) { %>; background-color:#ffa07a<% } %>"><%= data[i].residentName %></td>
+		<td style="text-align:center <% if (color == 3 && colorDtl['contractorGender'] == 'y') { %>; background-color:#ffa07a<% } %>"><%= data[i].contractorGender %></td>
+		<td style="text-align:center <% if (color == 3 && colorDtl['leaseNumber'] == 'y') { %>; background-color:#ffa07a<% } %>"><%= data[i].leaseNumber %></td>
+		<td style="text-align:center <% if (color == 3 && colorDtl['leaseType'] == 'y') { %>; background-color:#ffa07a<% } %>"><%= data[i].leaseType %></td>
+		<td style="text-align:center <% if (color == 3 && colorDtl['inDate'] == 'y') { %>; background-color:#ffa07a<% } %>"><%= data[i].inDate %></td>
+		<td style="text-align:center <% if (color == 3 && colorDtl['outDate'] == 'y') { %>; background-color:#ffa07a<% } %>"><%= data[i].outDate %></td>
+		<td style="text-align:center"><button class="btn btn-mini" onclick="goModify('<%= data[i].id %>');">입력/수정</button></td>
+		<td style="text-align:center">입력완료</td>
+		<td style="text-align:center"><button class="btn btn-mini" onclick="goDetail('<%= data[i].id %>');">미리보기</button></td>
+        <td style="text-align:center"><button class="btn btn-mini" onclick="goModify('<%= data[i].id %>');">확인</button></td>
+		<td style="text-align:center">처리완료</td>
+		<td style="text-align:center"><button class="btn btn-mini" onclick="goDetail('<%= data[i].id %>');">미리보기</button></td>
+
+	</tr>
+	<% } %>
+	
+	<% if (!flag) { %>
+	<tr>
+		<td colspan="12" style="text-align:center">해당 입주자가 없습니다.</td>
+	</tr>
+	<% } %>
+
+</table>
