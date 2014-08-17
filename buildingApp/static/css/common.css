@@ -78,3 +78,83 @@
     .navbar .nav  li .dropdown-menu:after {
         display:none;
     }
+
+
+#leave input.red-warning
+{
+    background-color: red;
+}
+
+#leave input
+{
+    text-align: center;
+}
+
+#leave .textCenter
+{
+    text-align: center;
+}
+
+#leave .tableRow
+{
+    vertical-align: middle;
+    height: 30px;
+}
+
+#leave input.margin0
+{
+    width: 120px;
+}
+
+#leave input.small
+{
+    width: 60px;
+}
+
+#leave input.margin0.large
+{
+    width: 250px;
+}
+
+#leave .noblank
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+#leave .box-text
+{
+    border:0;
+    background-color:#f8f8f8;
+    font-size : 0.95em;
+}
+
+#leave td.medium
+{
+    width: 185px;
+}
+#leave .medium
+{
+    width: 150px;
+}
+
+#leave .large
+{
+    width: 250px;
+}
+
+#leave .cursorHand
+{
+    cursor: pointer;
+    cursor: hand;
+}
+
+#leave .backgroundBlack
+{
+    background: #999;
+}
+
+#leave .colorWhite
+{
+    color: white;
+}

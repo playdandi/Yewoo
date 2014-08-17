@@ -102,6 +102,8 @@
     <!-- end:Header --!>
 	
 				{% load humanize %}	
+    <input type="hidden" id="rid" value="{{ result.id }}" />
+    <input type="hidden" id="bid" value="{{ result.buildingName }}" />
 	<div class="container-fluid">
 		<div class="row-fluid">
         <div class="span2">
@@ -150,8 +152,8 @@
 						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8; font-size : 0.95em">
 							<table class="table table-bordered table-condensed">
 								<tr>
-									<th width="15%">보증금</th>
-									<th width="9%">- 미납요금 및 공과</th>
+									<th width="15%">건물명</th>
+									<th width="9%">호실</th>
 									<th width="10%">이름</th>
 									<th width="7%">성별</th>
 									<th width="10%">임대구분</th>
@@ -179,7 +181,7 @@
 								</tr>
 								<tr class="white">
 									<td colspan="3">{{ result.inDate }} ~ {{ result.outDate }}</td>
-									<td colspan="3">{{ result.residentContactNumber1 }} , {{ result.residentContactNumber2 }}</td>
+									<td colspan="3">{{ result.residentContactNumber1 }}{%if result.residentContactNumber2 != "" %}, {{ result.residentContactNumber2 }}{% endif %}</td>
 									<td colspan="3">{{ result.residentEmail }}</td>
 								</tr>
 							</table>  
@@ -296,8 +298,10 @@
     -->
         <tr>
             <th rowspan="2" class="textCenter"><input data-no-uniform="true" type="checkbox" ng-model="isAllOfUnpaidCases" ng-change="toggleAllOfUnpaidCases()"/></th>
+<!--
             <th rowspan="2" class="textCenter">호수</th>
             <th rowspan="2" class="textCenter">입주자</th>
+-->
             <th rowspan="2" class="textCenter">년도/월</th>
             <th rowspan="2" class="textCenter">회차</th>
             <th rowspan="2" class="textCenter">합계금액</th>
@@ -316,8 +320,10 @@
         </tr>
         <tr ng-repeat="ucase in unpaidCases">
             <td class="textCenter"><input  data-no-uniform="true" type="checkbox" ng-model="ucase.checked" ng-change="updateUnpaidCases(); updateUnpaid();" /></td>
+<!--
             <td class="textCenter"><span ng-bind="ucase.roomnum"></span></td>
             <td class="textCenter"><span ng-bind="ucase.name"></span></td>
+-->
             <td class="textCenter"><span ng-bind="ucase.expectedDate | date:'yyyy.MM'"></span></td>
             <td class="textCenter"><span ng-bind="ucase.number"></span></td>
             <td class="textCenter"><span ng-bind="ucase.totalFee"></span></td>
