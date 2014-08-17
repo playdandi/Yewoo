@@ -96,7 +96,7 @@ def accountinfo_detail_html(request, uid):
 
     else:
         try:
-           username = request.user.userprofile.name
+            username = request.user.userprofile.name
         except:
             username = ""
         try:
@@ -113,9 +113,12 @@ def accountinfo_detail_html(request, uid):
                         available_companynum.append(number)
                 except:
                     available_companynum.append(number)
+            academics = AcademicCareer.objects.filter(user=user)
+            works = WorkCareer.objects.filter(user=user)
             return render_to_response('04_02_accountinfo_detail.html', \
                                         {'user' : user, 'username' : username, 'avail_nums' : available_companynum, \
-                                        'departments' : departments, 'positions' : positions} , \
+                                        'departments' : departments, 'positions' : positions , \
+                                        'academics' : academics, 'works' : works} , \
                                         context_instance=RequestContext(request))
         except:
             return HttpResponse("에러가 발생하였습니다.", status=404)
@@ -129,7 +132,6 @@ def right_html(request):
 
         user = User.objects.get(id=request.POST['uid'])
         user.user_permissions.clear()
-        print request.POST['perm[0]'] == 'true'
         if request.POST['perm[0]'] == 'true':
             user.user_permissions.add(Permission.objects.get(codename="building_register"))
         if request.POST['perm[1]'] == 'true':

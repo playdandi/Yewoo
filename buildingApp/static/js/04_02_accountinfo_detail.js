@@ -88,6 +88,16 @@ function UpdateInfo1(uid) {
     });
 }
 
+function Revise2(done, uid) {
+}
+
+function Revise2Cancel(uid) {
+    if (!confirm('취소하시겠습니까?'))
+	    return;
+    else
+        $(location).attr('href', '/manage/accountinfo/detail/' + uid + '/');
+}
+
 function Revise4(done, uid)
 {
 	if (done) {

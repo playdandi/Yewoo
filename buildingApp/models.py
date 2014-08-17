@@ -322,3 +322,22 @@ class SettingPayment(models.Model):
 class SystemSettings(models.Model):
     name = models.CharField(max_length = 20)
     value = models.CharField(max_length = 20)
+
+class AcademicCareer(models.Model):
+    user = models.ForeignKey(User)
+    period = models.CharField(max_length = 40)
+    name = models.CharField(max_length = 20)
+    location = models.CharField(max_length = 10)
+    major = models.CharField(max_length = 20)
+    gpa = models.CharField(max_length = 5)
+    maxgpa = models.CharField(max_length = 5)
+    etc = models.CharField(max_length = 100)
+
+
+class WorkCareer(models.Model):
+    user = models.ForeignKey(User)
+    period = models.CharField(max_length = 40)
+    name = models.CharField(max_length = 20)
+    position = models.CharField(max_length = 20)
+    mission = models.CharField(max_length = 100)
+

@@ -309,11 +309,11 @@
 						</div>
 					</div>
 
-                    <button class="pull-right btn btn-small" style="margin:10px 3px 0px 0px;">수정</button>
+                    <button id="revise2Start" class="pull-right btn btn-small" onclick="Revise2(false,{{ user.id }});" style="margin:10px 3px 0px 0px;">수정</button>
                     <h6 style="margin:20px 5px 10px 5px;padding:0px 3px 0px 3px;">학력 사항</h6>
                     <hr style="margin-top:10px;margin-bottom:10px;padding:0px 3px 0px 3px;">
 					<div class="box" style="margin:0px;padding:0px 3px 0px 3px;">
-						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+						<div id="revise2Box" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;table-layout:fixed;">
 								<tr>
                                     <td width="24%"><strong>재학기간</strong></td>
@@ -322,16 +322,24 @@
 									<td width="10%"><strong>전공</strong></td>
 									<td width="10%"><strong>학점</strong></td>
 									<td width="30%"><strong>기타 사항</strong></td>
+									<td width="8%"><button id="acainit" class="btn btn-small" style="margin:0px 0px 0px 0px;display:none;">초기화</button></td>
 								</tr>
+                                {% for academic in academics %}
 								<tr>
-                                    <td>2008년 입학~2012년 02월 졸업</td>
-									<td>숭실대학교</td>
-									<td>서울</td>
-									<td>전산/통계학</td>
-									<td>3.74/4.3</strong></td>
-									<td>동아리 활동, 음악 듣기가 취미</strong></td>
+                                    <td><input id="aca{{ forloop.counter0 }}period" class="margin0" style="width:90%" type="text" value="{{ academic.period }}" disabled/></td>
+                                    <td><input id="aca{{ forloop.counter0 }}name" class="margin0" style="width:90%" type="text" value="{{ academic.name }}" disabled/></td>
+                                    <td><input id="aca{{ forloop.counter0 }}location" class="margin0" style="width:90%" type="text" value="{{ academic.location }}" disabled/></td>
+                                    <td><input id="aca{{ forloop.counter0 }}major" class="margin0" style="width:90%" type="text" value="{{ academic.major }}" disabled/></td>
+									<td><input id="aca{{ forloop.counter0 }}gpa" class="margin0" style="width:30%" type="text" value="{{ academic.gpa }}" disabled/>/<input id="aca{{ forloop.counter0 }}maxgpa" class="margin0" style="width:30%" type="text" value="{{ academic.maxgpa }}" disabled/></strong></td>
+                                    <td><input id="aca{{ forloop.counter0 }}etc" class="margin0" style="width:90%" type="text" value="{{ academic.etc }}" disabled/></td>
+									<td><button id="aca{{ forloop.counter0 }}del" class="btn btn-small" style="margin:0px 0px 0px 0px;display:none;">삭제</button></td>
 								</tr>
+                                {% endfor %}
 							</table>
+                            <div style="text-align:center;"> 
+                                <button id="revise2Cancel" class="btn btn-small" onclick="Revise2Cancel({{ user.id }});" style="margin:10px 2px 0px 0px;display:none;">취소</button>
+                                <button id="revise2Done" class="btn btn-small" onclick="Revise2(true,{{ user.id }});" style="margin:10px 0px 0px 2px;display:none;">수정완료</button>
+                            </div>
 						</div>
 					</div>
 
@@ -451,7 +459,7 @@
                 $("#side-datepicker").datepicker();
                 $("#side-datepicker2").datepicker();
                 $("#side-datepicker3").datepicker();
-
+                acaNum = {{ academics | length }};
 			});			
 		</script>
 		<!-- end: JavaScript-->
