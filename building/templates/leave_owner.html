@@ -346,18 +346,18 @@
     <!--
             <td class="textCenter"><button class="btn btn-mini" onclick="simpleInput('data[i].id');" disabled>입력</button></td>
     -->
-            <td class="textCenter">
-                <span ng-if="ucase.delayNumber > 0" style="colorWhite backgroundRed">미납</span>
+            <td class="textCenter" ng-class="{colorWhite: ucase.delayNumber > 0, backgroundRed: ucase.delayNumber > 0 }">
+                <span ng-if="ucase.delayNumber > 0">미납</span>
                 <span ng-if="ucase.delayNumber <= 0">고지</span>
             </td>
 
-            <td class="textCenter">
-                <span ng-if="ucase.delayNumber > 0" style="colorWhite backgroundRed" ng-bind="ucase.delayNumber" ></span>
+            <td class="textCenter" ng-class="{colorWhite: ucase.delayNumber > 0, backgroundRed: ucase.delayNumber > 0 }">
+                <span ng-if="ucase.delayNumber > 0" ng-bind="ucase.delayNumber" ></span>
                 <span ng-if="ucase.delayNumber <= 0" ng-bind="ucase.number"></span>
             </td>
 
-            <td class="textCenter">
-                <span ng-if="ucase.delayNumber > 0" ng-class="{ colorWhite: ucase.accumNumber >= 2; backgroundRed: ucase.accumNumber >= 2 }"><span ng-bind="ucase.accumNumber"></span>회</span>
+            <td class="textCenter" ng-class="{ colorWhite: ucase.delayNumber > 0 && ucase.accumNumber >= 2, backgroundRed: ucase.delayNumber > 0 &&ucase.accumNumber >= 2 }">
+                <span ng-if="ucase.delayNumber > 0" ><span ng-bind="ucase.accumNumber"></span>회</span>
                 <span ng-if="ucase.delayNumber <= 0">0회</span>
             </td>
         </tr>

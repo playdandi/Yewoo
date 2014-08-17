@@ -149,6 +149,11 @@
     cursor: hand;
 }
 
+#leave .backgroundRed
+{
+    background: red;
+}
+
 #leave .backgroundBlack
 {
     background: #999;

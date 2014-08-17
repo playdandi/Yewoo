@@ -106,7 +106,6 @@ angular.module('yewooApp', [])
                         }
                         lastPayment = payment;
                     }
-                    console.log(payments);
 
                     s.$apply(function () {
                         s.unpaidCases = cases;
