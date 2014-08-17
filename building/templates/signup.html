@@ -118,7 +118,7 @@
 										<input id="systemPass1" class="margin0 input-small" type="password"/>
                                     </td>
 							  		<td class="align-center" colspan="3">
-                                        <span class="label label-success width4">안전</span>
+                                        <span id="isSafe" class="label label-important width4">사용불가</span>
                                     </td>
 							  		<td colspan="11">
                                         <span>* 비밀번호 도움말 6~15자의 영문 대/소문자, 숫자 및 특수문자 조합 
@@ -363,6 +363,27 @@
 
 				// show sidebar
 				show_sidebar();
+                $('#systemPass1').change(function() {
+                    $('#isSafe').removeClass("label-important");
+                    $('#isSafe').removeClass("label-warning");
+                    $('#isSafe').removeClass("label-success");
+                    var pass = $(this).val()
+                    var length = pass.length;
+                    if(/(?=.{10})/.test(pass) && /.*\d.*/.test(pass) && /.*[a-z].*/.test(pass) && /.*[A-Z].*/.test(pass) && /.*[^0-9a-zA-z].*/.test(pass)) {
+                    //숫자/영소/영대/특문 모두 포함하고 길이 10 이상이면 안전
+                        $('#isSafe').text("안전");
+                        $('#isSafe').addClass("label-success");
+                    } else if(/(?=.{9})/.test(pass) && /.*\d.*/.test(pass) && /.*[a-z].*/.test(pass) && /.*[A-Z].*/.test(pass)) {
+                        $('#isSafe').text("적정");
+                        $('#isSafe').addClass("label-warning");
+                    } else if(/(?=.{6})/.test(pass)) {
+                        $('#isSafe').text("낮음");
+                        $('#isSafe').addClass("label-warning");
+                    } else {
+                        $('#isSafe').text("사용불가");
+                        $('#isSafe').addClass("label-important");
+                    }
+                });
 			});			
 		</script>
 		<!-- end: JavaScript-->
