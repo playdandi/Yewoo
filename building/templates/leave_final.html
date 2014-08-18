@@ -102,6 +102,8 @@
     <!-- end:Header --!>
 	
 				{% load humanize %}	
+    <input type="hidden" id="rid" value="{{ result.id }}" />
+    <input type="hidden" id="bid" value="{{ result.buildingName }}" />
 	<div class="container-fluid">
 		<div class="row-fluid">
         <div class="span2">
@@ -150,8 +152,8 @@
 						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8; font-size : 0.95em">
 							<table class="table table-bordered table-condensed">
 								<tr>
-									<th width="15%">보증금</th>
-									<th width="9%">- 미납요금 및 공과</th>
+									<th width="15%">건물명</th>
+									<th width="9%">호실</th>
 									<th width="10%">이름</th>
 									<th width="7%">성별</th>
 									<th width="10%">임대구분</th>
@@ -179,7 +181,7 @@
 								</tr>
 								<tr class="white">
 									<td colspan="3">{{ result.inDate }} ~ {{ result.outDate }}</td>
-									<td colspan="3">{{ result.residentContactNumber1 }} , {{ result.residentContactNumber2 }}</td>
+									<td colspan="3">{{ result.residentContactNumber1 }}{%if result.residentContactNumber2 != "" %}, {{ result.residentContactNumber2 }}{% endif %}</td>
 									<td colspan="3">{{ result.residentEmail }}</td>
 								</tr>
 							</table>  
@@ -187,24 +189,25 @@
 					</div>
 				</div>
 
-                <!-- 총 반환금 -->
+                <!-- 퇴거 정산정보 -->
 				<div class="row-fluid">
 					<div class="box span11" style="margin: 0px; padding: 0px">
 						<div class="box-header">
-							<h2><strong>총 반환금</strong></h2>
+							<h2><strong>퇴거 정산 정보</strong></h2>
 						</div>
 						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8; font-size : 0.95em">
 							<table class="table table-bordered table-condensed">
 								<tr>
 									<th width="75%" class="tableRow">
-                                        보증금 <input class="margin0" type="number" placeholder="보증금을 입력하세요." ng-model="deposit" ng-change="updateTotalRefund()" /> 원
+                                        보증금 <input class="margin0" type="number" placeholder="보증금을 입력하세요." ng-model="deposit" ng-change="updateTotalRefund()" readonly/> 원
                                         - 미납 요금 및 공과금 <input class="margin0" type="number" placeholder="금액을 입력하세요." ng-model="unpaid" ng-change="updateTotalRefund()" readonly/> 원
-                                        - 시설관리비 <input class="margin0" type="number" placeholder="관리비를 입력하세요." ng-model="fee" ng-change="updateTotalRefund()" readonly/> 원
+                                        - 시설관리비 <input class="margin0" type="number" placeholder="관리비를 입력하세요." ng-model="fee" ng-change="updateTotalRefund()" readonly /> 원
                                     </th>
 									<th width="25%" class="tableRow textCenter">
     반환금 <input class="margin0" type="number" ng-class="{ 'red-warning': isMinusTotalRefund }" ng-model="totalRefund" readonly/> 원
                                     </th>
 								</tr>
+                                <!--
 								<tr class="white">
 									<td colspan="2" class="tableRow">
                                         입금 은행
@@ -213,80 +216,139 @@
                                         <input type="text" class="margin0 large" ng-model="account" />
                                     </td>
                                 </tr>
+                                -->
 							</table>  
 						</div>
 					</div>
 				</div>
 
+                <!-- 임차인 확인 처리 사항 -->
 				<div class="row-fluid">
                     <div class="span11">
                         <div class="box-content">
-                            <h3><a class="cursorHand" ng-click="unpaidClosed = !unpaidClosed">미납 요금 및 공과금 <span ng-show="unpaidClosed">▲</span><span ng-show="!unpaidClosed">▼</span></a> </h3>
-                            <div ng-show="!unpaidClosed">
-                                <!-- 미납 요금 및 공과금 -->
-                                <div class="row-fluid">
-                                    <div class="noblank">
-                                        <div class="box-content noblank box-text">
-                                            <table class="table table-bordered table-condensed">
-                                                <tr>
-                                                    <th width="75%" class="tableRow">
-                                                        미납 금액 
-                                                        <input class="margin0" type="number" ng-model="unpaidComputed" readonly/> 원
-                                                    </th>
-                                                    <th width="25%" class="tableRow textCenter">
-                                                        <input class="margin0" type="number" ng-model="unpaid" readonly/> 원
-                                                    </th>
-                                                </tr>
-                                            </table>  
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 미납 내역 추가 사항 -->
-                                <div class="row-fluid">
+                            <h3><a class="cursorHand" ng-click="confirmClosed = !confirmClosed">임차인 확인 처리 사항<span ng-show="confirmClosed">▲</span><span ng-show="!confirmClosed">▼</span></a> </h3>
+                            <div ng-show="!confirmClosed">
+                                <!-- 임차인 확인 처리사항 기록 -->
+                                <div class="row-fluid" style="margin-top:20px;">
                                     <div class="box-header">
-                                        <h2><strong>미납 내역 추가사항</strong></h2>
+                                        <h2><strong>퇴거 정산 금액 정보</strong></h2>
                                     </div>
                                     <div class="box-content noblank box-text">
                                         <table class="table table-bordered table-condensed">
-                                            <tr class="white" ng-repeat="unpaidCase in unpaidCases | filter:{checked:true}">
-                                                <td class="tableRow">
-                                                    미납액 <span ng-bind="$index + 1"></span>
+                                            <tr class="white" ng-repeat="m in moneyChanges">
+                                                <!--
+                                                <td class="tableRow textCenter" width="5%">
+                                                    <input data-no-uniform="true" type="checkbox" ng-model="extraCost.checked" ></span>
                                                 </td>
-                                                <td class="tableRow">
-                                                    <span ng-bind="unpaidCase.month"></span>
+                                                -->
+                                                <td class="tableRow textCenter" width="30%">
+                                                    <span ng-bind="m.type.title"></span>
                                                 </td>
-                                                <td class="tableRow">
-                                                    <span ng-bind="unpaidCase.time"></span>회차
+                                                <td class="tableRow textCenter" width="10%">
+                                                    <span ng-bind="m.subType"></span>
                                                 </td>
-                                                <td class="tableRow">
-                                                    <span ng-bind="unpaidCase.amount"></span> 원
+                                                <td class="tableRow textCenter" width="10%">
+                                                    <span ng-bind="m.date"></span>
                                                 </td>
-                                                <td class="tableRow">
-                                                    예정일
+                                                <td class="tableRow textCenter" width="30%">
+                                                    <span ng-bind="m.desc"></span>
                                                 </td>
-                                                <td class="tableRow">
-                                                    <span ng-bind="unpaidCase.expectedDate | date:'yyyy.MM.dd'"></span>
+                                                <td class="tableRow medium textCenter" width="10%">
+                                                    <input class="medium" type="number" ng-model="m.amount"  /> 원
                                                 </td>
-                                                <td class="tableRow">
-                                                    납부일
+                                                <td class="tableRow textCenter" width="10%">
+                                                    <button ng-click="removeMoneyChange(m)">삭제</button>
                                                 </td>
-                                                <td class="tableRow">
-                                                    <span ng-bind="unpaidCase.paidDate | date:'yyyy.MM.dd'"></span>
+                                            </tr>
+                                        </table>  
+                                    </div>
+                                    <div class="box-content noblank box-text">
+                                        <table class="table table-bordered table-condensed">
+                                            <tr class="white">
+                                                <td class="tableRow textCenter" width="30%">
+                                                    <select ng-model="moneyChange.type" ng-options="type.title for type in moneyChangeTypes" ng-change="updateMoneyChangeType()"></select>
                                                 </td>
-                                                <td class="tableRow medium">
-                                                    <input class="medium" type="number" ng-model="unpaidCase.revisiedAmount" ng-change="updateUnpaid()" /> 원
+                                                <td class="tableRow textCenter" width="50%">
+                                                    <select ng-if="moneyChange.type.subTypes" ng-model="moneyChange.subType" ng-options="type for type in moneyChange.type.subTypes"></select>
+                                                    <span ng-if="moneyChange.type.hasDate"><input class="medium datepicker" type="text" ng-model="moneyChange.date" /></span>
+                                                    <span ng-if="moneyChange.type.hasYear"><input class="small" type="number" ng-model="moneyChange.year" /> 년</span>
+                                                    <span ng-if="moneyChange.type.hasMonth"><input ng-if="moneyChange.type.hasMonth" class="small" type="number" ng-model="moneyChange.month" /> 월</span>
+                                                    <input type="text" style="width:95%;" ng-model="moneyChange.desc"></span>
+                                                </td>
+                                                <td class="tableRow medium textCenter" width="10%">
+                                                    <input class="medium" type="number" ng-model="moneyChange.amount" /> 원
+                                                </td>
+                                                <td class="tableRow textCenter" width="10%">
+                                                    <button ng-click="addMoneyChange(moneyChange)">추가</button>
                                                 </td>
                                             </tr>
                                         </table>  
                                     </div>
                                 </div>
-                                <!-- 미납 내역 -->
+                                <!-- 퇴거 정산 정보 (기록 정보) -->
                                 <div class="row-fluid">
                                     <div class="box-header">
-                                        <h2><strong>미납 내역</strong></h2>
+                                        <h2><strong>퇴거 정산 기록 정보</strong></h2>
                                     </div>
-
+                                    <div class="box-content noblank box-text">
+                                        <table class="table table-bordered table-condensed">
+                                            <tr class="white" ng-repeat="record in records">
+                                                <!--
+                                                <td class="tableRow textCenter" width="5%">
+                                                    <input data-no-uniform="true" type="checkbox" ng-model="extraCost.checked"></span>
+                                                </td>
+                                                -->
+                                                <td class="tableRow textCenter" width="30%">
+                                                    <span ng-bind="record.type.title"></span> </td>
+                                                <td class="tableRow textCenter" width="50%">
+                                                    <span ng-bind="record.subType" ></span>
+                                                    <span ng-if="record.year && record.month">
+                                                        (<span ng-bind="record.year"></span>년 <span ng-bind="extraCost.month"></span>월)
+                                                    </span>
+                                                    <span ng-bind="record.desc"></span>
+                                                </td>
+                                                <td class="tableRow medium textCenter" width="10%">
+                                                    사용량 : <input class="medium" type="text" ng-model="record.amount" />
+                                                </td>
+                                                <td class="tableRow textCenter" width="10%">
+                                                    <button ng-click="removeRecord(record)">삭제</button>
+                                                </td>
+                                            </tr>
+                                        </table>  
+                                    </div>
+                                    <div class="box-content noblank box-text">
+                                        <table class="table table-bordered table-condensed">
+                                            <tr class="white">
+                                                <td class="tableRow textCenter" width="30%">
+                                                    <select ng-model="record.type" ng-options="type.title for type in recordTypes " ng-change="updateRecordType()"></select>
+                                                </td>
+                                                <td class="tableRow textCenter" width="50%">
+                                                    <select ng-if="record.type.subTypes" ng-model="record.subType" ng-options="type for type in record.type.subTypes"></select>
+                                                    <span ng-if="record.type.hasYear"><input class="small" type="number" ng-model="record.year" /> 년</span>
+                                                    <span ng-if="record.type.hasMonth"><input ng-if="record.type.hasMonth" class="small" type="number" ng-model="record.month" /> 월</span>
+                                                    <input type="text" style="width:95%;" ng-model="record.desc"></span>
+                                                </td>
+                                                <td class="tableRow medium textCenter" width="10%">
+                                                    사용량<br />
+                                                    <input class="medium" type="text" ng-model="record.amount" />
+                                                </td>
+                                                <td class="tableRow textCenter" width="10%">
+                                                    <button ng-click="addRecord(record)">추가</button>
+                                                </td>
+                                            </tr>
+                                        </table>  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                    <div class="span11" style="margin-top:20px;">
+                        <div class="box-content">
+                            <h3><a class="cursorHand" ng-click="allListClosed = !allListClosed">퇴거 정산 내역<span ng-show="allListClosed">▲</span><span ng-show="!allListClosed">▼</span></a> </h3>
+                            <div ng-show="!allListClosed">
+                                <!-- 납부 내역 -->
+                                <div class="row-fluid">
                                     <div class="box-content noblank box-text">
     <table class="table table-bordered table-condensed" style="margin-bottom:0px">
     <!--
@@ -295,9 +357,13 @@
         </colgroup>
     -->
         <tr>
+<!--
             <th rowspan="2" class="textCenter"><input data-no-uniform="true" type="checkbox" ng-model="isAllOfUnpaidCases" ng-change="toggleAllOfUnpaidCases()"/></th>
+-->
+<!--
             <th rowspan="2" class="textCenter">호수</th>
             <th rowspan="2" class="textCenter">입주자</th>
+-->
             <th rowspan="2" class="textCenter">년도/월</th>
             <th rowspan="2" class="textCenter">회차</th>
             <th rowspan="2" class="textCenter">합계금액</th>
@@ -314,14 +380,21 @@
             <th colspan="2" class="textCenter">미납회차</th>
             <th class="textCenter">누적</th>
         </tr>
-        <tr ng-repeat="ucase in unpaidCases">
-            <td class="textCenter"><input  data-no-uniform="true" type="checkbox" ng-model="ucase.checked" ng-change="updateUnpaidCases(); updateUnpaid();" /></td>
+        <tr ng-repeat="ucase in cases" ng-class="{ backgroundBrown: ucase.isPaid }">
+<!--
+            <td class="textCenter">
+                <input  data-no-uniform="true" type="checkbox" ng-model="ucase.checked" ng-change="updateUnpaidCases(); updateUnpaid();" readonly ng-if="(ucase.isPaid)" disabled />
+                <input  data-no-uniform="true" type="checkbox" ng-model="ucase.checked" ng-change="updateUnpaidCases(); updateUnpaid();" ng-if="!(ucase.isPaid)" />
+            </td>
+-->
+<!--
             <td class="textCenter"><span ng-bind="ucase.roomnum"></span></td>
             <td class="textCenter"><span ng-bind="ucase.name"></span></td>
+-->
             <td class="textCenter"><span ng-bind="ucase.expectedDate | date:'yyyy.MM'"></span></td>
             <td class="textCenter"><span ng-bind="ucase.number"></span></td>
             <td class="textCenter"><span ng-bind="ucase.totalFee"></span></td>
-            <td class="textCenter" ng-attr="{ colorGreen: !isLate(ucase), colorRed: isLate(ucase) }"><span ng-bind="today | date:'yyyy.MM'"></span><span ng-bind="ucase.leasePayDate"></span></td>
+            <td class="textCenter" ng-attr="{ colorGreen: !isLate(ucase), colorRed: isLate(ucase) }"><span ng-bind="today | date:'yyyy.MM'"></span>.<span ng-if="ucase.leasePayDate < 10">0</span><span ng-bind="ucase.leasePayDate"></span></td>
             <td class="textCenter">
                 <span ng-if="ucase.payStatus == -1">완납</span>
                 <span ng-if="ucase.payStatus != -1">납부</span>
@@ -340,179 +413,28 @@
     <!--
             <td class="textCenter"><button class="btn btn-mini" onclick="simpleInput('data[i].id');" disabled>입력</button></td>
     -->
-            <td class="textCenter">
-                <span ng-if="ucase.delayNumber > 0" style="colorWhite backgroundRed">미납</span>
+            <td class="textCenter" ng-class="{colorWhite: !(ucase.isPaid) && ucase.amountNoPay > 0 && ucase.delayNumber > 0, backgroundRed: !(ucase.isPaid) && ucase.amountNoPay > 0 && ucase.delayNumber > 0 }">
+                <span ng-if="ucase.delayNumber > 0">
+                    <span ng-if="ucase.amountPay == 0 && ucase.amountNoPay > 0">미납</span>
+                    <span ng-if="ucase.amountPay > 0 && ucase.amountNoPay > 0">부분</span>
+                    <span ng-if="ucase.amountNoPay == 0">완납</span>
+                </span>
                 <span ng-if="ucase.delayNumber <= 0">고지</span>
             </td>
 
-            <td class="textCenter">
-                <span ng-if="ucase.delayNumber > 0" style="colorWhite backgroundRed" ng-bind="ucase.delayNumber" ></span>
+            <td class="textCenter" ng-class="{colorWhite: !(ucase.isPaid) && ucase.amountNoPay > 0 && ucase.delayNumber > 0, backgroundRed: !(ucase.isPaid) && ucase.amountNoPay > 0 && ucase.delayNumber > 0 }">
+                <span ng-if="ucase.delayNumber > 0" ng-bind="ucase.delayNumber" ></span>
                 <span ng-if="ucase.delayNumber <= 0" ng-bind="ucase.number"></span>
             </td>
 
-            <td class="textCenter">
-                <span ng-if="ucase.delayNumber > 0" ng-class="{ colorWhite: ucase.accumNumber >= 2; backgroundRed: ucase.accumNumber >= 2 }"><span ng-bind="ucase.accumNumber"></span>회</span>
+            <td class="textCenter" ng-class="{ colorWhite: !(ucase.isPaid) && ucase.delayNumber > 0 && ucase.accumNumber >= 2, backgroundRed: !(ucase.isPaid) && ucase.delayNumber > 0 &&ucase.accumNumber >= 2 }">
+                <span ng-if="ucase.delayNumber > 0" ><span ng-bind="ucase.accumNumber"></span>회</span>
                 <span ng-if="ucase.delayNumber <= 0">0회</span>
             </td>
         </tr>
     </table>  
                                     </div>
                                 </div>
-
-                                <!-- 추가 금액 사항 -->
-                                <div class="row-fluid" style="margin-top:20px;">
-                                    <div class="box-header">
-                                        <h2><strong>추가 금액 사항</strong></h2>
-                                    </div>
-                                    <div class="box-content noblank box-text">
-                                        <table class="table table-bordered table-condensed">
-                                            <tr class="white" ng-repeat="extraCost in extraCosts">
-                                                <td class="tableRow textCenter" width="5%">
-                                                    <input data-no-uniform="true" type="checkbox" ng-model="extraCost.checked" ng-change="updateUnpaid()"></span>
-                                                </td>
-                                                <td class="tableRow textCenter" width="25%">
-                                                    <span ng-bind="extraCost.type.title"></span> </td>
-                                                <td class="tableRow textCenter" width="50%">
-                                                    <span ng-bind="extraCost.subType" ></span>
-                                                    <span ng-if="extraCost.year && extraCost.month">
-                                                        (<span ng-bind="extraCost.year"></span>년 <span ng-bind="extraCost.month"></span>월)
-                                                    </span>
-                                                    <span ng-bind="extraCost.desc"></span>
-                                                </td>
-                                                <td class="tableRow medium textCenter" width="10%">
-                                                    <input class="medium" type="number" ng-model="extraCost.amount" ng-change="updateUnpaid()" /> 원
-                                                </td>
-                                                <td class="tableRow textCenter" width="10%">
-                                                    <button ng-click="removeExtraCost(extraCost)">삭제</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tableRow textCenter" width="5%">
-                                                </td>
-                                                <td class="tableRow textCenter" width="25%">
-                                                <td class="tableRow textCenter" width="50%">
-                                                </td>
-                                                <td class="tableRow medium textCenter" width="10%">
-                                                    합계 : <span ng-bind="unpaidDirected"></span>원
-                                                </td>
-                                                <td class="tableRow textCenter" width="10%">
-                                                </td>
-
-                                            </tr>
-                                        </table>  
-                                    </div>
-                                    <div class="box-content noblank box-text">
-                                        <table class="table table-bordered table-condensed">
-                                            <tr class="white">
-                                                <td class="tableRow textCenter" width="30%">
-                                                    <select ng-model="extraCost.type" ng-options="type.title for type in unpaidExtraTypes" ng-change="updateExtraType()"></select>
-                                                </td>
-                                                <td class="tableRow textCenter" width="50%">
-                                                    <select ng-if="extraCost.type.subTypes" ng-model="extraCost.subType" ng-options="type for type in extraCost.type.subTypes"></select>
-                                                    <span ng-if="extraCost.type.hasYear"><input class="small" type="number" ng-model="extraCost.year" /> 년</span>
-                                                    <span ng-if="extraCost.type.hasMonth"><input ng-if="extraCost.type.hasMonth" class="small" type="number" ng-model="extraCost.month" /> 월</span>
-                                                    <input type="text" style="width:95%;" ng-model="extraCost.desc"></span>
-                                                </td>
-                                                <td class="tableRow medium textCenter" width="10%">
-                                                    <input class="medium" type="number" ng-model="extraCost.amount" /> 원
-                                                </td>
-                                                <td class="tableRow textCenter" width="10%">
-                                                    <button ng-click="addExtraCost(extraCost)">추가</button>
-                                                </td>
-                                            </tr>
-                                        </table>  
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row-fluid">
-                    <div class="span11" style="margin-top:20px;">
-                        <div class="box-content">
-                            <h3><a class="cursorHand" ng-click="feeClosed = !feeClosed">시설 관리비 <span ng-show="feeClosed">▲</span><span ng-show="!feeClosed">▼</span></a> </h3>
-                            <div ng-show="!feeClosed">
-                                <!-- 시설 관리비 -->
-                                <div class="row-fluid">
-                                    <div class="noblank">
-                                        <div class="box-content noblank box-text">
-                                            <table class="table table-bordered table-condensed">
-                                                <tr>
-                                                    <th width="75%" class="tableRow">
-                                                        시설 관리
-                                                        <input class="margin0" type="number" ng-model="fee" readonly/> 원
-                                                    </th>
-                                                </tr>
-                                            </table>  
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- 시설 관리비 사항 -->
-                                <div class="row-fluid" style="margin-top:20px;">
-                                    <div class="box-header">
-                                        <h2><strong>시설 관리비 사항</strong></h2>
-                                    </div>
-                                    <div class="box-content noblank box-text">
-                                        <table class="table table-bordered table-condensed">
-                                            <tr class="white" ng-repeat="feeCost in feeCosts">
-                                                <td class="tableRow textCenter" width="5%">
-                                                    <input data-no-uniform="true" type="checkbox" ng-model="feeCost.checked" ng-change="updateUnpaid()"></span>
-                                                </td>
-                                                <td class="tableRow textCenter" width="25%">
-                                                    <span ng-bind="feeCost.type.title"></span> </td>
-                                                <td class="tableRow textCenter" width="50%">
-                                                    <span ng-bind="feeCost.subType" ></span>
-                                                    <span ng-if="feeCost.year && feeCost.month">
-                                                        (<span ng-bind="feeCost.year"></span>년 <span ng-bind="feeCost.month"></span>월)
-                                                    </span>
-                                                    <span ng-bind="feeCost.desc"></span>
-                                                </td>
-                                                <td class="tableRow medium textCenter" width="10%">
-                                                    <input class="medium" type="number" ng-model="feeCost.amount" ng-change="updateUnpaid()" /> 원
-                                                </td>
-                                                <td class="tableRow textCenter" width="10%">
-                                                    <button ng-click="removeFeeCost(feeCost)">삭제</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tableRow textCenter" width="5%">
-                                                </td>
-                                                <td class="tableRow textCenter" width="25%">
-                                                <td class="tableRow textCenter" width="50%">
-                                                </td>
-                                                <td class="tableRow medium textCenter" width="10%">
-                                                    합계 : <span ng-bind="fee"></span>원
-                                                </td>
-                                                <td class="tableRow textCenter" width="10%">
-                                                </td>
-
-                                            </tr>
-                                        </table>  
-                                    </div>
-                                    <div class="box-content noblank box-text">
-                                        <table class="table table-bordered table-condensed">
-                                            <tr class="white">
-                                                <td class="tableRow textCenter" width="30%">
-                                                    <select ng-model="feeCost.type" ng-options="type.title for type in feeTypes" ng-change="updateFeeType()"></select>
-                                                </td>
-                                                <td class="tableRow textCenter" width="50%">
-                                                    <select ng-if="feeCost.type.subTypes" ng-model="feeCost.subType" ng-options="type for type in feeCost.type.subTypes"></select>
-                                                    <span ng-if="feeCost.type.hasYear"><input class="small" type="number" ng-model="feeCost.year" /> 년</span>
-                                                    <span ng-if="feeCost.type.hasMonth"><input ng-if="feeCost.type.hasMonth" class="small" type="number" ng-model="feeCost.month" /> 월</span>
-                                                    <input type="text" style="width:95%;" ng-model="feeCost.desc"></span>
-                                                </td>
-                                                <td class="tableRow medium textCenter" width="10%">
-                                                    <input class="medium" type="number" ng-model="feeCost.amount" /> 원
-                                                </td>
-                                                <td class="tableRow textCenter" width="10%">
-                                                    <button ng-click="addFeeCost(feeCost)">추가</button>
-                                                </td>
-                                            </tr>
-                                        </table>  
-                                    </div>
-
-                                </div>
-
                            </div>
                         </div>
                     </div>
@@ -621,6 +543,10 @@
 				$('input[name=radioN]').change(function() {
 					changeRadio(Number($(this).val()));
 				});
+                
+                $(".datepicker").datepicker("option", "dateFormat", "yy.mm.dd");
+                $(".datepicker").val(new Date().getFullYear() + "." + (new Date().getMonth() + 1
+) + "." + (new Date().getDate()));
 			});			
 		</script>
 		<!-- end: JavaScript-->
