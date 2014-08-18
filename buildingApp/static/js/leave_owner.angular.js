@@ -109,6 +109,7 @@ angular.module('yewooApp', [])
 
                     s.$apply(function () {
                         s.unpaidCases = cases;
+                        s.toggleAllOfUnpaidCases();
                     });
                     
                     // 납부 상세 리스트 보여주기
@@ -212,7 +213,7 @@ angular.module('yewooApp', [])
             });
         };
 
-        s.isAllOfUnPaidCases = true;
+        s.isAllOfUnpaidCases = true;
         s.sumOfExtraCosts = 0;
         s.updateUnpaid = function () {
             s.fee = _.reduce(s.feeCosts, function (num, feeCost) {
