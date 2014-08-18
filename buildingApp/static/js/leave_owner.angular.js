@@ -91,20 +91,19 @@ angular.module('yewooApp', [])
                     */
                     
                     var cases = [];
-                    var lastPayment = null;
                     
                     for (var i = 0; i < payments.length; i++) {
                         var payment = payments[i];
-                        if (payment.isThis == 1 || payment.payStatus == -1) continue;
+
+                        if (payment.payStatus == -1 ||
+                            (i > 0 && payments[i - 1].number == payment.number))
+                             continue;
+
                         payment.amount = payment.amountNoPay;
                         payment.revisiedAmount = payment.amountNoPay;
                         payment.expectedDate = new Date(payment.year, payment.month);
                         
-                        if (lastPayment == null || lastPayment.number != payment.number)
-                        {
-                            cases.push(payment);
-                        }
-                        lastPayment = payment;
+                        cases.push(payment);
                     }
 
                     s.$apply(function () {
