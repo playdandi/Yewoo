@@ -85,6 +85,39 @@ def accountinfo_detail_html(request, uid):
             userprofile.address2 = request.POST['address2']
             userprofile.save()
             return render(request, 'index.html')
+        elif type == '2':
+            user = User.objects.get(id=uid)
+            acaExisting = AcademicCareer.objects.filter(user=user)
+            for aca in acaExisting:
+                aca.delete()
+            acaNum = int(request.POST['arraynum'])
+            for i in range(acaNum):
+                aca = AcademicCareer()
+                aca.user = user
+                aca.period = request.POST['period' + str(i)]
+                aca.name = request.POST['name' + str(i)]
+                aca.location = request.POST['location' + str(i)]
+                aca.major = request.POST['major' + str(i)]
+                aca.gpa = request.POST['gpa' + str(i)]
+                aca.maxgpa = request.POST['maxgpa' + str(i)]
+                aca.etc = request.POST['etc' + str(i)]
+                aca.save()
+            return render(request, 'index.html')
+        elif type == '3':
+            user = User.objects.get(id=uid)
+            workExisting = WorkCareer.objects.filter(user=user)
+            for work in workExisting:
+                work.delete()
+            workNum = int(request.POST['arraynum'])
+            for i in range(workNum):
+                work = WorkCareer()
+                work.user = user
+                work.period = request.POST['period' + str(i)]
+                work.name = request.POST['name' + str(i)]
+                work.position = request.POST['position' + str(i)]
+                work.mission = request.POST['mission' + str(i)]
+                work.save()
+            return render(request, 'index.html')
         elif type == '4':
             user = User.objects.get(id=uid)
             userprofile = user.userprofile
@@ -120,7 +153,8 @@ def accountinfo_detail_html(request, uid):
                                         'departments' : departments, 'positions' : positions , \
                                         'academics' : academics, 'works' : works} , \
                                         context_instance=RequestContext(request))
-        except:
+        except Exception as e:
+            print e
             return HttpResponse("에러가 발생하였습니다.", status=404)
 
 @permission_required('buildingApp.manage_right', login_url='/login/')

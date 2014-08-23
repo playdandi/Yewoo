@@ -128,7 +128,7 @@
 				<div class="span11">
 					<ul class="breadcrumb" style="margin: 5px 0px 5px 0px;">
 						<li>
-							<a href="#">개인정보 관리 > 개인 프로필</a>
+							<a href="#">관리자 시스템 > 회원 정보 관리</a>
 						</li>
 					</ul>
 				</div>
@@ -151,7 +151,7 @@
                     <div>
 					    <ul class="breadcrumb" style="margin: 5px 0px 5px 0px;">
     						<li>
-    							<a href="#">개인정보 관리 > 회원 정보 관리 > 1. 개인 프로필</a>
+    							<a href="#">회원 정보 관리 > 1. 개인 프로필</a>
     						</li>
     					</ul>
                     </div>
@@ -314,7 +314,7 @@
                     <hr style="margin-top:10px;margin-bottom:10px;padding:0px 3px 0px 3px;">
 					<div class="box" style="margin:0px;padding:0px 3px 0px 3px;">
 						<div id="revise2Box" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
-							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;table-layout:fixed;">
+							<table id="acaTable" class="table table-bordered table-condensed table-center" style="margin-bottom:0px;table-layout:fixed;">
 								<tr>
                                     <td width="24%"><strong>재학기간</strong></td>
 									<td width="10%"><strong>학교명</strong></td>
@@ -322,46 +322,56 @@
 									<td width="10%"><strong>전공</strong></td>
 									<td width="10%"><strong>학점</strong></td>
 									<td width="30%"><strong>기타 사항</strong></td>
-									<td width="8%"><button id="acainit" class="btn btn-small" style="margin:0px 0px 0px 0px;display:none;">초기화</button></td>
+									<td width="8%"><button id="acaInit" class="btn btn-small" style="margin:0px 0px 0px 0px;display:none;" onclick="Revise2Init()">초기화</button></td>
 								</tr>
                                 {% for academic in academics %}
 								<tr>
-                                    <td><input id="aca{{ forloop.counter0 }}period" class="margin0" style="width:90%" type="text" value="{{ academic.period }}" disabled/></td>
-                                    <td><input id="aca{{ forloop.counter0 }}name" class="margin0" style="width:90%" type="text" value="{{ academic.name }}" disabled/></td>
-                                    <td><input id="aca{{ forloop.counter0 }}location" class="margin0" style="width:90%" type="text" value="{{ academic.location }}" disabled/></td>
-                                    <td><input id="aca{{ forloop.counter0 }}major" class="margin0" style="width:90%" type="text" value="{{ academic.major }}" disabled/></td>
-									<td><input id="aca{{ forloop.counter0 }}gpa" class="margin0" style="width:30%" type="text" value="{{ academic.gpa }}" disabled/>/<input id="aca{{ forloop.counter0 }}maxgpa" class="margin0" style="width:30%" type="text" value="{{ academic.maxgpa }}" disabled/></strong></td>
-                                    <td><input id="aca{{ forloop.counter0 }}etc" class="margin0" style="width:90%" type="text" value="{{ academic.etc }}" disabled/></td>
-									<td><button id="aca{{ forloop.counter0 }}del" class="btn btn-small" style="margin:0px 0px 0px 0px;display:none;">삭제</button></td>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ academic.period }}" disabled/></td>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ academic.name }}" disabled/></td>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ academic.location }}" disabled/></td>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ academic.major }}" disabled/></td>
+									<td><input class="margin0" style="width:30%" type="text" value="{{ academic.gpa }}" disabled/>/<input class="margin0" style="width:30%" type="text" value="{{ academic.maxgpa }}" disabled/></strong></td>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ academic.etc }}" disabled/></td>
+									<td><button class="btn btn-small" style="margin:0px 0px 0px 0px;display:none;" onclick="Revise2DelLine(this)">삭제</button></td>
 								</tr>
                                 {% endfor %}
 							</table>
                             <div style="text-align:center;"> 
-                                <button id="revise2Cancel" class="btn btn-small" onclick="Revise2Cancel({{ user.id }});" style="margin:10px 2px 0px 0px;display:none;">취소</button>
-                                <button id="revise2Done" class="btn btn-small" onclick="Revise2(true,{{ user.id }});" style="margin:10px 0px 0px 2px;display:none;">수정완료</button>
+                                <button id="revise2AddLine" class="btn btn-small" onclick="Revise2AddLine();" style="margin:10px 2px 10px 0px;display:none;">항목 추가</button>
+                                <button id="revise2Cancel" class="btn btn-small" onclick="Revise2Cancel({{ user.id }});" style="margin:10px 2px 10px 0px;display:none;">취소</button>
+                                <button id="revise2Done" class="btn btn-small" onclick="Revise2(true,{{ user.id }});" style="margin:10px 0px 10px 2px;display:none;">수정완료</button>
                             </div>
 						</div>
 					</div>
 
-                    <button class="pull-right btn btn-small" style="margin:10px 3px 0px 0px;">수정</button>
+                    <button id="revise3Start" class="pull-right btn btn-small" onclick="Revise3(false,{{ user.id }});" style="margin:10px 3px 0px 0px;">수정</button>
                     <h6 style="margin:20px 5px 10px 5px;padding:0px 3px 0px 3px;">경력 사항</h6>
                     <hr style="margin-top:10px;margin-bottom:10px;padding:0px 3px 0px 3px;">
 					<div class="box" style="margin:0px;padding:0px 3px 0px 3px;">
-						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
-							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;table-layout:fixed;">
+						<div id="revise3Box" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<table id="workTable" class="table table-bordered table-condensed table-center" style="margin-bottom:0px;table-layout:fixed;">
 								<tr>
                                     <td width="24%"><strong>재직기간</strong></td>
 									<td width="10%"><strong>회사명</strong></td>
 									<td width="20%"><strong>부서/직급/직책</strong></td>
 									<td width="40%"><strong>담당업무</strong></td>
+									<td width="8%"><button id="workInit" class="btn btn-small" style="margin:0px 0px 0px 0px;display:none;" onclick="Revise3Init()">초기화</button></td>
 								</tr>
+                                {% for work in works %}
 								<tr>
-                                    <td>2012년 03월~2013년 08월</td>
-									<td>그린 환경 사무소</td>
-									<td>총무팀 대리</td>
-									<td></td>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ work.period }}" disabled/></td>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ work.name }}" disabled/></td>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ work.position }}" disabled/></td>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ work.mission }}" disabled/></td>
+									<td><button class="btn btn-small" style="margin:0px 0px 0px 0px;display:none;" onclick="Revise3DelLine(this)">삭제</button></td>
 								</tr>
+                                {% endfor %}
 							</table>
+                            <div style="text-align:center;"> 
+                                <button id="revise3AddLine" class="btn btn-small" onclick="Revise3AddLine();" style="margin:10px 2px 10px 0px;display:none;">항목 추가</button>
+                                <button id="revise3Cancel" class="btn btn-small" onclick="Revise3Cancel({{ user.id }});" style="margin:10px 2px 10px 0px;display:none;">취소</button>
+                                <button id="revise3Done" class="btn btn-small" onclick="Revise3(true,{{ user.id }});" style="margin:10px 0px 10px 2px;display:none;">수정완료</button>
+                            </div>
 						</div>
 					</div>
 
@@ -459,7 +469,6 @@
                 $("#side-datepicker").datepicker();
                 $("#side-datepicker2").datepicker();
                 $("#side-datepicker3").datepicker();
-                acaNum = {{ academics | length }};
 			});			
 		</script>
 		<!-- end: JavaScript-->
