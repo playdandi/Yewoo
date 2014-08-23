@@ -118,19 +118,19 @@
 
                 <li class="nav-header bordered side-header" onclick="sidebar_hide4(this);"><a href="#">▼ [관리자 시스템]</a></li>
                 {% if perms.buildingApp.manage_activate %}
-                <li class="nav-header bordered side-item"><a href="/manage/activate/">회원 승인 관리</a></li>
+                <li class="nav-header bordered side-item"><a href="/manage/activate/">사원 승인 관리</a></li>
                 {% else %}
-                <li class="nav-header bordered side-item noperm"><a href="/manage/activate/">회원 승인 관리</a></li>
+                <li class="nav-header bordered side-item noperm"><a href="/manage/activate/">사원 승인 관리</a></li>
                 {% endif %}
                 {% if perms.buildingApp.manage_accountinfo %}
-                <li class="nav-header bordered side-item"><a href="/manage/accountinfo/">회원 정보 관리</a></li>
+                <li class="nav-header bordered side-item"><a href="/manage/accountinfo/">사원 정보 관리</a></li>
                 {% else %}
-                <li class="nav-header bordered side-item noperm"><a href="/manage/accountinfo/">회원 정보 관리</a></li>
+                <li class="nav-header bordered side-item noperm"><a href="/manage/accountinfo/">사원 정보 관리</a></li>
                 {% endif %}
                 {% if perms.buildingApp.manage_right %}
-                <li class="nav-header bordered side-item"><a href="/manage/right/">회원 권한 관리</a></li>
+                <li class="nav-header bordered side-item"><a href="/manage/right/">사원 권한 관리</a></li>
                 {% else %}
-                <li class="nav-header bordered side-item noperm"><a href="/manage/right/">회원 권한 관리</a></li>
+                <li class="nav-header bordered side-item noperm"><a href="/manage/right/">사원 권한 관리</a></li>
                 {% endif %}
                 {% if perms.buildingApp.manage_setting %}
                 <li class="nav-header bordered side-item"><a href="/manage/setting/department/">시스템 설정</a></li>
