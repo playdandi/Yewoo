@@ -195,7 +195,7 @@
 								<tr class="datas">
                                     <td><input type="checkbox" disabled/></td>
                                     {% if user.hasimage %}
-									<td>{{ user.userprofile.name }}<i class="icon-user" onmouseover="$('#img{{user.id}}').attr('src','/static/person_img/{{user.imgfile}}');" onmouseout="$('#img{{user.id}}').attr('src','/static/person_img/trans.png');"></i><img width="100px" src="/static/person_img/trans.png" id="img{{user.id}}" style="zindex: 100; position: absolute;"/></td>
+									<td>{{ user.userprofile.name }}<i class="icon-user" onmouseover="$('#img{{user.id}}').attr('src','/static/person_img/{{user.imgfile}}');" onmouseout="$('#img{{user.id}}').attr('src','/static/person_img/trans.png');"></i><img width="auto" height="auto" src="/static/person_img/trans.png" id="img{{user.id}}" style="zindex: 100; position: absolute;max-width:100px;"/></td>
                                     {% else %}
 									<td>{{ user.userprofile.name }}</td>
                                     {% endif %}
