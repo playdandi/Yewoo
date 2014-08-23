@@ -180,7 +180,9 @@
 						<div id="revise1Box" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;table-layout:fixed;">
 								<tr>
-                                    <td width="14%" rowspan="5"><img width="auto" height="auto" src="/static/img/김태희.jpg" style="max-height:136px"/></td>
+                                    <td width="14%" rowspan="5"><img width="auto" height="auto" src="/static/person_img/{{ imgfile }}" style="max-height:136px"/><br>
+                                    <button id="upPicture" class="btn btn-small" style="margin:5px 0px;" onclick="ShowUpWin({{ user.id }})">사진 업로드</button>
+                                    </td>
 									<td width="10%"><strong>이름</strong></td>
 									<td width="10%"><input id="name" class="margin0 width3" type="text" value="{{ user.userprofile.name }}" disabled/></td>
 									<td width="10%"><strong>생년월일</strong></td>
@@ -469,7 +471,10 @@
                 $("#side-datepicker").datepicker();
                 $("#side-datepicker2").datepicker();
                 $("#side-datepicker3").datepicker();
-			});			
+			});
+            function ShowUpWin(uid) {
+                window.open("/manage/accountinfo/detail/upload/"+uid, "사진업로드", "width=600, height=100, toolbar=no, menubar=no, scrollbars=no, resizable=yes" );
+            }
 		</script>
 		<!-- end: JavaScript-->
 	

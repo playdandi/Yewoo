@@ -194,7 +194,11 @@
                                 {% for user in users %}
 								<tr class="datas">
                                     <td><input type="checkbox" disabled/></td>
-									<td>{{ user.userprofile.name }} ▩</b></td>
+                                    {% if user.hasimage %}
+									<td>{{ user.userprofile.name }}<i class="icon-user" onmouseover="$('#img{{user.id}}').attr('src','/static/person_img/{{user.imgfile}}');" onmouseout="$('#img{{user.id}}').attr('src','/static/person_img/trans.png');"></i><img width="100px" src="/static/person_img/trans.png" id="img{{user.id}}" style="zindex: 100; position: absolute;"/></td>
+                                    {% else %}
+									<td>{{ user.userprofile.name }}</td>
+                                    {% endif %}
 									<td>{% if user.userprofile.companynumber %}{{ user.userprofile.companynumber }}{% else %}{% endif %}</td>
 									<td>{{ user.userprofile.department }}</td>
 									<td>{{ user.userprofile.position }}</td>

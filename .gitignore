@@ -1,3 +1,5 @@
+# img files #
+/buildingApp/static/person_img/*
 # compiled source #
 *.pyc
 
