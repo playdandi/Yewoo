@@ -37,7 +37,7 @@ ucloudbiz 기준 서버 세팅 방법
  ```
  이렇게 하면 해당 view에 연결된 url로 접속시 로그인된 유저가 권한이 없으면 login_url로 넘어감
 
-4. user가 permission이 있는지 확인하는 template tag
+4. 현재 로그인된 user가 permission이 있는지 확인하는 template tag
  ```
  {% if perms.[AppName].[PermissionName] %}
  ```
