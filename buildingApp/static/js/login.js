@@ -16,5 +16,4 @@ var tryLogin = function() {
 			alert('error : ' + msg.responseText);
 		},
 	});
-    return false;
 }
