@@ -28,10 +28,12 @@ urlpatterns = patterns('',
 
     url(r'^$', RedirectView.as_view(url='/login/')),
 
-    url(r'^account/signup/', signup),
-    url(r'^account/checkid/', checkid),
-    url(r'^login/', login_request), 
-    url(r'^logout/', logout_request), 
+    url(r'^account/signup/$', signup),
+    url(r'^account/checkid/$', checkid),
+    url(r'^login/$', login_request), 
+    url(r'^logout/$', logout_request), 
+    url(r'^myprofile/$', myprofile_html), 
+    url(r'^myprofile/upload/$', myprofile_upload_html), 
 
 #    url(r'^main/$', main_html),
     url(r'^newmain/$', newmain_html),

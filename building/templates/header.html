@@ -29,6 +29,20 @@
             <li class="disabled"><a href="#">통합 게시판</a></li>
             <li class="disabled"><a href="#">내 일정 관리</a></li>
             <li class="disabled"><a href="#">내 정보 관리</a></li>
+            {% if menu == "myinfo" %}
+            <li class="dropdown active">
+            {% else %}
+            <li class="dropdown">
+            {% endif %}
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">내 정보 관리<b class="caret"></b></a>
+              <ul class="dropdown-menu dropdown-header4" style="left:-361px">
+                <li><a href="/myprofile/">내 프로필 관리하기</a>
+                </li><li class="disabled"><a href="#">내 근태 이력 보기</a>
+                </li><li class="disabled"><a href="#">내 업무 평가 보기</a>
+                </li><li class="disabled"><a href="#">내 로그인 정보 보기</a>
+                </li>
+              </ul>
+            </li>
           </ul>
         </div>
       </div>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<!-- start: Meta -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Yewoo Housing Management System</title>
+	<!-- end: Meta -->
+	
+	<!-- start: Mobile Specific -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- end: Mobile Specific -->
+
+	<!-- start: CSS -->
+	<link id="bootstrap-style" href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link id="base-style" href="{{ STATIC_URL }}bootstrap/css/style.css" rel="stylesheet">
+	<link id="base-style-responsive" href="{{ STATIC_URL }}bootstrap/css/style-responsive.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}bootstrap/css/datepicker.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}css/common.css" rel="stylesheet">
+	<!-- end: CSS -->
+
+	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	[endif]-->
+
+	<!-- start: Favicon -->
+	<link rel="shortcut icon" href="img/favicon.ico">
+	<!-- end: Favicon -->
+	
+	<style>
+    table {
+    	table-layout: fixed;
+    }
+    table th, table td {
+    	overflow: hidden;
+    }
+    .must {
+    	color: red;
+    	float: left;
+		margin-right: 10px;
+    }
+    .optional {
+    	color: black;
+    	float: left;
+    	margin-right: 10px;
+    }
+    .margin0 {
+    	margin-left: 0px !important;
+    	margin-right: 0px !important;
+    	margin-top: 0px !important;
+    	margin-bottom: 0px !important;
+	}
+	.width4 {
+		width: 95px;
+	}
+	.width3 {
+		width: 80px;
+	}
+	.width2 {
+		width: 70px;
+	}
+	select {
+		font-family : 'Malgun Gothic' !important;
+	}
+    body {
+		font-size : 0.77em;
+		font-family : 'Malgun Gothic' !important;
+	}
+	input {
+		font-family : 'Malgun Gothic' !important;
+	}
+	::-webkit-input-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	::-moz-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	:-moz-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	:-ms-input-placeholder {
+		font-size : 0.8em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	:-input {
+		margin-bottom:0px !important;
+		font-family : 'Malgun Gothic' !important;
+	}
+	#myModal {
+		top : 10%;
+		width : 80%;
+		margin : 0px 0px 0px 0px;
+		padding : 0px 0px 0px 0px;
+		left : 10%;
+	}
+    .table-center td{
+        text-align:center;
+        vertical-align:middle;
+    }
+	</style>
+		
+</head>
+
+<body>
+    <!-- start:Header --!>
+    {% include "header.html" with menu="myinfo" username=username %}
+    <!-- end:Header --!>
+	<div class="container-fluid">
+        <div class="row-fluid">
+        <div class="span3" style="width:250px">
+          {% include "sidebar.html" with side_menu="private" %}
+        </div><!--/span-->
+				
+			<noscript>
+				<div class="alert alert-block span10">
+					<h4 class="alert-heading">Warning!</h4>
+					<p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
+				</div>
+			</noscript>
+			
+			<!-- start: Content -->	
+			<div id="content" class="span9">
+				<div class="span11 bordered" style="padding:7px 7px 7px 7px;margin:5px 0px 5px 0px;">
+                    <div>
+					    <ul class="breadcrumb" style="margin: 5px 0px 5px 0px;">
+    						<li>
+    							<a href="#">내 정보 관리 > 1. 내 프로필 관리하기</a>
+    						</li>
+    					</ul>
+                    </div>
+					<div class="box" style="margin: 0px; padding: 0px">
+						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+								<tr>
+									<td width="20%" style="background-color:#dbdbd2"><a href="#">1. 내 프로필 관리하기</a></td>
+									<td width="20%"><a href="#">2. 내 근태 이력 보기</a></td>
+									<td width="20%"><a href="#">3. 내 업무 평가 보기</a></td>
+									<td width="20%"><a href="#">4. 내 로그인 정보 보기</a></td>
+									<td width="20%"></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+                    <button class="pull-right btn btn-small" disabled>사원 정보 수정하기 ▶</button>
+                    <h3 style="margin:5px;">1. 개인 프로필</h3>
+                    <hr style="margin-top:10px;margin-bottom:10px;">
+                    
+                    <button id="revise1Start" class="pull-right btn btn-small" onclick="Revise1(false,{{ user.id }});" style="margin:0px 3px 0px 0px;">수정</button>
+                    <button id="revise1Done" class="pull-right btn btn-small" onclick="Revise1(true, {{user.id }});" style="margin:0px 3px 0px 0px;display:none;">수정완료</button>
+                    <h6 style="margin:20px 5px 10px 5px;padding:0px 3px 0px 3px;">개인 프로필</h6>
+                    <hr style="margin-top:10px;margin-bottom:10px;padding:0px 3px 0px 3px;">
+					<div class="box" style="margin:0px;padding:0px 3px 0px 3px;">
+						<div id="revise1Box" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;table-layout:fixed;">
+								<tr>
+                                    <td width="14%" rowspan="5"><img width="auto" height="auto" src="/static/person_img/{{ imgfile }}" style="max-height:136px"/><br>
+                                    <button id="upPicture" class="btn btn-small" style="margin:5px 0px;" onclick="ShowUpWin({{ user.id }})">사진 업로드</button>
+                                    </td>
+									<td width="10%"><strong>이름</strong></td>
+									<td width="10%"><input id="name" class="margin0 width3" type="text" value="{{ user.userprofile.name }}" disabled/></td>
+									<td width="10%"><strong>생년월일</strong></td>
+									<td width="10%">
+                                        <input id="birthdayYear" class="input-small fontmini" style="margin:0px 0px 3px 0px" type="text" placeholder="생년" value={{ user.userprofile.birthday | date:"Y"}} disabled/>
+                                        <input id="birthdayMonth" class="margin0 input-small" style="width:36px" type="text" placeholder="월" value={{ user.userprofile.birthday | date:"m"}} disabled/>
+                                        <input id="birthdayDay" class="margin0 input-small" style="width:36px" type="text" placeholder="일" value={{ user.userprofile.birthday | date:"d"}} disabled/>
+                                    </td>
+									<td width="10%"><strong>성별</strong></td>
+									<td width="10%">
+                                        <select id="gender" class="margin0 width2" style="margin-right:10px; margin-bottom:0px" disabled>
+                                            {% if user.userprofile.gender == '남' %}
+                                            <option value="남" selected>남</option>
+                                            <option value="여">여</option>
+                                            {% else %}
+                                            <option value="남">남</option>
+                                            <option value="여" selected>여</option>
+                                            {% endif %}
+                                        </select>
+                                    </td>
+									<td width="10%"><strong>재직여부</strong></td>
+									<td width="10%">
+                                        <select id="status" class="margin0 width2" style="margin-right:10px; margin-bottom:0px" disabled>
+                                        {% if user.userprofile.status == 1 %}
+                                            <option value="1" selected>재직</option>
+                                            <option value="2">퇴사</option>
+                                        {% elif user.userprofile.status == 2 %}
+                                            <option value="1">재직</option>
+                                            <option value="2" selected>퇴사</option>
+                                        {% endif %}
+                                        </select>
+                                    </td>
+								</tr>
+								<tr>
+									<td><strong>부서</strong></td>
+									<td>
+                                        <select id="department" class="margin0 width4" disabled>
+                                            {% for department in departments %}
+                                                {% if department.name == user.userprofile.department %}
+                                                <option value="{{ department.name }}" selected>{{ department.name }}</option>
+                                                {% else %}
+                                                <option value="{{ department.name }}">{{ department.name }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+									<td><strong>직급</strong></td>
+									<td>
+                                        <select id="position" class="margin0 width4" disabled>
+                                            {% for position in positions %}
+                                                {% if position.name == user.userprofile.position %}
+                                                <option value="{{ position.name }}" selected>{{ position.name }}</option>
+                                                {% else %}
+                                                <option value="{{ position.name }}">{{ position.name }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+									<td><strong>입사일</strong></td>
+									<td>
+                                        <input id="joinYear" class="input-small fontmini" style="margin:0px 0px 3px 0px" type="text" placeholder="입사년" value={{ user.userprofile.joindate | date:"Y"}} disabled/>
+                                        <input id="joinMonth" class="margin0 input-small" style="width:36px" type="text" placeholder="월" value={{ user.userprofile.joindate | date:"m"}} disabled/>
+                                        <input id="joinDay" class="margin0 input-small" style="width:36px" type="text" placeholder="일" value={{ user.userprofile.joindate | date:"d"}} disabled/>
+                                    </td>
+									<td><strong>퇴사일</strong></td>
+									<td>
+                                        {% if user.userprofile.exitdate %}
+                                        <input id="exitYear" class="input-small fontmini" style="margin:0px 0px 3px 0px" type="text" placeholder="퇴사년" value={{ user.userprofile.exitdate | date:"Y"}} disabled/>
+                                        <input id="exitMonth" class="margin0 input-small" style="width:36px" type="text" placeholder="월" value={{ user.userprofile.exitdate | date:"m"}} disabled/>
+                                        <input id="exitDay" class="margin0 input-small" style="width:36px" type="text" placeholder="일" value={{ user.userprofile.exitdate | date:"d"}} disabled/>
+                                        {% else %} 
+                                        <input id="exitYear" class="input-small fontmini" style="margin:0px 0px 3px 0px" type="text" placeholder="퇴사년" disabled/>
+                                        <input id="exitMonth" class="margin0 input-small" style="width:36px" type="text" placeholder="월" disabled/>
+                                        <input id="exitDay" class="margin0 input-small" style="width:36px" type="text" placeholder="일" disabled/>
+                                        {% endif %}
+                                    </td>
+								</tr>
+								<tr>
+									<td><strong>사번</strong></td>
+									<td>
+                                        <select id="companyNumber" class="margin0 width4" disabled>
+                                            <option value="" disabled selected style="display:none;"></option>
+                                            {% for number in avail_nums %}
+                                                {% if number == user.userprofile.companynumber %}
+                                                <option value="{{ number }}" selected>{{ number }}(현재)</option>
+                                                {% else %}
+                                                <option value="{{ number }}">{{ number }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+									<td><strong>연락처1</strong></td>
+                                    <td>
+										<input id="contact1" class="margin0 input-small" type="text" value="{{ user.userprofile.contact1 }}" disabled/>
+                                    </td>
+									<td><strong>연락처2</strong></td>
+                                    <td>
+										<input id="contact2" class="margin0 input-small" type="text" value="{{ user.userprofile.contact2 }}" disabled/>
+                                    </td>
+									<td><strong>이메일</strong></td>
+                                    <td>
+										<input id="email" class="margin0 input-small" type="text" value="{{ user.userprofile.email }}" disabled/>
+                                    </td>
+								</tr>
+								<tr>
+									<td><strong>주소1</strong></td>
+									<td colspan="3">
+										<input id="address" class="margin0 input-large" type="text" style="width:90%" value="{{ user.userprofile.address }}" disabled/>
+                                    </td>
+									<td><strong>주소2</strong></td>
+									<td colspan="3">
+										<input id="address2" class="margin0 input-large" type="text" style="width:90%" value="{{ user.userprofile.address2 }}" disabled/>
+                                    </td>
+								</tr>
+								<tr>
+									<td><strong>시스템 아이디</strong></td>
+									<td>{{ user.username }}</td>
+									<td><strong>시스템 비밀번호</strong></td>
+									<td></td>
+									<td><strong>시스템 승인일</strong></td>
+									<td>{{ user.userprofile.activatedate | date:"Y.m.d" }}</td>
+									<td><strong>가입 승인자</strong></td>
+									<td>{{ user.userprofile.activateadmin }}</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+                    <button id="revise2Start" class="pull-right btn btn-small" onclick="Revise2(false,{{ user.id }});" style="margin:10px 3px 0px 0px;">수정</button>
+                    <h6 style="margin:20px 5px 10px 5px;padding:0px 3px 0px 3px;">학력 사항</h6>
+                    <hr style="margin-top:10px;margin-bottom:10px;padding:0px 3px 0px 3px;">
+					<div class="box" style="margin:0px;padding:0px 3px 0px 3px;">
+						<div id="revise2Box" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<table id="acaTable" class="table table-bordered table-condensed table-center" style="margin-bottom:0px;table-layout:fixed;">
+								<tr>
+                                    <td width="24%"><strong>재학기간</strong></td>
+									<td width="10%"><strong>학교명</strong></td>
+									<td width="10%"><strong>소재지</strong></td>
+									<td width="10%"><strong>전공</strong></td>
+									<td width="10%"><strong>학점</strong></td>
+									<td width="30%"><strong>기타 사항</strong></td>
+									<td width="8%"><button id="acaInit" class="btn btn-small" style="margin:0px 0px 0px 0px;display:none;" onclick="Revise2Init()">초기화</button></td>
+								</tr>
+                                {% for academic in academics %}
+								<tr>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ academic.period }}" disabled/></td>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ academic.name }}" disabled/></td>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ academic.location }}" disabled/></td>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ academic.major }}" disabled/></td>
+									<td><input class="margin0" style="width:30%" type="text" value="{{ academic.gpa }}" disabled/>/<input class="margin0" style="width:30%" type="text" value="{{ academic.maxgpa }}" disabled/></strong></td>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ academic.etc }}" disabled/></td>
+									<td><button class="btn btn-small" style="margin:0px 0px 0px 0px;display:none;" onclick="Revise2DelLine(this)">삭제</button></td>
+								</tr>
+                                {% endfor %}
+							</table>
+                            <div style="text-align:center;"> 
+                                <button id="revise2AddLine" class="btn btn-small" onclick="Revise2AddLine();" style="margin:10px 2px 10px 0px;display:none;">항목 추가</button>
+                                <button id="revise2Cancel" class="btn btn-small" onclick="Revise2Cancel({{ user.id }});" style="margin:10px 2px 10px 0px;display:none;">취소</button>
+                                <button id="revise2Done" class="btn btn-small" onclick="Revise2(true,{{ user.id }});" style="margin:10px 0px 10px 2px;display:none;">수정완료</button>
+                            </div>
+						</div>
+					</div>
+
+                    <button id="revise3Start" class="pull-right btn btn-small" onclick="Revise3(false,{{ user.id }});" style="margin:10px 3px 0px 0px;">수정</button>
+                    <h6 style="margin:20px 5px 10px 5px;padding:0px 3px 0px 3px;">경력 사항</h6>
+                    <hr style="margin-top:10px;margin-bottom:10px;padding:0px 3px 0px 3px;">
+					<div class="box" style="margin:0px;padding:0px 3px 0px 3px;">
+						<div id="revise3Box" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<table id="workTable" class="table table-bordered table-condensed table-center" style="margin-bottom:0px;table-layout:fixed;">
+								<tr>
+                                    <td width="24%"><strong>재직기간</strong></td>
+									<td width="10%"><strong>회사명</strong></td>
+									<td width="20%"><strong>부서/직급/직책</strong></td>
+									<td width="40%"><strong>담당업무</strong></td>
+									<td width="8%"><button id="workInit" class="btn btn-small" style="margin:0px 0px 0px 0px;display:none;" onclick="Revise3Init()">초기화</button></td>
+								</tr>
+                                {% for work in works %}
+								<tr>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ work.period }}" disabled/></td>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ work.name }}" disabled/></td>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ work.position }}" disabled/></td>
+                                    <td><input class="margin0" style="width:90%" type="text" value="{{ work.mission }}" disabled/></td>
+									<td><button class="btn btn-small" style="margin:0px 0px 0px 0px;display:none;" onclick="Revise3DelLine(this)">삭제</button></td>
+								</tr>
+                                {% endfor %}
+							</table>
+                            <div style="text-align:center;"> 
+                                <button id="revise3AddLine" class="btn btn-small" onclick="Revise3AddLine();" style="margin:10px 2px 10px 0px;display:none;">항목 추가</button>
+                                <button id="revise3Cancel" class="btn btn-small" onclick="Revise3Cancel({{ user.id }});" style="margin:10px 2px 10px 0px;display:none;">취소</button>
+                                <button id="revise3Done" class="btn btn-small" onclick="Revise3(true,{{ user.id }});" style="margin:10px 0px 10px 2px;display:none;">수정완료</button>
+                            </div>
+						</div>
+					</div>
+
+                    <button id="revise4Start" class="pull-right btn btn-small" onclick="Revise4(false, {{ user.id }});" style="margin:10px 3px 0px 0px;">수정</button>
+                    <button id="revise4Done" class="pull-right btn btn-small" onclick="Revise4(true, {{user.id }});" style="margin:10px 3px 0px 0px;display:none;">수정완료</button>
+                    <h6 style="margin:20px 5px 10px 5px;padding:0px 3px 0px 3px;">자기 소개</h6>
+                    <hr style="margin-top:10px;margin-bottom:10px;padding:0px 3px 0px 3px;">
+					<div class="box" style="margin:0px;padding:0px 3px 0px 3px;">
+						<div id="revise4Box" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;table-layout:fixed;">
+								<tr>
+                                    <td width="100%">
+										<input id="introduce" class="margin0 input-large" type="text" style="width:95%" value="{{ user.userprofile.introduce }}" disabled/>
+                                    </td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+			<!-- end: Content -->
+		</div>
+	</div>
+	
+	<div class="clearfix"></div>
+	<hr>
+	
+	<footer>
+		<p class="pull-left">&copy; <a href="" target="_blank">creativeLabs</a> 2013</p>
+		<p class="pull-right">Powered by: <a href="#">Optimus Dashboard</a></p>
+	</footer>
+			
+</div><!--/.fluid-container-->
+
+	<!-- start: JavaScript-->
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-1.9.1.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-migrate-1.0.0.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-ui-1.10.0.custom.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/bootstrap.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cookie.js"></script>
+	
+		<script src='{{ STATIC_URL }}bootstrap/js/fullcalendar.min.js'></script>
+	
+		<script src='{{ STATIC_URL }}bootstrap/js/jquery.dataTables.min.js'></script>
+
+		<script src="{{ STATIC_URL }}bootstrap/js/excanvas.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.pie.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.stack.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.resize.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.chosen.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uniform.min.js"></script>
+		
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cleditor.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.noty.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.elfinder.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.raty.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.iphone.toggle.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uploadify-3.1.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.gritter.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.imagesloaded.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.masonry.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/custom.js"></script>
+
+		<script src="{{ STATIC_URL }}ejs/ejs.js"></script>
+		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
+		<script src="{{ STATIC_URL }}ejs/view.js"></script>
+
+		<script src="{{ STATIC_URL }}js/myprofile.js"></script>
+		<script src="{{ STATIC_URL }}js/common.js"></script>
+		
+		<script type="text/javascript" language="JavaScript">
+			$(document).ready(function(){
+				// show sidebar
+				show_sidebar();
+				$('#tabmenu a').click(function(e) {
+					e.preventDefault();
+					$(this).tab('show');
+				});
+                $("#side-datepicker").datepicker();
+                $("#side-datepicker2").datepicker();
+                $("#side-datepicker3").datepicker();
+			});
+            function ShowUpWin(uid) {
+                window.open("/myprofile/upload/", "사진업로드", "width=600, height=100, toolbar=no, menubar=no, scrollbars=no, resizable=yes" );
+            }
+		</script>
+		<!-- end: JavaScript-->
+	
+</body>
+</html>
