@@ -109,6 +109,19 @@
     .navbar .nav  li .dropdown-menu:after {
         display:none;
     }
+    .side-header {
+        margin:3px 1px 0px 1px !important;
+    }
+
+    .side-item {
+        margin:3px 1px 0px 1px !important;
+        background-color:#ffffff;
+        font-weight:normal;
+        display:none;
+    }
+    .side-item a{
+        padding:3px 0px 3px 30px !important;
+    }
 
 
 #leave input.red-warning
