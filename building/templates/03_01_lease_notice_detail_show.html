@@ -215,7 +215,7 @@
 														<td style="text-align:center; vertical-align:middle">{{ resident.leaseContractPeriod }}개월</th>
 														<td style="text-align:center; vertical-align:middle">{{ resident.inDate }}</th>
 														<td style="text-align:center; vertical-align:middle">{{ resident.outDate }}</th>
-														<td style="text-align:center; vertical-align:middle">-</th>
+														<td style="text-align:center; vertical-align:middle">{% if resident.checkOut == 'n' %}재실{% else %}퇴실{% endif %}</th>
 														<td style="text-align:center; vertical-align:middle">{{ resident.contractorContactNumber1 }}</th>
 														<td style="text-align:center; vertical-align:middle">{{ resident.leaseType }}</th>
 														<td style="text-align:center; vertical-align:middle">{{ resident.leaseDeposit | intcomma }}</th>
@@ -610,11 +610,13 @@
                 $("#side-datepicker2").datepicker();
                 $("#side-datepicker3").datepicker();
 
+				/*
 				// 건물을 하나 선택할 때, 그 건물에 속한 '호수' 전체 불러오기
 				getBuildingRooms('b{{ min_building_id }}', 'search_room_num');
 				$('#search_building').change(function() {
 					getBuildingRooms($(this).val(), 'search_room_num');
 				});
+				
 				
 				$('#inDate').change(function() {
 					var mdy = $('#inDate').val().split('/');
@@ -634,6 +636,7 @@
 						$('#outDate').val('');
 					}
 				});
+				*/
 				
 				setCurInfo('{{ resident.buildingRoomNumber }}', '{{ building_id }}', '{{ resident.id }}');
 				// ejs template 불러오기

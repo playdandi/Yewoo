@@ -153,11 +153,13 @@ function SaveResidentInfo()
 
 function IsRegNumberRight(name, number)
 {
-	// 주민번호는 숫자만 입력되고, 정확히 6자, 7자여야 한다.
+	// 2014.08.25 :  주민번호 뒷자리(7자리) 입력하지 않게 변경. 따라서 체크 함수도 변경.
+
+	// 주민번호는 숫자만 입력되고, 정확히 6자여야 한다.
 	var re = new RegExp('[0-9]+');
 	var numbers = number.split('-');
-	if (numbers[0].length != 6 || numbers[1].length != 7 || 
-		(numbers[0]+numbers[1]).replace(re, '') != '') {
+	//if (numbers[0].length != 6 || numbers[1].length != 7 || 
+	if (numbers[0].length != 6 || (numbers[0]+numbers[1]).replace(re, '') != '') {
 		alert ('주민번호를 잘못 입력하셨습니다.');
 		$('#'+name+'_1').focus();
 		return false;

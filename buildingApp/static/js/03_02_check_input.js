@@ -16,13 +16,13 @@ function showLeaseInfo(isForBillMove)
 	}
 	else {
 		// 일반적인 조회
-		var year = Number($('#search_year').val());
-		var month = Number($('#search_month').val());
-		var building_id = Number($('#search_building').val().replace('b', ''));
-		var room_num = $('#search_room_num').val();
-		var is_empty = $('#search_isEmpty').parent().hasClass('checked');
+		year = Number($('#search_year').val());
+		month = Number($('#search_month').val());
+		building_id = Number($('#search_building').val().replace('b', ''));
+		room_num = $('#search_room_num').val();
+		is_empty = $('#search_isEmpty').parent().hasClass('checked');
 		var type = $('#search_type').val();
-		var type_text;
+		type_text;
 		if (type == '0') type_text = 'check';
 		else if (type == '1') type_text = 'notice';
 		else if (type == '2') type_text = 'electricity';
@@ -56,6 +56,11 @@ function showLeaseInfo(isForBillMove)
 	f_bid.name = 'building_id';
 	f_bid.value = building_id;
 	form.appendChild(f_bid);
+
+	var f_rname = document.createElement('input');
+	f_rname.name = 'room_num';
+	f_rname.value = room_num;
+	form.appendChild(f_rname);
 
 	var f_isempty = document.createElement('input');
 	f_isempty.name = 'is_empty';

@@ -92,7 +92,8 @@ def save_resident_info(request, data = None):
             resident = ResidentInfo.objects.get(id = int(param['uid']))
 
         # 있는 호실인지 검사
-        ri = RoomInfo.objects.get(building_id = int(param['buildingName']), roomnum = int(param['buildingRoomNumber']))
+        #ri = RoomInfo.objects.get(building_id = int(param['buildingName']), roomnum = int(param['buildingRoomNumber']))
+        isCheckOut = 'n'
 
         resident.buildingName = int(param['buildingName'])
         resident.manager = str(param['manager'])
@@ -139,6 +140,7 @@ def save_resident_info(request, data = None):
         resident.checkIn = param['checkIn']
         resident.realInDate = param['realInDate'].replace('.', '-')
         resident.checkOut = param['checkOut']
+        isCheckOut = param['checkOut'] # checkout 했는지 체크하는 flag
         resident.realOutDate = param['realOutDate'].replace('.', '-')
         if resident.realOutDate == '':
             resident.realOutDate = None
@@ -197,6 +199,12 @@ def save_resident_info(request, data = None):
                     beforeEM.save()
                 except:
                     pass
+        '''
+        else:
+            if isCheckOut == 'y':
+                roominfo.nowResident = None
+                roominfo.isOccupied = False
+        '''
         
         # change roominfo (adjust new resident id to the room)
         if not roominfo.nowResident == resident:

@@ -386,6 +386,7 @@ def serialize_lease(result):
                 data['paydate'] = res.leasePayDate
                 data['indate'] = prettyDate(res.inDate)
                 data['outdate'] = prettyDate(res.outDate)
+                data['checkOut'] = str(res.checkOut)
             else:
                 data['rid'] = -1 
                 data['buildingnum'] = room.building_id
@@ -403,6 +404,7 @@ def serialize_lease(result):
                 data['paydate'] = ''
                 data['indate'] = ''
                 data['outdate'] = ''
+                data['checkOut'] = str(res.checkOut)
 
             serialized.append(data)
     return serialized
@@ -685,7 +687,7 @@ def excel_file_upload(request):
                             temp_roomnum = int(result[i][j])
                         elif column[j] == '입주자':
                             temp_name = str(result[i][j])
-                    elem.resident = ResidentInfo.objects.get(buildingRoomNumber = temp_roomnum, contractorName = temp_name, buildingName = int(request.POST['building_id']))
+                    elem.resident = ResidentInfo.objects.get(buildingRoomNumber = temp_roomnum, contractorName = temp_name.strip(), buildingName = int(request.POST['building_id']))
                     elem.building = BuildingInfo.objects.get(id = building_info.id)
                     elem.year = int(request.POST['year'])
                     elem.month = int(request.POST['month'])
@@ -782,7 +784,7 @@ def excel_file_upload(request):
             fileInfo = None
             try:
                 fileInfo = ExcelFiles.objects.get(type = request.POST['type'], building = building_info.id, year = int(request.POST['year']), month = int(request.POST['month']))
-                os.remove(os.path.join(settings.MEDIA_ROOT, request.POST['type']) + '/' + fileInfo.filename)
+                #os.remove(os.path.join(settings.MEDIA_ROOT, request.POST['type']) + '/' + fileInfo.filename)
             except:
                 fileInfo = ExcelFiles()
                 print('new fileInfo')
@@ -794,6 +796,7 @@ def excel_file_upload(request):
             fileInfo.uploadDate = request.POST['uploadDate'].replace('.', '-').strip()
             fileInfo.save()
 
+            '''
             # save excel file
             file = request.FILES['file']
             filename = file._name
@@ -801,7 +804,7 @@ def excel_file_upload(request):
             for chunk in file.chunks():
                 fp.write(chunk)
             fp.close()
-
+            '''
 
             return HttpResponse('file upload - SUCCESS')
         return HttpResponse('file upload - NO FILE')
@@ -811,7 +814,7 @@ def excel_file_delete(request):
     if request.method == 'POST':
         fileInfo = ExcelFiles.objects.get(id = int(request.POST['file_id']))
         # delete the actual excel file
-        os.remove(os.path.join(settings.MEDIA_ROOT, fileInfo.type) + '/' + fileInfo.filename)
+        #os.remove(os.path.join(settings.MEDIA_ROOT, fileInfo.type) + '/' + fileInfo.filename)
         # delete the info. in DB
         fileInfo.delete()
         # delete data
@@ -963,7 +966,10 @@ def serialize_notice_detail_tab2Info(data, modifyData, bid, rid):
             if int(allPayments[i].payStatus) != -1 and int(allPayments[i].accumNumber) > 0:
                 cnt += 1
         p['delayNumber'] = cnt
-        p['accumNumber'] = allPayments[0].accumNumber
+        if len(allPayments) > 0:
+            p['accumNumber'] = allPayments[0].accumNumber
+        else:
+            p['accumNumber'] = 0
         serialized.append(p)
     # 변동 수정 리스트
     for d in modifyData:

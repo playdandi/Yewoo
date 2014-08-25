@@ -6,6 +6,7 @@ function setCurInfo(building_id, resident_id, roomnum)
 	roomNum = Number(roomnum);
 }
 
+/*
 function showLeaseInfo()
 {
 	var year = Number($('#search_year').val());
@@ -60,7 +61,7 @@ function showLeaseInfo()
 	//postData['room_num'] = (r_num != '') ? Number(r_num) : '';
 	form.submit();
 }
-
+*/
 function InitForm()
 {
 	$('#search_building').find('option:eq(0)').prop('selected', true);

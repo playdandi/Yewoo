@@ -63,10 +63,10 @@
 		<td style="text-align:center"><%= data[i].maintenance.toLocaleString().replace('.00','') %></td>
 		<td style="text-align:center"><%= data[i].surtax.toLocaleString().replace('.00','') %></td>
 		<td style="text-align:center"><%= data[i].parking.toLocaleString().replace('.00','') %></td>
-		<td style="text-align:center"><%if (data[i].paydate != '') { %><%= data[i].paydate %>일<% } %></td>
+		<td style="text-align:center"><% if (data[i].paydate != '') { %><%= data[i].paydate %>일<% } %></td>
 		<td style="text-align:center"><%= data[i].indate %></td>
 		<td style="text-align:center"><%= data[i].outdate %></td>
-		<td style="text-align:center"><%if (data[i].paydate != '') { %>재실<% } %></td>
+		<td style="text-align:center"><% if (data[i].checkOut == 'n') { %>재실<% } else { %>퇴실<% } %></td>
 		<td style="text-align:center"><button class="btn btn-small btn-setting" disabled="disabled">입력</button></td>
 		<td style="text-align:center"><button class="btn btn-small btn-setting" disabled="disabled">확인</button></td>
 		<td style="text-align:center"><button class="btn btn-small" onClick="showDetail(<%= data[i].buildingnum %>,<%= data[i].rid %>)" <%if (data[i].rid == -1) { %>disabled="disabled"<% } %>>확인</button></td>

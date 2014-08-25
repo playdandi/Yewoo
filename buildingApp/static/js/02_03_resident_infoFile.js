@@ -428,35 +428,47 @@ var saveInfo = function() {
 // 주의사항 클릭한 경우
 function Alert()
 {
-	$('#alert').tooltip({
+	var content = '<주의사항><br><br>';
+	content += '기본사항 : 1행에 컬럼 이름, 2행부터 한 사람에 대한 데이터 넣으면 됩니다.<br>';
+	content += '(컬럼 순서를 바꾸면 안 됩니다!)<br>';
+	content += '건물명 : <b>등록되어 있는</b> 건물의 정확한 이름을 쓰세요.<br>';
+	content += '호실 : <b>등록되어 있는</b> 건물의 <b>등록된</b>호실만 숫자로 적어야 합니다.<br>';
+	content += '재실정보 : 재실/퇴실 둘 중 하나로 작성하세요.<br>';
+	content += '입주회차 : 숫자만 적어야 합니다.<br>';
+	content += '입주기간 : "숫자+개월" 형태로 기입하세요. (예: 15개월)<br>';
+	content += '입주일, 만료일, 검침날짜 : "년.월.일" 형태로 기입하세요. (반드시 점(.)으로 구분!)<br>';
+	content += '보증금, 임대료3, 관리비, 부가세, 주차비용 : 숫자만 적어야 합니다. (컴마(,)는 허용)<br>';
+	content += '주차비용 : 30000, 20000, 10000 의 3가지 중 하나로 기입하세요.<br>';
+	content += '임대료1 : 선불/후불 둘 중 하나로 기입하세요.<br>';
+	content += '임대료2 : "숫자+일" 형태로 기입하세요. (예: 28일)<br>';
+	content += '입주검침1 : 일반, 원격검침1, 원격검침2 의 3가지 중 하나로 기입하세요.<br>';
+	content += '입주검침2 :<br>';
+    content += '"전기/가스/수도" 순서대로 기입하세요. (반드시 슬래시(/)로 구분!)<br>';
+	content += '(단, 원격검침1의 경우, "전기/온수(가스)/난방(가스)/온수(수도)/난방(수도)" 순서대로 기입하세요)<br>';
+	content += '중개정보1 : 공인중개/직거래 둘 중 하나로 작성하세요.<br>';
+	content += '연락처 2가지 : 반드시 하이픈(-)으로 구분하세요. (예: 010-1234-5678)<br>';
+	content += '주차유무 : 유/무 둘 중 하나로 기입하세요.';
+	
+	$('#alertT').tooltip({
 		html : true,
-		title : "<연체 내역><br>연체 내역을 확인하는 정보입니다.<br><br>미납이나 연체 내역이 있는 경우 [미납회차] 항목에 '미납' 과 '미납회차' 가 표시됩니다.<br>[누적] 항목에 누적된 회수가 표시됩니다.<br><br>미납이나 연체 내역이 없는 경우, [미납회차] 항목에 '고지'와 '고지회차' 가 표시됩니다."
+		//title : "<연체 내역><br>연체 내역을 확인하는 정보입니다.<br><br>미납이나 연체 내역이 있는 경우 [미납회차] 항목에 '미납' 과 '미납회차' 가 표시됩니다.<br>[누적] 항목에 누적된 회수가 표시됩니다.<br><br>미납이나 연체 내역이 없는 경우, [미납회차] 항목에 '고지'와 '고지회차' 가 표시됩니다."
+		title : content,
+		placement : 'left', 
 	});
-	console.log('ok');
 										//	<a href="#" title="<최근 미납 내역><br>1) 총 연체 기간 (연체 기간에 대한 정보)<br>2) 총 미납 회수 (총 미납된 회수 정보)<br>3) 총 미납 금액 (이번달 납부 금액을 제외한 최근까지 총 미납 금액)<br>으로 표시됩니다." data-rel="tooltip" data-html="true" data-placement="auto left" class="margin0"><button class="btn btn-small btn-danger" style="">주의사항</button><!--<i class="icon-question-sign"></i>--></a>
-/*
-	var content = '<주의사항>\n';
-	content += '기본사항 : 1행에 컬럼 이름, 2행부터 한 사람에 대한 데이터 넣으면 됩니다.\n';
-	content += '(컬럼 순서를 바꾸면 안 됩니다!)\n';
-	content += '건물명   : <b>등록되어 있는</b> 건물의 정확한 이름을 쓰세요.';
-	content += '';
-	content += '';
-	content += '';
-	content += '';
-	content += '';
-	content += '';
-	content += '';
-	content += '';
-	content += '';
-	content += '';
-	content += '';
-	content += '';
-	content += '';
-	content += '';
-	content += '';
-	content += '';
-	content += '';
-	content += '';
-	alert(content);
-*/
 }
+
+function ShowTooltip()
+{
+	$('#alertT').tooltip('show');
+}
+
+
+
+
+
+
+
+
+
+

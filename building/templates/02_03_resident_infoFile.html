@@ -109,7 +109,7 @@
 	}
 	.tooltip-inner {
 		text-align:left !important;
-		max-width:350px;
+		max-width:500px;
 	}
 	</style>
 		
@@ -181,7 +181,8 @@
 											<input id="file_id" type="hidden" value="{{ excel_id }}" />
 											<button class="btn btn-small btn-inverse" onclick="$('input[id=residentFileInput]').click();">찾아보기</button>
 											<button class="btn btn-small" onclick="LoadExcelFile();">불러오기</button>
-											<a id="alert" href="#" title="" data-rel="tooltip" class="margin0"><button class="btn btn-small btn-danger" style="float:right">주의사항</button></a>
+											<button class="btn btn-small btn-danger" style="float:right" id="alertT" title="" data-toggle="tooltip" data-placement="left" onclick="ShowTooltip();">주의사항</button></a>
+											<!--<a class="alertT" title="" data-rel="tooltip" class="margin0" onclick="ShowTooltip();"><button class="btn btn-small btn-danger" style="float:right">주의사항</button></a>-->
 											<!--<a href="#" id="alert" title="" data-rel="tooltip" class="margin0"><button class="btn btn-small btn-danger" style="float:right">주의사항</button></a>-->
 										</div>
 									</td>
