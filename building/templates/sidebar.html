@@ -36,14 +36,14 @@
     	<div class="tab-pane" id="private_tab">
         {% endif %}
     		<ul class="nav nav-list" style="padding:5px">
-                <li class="nav-header bordered" style="margin:0px 1px 0px 1px;"><a href="#">업무 게시글 쓰기</a></li>
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;"><a href="#">통합 게시판</a></li>
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;" onclick="sidebar_hide4(this);"><a href="#">내 정보 관리 ▼</a></li>
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="#">내 프로필 관리하기</a></li>
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="#">내 근태 이력 보기</a></li>
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="#">내 업무 평가 보기</a></li>
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="#">내 로그인 정보 보기</a></li>
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;"><a href="#">내 일정 관리</a></li>
+                <li class="nav-header bordered side-header"><a href="#">[업무 게시글 쓰기]</a></li>
+                <li class="nav-header bordered side-header"><a href="#">[통합 게시판]</a></li>
+                <li class="nav-header bordered side-header" onclick="sidebar_hide4(this);"><a href="#">▼ [내 정보 관리]</a></li>
+                <li class="nav-header bordered side-item"><a href="/myprofile/">내 프로필 관리하기</a></li>
+                <li class="nav-header bordered side-item" style="padding:3px 15px 3px 30px;">내 근태 이력 보기</li>
+                <li class="nav-header bordered side-item" style="padding:3px 15px 3px 30px;">내 업무 평가 보기</li>
+                <li class="nav-header bordered side-item" style="padding:3px 15px 3px 30px;">내 로그인 정보 보기</li>
+                <li class="nav-header bordered side-header"><a href="#">[내 일정 관리]</a></li>
                 <div id="side-datepicker2" style="margin:3px 1px 3px 1px"></div>
             </ul>
     	</div>
@@ -55,77 +55,87 @@
     	<div class="tab-pane" id="department_tab">
         {% endif %}
     		<ul class="nav nav-list" style="padding:5px">
-                <li class="nav-header bordered" style="margin:0px 1px 0px 1px;" onclick="sidebar_hide3(this);"><a href="#">▼ [건물 관리 시스템]</a></li>
+                <li class="nav-header bordered side-header" onclick="sidebar_hide3(this);"><a href="#">▼ [건물 관리 시스템]</a></li>
                 {% if perms.buildingApp.building_register %}
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/building/register/">건물 정보 등록</a></li>
+                <li class="nav-header bordered side-item"><a href="/building/register/">건물 정보 등록</a></li>
                 {% else %}
-                <li class="nav-header bordered noperm" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/building/register/">건물 정보 등록</a></li>
+                <li class="nav-header bordered side-item noperm"><a href="/building/register/">건물 정보 등록</a></li>
                 {% endif %}
                 {% if perms.buildingApp.building_search_building %}
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/building/search/building/">등록 건물 정보 확인</a></li>
+                <li class="nav-header bordered side-item"><a href="/building/search/building/">등록 건물 정보 확인</a></li>
                 {% else %}
-                <li class="nav-header bordered noperm" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/building/search/building/">등록 건물 정보 확인</a></li>
+                <li class="nav-header bordered side-item noperm"><a href="/building/search/building/">등록 건물 정보 확인</a></li>
                 {% endif %}
                 {% if perms.buildingApp.building_search_room %}
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/building/search/rooms/">등록 호수 정보 확인</a></li>
+                <li class="nav-header bordered side-item"><a href="/building/search/rooms/">등록 호수 정보 확인</a></li>
                 {% else %}
-                <li class="nav-header bordered noperm" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/building/search/rooms/">등록 호수 정보 확인</a></li>
+                <li class="nav-header bordered side-item noperm"><a href="/building/search/rooms/">등록 호수 정보 확인</a></li>
                 {% endif %}
 
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;" onclick="sidebar_hide3(this);"><a href="#">▼ [입주자 관리 시스템]</a></li>
+                <li class="nav-header bordered side-header" onclick="sidebar_hide3(this);"><a href="#">▼ [입주자 관리 시스템]</a></li>
                 {% if perms.buildingApp.resident_show %}
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/resident/show/">입주자 정보 확인(목록)</a></li>
+                <li class="nav-header bordered side-item"><a href="/resident/show/">입주자 정보 확인(목록)</a></li>
                 {% else %}
-                <li class="nav-header bordered noperm" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/resident/show/">입주자 정보 확인(목록)</a></li>
+                <li class="nav-header bordered side-item noperm"><a href="/resident/show/">입주자 정보 확인(목록)</a></li>
                 {% endif %}
                 {% if perms.buildingApp.resident_info %}
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/resident/info/">입주자 정보 입력(개별)</a></li>
+                <li class="nav-header bordered side-item"><a href="/resident/info/">입주자 정보 입력(개별)</a></li>
                 {% else %}
-                <li class="nav-header bordered noperm" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/resident/info/">입주자 정보 입력(개별)</a></li>
+                <li class="nav-header bordered side-item noperm"><a href="/resident/info/">입주자 정보 입력(개별)</a></li>
                 {% endif %}
                 {% if perms.buildingApp.resident_infofile %}
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/resident/infoFile/">입주자 정보 입력(파일)</a></li>
+                <li class="nav-header bordered side-item"><a href="/resident/infoFile/">입주자 정보 입력(파일)</a></li>
                 {% else %}
-                <li class="nav-header bordered noperm" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/resident/infoFile/">입주자 정보 입력(파일)</a></li>
+                <li class="nav-header bordered side-item noperm"><a href="/resident/infoFile/">입주자 정보 입력(파일)</a></li>
                 {% endif %}
 
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;" onclick="sidebar_hide3(this);"><a href="#">▼ [통합 내역 관리 시스템]</a></li>
+                <li class="nav-header bordered side-header" onclick="sidebar_hide3(this);"><a href="#">▼ [통합 내역 관리 시스템]</a></li>
                 {% if perms.buildingApp.lease_show %}
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/lease/show/lease/">통합 내력 관리(확인)</a></li>
+                <li class="nav-header bordered side-item"><a href="/lease/show/lease/">통합 내력 관리(확인)</a></li>
                 {% else %}
-                <li class="nav-header bordered noperm" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/lease/show/lease/">통합 내역 관리(확인)</a></li>
+                <li class="nav-header bordered side-item noperm"><a href="/lease/show/lease/">통합 내역 관리(확인)</a></li>
                 {% endif %}
                 {% if perms.buildingApp.lease_input %}
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/lease/input/check/">고지 내역 관리(입력)</a></li>
+                <li class="nav-header bordered side-item"><a href="/lease/input/check/">고지 내역 관리(입력)</a></li>
                 {% else %}
-                <li class="nav-header bordered noperm" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/lease/input/check/">고지 내역 관리(입력)</a></li>
+                <li class="nav-header bordered side-item noperm"><a href="/lease/input/check/">고지 내역 관리(입력)</a></li>
                 {% endif %}
                 {% if perms.buildingApp.lease_payment %}
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/lease/payment/">납부 내역 관리(입력)</a></li>
+                <li class="nav-header bordered side-item"><a href="/lease/payment/">납부 내역 관리(입력)</a></li>
                 {% else %}
-                <li class="nav-header bordered noperm" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/lease/payment/">납부 내역 관리(입력)</a></li>
+                <li class="nav-header bordered side-item noperm"><a href="/lease/payment/">납부 내역 관리(입력)</a></li>
+                {% endif %}
+                {% if perms.buildingApp.lease_bill %}
+                <li class="nav-header bordered side-item"><a href="/lease/bill/">표준 고지서 공지 입력</a></li>
+                {% else %}
+                <li class="nav-header bordered side-item noperm"><a href="/lease/bill/">표준 고지서 공지 입력</a></li>
+                {% endif %}
+                {% if perms.buildingApp.lease_leave %}
+                <li class="nav-header bordered side-item"><a href="/lease/leave/">퇴거 정산서 관리(입력/확인)</a></li>
+                {% else %}
+                <li class="nav-header bordered side-item noperm"><a href="/lease/leave/">퇴거 정산서 관리(입력/확인)</a></li>
                 {% endif %}
 
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;" onclick="sidebar_hide4(this);"><a href="#">▼ [관리자 시스템]</a></li>
+                <li class="nav-header bordered side-header" onclick="sidebar_hide4(this);"><a href="#">▼ [관리자 시스템]</a></li>
                 {% if perms.buildingApp.manage_activate %}
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/manage/activate/">회원 승인 관리</a></li>
+                <li class="nav-header bordered side-item"><a href="/manage/activate/">사원 승인 관리</a></li>
                 {% else %}
-                <li class="nav-header bordered noperm" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/manage/activate/">회원 승인 관리</a></li>
+                <li class="nav-header bordered side-item noperm"><a href="/manage/activate/">사원 승인 관리</a></li>
                 {% endif %}
                 {% if perms.buildingApp.manage_accountinfo %}
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/manage/accountinfo/">회원 정보 관리</a></li>
+                <li class="nav-header bordered side-item"><a href="/manage/accountinfo/">사원 정보 관리</a></li>
                 {% else %}
-                <li class="nav-header bordered noperm" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/manage/accountinfo/">회원 정보 관리</a></li>
+                <li class="nav-header bordered side-item noperm"><a href="/manage/accountinfo/">사원 정보 관리</a></li>
                 {% endif %}
                 {% if perms.buildingApp.manage_right %}
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/manage/right/">회원 권한 관리</a></li>
+                <li class="nav-header bordered side-item"><a href="/manage/right/">사원 권한 관리</a></li>
                 {% else %}
-                <li class="nav-header bordered noperm" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/manage/right/">회원 권한 관리</a></li>
+                <li class="nav-header bordered side-item noperm"><a href="/manage/right/">사원 권한 관리</a></li>
                 {% endif %}
                 {% if perms.buildingApp.manage_setting %}
-                <li class="nav-header bordered" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/manage/setting/department/">시스템 설정</a></li>
+                <li class="nav-header bordered side-item"><a href="/manage/setting/department/">시스템 설정</a></li>
                 {% else %}
-                <li class="nav-header bordered noperm" style="margin:3px 1px 0px 1px;background-color:#ffffff;font-weight:normal;display:none;"><a href="/manage/setting/department/">시스템 설정</a></li>
+                <li class="nav-header bordered side-item noperm"><a href="/manage/setting/department/">시스템 설정</a></li>
                 {% endif %}
 
                 <li class="nav-header bordered" style="margin:3px 1px 0px 1px;"><a href="#">[사내 정보 시스템]</a></li>

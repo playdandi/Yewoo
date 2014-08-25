@@ -4,6 +4,7 @@ from django.views.generic import RedirectView
 from buildingApp.views_01 import *
 from buildingApp.views_02 import *
 from buildingApp.views_03 import *
+from buildingApp.views_03_05 import *
 from buildingApp.views_04 import *
 from buildingApp.views_account import *
 from buildingApp.views_leave import *
@@ -27,10 +28,12 @@ urlpatterns = patterns('',
 
     url(r'^$', RedirectView.as_view(url='/login/')),
 
-    url(r'^account/signup/', signup),
-    url(r'^account/checkid/', checkid),
-    url(r'^login/', login_request), 
-    url(r'^logout/', logout_request), 
+    url(r'^account/signup/$', signup),
+    url(r'^account/checkid/$', checkid),
+    url(r'^login/$', login_request), 
+    url(r'^logout/$', logout_request), 
+    url(r'^myprofile/$', myprofile_html), 
+    url(r'^myprofile/upload/$', myprofile_upload_html), 
 
 #    url(r'^main/$', main_html),
     url(r'^newmain/$', newmain_html),
@@ -94,9 +97,15 @@ urlpatterns = patterns('',
     url(r'^lease/leave/confirm/(?P<uid>\d+)/$', leave_confirm_html),
     url(r'^lease/leave/final/(?P<uid>\d+)/$', leave_final_html),
 
+    url(r'^lease/bill/$', bill_show_html),
+    url(r'^lease/bill/total/input/$', bill_total_input_html),
+    url(r'^lease/bill/total/look/$', bill_total_look_html),
+    url(r'^lease/bill/total/manage/$', bill_total_manage_html),
+
     url(r'^manage/activate/$', activate_html), 
     url(r'^manage/accountinfo/$', accountinfo_html), 
     url(r'^manage/accountinfo/detail/(?P<uid>\d+)/$', accountinfo_detail_html), 
+    url(r'^manage/accountinfo/detail/upload/(?P<uid>\d+)/$', accountinfo_detail_upload_html), 
     url(r'^manage/right/$', right_html), 
     url(r'^manage/setting/department/$', setting_department_html), 
     url(r'^manage/setting/position/$', setting_position_html), 

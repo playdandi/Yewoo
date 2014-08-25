@@ -128,7 +128,7 @@
 				<div class="span11">
 					<ul class="breadcrumb" style="margin: 5px 0px 5px 0px;">
 						<li>
-							<a href="#">관리자 시스템 > 회원 정보 관리</a>
+							<a href="#">관리자 시스템 > 사원 정보 관리</a>
 						</li>
 					</ul>
 				</div>
@@ -136,9 +136,9 @@
 						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 								<tr>
-									<td width="20%"><a href="/manage/activate/">1. 회원 승인 관리</a></td>
-									<td width="20%" style="background-color:#dbdbd2"><a href="/manage/accountinfo/">2. 회원 정보 관리</a></td>
-									<td width="20%"><a href="/manage/right/">3. 회원 권한 관리</a></td>
+									<td width="20%"><a href="/manage/activate/">1. 사원 승인 관리</a></td>
+									<td width="20%" style="background-color:#dbdbd2"><a href="/manage/accountinfo/">2. 사원 정보 관리</a></td>
+									<td width="20%"><a href="/manage/right/">3. 사원 권한 관리</a></td>
 									<td width="20%"><a href="/manage/setting/department/">4. 시스템 설정</a></td>
 									<td width="20%"></td>
 								</tr>
@@ -182,22 +182,26 @@
 							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;">
 								<tr style="background:#d0d0d0;">
                                     <td width="5%"><input type="checkbox" disabled/></td>
-									<td width="8%">이름</td>
-									<td width="8%">사번</td>
-									<td width="8%">부서</td>
-									<td width="8%">직급</td>
-									<td width="8%">재직 현황</td>
-									<td width="9%">입사일</td>
-									<td width="9%">퇴사일</td>
-									<td width="13%">연락처</td>
-									<td width="14%">이메일</td>
+									<td width="7%">이름</td>
+									<td width="7%">사번</td>
+									<td width="7%">부서</td>
+									<td width="7%">직급</td>
+									<td width="7%">재직 현황</td>
+									<td width="8%">입사일</td>
+									<td width="8%">퇴사일</td>
+									<td width="12%">연락처</td>
+									<td width="13%">이메일</td>
 									<td width="9%">수정하기</td>
 									<td width="9%">상세 보기</td>
 								</tr>
                                 {% for user in users %}
 								<tr class="datas">
                                     <td><input type="checkbox" disabled/></td>
-									<td>{{ user.userprofile.name }} ▩</b></td>
+                                    {% if user.hasimage %}
+									<td>{{ user.userprofile.name }}<i class="icon-user" onmouseover="$('#img{{user.id}}').attr('src','/static/person_img/{{user.imgfile}}');" onmouseout="$('#img{{user.id}}').attr('src','/static/person_img/trans.png');"></i><img width="auto" height="auto" src="/static/person_img/trans.png" id="img{{user.id}}" style="zindex: 100; position: absolute;max-width:100px;"/></td>
+                                    {% else %}
+									<td>{{ user.userprofile.name }}</td>
+                                    {% endif %}
 									<td>{% if user.userprofile.companynumber %}{{ user.userprofile.companynumber }}{% else %}{% endif %}</td>
 									<td>{{ user.userprofile.department }}</td>
 									<td>{{ user.userprofile.position }}</td>

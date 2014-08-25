@@ -44,6 +44,15 @@ def activate_html(request):
 @permission_required('buildingApp.manage_accountinfo', login_url='/login/')
 def accountinfo_html(request):
     users = User.objects.filter(is_superuser=False).exclude(userprofile__status=0)
+    
+    PERSON_IMG_DIR = os.path.join(os.path.dirname(__file__), 'static/person_img')
+    for user in users:
+        user.hasimage = False
+        for file_name in os.listdir(PERSON_IMG_DIR):
+            if file_name.lower().startswith(str(user.id) + '.'):
+                user.imgfile = file_name
+                user.hasimage = True
+                break
     try:
        username = request.user.userprofile.name
     except:
@@ -85,6 +94,39 @@ def accountinfo_detail_html(request, uid):
             userprofile.address2 = request.POST['address2']
             userprofile.save()
             return render(request, 'index.html')
+        elif type == '2':
+            user = User.objects.get(id=uid)
+            acaExisting = AcademicCareer.objects.filter(user=user)
+            for aca in acaExisting:
+                aca.delete()
+            acaNum = int(request.POST['arraynum'])
+            for i in range(acaNum):
+                aca = AcademicCareer()
+                aca.user = user
+                aca.period = request.POST['period' + str(i)]
+                aca.name = request.POST['name' + str(i)]
+                aca.location = request.POST['location' + str(i)]
+                aca.major = request.POST['major' + str(i)]
+                aca.gpa = request.POST['gpa' + str(i)]
+                aca.maxgpa = request.POST['maxgpa' + str(i)]
+                aca.etc = request.POST['etc' + str(i)]
+                aca.save()
+            return render(request, 'index.html')
+        elif type == '3':
+            user = User.objects.get(id=uid)
+            workExisting = WorkCareer.objects.filter(user=user)
+            for work in workExisting:
+                work.delete()
+            workNum = int(request.POST['arraynum'])
+            for i in range(workNum):
+                work = WorkCareer()
+                work.user = user
+                work.period = request.POST['period' + str(i)]
+                work.name = request.POST['name' + str(i)]
+                work.position = request.POST['position' + str(i)]
+                work.mission = request.POST['mission' + str(i)]
+                work.save()
+            return render(request, 'index.html')
         elif type == '4':
             user = User.objects.get(id=uid)
             userprofile = user.userprofile
@@ -115,13 +157,53 @@ def accountinfo_detail_html(request, uid):
                     available_companynum.append(number)
             academics = AcademicCareer.objects.filter(user=user)
             works = WorkCareer.objects.filter(user=user)
+            
+            PERSON_IMG_DIR = os.path.join(os.path.dirname(__file__), 'static/person_img')
+            imgfile = "empty.png"
+            for file_name in os.listdir(PERSON_IMG_DIR):
+                if file_name.lower().startswith(str(uid) + '.'):
+                    imgfile = file_name
+                    break
+                    
             return render_to_response('04_02_accountinfo_detail.html', \
                                         {'user' : user, 'username' : username, 'avail_nums' : available_companynum, \
                                         'departments' : departments, 'positions' : positions , \
-                                        'academics' : academics, 'works' : works} , \
+                                        'academics' : academics, 'works' : works, 'imgfile' : imgfile} , \
                                         context_instance=RequestContext(request))
-        except:
+        except Exception as e:
+            print e
             return HttpResponse("에러가 발생하였습니다.", status=404)
+
+@permission_required('buildingApp.manage_accountinfo', login_url='/login/')
+def accountinfo_detail_upload_html(request, uid):
+    if request.method == "POST":
+        if 'file' in request.FILES:
+            file = request.FILES['file']
+#            filename = file._name
+            filename = str(uid) + '.' + file._name.split('.')[-1]
+            UPLOAD_DIR = os.path.join(os.path.dirname(__file__), 'static/person_img')
+
+            for file_name in os.listdir(UPLOAD_DIR):
+                if file_name.lower().startswith(str(uid) + '.'):
+                    file_path = os.path.join(UPLOAD_DIR, file_name)
+                    try:
+                        if os.path.isfile(file_path):
+                            os.unlink(file_path)
+                    except Exception, e:
+                        print e
+
+
+            fp = open('%s/%s' % (UPLOAD_DIR, filename) , 'wb')
+            for chunk in file.chunks():
+                fp.write(chunk)
+            fp.close()
+            return HttpResponse('<script>alert("사진을 성공적으로 업로드하였습니다.");window.opener.location.href = "/manage/accountinfo/detail/' + str(uid) + '/";window.close();</script>')
+
+    else:
+        return render_to_response('04_02_accountinfo_detail_upload.html', \
+                                    {} , \
+                                    context_instance=RequestContext(request))
+
 
 @permission_required('buildingApp.manage_right', login_url='/login/')
 def right_html(request):
@@ -161,6 +243,16 @@ def right_html(request):
         return render(request, 'index.html')
     else:
         users = User.objects.filter(is_superuser=False).exclude(userprofile__status=0)
+
+        PERSON_IMG_DIR = os.path.join(os.path.dirname(__file__), 'static/person_img')
+        for user in users:
+            user.hasimage = False
+            for file_name in os.listdir(PERSON_IMG_DIR):
+                if file_name.lower().startswith(str(user.id) + '.'):
+                    user.imgfile = file_name
+                    user.hasimage = True
+                    break
+
         for user in users:
             user.permcount = 0
             user.perm = []

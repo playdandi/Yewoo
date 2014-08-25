@@ -21,14 +21,28 @@
           <p class="navbar-text pull-left" style="width:250px">
               {% if user.is_superuser %}총괄 관리자{% else %}일반{% endif %} <a href="#" class="navbar-link">{{ user.userprofile.name }}</a> 님 <button class="btn btn-mini" onclick="location.href='/logout/'">로그아웃</button>
           </p>
-          <ul class="nav">
-            <li class="divider-vertical"></li>
-            <li class="disabled" style="width:160px;text-align:center"><a href="#">업무 게시글쓰기</a></li>
-            <li class="disabled" style="width:160px;text-align:center"><a href="#">안 읽은 글</a></li>
-            <li class="disabled" style="width:160px;text-align:center"><a href="#">내 게시물</a></li>
-            <li class="disabled" style="width:160px;text-align:center"><a href="#">통합 게시판</a></li>
-            <li class="disabled" style="width:160px;text-align:center"><a href="#">내 일정 관리</a></li>
-            <li class="disabled" style="width:160px;text-align:center"><a href="#">내 정보 관리</a></li>
+          <ul class="nav header-nav">
+            <li class="divider-vertical" style="width:0px;"></li>
+            <li class="disabled"><a href="#">업무 게시글쓰기</a></li>
+            <li class="disabled"><a href="#">안 읽은 글</a></li>
+            <li class="disabled"><a href="#">내 게시물</a></li>
+            <li class="disabled"><a href="#">통합 게시판</a></li>
+            <li class="disabled"><a href="#">내 일정 관리</a></li>
+            <li class="disabled"><a href="#">내 정보 관리</a></li>
+            {% if menu == "myinfo" %}
+            <li class="dropdown active">
+            {% else %}
+            <li class="dropdown">
+            {% endif %}
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">내 정보 관리<b class="caret"></b></a>
+              <ul class="dropdown-menu dropdown-header4" style="left:-361px">
+                <li><a href="/myprofile/">내 프로필 관리하기</a>
+                </li><li class="disabled"><a href="#">내 근태 이력 보기</a>
+                </li><li class="disabled"><a href="#">내 업무 평가 보기</a>
+                </li><li class="disabled"><a href="#">내 로그인 정보 보기</a>
+                </li>
+              </ul>
+            </li>
           </ul>
         </div>
       </div>
@@ -39,61 +53,62 @@
           <p class="navbar-text pull-left" style="width:250px;">
               최근 접속일자 {{ user.last_login|date:"Y.m.d H:i:s" }}
           </p>
-          <ul class="nav">
-            <li class="divider-vertical"></li>
+          <ul class="nav header-nav">
+            <li class="divider-vertical" style="width:0px;"></li>
             {% if menu == "building" %}
-            <li class="dropdown active" style="width:160px;text-align:center">
+            <li class="dropdown active">
             {% else %}
-            <li class="dropdown" style="width:160px;text-align:center">
+            <li class="dropdown">
             {% endif %}
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">건물 관리 시스템<b class="caret"></b></a>
-              <ul class="dropdown-menu dropdown-header3">
-                <li style="width:165px;text-align:center"><a href="/building/register/">건물 정보 등록</a></li>
-                <li style="width:165px;text-align:center"><a href="/building/search/building/">등록 건물 정보 확인</a></li>
-                <li style="width:165px;text-align:center"><a href="/building/search/rooms/">등록 호수 정보 확인</a></li>
+              <ul class="dropdown-menu dropdown-header3" style="left:-1px">
+                <li><a href="/building/register/">건물 정보 등록</a>
+                </li><li><a href="/building/search/building/">등록 건물 정보 확인</a>
+                </li><li><a href="/building/search/rooms/">등록 호수 정보 확인</a></li>
               </ul>
             </li>
             {% if menu == "resident" %}
-            <li class="dropdown active" style="width:160px;text-align:center">
+            <li class="dropdown active">
             {% else %}
-            <li class="dropdown" style="width:160px;text-align:center">
+            <li class="dropdown">
             {% endif %}
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">입주자 관리 시스템<b class="caret"></b></a>
-              <ul class="dropdown-menu dropdown-header3" style="left:-100px">
-                <li style="width:165px;text-align:center"><a href="/resident/show/">입주자 정보 확인(목록)</a></li>
-                <li style="width:165px;text-align:center"><a href="/resident/info/">입주자 정보 입력(개별)</a></li>
-                <li style="width:165px;text-align:center"><a href="/resident/infoFile/">입주자 정보 입력(파일)</a></li>
+              <ul class="dropdown-menu dropdown-header3" style="left:-181px">
+                <li><a href="/resident/show/">입주자 정보 확인(목록)</a>
+                </li><li><a href="/resident/info/">입주자 정보 입력(개별)</a>
+                </li><li><a href="/resident/infoFile/">입주자 정보 입력(파일)</a></li>
               </ul>
             </li>
-            <li class="disabled" style="width:160px;text-align:center"><a href="#contact">시설 관리 시스템</a></li>
+            <li class="disabled"><a href="#contact">시설 관리 시스템</a></li>
             {% if menu == "lease" %}
-            <li class="dropdown active" style="width:160px;text-align:center">
+            <li class="dropdown active">
             {% else %}
             <li class="dropdown">
             {% endif %}
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">통합 내역 관리 시스템<b class="caret"></b></a>
-              <ul class="dropdown-menu dropdown-header3" style="left:-100px">
-                <li style="width:165px;text-align:center"><a href="/lease/show/lease/">통합 내역 관리(확인)</a></li>
-                <li style="width:165px;text-align:center"><a href="/lease/input/check/">고지 내역 관리(입력)</a></li>
-                <li style="width:165px;text-align:center"><a href="/lease/payment/">납부 내역 관리(입력)</a></li>
-                <li style="width:165px;text-align:center"><a href="/lease/leave/">퇴거 정산서 관리(입력/확인)</a></li>
+              <ul class="dropdown-menu dropdown-header5" style="left:-181px">
+                <li><a href="/lease/show/lease/">통합 내역 관리(확인)</a>
+                </li><li><a href="/lease/input/check/">고지 내역 관리(입력)</a>
+                </li><li><a href="/lease/payment/">납부 내역 관리(입력)</a>
+                </li><li><a href="/lease/bill/">표준 고지서 공지 입력</a>
+                </li><li><a href="/lease/leave/">퇴거 정산서 관리(입력/확인)</a></li>
               </ul>
             </li>
             {% if menu == "manage" %}
-            <li class="dropdown active" style="width:160px;text-align:center">
+            <li class="dropdown active">
             {% else %}
-            <li class="dropdown" style="width:160px;text-align:center">
+            <li class="dropdown">
             {% endif %}
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">관리자 시스템<b class="caret"></b></a>
-              <ul class="dropdown-menu dropdown-header4" style="left:-200px">
-                <li style="width:165px;text-align:center"><a href="/manage/activate/">회원 승인 관리</a></li>
-                <li style="width:165px;text-align:center"><a href="/manage/accountinfo/">회원 정보 관리</a></li>
-                <li style="width:165px;text-align:center"><a href="/manage/right/">회원 권한 관리</a></li>
-                <li style="width:165px;text-align:center"><a href="/manage/setting/department/">시스템 설정</a></li>
+              <ul class="dropdown-menu dropdown-header4" style="left:-181px">
+                <li><a href="/manage/activate/">사원 승인 관리</a>
+                </li><li><a href="/manage/accountinfo/">사원 정보 관리</a>
+                </li><li><a href="/manage/right/">사원 권한 관리</a>
+                </li><li><a href="/manage/setting/department/">시스템 설정</a></li>
               </ul>
             </li>
-            <li class="disabled" style="width:160px;text-align:center"><a href="#contact">통계 시스템</a></li>
-            <li class="disabled" style="width:160px;text-align:center"><a href="#contact">사내 정보 시스템</a></li>
+            <li class="disabled"><a href="#contact">통계 시스템</a></li>
+            <li class="disabled"><a href="#contact">사내 정보 시스템</a></li>
           </ul>
         </div>
       </div>

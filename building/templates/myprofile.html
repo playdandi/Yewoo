@@ -108,12 +108,12 @@
 
 <body>
     <!-- start:Header --!>
-    {% include "header.html" with menu="manage" username=username %}
+    {% include "header.html" with menu="myinfo" username=username %}
     <!-- end:Header --!>
 	<div class="container-fluid">
         <div class="row-fluid">
         <div class="span3" style="width:250px">
-          {% include "sidebar.html" with side_menu="department" %}
+          {% include "sidebar.html" with side_menu="private" %}
         </div><!--/span-->
 				
 			<noscript>
@@ -125,33 +125,11 @@
 			
 			<!-- start: Content -->	
 			<div id="content" class="span9">
-				<div class="span11">
-					<ul class="breadcrumb" style="margin: 5px 0px 5px 0px;">
-						<li>
-							<a href="#">관리자 시스템 > 사원 정보 관리</a>
-						</li>
-					</ul>
-				</div>
-					<div class="box span11" style="margin: 0px; padding: 0px">
-						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
-							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
-								<tr>
-									<td width="20%"><a href="/manage/activate/">1. 사원 승인 관리</a></td>
-									<td width="20%" style="background-color:#dbdbd2"><a href="/manage/accountinfo/">2. 사원 정보 관리</a></td>
-									<td width="20%"><a href="/manage/right/">3. 사원 권한 관리</a></td>
-									<td width="20%"><a href="/manage/setting/department/">4. 시스템 설정</a></td>
-									<td width="20%"></td>
-								</tr>
-							</table>
-						</div>
-					</div>
-
-
 				<div class="span11 bordered" style="padding:7px 7px 7px 7px;margin:5px 0px 5px 0px;">
                     <div>
 					    <ul class="breadcrumb" style="margin: 5px 0px 5px 0px;">
     						<li>
-    							<a href="#">사원 정보 관리 > 1. 개인 프로필</a>
+    							<a href="#">내 정보 관리 > 1. 내 프로필 관리하기</a>
     						</li>
     					</ul>
                     </div>
@@ -159,10 +137,10 @@
 						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 								<tr>
-									<td width="20%" style="background-color:#dbdbd2"><a href="#">1. 개인 프로필</a></td>
-									<td width="20%"><a href="#">2. 근태 관리</a></td>
-									<td width="20%"><a href="#">3. 업무 평가</a></td>
-									<td width="20%"><a href="#">4. 시스템 로그인 정보</a></td>
+									<td width="20%" style="background-color:#dbdbd2"><a href="#">1. 내 프로필 관리하기</a></td>
+									<td width="20%"><a href="#">2. 내 근태 이력 보기</a></td>
+									<td width="20%"><a href="#">3. 내 업무 평가 보기</a></td>
+									<td width="20%"><a href="#">4. 내 로그인 정보 보기</a></td>
 									<td width="20%"></td>
 								</tr>
 							</table>
@@ -457,7 +435,7 @@
 		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
 
-		<script src="{{ STATIC_URL }}js/04_02_accountinfo_detail.js"></script>
+		<script src="{{ STATIC_URL }}js/myprofile.js"></script>
 		<script src="{{ STATIC_URL }}js/common.js"></script>
 		
 		<script type="text/javascript" language="JavaScript">
@@ -473,7 +451,7 @@
                 $("#side-datepicker3").datepicker();
 			});
             function ShowUpWin(uid) {
-                window.open("/manage/accountinfo/detail/upload/"+uid, "사진업로드", "width=600, height=100, toolbar=no, menubar=no, scrollbars=no, resizable=yes" );
+                window.open("/myprofile/upload/", "사진업로드", "width=600, height=100, toolbar=no, menubar=no, scrollbars=no, resizable=yes" );
             }
 		</script>
 		<!-- end: JavaScript-->

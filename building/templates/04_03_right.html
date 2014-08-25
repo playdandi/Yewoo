@@ -128,7 +128,7 @@
 				<div class="span11">
 					<ul class="breadcrumb" style="margin: 5px 0px 5px 0px;">
 						<li>
-							<a href="#">관리자 시스템 > 회원 권한 관리</a>
+							<a href="#">관리자 시스템 > 사원 권한 관리</a>
 						</li>
 					</ul>
 				</div>
@@ -136,9 +136,9 @@
 						<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 								<tr>
-									<td width="20%"><a href="/manage/activate/">1. 회원 승인 관리</a></td>
-									<td width="20%"><a href="/manage/accountinfo/">2. 회원 정보 관리</a></td>
-									<td width="20%" style="background-color:#dbdbd2"><a href="/manage/right/">3. 회원 권한 관리</a></td>
+									<td width="20%"><a href="/manage/activate/">1. 사원 승인 관리</a></td>
+									<td width="20%"><a href="/manage/accountinfo/">2. 사원 정보 관리</a></td>
+									<td width="20%" style="background-color:#dbdbd2"><a href="/manage/right/">3. 사원 권한 관리</a></td>
 									<td width="20%"><a href="/manage/setting/department/">4. 시스템 설정</a></td>
 									<td width="20%"></td>
 								</tr>
@@ -194,7 +194,11 @@
                                 {% for user in users %}
 								<tr class="datas">
                                     <td><input type="checkbox" disabled/></td>
-									<td>{{ user.userprofile.name }} ▩</b></td>
+                                    {% if user.hasimage %}
+									<td>{{ user.userprofile.name }}<i class="icon-user" onmouseover="$('#img{{user.id}}').attr('src','/static/person_img/{{user.imgfile}}');" onmouseout="$('#img{{user.id}}').attr('src','/static/person_img/trans.png');"></i><img width="auto" height="auto" src="/static/person_img/trans.png" id="img{{user.id}}" style="zindex: 100; position: absolute;max-width:100px;"/></td>
+                                    {% else %}
+									<td>{{ user.userprofile.name }}</td>
+                                    {% endif %}
 									<td>{% if user.userprofile.companynumber %}{{ user.userprofile.companynumber }}{% else %}{% endif %}</td>
 									<td>{{ user.userprofile.department }}</td>
 									<td>{{ user.userprofile.position }}</td>
@@ -281,15 +285,15 @@
                                                 <table class="table-center" style="border: none;">
                                                     <tr style="border:none;">
                                                         <td style="border:none;" width="20%"><input id="check9_{{user.id}}" type="checkbox" {% if user.perm.9 %}checked{% endif %}/></td>
-                                                        <td style="border:none;" width="80%">회원 승인 관리</td>
+                                                        <td style="border:none;" width="80%">사원 승인 관리</td>
                                                     </tr>
                                                     <tr>
                                                         <td style="border:none;"><input id="check10_{{user.id}}" type="checkbox" {% if user.perm.10 %}checked{% endif %}/></td>
-                                                        <td style="border:none;">회원 정보 관리</td>
+                                                        <td style="border:none;">사원 정보 관리</td>
                                                     </tr>
                                                     <tr>
                                                         <td style="border:none;"><input id="check11_{{user.id}}" type="checkbox" {% if user.perm.11 %}checked{% endif %}/></td>
-                                                        <td style="border:none;">회원 권한 관리</td>
+                                                        <td style="border:none;">사원 권한 관리</td>
                                                     </tr>
                                                     <tr>
                                                         <td style="border:none;"><input id="check12_{{user.id}}" type="checkbox" {% if user.perm.12 %}checked{% endif %}/></td>

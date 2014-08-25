@@ -82,11 +82,11 @@ function UpdateInfo1(uid) {
     data['type'] = 1
     $.ajax({
         type : 'POST',
-        url : '/manage/accountinfo/detail/' + uid + '/',
+        url : '/myprofile/',
         data : data,
         success : function() {
             alert('변경되었습니다.');
-            $(location).attr('href', '/manage/accountinfo/detail/' + uid + '/');
+            $(location).attr('href', '/myprofile/');
         },
         error : function(msg) {
             alert('error : ' + msg.responseText);
@@ -168,11 +168,11 @@ function UpdateInfo2(uid) {
     data['type'] = 2
     $.ajax({
         type : 'POST',
-        url : '/manage/accountinfo/detail/' + uid + '/',
+        url : '/myprofile/',
         data : data,
         success : function() {
             alert('변경되었습니다.');
-            $(location).attr('href', '/manage/accountinfo/detail/' + uid + '/');
+            $(location).attr('href', '/myprofile/');
         },
         error : function(msg) {
             alert('error : ' + msg.responseText);
@@ -196,7 +196,7 @@ function Revise2Cancel(uid) {
     if (!confirm('취소하시겠습니까?'))
 	    return;
     else
-        $(location).attr('href', '/manage/accountinfo/detail/' + uid + '/');
+        $(location).attr('href', '/myprofile/');
 }
 
 function Revise2DelLine(delbutton) {
@@ -313,11 +313,11 @@ function UpdateInfo3(uid) {
     data['type'] = 3
     $.ajax({
         type : 'POST',
-        url : '/manage/accountinfo/detail/' + uid + '/',
+        url : '/myprofile/',
         data : data,
         success : function() {
             alert('변경되었습니다.');
-            $(location).attr('href', '/manage/accountinfo/detail/' + uid + '/');
+            $(location).attr('href', '/myprofile/');
         },
         error : function(msg) {
             alert('error : ' + msg.responseText);
@@ -341,7 +341,7 @@ function Revise3Cancel(uid) {
     if (!confirm('취소하시겠습니까?'))
 	    return;
     else
-        $(location).attr('href', '/manage/accountinfo/detail/' + uid + '/');
+        $(location).attr('href', '/myprofile/');
 }
 
 function Revise3DelLine(delbutton) {
@@ -409,11 +409,11 @@ function UpdateInfo4(uid) {
     data['type'] = 4
     $.ajax({
         type : 'POST',
-        url : '/manage/accountinfo/detail/' + uid + '/',
+        url : '/myprofile/',
         data : data,
         success : function() {
             alert('변경되었습니다.');
-            $(location).attr('href', '/manage/accountinfo/detail/' + uid + '/');
+            $(location).attr('href', '/myprofile/');
         },
         error : function(msg) {
             alert('error : ' + msg.responseText);
