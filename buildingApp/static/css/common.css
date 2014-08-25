@@ -169,3 +169,29 @@
 {
     color: white;
 }
+
+#leave .width100
+{
+    width: 100%;
+}
+
+#leave .width98
+{
+    width: 98%;
+}
+
+#leave .width95
+{
+    width: 95%;
+}
+
+#leave .margin5
+{
+    margin: 5px;
+}
+
+#leave .padding5
+{
+    padding: 5px;
+}
+
