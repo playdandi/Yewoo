@@ -5,6 +5,14 @@ angular.module('yewooApp', [])
         var payments = [];
         var paymentDetails = [];
 
+        s.previewOwner = function() {
+            window.open("/lease/leave/owner_print/" + $("#rid").val());
+        };
+
+        s.previewTenant = function() {
+            window.open("/lease/leave/tenant_print/" + $("#rid").val());
+        };
+
         // 미납요금 내역 가져오기
 
         function AdjustPaymentYM(nowym, y, m, type)

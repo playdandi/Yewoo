@@ -99,9 +99,25 @@ def leave_owner_html(request, uid):
     csrf_token = get_token(request)
     return render(request, 'leave_owner.html', get_resident_info(uid))
 
+def leave_owner_print_html(request, uid):
+    csrf_token = get_token(request)
+    return render(request, 'leave_owner_print.html', get_resident_info(uid))
+
+def leave_confirm_owner_print_html(request, uid):
+    csrf_token = get_token(request)
+    return render(request, 'leave_confirm_owner_print.html', get_resident_info(uid))
+
 def leave_tenant_html(request, uid):
     csrf_token = get_token(request)
     return render(request, 'leave_tenant.html', get_resident_info(uid))
+
+def leave_tenant_print_html(request, uid):
+    csrf_token = get_token(request)
+    return render(request, 'leave_tenant_print.html', get_resident_info(uid))
+
+def leave_confirm_tenant_print_html(request, uid):
+    csrf_token = get_token(request)
+    return render(request, 'leave_confirm_tenant_print.html', get_resident_info(uid))
 
 def leave_confirm_html(request, uid):
     csrf_token = get_token(request)
