@@ -86,6 +86,10 @@ def get_resident_info(uid):
 
     return {'result' : result, 'rooms' : rooms, 'building_name_id' : building_name_id, 'uid' : uid, 'range' : range(1, 32)}
 
+def print_info(request, dic):
+    if request.GET.get("print", None):
+       dic['print'] = True 
+    return dic
 
 def leave_html(request):
     csrf_token = get_token(request)
@@ -101,11 +105,11 @@ def leave_owner_html(request, uid):
 
 def leave_owner_print_html(request, uid):
     csrf_token = get_token(request)
-    return render(request, 'leave_owner_print.html', get_resident_info(uid))
+    return render(request, 'leave_owner_print.html', print_info(request, get_resident_info(uid)))
 
 def leave_confirm_owner_print_html(request, uid):
     csrf_token = get_token(request)
-    return render(request, 'leave_confirm_owner_print.html', get_resident_info(uid))
+    return render(request, 'leave_confirm_owner_print.html', print_info(request, get_resident_info(uid)))
 
 def leave_tenant_html(request, uid):
     csrf_token = get_token(request)
@@ -113,11 +117,11 @@ def leave_tenant_html(request, uid):
 
 def leave_tenant_print_html(request, uid):
     csrf_token = get_token(request)
-    return render(request, 'leave_tenant_print.html', get_resident_info(uid))
+    return render(request, 'leave_tenant_print.html', print_info(request, get_resident_info(uid)))
 
 def leave_confirm_tenant_print_html(request, uid):
     csrf_token = get_token(request)
-    return render(request, 'leave_confirm_tenant_print.html', get_resident_info(uid))
+    return render(request, 'leave_confirm_tenant_print.html', print_info(request, get_resident_info(uid)))
 
 def leave_confirm_html(request, uid):
     csrf_token = get_token(request)
