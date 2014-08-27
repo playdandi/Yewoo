@@ -98,9 +98,16 @@ urlpatterns = patterns('',
     url(r'^lease/leave/final/(?P<uid>\d+)/$', leave_final_html),
 
     url(r'^lease/bill/$', bill_show_html),
-    url(r'^lease/bill/total/input/$', bill_total_input_html),
-    url(r'^lease/bill/total/look/$', bill_total_look_html),
-    url(r'^lease/bill/total/manage/$', bill_total_manage_html),
+    url(r'^lease/bill/total/(?P<bid>\d+)/input/(?P<year>\d+)/(?P<month>\d+)/$', bill_total_input_html),
+    url(r'^lease/bill/total/(?P<bid>\d+)/look/(?P<year>\d+)/(?P<month>\d+)/(?P<searchYear>\d+)/$', bill_total_look_html),
+    url(r'^lease/bill/total/(?P<bid>\d+)/manage/(?P<year>\d+)/(?P<month>\d+)/(?P<searchYear>\d+)/$', bill_total_manage_html),
+	url(r'^lease/bill/total/input/confirm/$', bill_total_input_confirm),
+    
+	url(r'^lease/bill/each/(?P<bid>\d+)/(?P<roomid>\d+)/input/(?P<year>\d+)/(?P<month>\d+)/$', bill_each_input_html),
+    url(r'^lease/bill/each/(?P<bid>\d+)/(?P<roomid>\d+)/look/(?P<year>\d+)/(?P<month>\d+)/(?P<searchYear>\d+)/$', bill_each_look_html),
+    url(r'^lease/bill/each/(?P<bid>\d+)/(?P<roomid>\d+)/manage/(?P<year>\d+)/(?P<month>\d+)/(?P<searchYear>\d+)/$', bill_each_manage_html),
+	url(r'^lease/bill/each/input/confirm/$', bill_each_input_confirm),
+
 
     url(r'^manage/activate/$', activate_html), 
     url(r'^manage/accountinfo/$', accountinfo_html), 

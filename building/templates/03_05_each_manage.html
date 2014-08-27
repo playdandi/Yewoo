@@ -134,7 +134,7 @@
 				<div class="span11">
 					<ul class="breadcrumb" style="margin: 5px 0px 5px 0px;">
 						<li>
-							<a href="#">통합 내역 관리 시스템 > 고지서 안내 관리 > 전체 안내</a>
+							<a href="#">통합 내역 관리 시스템 > 고지서 안내 관리 > 개별 안내</a>
 						</li>
 					</ul>
 				</div>
@@ -142,9 +142,9 @@
 					<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 						<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 							<tr>
-								<td width="20%"><a href="/lease/bill/total/{{ bid }}/input/{{ year }}/{{ month }}/">1. 전체 안내 입력하기</a></td>
-								<td width="20%"><a href="/lease/bill/total/{{ bid }}/look/{{ year }}/{{ month }}/{{ year }}">2. 전체 안내 내역 보기</a></td>
-								<td width="20%" style="background-color:#dbdbd2"><a href="/lease/bill/total/{{ bid }}/manage/{{ year }}/{{ month }}/{{ year }}">3. 전체 안내 내역 관리하기</a></td>
+								<td width="20%"><a href="/lease/bill/each/{{ bid }}/{{ roomid }}/input/{{ year }}/{{ month }}/">1. 개별 안내 입력하기</a></td>
+								<td width="20%"><a href="/lease/bill/each/{{ bid }}/{{ roomid }}/look/{{ year }}/{{ month }}/{{ year }}">2. 개별 안내 내역 보기</a></td>
+								<td width="20%" style="background-color:#dbdbd2"><a href="/lease/bill/each/{{ bid }}/{{ roomid }}/manage/{{ year }}/{{ month }}/{{ year }}">3. 개별 안내 내역 관리하기</a></td>
 								<td width="40%"></td>
 							</tr>
 						</table>
@@ -154,7 +154,7 @@
 				<div class="row-fluid">
 					<div class="box span11" style="margin:10px 0px 5px 0px; padding: 0px">
 						<div class="box-header" style="padding:7px 10px 7px 10px">
-							<span><strong>3. 전체 안내 내역 관리하기</strong></span>
+							<span><strong>3. 개별 안내 내역 관리하기</strong></span>
 						</div>
 						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 							<!-- 검색 필터링 -->
@@ -171,7 +171,7 @@
 									</td>
 									<td width="13%">
 										<div style="float:right">
-											<button class="btn btn-small" onclick="searchYear('{{ bid }}', '{{ year }}', '{{ month }}');">조회</button>
+											<button class="btn btn-small" onclick="searchYear('{{ bid }}', '{{ roomid }}', '{{ year }}', '{{ month }}');">조회</button>
 											<button class="btn btn-small" onclick="">초기화</button>
 										</div>
 									</td>
@@ -180,24 +180,29 @@
 
 							<div class="box span12" style="margin:3px 3px 3px 3px; padding: 0px">
 								<div class="box-header" style="padding:7px 10px 7px 10px;">
-									<span><strong>건물 정보 ▼</strong></span>
+									<span><strong>입주자 정보 ▼</strong></span>
 								</div>
 								<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 									<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 										<tr>
-											<th width="16%" style="text-align:center">건물명</th>
-											<th width="16%" style="text-align:center" colspan="2">재실여부</th>
-											<th width="12%" style="text-align:center">관리 담당자</th>
+											<th width="15%" style="text-align:center">건물명</th>
+											<th width="8%" style="text-align:center">호실</th>
+											<th width="8%" style="text-align:center">재실여부</th>
+											<th width="12%" style="text-align:center">입주자</th>
+											<th width="5%" style="text-align:center">성별</th>
 											<th width="8%" style="text-align:center">회차</th>
-											<th width="24%" style="text-align:center">담당자 연락처</th>
-											<th width="24%" style="text-align:center">이메일</th>
+											<th width="15%" style="text-align:center">연락처 1</th>
+											<th width="15%" style="text-align:center">연락처 2</th>
+											<th width="14%" style="text-align:center">이메일</th>
 										</tr>
 										<tr>
 											<td style="text-align:center">{{ bname }}</td>
-											<td style="text-align:center">{{ numOfOccupied }}</td>
-											<td style="text-align:center">{{ allroom }}</td>
-											<td style="text-align:center">{{ manager }}</td>
+											<td style="text-align:center">{{ roomnum }}</td>
+											<td style="text-align:center">{{ isOccupied }}</td>
+											<td style="text-align:center">{{ residentName }}</td>
+											<td style="text-align:center">{{ residentGender }}</td>
 											<td style="text-align:center">{{ year }}/{{ month }}</td>
+											<td style="text-align:center"></td>
 											<td style="text-align:center"></td>
 											<td style="text-align:center"></td>
 										</tr>
@@ -208,22 +213,24 @@
 							<div class="box span12" style="margin:10px 3px 3px 3px; padding: 0px">
 								<div class="box-content span12" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 									{% for ym in yearmonth %}
-									<table class="table table-bordered table-condensed" style="margin-bottom:15px">
+									<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 										<tr style="background-color:#dbdbd2">
 											<th width="6%" style="text-align:right; vertical-align:middle">건물명</th>
 											<th width="10%"><input type="text" class="margin0 span12" style="text-align:center" value="{{ bname }}" disabled /></th>
+											<th width="6%" style="text-align:right; vertical-align:middle">호실</th>
+											<th width="8%"><input type="text" class="margin0 span12" style="text-align:center" value="{{ roomnum }}" disabled /></th>
 											<th width="8%" style="text-align:right; vertical-align:middle">안내회차</th>
 											<th width="10%"><input type="text" class="margin0 span12" style="text-align:center" value="{{ ym.yymm }}" disabled /></th>
-											<th width="66%" style="vertical-align:middle">총 <font style="color:red">{{ ym.cnt }}</font>개의 전체 안내 사항이 있습니다.<div style="float:right"><button class="btn btn-small btn-inverse" onclick="modify('');">입력/수정</button></div></th>
+											<th width="52%" style="vertical-align:middle">총 <font style="color:red">{{ ym.cnt }}</font>개의 개별 안내 사항이 있습니다.<div style="float:right"><button class="btn btn-small btn-inverse" onclick="modify('');">입력/수정</button></div></th>
 										</tr>
 										<tr>
-											<td colspan="5" style="background-color:#f0f0f0; text-align:center">전체 안내 내역보기</td>
+											<td colspan="7" style="background-color:#f0f0f0; text-align:center">개별 안내 내역보기</td>
 										</tr>
 									</table>
 										{% for d in ym.data %}
-									<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+									<table class="table table-bordered table-condensed" style="margin-bottom:15px">
 										<tr>
-											<td width="8%" style="text-align:center">전체안내</td>
+											<td width="8%" style="text-align:center">개별안내</td>
 											<td width="4%" style="text-align:center">{{ d.number }}</td>
 											<td width="8%" style="text-align:center; background-color:#f8f8f8">입력담당자</td>
 											<td width="8%" style="text-align:center">{{ d.manager }}</td>
@@ -323,7 +330,7 @@
 		<script src="{{ STATIC_URL }}ejs/ejs.js"></script>
 		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
-		<script src="{{ STATIC_URL }}js/03_05_total_manage.js"></script>
+		<script src="{{ STATIC_URL }}js/03_05_each_manage.js"></script>
 		<script src="{{ STATIC_URL }}js/common.js"></script>
 		
 		<script type="text/javascript" language="JavaScript">

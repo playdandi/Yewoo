@@ -137,9 +137,9 @@
 					<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 						<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 							<tr>
-								<td width="20%" style="background-color:#dbdbd2"><a href="/lease/bill/total/input/">1. 전체 안내 입력하기</a></td>
-								<td width="20%"><a href="/lease/bill/total/look/">2. 전체 안내 내역 보기</a></td>
-								<td width="20%"><a href="/lease/bill/total/manage/">3. 전체 안내 내역 관리하기</a></td>
+								<td width="20%" style="background-color:#dbdbd2"><a href="/lease/bill/total/{{ bid }}/input/{{ year }}/{{ month }}/">1. 전체 안내 입력하기</a></td>
+								<td width="20%"><a href="/lease/bill/total/{{ bid }}/look/{{ year }}/{{ month }}/{{ year }}">2. 전체 안내 내역 보기</a></td>
+								<td width="20%"><a href="/lease/bill/total/{{ bid }}/manage/{{ year }}/{{ month }}/{{ year }}">3. 전체 안내 내역 관리하기</a></td>
 								<td width="40%"></td>
 							</tr>
 						</table>
@@ -155,7 +155,7 @@
 							<div class="span12" style="margin:5px 0px 0px 0px">
 								<div class="span8 btn-group" style="margin-bottom:20px">
 									<button class="btn btn-small btn-setting" onclick="">미리보기</button>
-									<button class="btn btn-small btn-inverse" onclick="">목록으로 가기</button>
+									<button class="btn btn-small btn-inverse" onclick="GoToList();">목록으로 가기</button>
 								</div>
 							</div>
 							<div class="box span12" style="margin:3px 3px 3px 3px; padding: 0px">
@@ -165,21 +165,21 @@
 								<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 									<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 										<tr>
-											<th width="16%">건물명</th>
-											<th width="16%" colspan="2">재실여부</th>
-											<th width="12%">관리 담당자</th>
-											<th width="8%">회차</th>
-											<th width="24%">담당자 연락처</th>
-											<th width="24%">이메일</th>
+											<th width="16%" style="text-align:center">건물명</th>
+											<th width="16%" style="text-align:center" colspan="2">재실여부</th>
+											<th width="12%" style="text-align:center">관리 담당자</th>
+											<th width="8%" style="text-align:center">회차</th>
+											<th width="24%" style="text-align:center">담당자 연락처</th>
+											<th width="24%" style="text-align:center">이메일</th>
 										</tr>
 										<tr>
-											<td>루체시티 1</td>
-											<td>38</td>
-											<td>70</td>
-											<td>김단비</td>
-											<td>2014/07</td>
-											<td>010-1234-5678</td>
-											<td>danbi@yewoo.com</td>
+											<td style="text-align:center">{{ bname }}</td>
+											<td style="text-align:center">{{ numOfOccupied }}</td>
+											<td style="text-align:center">{{ allroom }}</td>
+											<td style="text-align:center">{{ manager }}</td>
+											<td style="text-align:center">{{ year }}/{{ month }}</td>
+											<td style="text-align:center"></td>
+											<td style="text-align:center"></td>
 										</tr>
 									</table>
 								</div>
@@ -193,40 +193,68 @@
 									<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 										<tr>
 											<th width="6%" style="text-align:right; vertical-align:middle">건물명</th>
-											<th width="10%"><input type="text" class="margin0 span12" style="text-align:center" value="루체시티 1" disabled /></th>
+											<th width="10%"><input type="text" class="margin0 span12" style="text-align:center" value="{{ bname }}" disabled /></th>
 											<th width="8%" style="text-align:right; vertical-align:middle">안내회차</th>
-											<th width="10%"><input type="text" class="margin0 span12" style="text-align:center" value="2014/07" disabled /></th>
-											<th width="60%" style="vertical-align:middle">총 <font style="color:red">12</font>개의 전체 안내 사항이 있습니다.</th>
-											<th width="6%"><button class="btn btn-small btn-inverse btn-block">입력/수정</button></th>
+											<th width="10%"><input type="text" class="margin0 span12" style="text-align:center" value="{{ year }}/{{ month }}" disabled /></th>
+											<th width="60%" style="vertical-align:middle">총 <font style="color:red">{{ numData }}</font>개의 전체 안내 사항이 있습니다.</th>
+											<th width="6%"><button class="btn btn-small btn-inverse btn-block" onclick="modify();">입력/수정</button></th>
 										</tr>
 										<tr>
 											<td colspan="6" style="background-color:#dbdbd2; text-align:center">현재 전체 안내 항목보기</td>
 										</tr>
 									</table>
-									<table class="table table-bordered table-condensed" style="margin-bottom:0px">
-										<tr>
+									<table id="contentTable" class="table table-bordered table-condensed" style="margin-bottom:0px">
+										{% for d in data %}
+										<tr class="item_{{ d.id }}">
 											<td width="3%" style="text-align:center"><input type="checkbox" /></td>
 											<td width="8%" style="text-align:center">전체안내</td>
-											<td width="4%" style="text-align:center">01</td>
+											<td width="4%" style="text-align:center">{{ d.number }}</td>
 											<td width="8%" style="text-align:center; background-color:#f8f8f8">입력담당자</td>
-											<td width="8%" style="text-align:center">김호근</td>
-											<td width="8%"><input type="text" class="margin0 span12" value="2014.07.12" disabled /></td>
+											<td width="8%" style="text-align:center" class="name_{{ d.id }} modify_{{ d.id }}">{{ d.managerName }}</td>
+											<td width="8%"><input type="text" id="inputDate_{{ d.id }}" class="margin0 span12 datepicker date_{{ d.id }} modify_{{ d.id }}" value="{{ d.inputDate }}" disabled onchange="adjustDate('{{ d.id }}');" /></td>
 											<td width="5%" style="text-align:center; background-color:#f8f8f8">분류</td>
-											<td width="7%"><input type="text" class="margin0 span12" value="기타" disabled /></td>
-											<td width="43%"><input type="text" class="margin0 span12" value="" disabled /></td>
-											<td width="6%" style="text-align:center"><strong>입력완료</strong></td>
+											<td width="10%">
+												<select id="sel_item_{{ d.id }}" class="margin0 span12 modify_{{ d.id }}" disabled>
+													<option value="1" {% if d.category == 1 %}selected{% endif %}>기타사항</option>
+												</select>
+											</td>
+											<td width="34%"><input type="text" class="margin0 span12 memo_{{ d.id }} modify_{{ d.id }}" value="{{ d.memo }}" disabled /></td>
+											<td width="12%" style="text-align:center">
+												<div class="not_modifying"><strong>입력완료</strong></div>
+												<div class="modifying" style="display:none"><button class="btn btn-small" onclick="modifyEach('{{ d.id }}');">수정</button><button class="btn btn-small" onclick="del('{{ d.id }}');">삭제</button></div>
+											</td>
+										</tr>
+										{% endfor %}
+									</table>
+									
+									<table class="table table-bordered table-condensed modifying" style="margin-bottom:0px; margin-top:10px; display:none">
+										<tr>
+											<td style="background-color:#dbdbd2; text-align:center">전체 안내 추가하기</td>
+										</tr>
+									</table>
+									<table class="table table-bordered table-condensed modifying" style="margin-bottom:0px; display:none">
+										<tr>
+											<td width="3%"></td>
+											<td width="8%" style="text-align:center">전체안내</td>
+											<td width="4%" style="text-align:center"><div id="add_number"></div></td>
+											<td width="8%" style="text-align:center; background-color:#f8f8f8">입력담당자</td>
+											<td width="8%" style="text-align:center"><input id="add_name" type="text" class="margin0 span12" /></td>
+											<td width="8%"><input id="add_date" type="text" class="margin0 span12 datepicker dateinput fontmini" /></td>
+											<td width="5%" style="text-align:center; background-color:#f8f8f8">분류</td>
+											<td width="10%">
+												<select id="add_category" class="margin0 span12">
+													<option value="1">기타사항</option>
+												</select>
+											</td>
+											<td width="34%"><input id="add_memo" type="text" class="margin0 span12" /></td>
+											<td width="12%" style="text-align:center"><button class="btn btn-small btn-inverse" onclick="addItem();">추가</button></td>
 										</tr>
 										<tr>
-											<td width="3%" style="text-align:center"><input type="checkbox" /></td>
-											<td width="8%" style="text-align:center">전체안내</td>
-											<td width="4%" style="text-align:center">02</td>
-											<td width="8%" style="text-align:center; background-color:#f8f8f8">입력담당자</td>
-											<td width="8%" style="text-align:center">김호근</td>
-											<td width="8%"><input type="text" class="margin0 span12" value="2014.07.12" disabled /></td>
-											<td width="5%" style="text-align:center; background-color:#f8f8f8">분류</td>
-											<td width="7%"><input type="text" class="margin0 span12" value="유지보수" disabled /></td>
-											<td width="43%"><input type="text" class="margin0 span12" value="" disabled /></td>
-											<td width="6%" style="text-align:center"><strong>입력완료</strong></td>
+											<td colspan="11" style="text-align:center">
+												<button class="btn btn-inverse" onclick="cancel();">취소</button>
+												<button class="btn btn-inverse">미리보기</button>
+												<button class="btn btn-inverse" onclick="done();">완료</button>
+											</td>
 										</tr>
 									</table>
 								</div>
@@ -312,8 +340,7 @@
 		<script src="{{ STATIC_URL }}ejs/ejs.js"></script>
 		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
-
-		<!--<script src="{{ STATIC_URL }}js/03_01_electricity_show.js"></script>!-->
+		<script src="{{ STATIC_URL }}js/03_05_total_input.js"></script>
 		<script src="{{ STATIC_URL }}js/common.js"></script>
 		
 		<script type="text/javascript" language="JavaScript">
@@ -355,6 +382,21 @@
                     }
                 });
 			});
+
+			$('.dateinput').change(function() {
+				var mdy = $(this).val().split('/');
+				$(this).val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
+			});
+
+
+			numData = Number('{{ numData }}')+1;
+			GetLastNo();
+			ids = new Array();
+			ids = {{ data_id|safe }};
+
+			curBid = '{{ bid }}';
+			curYear = '{{ year }}';
+			curMonth = '{{ month }}';
 		</script>
 		<!-- end: JavaScript-->
 	

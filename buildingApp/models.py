@@ -341,3 +341,25 @@ class WorkCareer(models.Model):
     position = models.CharField(max_length = 20)
     mission = models.CharField(max_length = 100)
 
+
+class StandardBill(models.Model):
+    type = models.IntegerField()
+    year = models.IntegerField()
+    month = models.IntegerField()
+    building = models.ForeignKey('BuildingInfo', null=True, blank=True)
+    room = models.ForeignKey('RoomInfo', null=True, blank=True)
+    managerName = models.CharField(max_length = 12)
+    inputDate = models.DateField(null=True)
+    category = models.IntegerField()
+    memo = models.TextField()
+    status = models.IntegerField()
+
+'''
+class StandardBillDetail(models.Model):
+    bill = models.ForeignKey('StandardBill')
+    managerName = models.CharField(max_length = 12)
+    inputDate = models.DateField(null=True)
+    category = models.IntegerField()
+    memo = models.TextField()
+    status = models.IntegerField()
+'''

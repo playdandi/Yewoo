@@ -103,6 +103,11 @@
         text-align:center;
         vertical-align:middle;
     }
+	.fontmini {
+		text-align : center;
+		font-size : 0.95em !important;
+		font-family : 'Malgun Gothic' !important;
+	}
 	</style>
 		
 </head>
@@ -137,9 +142,9 @@
 					<div class="box-content" style="margin: 0px; padding: 0px; border: 0; background-color:#f8f8f8">
 						<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 							<tr>
-								<td width="20%"><a href="/lease/bill/total/input/">1. 전체 안내 입력하기</a></td>
-								<td width="20%" style="background-color:#dbdbd2"><a href="/lease/bill/total/look/">2. 전체 안내 내역 보기</a></td>
-								<td width="20%"><a href="/lease/bill/total/manage/">3. 전체 안내 내역 관리하기</a></td>
+								<td width="20%"><a href="/lease/bill/total/{{ bid }}/input/{{ year }}/{{ month }}/">1. 전체 안내 입력하기</a></td>
+								<td width="20%" style="background-color:#dbdbd2"><a href="/lease/bill/total/{{ bid }}/look/{{ year }}/{{ month }}/{{ year }}">2. 전체 안내 내역 보기</a></td>
+								<td width="20%"><a href="/lease/bill/total/{{ bid }}/manage/{{ year }}/{{ month }}/{{ year }}">3. 전체 안내 내역 관리하기</a></td>
 								<td width="40%"></td>
 							</tr>
 						</table>
@@ -157,17 +162,17 @@
 								<tr>
 									<td width="87%">
 										<div style="margin-right:5px; float:left">안내 회차</div>
-										<select id="search_type" class="margin0" style="width:130px">
-											<option value="2014">2014</option>
-											<option value="2015">2015</option>
-											<option value="2016">2016</option>
-											<option value="2017">2017</option>
+										<select id="search_year" class="margin0" style="width:130px">
+											<option value="2012" {% if searchYear == 2012 %}selected{% endif %}>2012</option>
+											<option value="2013" {% if searchYear == 2013 %}selected{% endif %}>2013</option>
+											<option value="2014" {% if searchYear == 2014 %}selected{% endif %}>2014</option>
+											<option value="2015" {% if searchYear == 2015 %}selected{% endif %}>2015</option>
 										</select>
 									</td>
 									<td width="13%">
 										<div style="float:right">
-											<button class="btn btn-small" onclick="">조회</button>
-											<button class="btn btn-small" onclick="InitForm();">초기화</button>
+											<button class="btn btn-small" onclick="searchYear('{{ bid }}', '{{ year }}', '{{ month }}');">조회</button>
+											<button class="btn btn-small" onclick="">초기화</button>
 										</div>
 									</td>
 								</tr>
@@ -180,21 +185,21 @@
 								<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 									<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 										<tr>
-											<th width="16%">건물명</th>
-											<th width="16%" colspan="2">재실여부</th>
-											<th width="12%">관리 담당자</th>
-											<th width="8%">회차</th>
-											<th width="24%">담당자 연락처</th>
-											<th width="24%">이메일</th>
+											<th width="16%" style="text-align:center">건물명</th>
+											<th width="16%" style="text-align:center" colspan="2">재실여부</th>
+											<th width="12%" style="text-align:center">관리 담당자</th>
+											<th width="8%" style="text-align:center">회차</th>
+											<th width="24%" style="text-align:center">담당자 연락처</th>
+											<th width="24%" style="text-align:center">이메일</th>
 										</tr>
 										<tr>
-											<td>루체시티 1</td>
-											<td>38</td>
-											<td>70</td>
-											<td>김단비</td>
-											<td>2014/07</td>
-											<td>010-1234-5678</td>
-											<td>danbi@yewoo.com</td>
+											<td style="text-align:center">{{ bname }}</td>
+											<td style="text-align:center">{{ numOfOccupied }}</td>
+											<td style="text-align:center">{{ allroom }}</td>
+											<td style="text-align:center">{{ manager }}</td>
+											<td style="text-align:center">{{ year }}/{{ month }}</td>
+											<td style="text-align:center"></td>
+											<td style="text-align:center"></td>
 										</tr>
 									</table>
 								</div>
@@ -202,42 +207,39 @@
 
 							<div class="box span12" style="margin:10px 3px 3px 3px; padding: 0px">
 								<div class="box-content span12" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
-									<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+									{% for ym in yearmonth %}
+									<table class="table table-bordered table-condensed" style="margin-bottom:15px">
 										<tr style="background-color:#dbdbd2">
 											<th width="6%" style="text-align:right; vertical-align:middle">건물명</th>
-											<th width="10%"><input type="text" class="margin0 span12" style="text-align:center" value="루체시티 1" disabled /></th>
+											<th width="10%"><input type="text" class="margin0 span12" style="text-align:center" value="{{ bname }}" disabled /></th>
 											<th width="8%" style="text-align:right; vertical-align:middle">안내회차</th>
-											<th width="10%"><input type="text" class="margin0 span12" style="text-align:center" value="2014/07" disabled /></th>
-											<th width="66%" style="vertical-align:middle">총 <font style="color:red">2</font>개의 전체 안내 사항이 있습니다.</th>
+											<th width="10%"><input type="text" class="margin0 span12" style="text-align:center" value="{{ ym.yymm }}" disabled /></th>
+											<th width="66%" style="vertical-align:middle">총 <font style="color:red">{{ ym.cnt }}</font>개의 전체 안내 사항이 있습니다.</th>
 										</tr>
 										<tr>
 											<td colspan="5" style="background-color:#f0f0f0; text-align:center">전체 안내 내역보기</td>
 										</tr>
 									</table>
+										{% for d in ym.data %}
 									<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 										<tr>
 											<td width="8%" style="text-align:center">전체안내</td>
-											<td width="4%" style="text-align:center">01</td>
+											<td width="4%" style="text-align:center">{{ d.number }}</td>
 											<td width="8%" style="text-align:center; background-color:#f8f8f8">입력담당자</td>
-											<td width="8%" style="text-align:center">김호근</td>
-											<td width="8%"><input type="text" class="margin0 span12" value="2014.07.12" disabled /></td>
+											<td width="8%" style="text-align:center">{{ d.manager }}</td>
+											<td width="8%"><input type="text" class="margin0 span12" value="{{ d.date }}" disabled /></td>
 											<td width="5%" style="text-align:center; background-color:#f8f8f8">분류</td>
-											<td width="7%"><input type="text" class="margin0 span12" value="기타" disabled /></td>
-											<td width="46%"><input type="text" class="margin0 span12" value="" disabled /></td>
-											<td width="6%" style="text-align:center"><strong>입력완료</strong></td>
-										</tr>
-										<tr>
-											<td width="8%" style="text-align:center">전체안내</td>
-											<td width="4%" style="text-align:center">02</td>
-											<td width="8%" style="text-align:center; background-color:#f8f8f8">입력담당자</td>
-											<td width="8%" style="text-align:center">김호근</td>
-											<td width="8%"><input type="text" class="margin0 span12" value="2014.07.12" disabled /></td>
-											<td width="5%" style="text-align:center; background-color:#f8f8f8">분류</td>
-											<td width="7%"><input type="text" class="margin0 span12" value="유지보수" disabled /></td>
-											<td width="46%"><input type="text" class="margin0 span12" value="" disabled /></td>
+											<td width="10%">
+												<select class="margin0 span12 fontmini" disabled>
+													<option value="1" {% if d.category == 1 %}selected{% endif %}>기타사항</option>
+												</select>
+											</td>
+											<td width="43%"><input type="text" class="margin0 span12" value="{{ d.memo }}" disabled /></td>
 											<td width="6%" style="text-align:center"><strong>입력완료</strong></td>
 										</tr>
 									</table>
+										{% endfor %}
+									{% endfor %}
 								</div>
 							</div>
 						</div>
@@ -321,8 +323,7 @@
 		<script src="{{ STATIC_URL }}ejs/ejs.js"></script>
 		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
-
-		<!--<script src="{{ STATIC_URL }}js/03_01_electricity_show.js"></script>!-->
+		<script src="{{ STATIC_URL }}js/03_05_total_look.js"></script>
 		<script src="{{ STATIC_URL }}js/common.js"></script>
 		
 		<script type="text/javascript" language="JavaScript">

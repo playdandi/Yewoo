@@ -137,30 +137,31 @@
 								<td width="20%">
 									<div style="margin-right:5px; float:left">건물명</div>
 									<select id="search_building" class="margin0" style="width:120px">
+										<option value="-1">전체</option>
 										{% for b in building_name_id %}
-										<option value="b{{ b.id }}" {% if search_building_id == b.id %}selected{% endif %}>{{ b.name }}</option>
+										<option value="b{{ b.id }}">{{ b.name }}</option>
 										{% endfor %}
 									</select>
 								</td>
 								<td width="20%">
 									<div style="margin-right:5px; float:left">회차</div>
 									<select id="search_year" class="margin0" style="width:70px">
-										<option value="">전체</option>
+										<option value="-1">전체</option>
 										{% for y in search_year_list %}
-										<option value="{{ y }}" {% if y == search_year %}selected{% endif %}>{{ y }}</option>
+										<option value="{{ y }}">{{ y }}</option>
 										{% endfor %}
 									</select>
 									<select id="search_month" class="margin0" style="width:70px">
-										<option value="">전체</option>
+										<option value="-1">전체</option>
 										{% for m in search_month_list %}
-										<option value="{{ m }}" {% if m == search_month %}selected{% endif %}>{% if m < 10 %}0{% endif %}{{ m }}</option>
+										<option value="{{ m }}">{% if m < 10 %}0{% endif %}{{ m }}</option>
 										{% endfor %}
 									</select>
 								</td>
 								<td width="12%">
 									<div style="margin-right:5px; float:left">호실</div>
 									<select id="search_room_num" class="margin0" style="width:70px">
-										<option value="">전체</option>
+										<option value="-1">전체</option>
 									</select>
 								</td>
 								<td width="10%">
@@ -220,7 +221,8 @@
 					</div>
 					<div class="box span11" style="margin: 0px; padding: 0px">
 						<div id="search_result_content" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8; font-size : 0.95em">
-							<table class="table table-bordered table-condensed table-hover" style="margin-bottom:0px">
+                            {% if all_len > 0 %}
+							<table class="table table-bordered table-condensed table-hover" style="margin-bottom:0px; margin-bottom:30px">
 								<tr>
 									<th width="3%" style="text-align:center"><input type="checkbox" onclick="" checked /></th>
 									<th width="8%" style="text-align:center">회차</th>
@@ -231,34 +233,25 @@
 									<th width="26%" style="text-align:center">안내 사항 처리 현황</th>
 									<th width="24%" colspan="3"  style="text-align:center">전체 안내 입력 처리하기</th>
 								</tr>
+                                {% for a in all %}
 								<tr>
-									<td style="text-align:center"><input id="" type="checkbox" checked /></td>
-									<td style="text-align:center">2014/07</td>
+									<td style="text-align:center"><input id="" type="checkbox" disabled /></td>
+									<td style="text-align:center">{{ a.year }}/{{ a.month }}</td>
 									<td style="text-align:center">전체안내</td>
-									<td style="text-align:center">루체시티 1</td>
-									<td style="text-align:center">38</td>
-									<td style="text-align:center">70</td>
-									<td style="text-align:center">김호근</td>
-									<td style="text-align:center">총 2개의 안내사항이 입력되어 있습니다.</td>
+									<td style="text-align:center">{{ a.bname }}</td>
+									<td style="text-align:center">{{ a.numOfOccupied }}</td>
+									<td style="text-align:center">{{ a.allroom }}</td>
+									<td style="text-align:center">{{ a.manager }}</td>
+									<td style="text-align:center">{% if a.numOfNotice == 0 %}.{% else %}총 {{ a.numOfNotice }}개의 안내사항이 입력되어 있습니다.{% endif %}</td>
 									<td style="text-align:center">입력완료</td>
-									<td style="text-align:center"><button class="btn btn-small btn-block" onclick="Input('total', '1');">입력하기</button></td>
+									<td style="text-align:center"><button class="btn btn-small btn-block" onclick="Input('total', '{{ a.bid }}', '', '{{ a.year }}', '{{ a.month }}');">입력하기</button></td>
 									<td style="text-align:center"><button class="btn btn-small btn-block">미리보기</button></td>
 								</tr>
-								<tr>
-									<td style="text-align:center"><input id="" type="checkbox" checked /></td>
-									<td style="text-align:center">2014/07</td>
-									<td style="text-align:center">전체안내</td>
-									<td style="text-align:center">루체시티 2</td>
-									<td style="text-align:center">55</td>
-									<td style="text-align:center">70</td>
-									<td style="text-align:center">김단비</td>
-									<td style="text-align:center">.</td>
-									<td style="text-align:center">입력없음</td>
-									<td style="text-align:center"><button class="btn btn-small btn-block" onclick="Input('total', '2');">입력하기</button></td>
-									<td style="text-align:center"><button class="btn btn-small btn-block">미리보기</button></td>
-								</tr>
+                                {% endfor %}
 							</table>
-							<table class="table table-bordered table-condensed table-hover" style="margin-bottom:0px; margin-top:30px">
+                            {% endif %}
+                            {% if each_len > 0 %}
+							<table class="table table-bordered table-condensed table-hover" style="margin-bottom:0px;">
 								<tr>
 									<th width="3%" style="text-align:center"><input type="checkbox" onclick="" checked /></th>
 									<th width="8%" style="text-align:center">회차</th>
@@ -271,35 +264,24 @@
 									<th width="26%" style="text-align:center">안내 사항 처리 현황</th>
 									<th width="24%" colspan="3"  style="text-align:center">전체 안내 입력 처리하기</th>
 								</tr>
+                                {% for e in each %}
 								<tr>
-									<td style="text-align:center"><input id="" type="checkbox" checked /></td>
-									<td style="text-align:center">2014/01</td>
+									<td style="text-align:center"><input id="" type="checkbox" disabled /></td>
+									<td style="text-align:center">{{ e.year }}/{{ e.month }}</td>
 									<td style="text-align:center">개별안내</td>
-									<td style="text-align:center">루체시티 1</td>
-									<td style="text-align:center">103</td>
-									<td style="text-align:center">재실</td>
-									<td style="text-align:center">김호근</td>
-									<td style="text-align:center">남</td>
-									<td style="text-align:center">총 2개의 안내사항이 입력되어 있습니다.</td>
+									<td style="text-align:center">{{ e.bname }}</td>
+									<td style="text-align:center">{{ e.roomnum }}</td>
+									<td style="text-align:center">{% if e.isOccupied == 0 %}.{% else %}재실{% endif %}</td>
+									<td style="text-align:center">{{ e.residentName }}</td>
+									<td style="text-align:center">{{ e.residentGender }}</td>
+									<td style="text-align:center">{% if e.numOfNotice == 0 %}.{% else %}총 {{ e.numOfNotice }}개의 안내사항이 입력되어 있습니다.{% endif %}</td>
 									<td style="text-align:center">입력완료</td>
-									<td style="text-align:center"><button class="btn btn-small btn-block" onclick="Input('each', '1');">입력하기</button></td>
+									<td style="text-align:center"><button class="btn btn-small btn-block" onclick="Input('each', '{{ e.bid }}', '{{ e.roomid }}', '{{ e.year }}', '{{ e.month }}');">입력하기</button></td>
 									<td style="text-align:center"><button class="btn btn-small btn-block">미리보기</button></td>
 								</tr>
-								<tr>
-									<td style="text-align:center"><input id="" type="checkbox" checked /></td>
-									<td style="text-align:center">2014/01</td>
-									<td style="text-align:center">개별안내</td>
-									<td style="text-align:center">루체시티 1</td>
-									<td style="text-align:center">203</td>
-									<td style="text-align:center">재실</td>
-									<td style="text-align:center">김단비</td>
-									<td style="text-align:center">여</td>
-									<td style="text-align:center">총 2개의 안내사항이 입력되어 있습니다.</td>
-									<td style="text-align:center">입력완료</td>
-									<td style="text-align:center"><button class="btn btn-small btn-block" onclick="Input('each', '2');">입력하기</button></td>
-									<td style="text-align:center"><button class="btn btn-small btn-block">미리보기</button></td>
-								</tr>
+                                {% endfor %}
 							</table>
+                            {% endif %}
 						</div>
 					</div>
 				</div>
