@@ -218,11 +218,12 @@
                                         <h3><a class="cursorHand" ng-click="ownerClosed = !ownerClosed">입력 퇴거 정산서 [갑] 지 <span ng-show="ownerClosed">▲</span><span ng-show="!ownerClosed">▼</span></a></h3>
                                     </td>
                                     <td width="50%" style="text-align:right;">
-                                        <button class="btn btn-small btn-inverse" onclick="pagePrint();">출력</button>
+                                        <button class="btn btn-small btn-inverse" ng-click="previewOwner(true)">출력</button>
                                     </td>
                                 </tr>
                             </table>
                             <div ng-show="!ownerClosed">
+                                <iframe class="preview" src="/lease/leave/owner_print/{{ result.id }}"></iframe>
                             </div>
                         </div>
                     </div>
@@ -238,11 +239,12 @@
                                         <h3><a class="cursorHand" ng-click="tenantClosed = !tenantClosed">입력 퇴거 정산서 [을] 지 <span ng-show="tenantClosed">▲</span><span ng-show="!tenantClosed">▼</span></a></h3>
                                     </td>
                                     <td width="50%" style="text-align:right;">
-                                        <button class="btn btn-small btn-inverse" onclick="pagePrint();">출력</button>
+                                        <button class="btn btn-small btn-inverse" ng-click="previewTenant(true)">출력</button>
                                     </td>
                                 </tr>
                             </table>
                             <div ng-show="!tenantClosed">
+                                <iframe class="preview" src="/lease/leave/tenant_print/{{ result.id }}"></iframe>
                             </div>
                         </div>
                     </div>
@@ -258,11 +260,12 @@
                                         <h3><a class="cursorHand" ng-click="confirmOwnerClosed = !confirmOwnerClosed">임차인 확인 퇴거 정산서 [갑] 지 <span ng-show="confirmOwnerClosed">▲</span><span ng-show="!confirmOwnerClosed">▼</span></a></h3>
                                     </td>
                                     <td width="50%" style="text-align:right;">
-                                        <button class="btn btn-small btn-inverse" onclick="pagePrint();">출력</button>
+                                        <button class="btn btn-small btn-inverse" ng-click="previewConfirmOwner(true)">출력</button>
                                     </td>
                                 </tr>
                             </table>
                             <div ng-show="!confirmOwnerClosed">
+                                <iframe class="preview" src="/lease/leave/confirm_owner_print/{{ result.id }}"></iframe>
                             </div>
                         </div>
                     </div>
@@ -278,11 +281,12 @@
                                         <h3><a class="cursorHand" ng-click="confirmTenantClosed = !confirmTenantClosed">임차인 확인 퇴거 정산서 [을] 지 <span ng-show="confirmTenantClosed">▲</span><span ng-show="!confirmTenantClosed">▼</span></a></h3>
                                     </td>
                                     <td width="50%" style="text-align:right;">
-                                        <button class="btn btn-small btn-inverse" onclick="pagePrint();">출력</button>
+                                        <button class="btn btn-small btn-inverse" ng-click="previewConfirmTenant(true)">출력</button>
                                     </td>
                                 </tr>
                             </table>
                             <div ng-show="!confirmTenantClosed">
+                                <iframe class="preview" src="/lease/leave/confirm_tenant_print/{{ result.id }}"></iframe>
                             </div>
                         </div>
                     </div>

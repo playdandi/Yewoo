@@ -5,6 +5,22 @@ angular.module('yewooApp', [])
         var payments = [];
         var paymentDetails = [];
 
+        s.previewOwner = function(print) {
+            window.open("/lease/leave/owner_print/" + $("#rid").val() + ((!!print) ? "?print=1" : ""));
+        };
+
+        s.previewTenant = function(print) {
+            window.open("/lease/leave/tenant_print/" + $("#rid").val() + ((!!print) ? "?print=1" : ""));
+        };
+
+        s.previewConfirmOwner = function(print) {
+            window.open("/lease/leave/confirm_owner_print/" + $("#rid").val() + ((!!print) ? "?print=1" : ""));
+        };
+
+        s.previewConfirmTenant = function(print) {
+            window.open("/lease/leave/confirm_tenant_print/" + $("#rid").val() + ((!!print) ? "?print=1" : ""));
+        };
+
         s.mode = 4;
 
         s.today = new Date();

@@ -93,7 +93,11 @@ urlpatterns = patterns('',
 
     url(r'^lease/leave/$', leave_html),
     url(r'^lease/leave/owner/(?P<uid>\d+)/$', leave_owner_html),
+    url(r'^lease/leave/owner_print/(?P<uid>\d+)/$', leave_owner_print_html),
+    url(r'^lease/leave/confirm_owner_print/(?P<uid>\d+)/$', leave_confirm_owner_print_html),
     url(r'^lease/leave/tenant/(?P<uid>\d+)/$', leave_tenant_html),
+    url(r'^lease/leave/tenant_print/(?P<uid>\d+)/$', leave_tenant_print_html),
+    url(r'^lease/leave/confirm_tenant_print/(?P<uid>\d+)/$', leave_confirm_tenant_print_html),
     url(r'^lease/leave/confirm/(?P<uid>\d+)/$', leave_confirm_html),
     url(r'^lease/leave/final/(?P<uid>\d+)/$', leave_final_html),
 
