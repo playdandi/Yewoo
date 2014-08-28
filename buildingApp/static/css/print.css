@@ -1,0 +1,57 @@
+#leave 
+{
+    line-height: 1.2;
+}
+
+#leave .titlebox
+{
+    border-bottom: 3px solid #eee;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 12pt;
+}
+
+#leave .boldgray
+{
+    margin-top: 10px;
+    background-color: #ccc;
+    border: 1px solid #ccc;
+}
+
+#leave .boldgray > div
+{
+    padding: 5px;
+}
+
+#leave .lightgray
+{
+    -webkit-print-color-adjust:exact;
+    background-color: #eee;
+    border: 1px solid #eee;
+}
+
+#leave .whitebox
+{
+    border: 1px solid #cecece;
+    padding: 3px;
+}
+
+#leave .padding3
+{
+    padding: 3px;
+}
+
+#leave .padding5
+{
+    padding: 5px;
+}
+
+#leave .lightgray > div
+{
+    padding: 5px;
+}
+
+#leave .textLarge
+{
+    font-size: 15pt;
+}
