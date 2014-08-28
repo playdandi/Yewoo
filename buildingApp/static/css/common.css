@@ -245,3 +245,8 @@
     height: 500px;
 }
 
+#leave .textRight
+{
+    text-align: right;
+}
+
