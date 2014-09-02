@@ -10,6 +10,13 @@ angular.module('yewooApp', [])
         var payments = [];
         var paymentDetails = [];
 
+        s.cancel = function() { window.location.href = "/lease/leave"; }
+
+        s.doneFee = function() { s.isFeeDone = true; s.save(); }
+        s.undoneFee = function() { s.isFeeDone = false; s.save(); }
+        s.doneUnpaid = function() { s.isUnpaidDone = true; s.save();}
+        s.undoneUnpaid = function() { s.isUnpaidDone = false; s.save();}
+
         s.previewOwner = function(print) {
             window.open("/lease/leave/owner_print/" + $("#rid").val() + ((!!print) ? "?print=1" : ""));
         };
@@ -64,7 +71,9 @@ angular.module('yewooApp', [])
                 'returnMoney' : s.totalRefund,
                 'unpaiditems' : _.map(s.unpaidCases, function (i) { i.id = undefined; return i; }),
                 'unpaidaddeditems' : _.map(s.extraCosts, s.convert_to_unpaiditems),
-                'feeitems' : _.map(s.feeCosts, s.convert_to_unpaiditems)
+                'feeitems' : _.map(s.feeCosts, s.convert_to_unpaiditems),
+                'isUnpaidDone' : s.isUnpaidDone,
+                'isFeeDone' : s.isFeeDone
             };
 
             $http.post('/lease/leave/owner/save/' + $("#rid").val() + '/', item).success(function (data) {
