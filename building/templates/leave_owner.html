@@ -213,6 +213,9 @@
                                         <input type="text" class="margin0" ng-model="bank" />
                                         입금 계좌 
                                         <input type="text" class="margin0 large" ng-model="account" />
+                                        예금주 
+                                        <input type="text" class="margin0 large" ng-model="accountHolder" />
+
                                     </td>
                                 </tr>
 							</table>  
@@ -262,7 +265,7 @@
                                                     <span ng-bind="unpaidCase.time"></span>회차
                                                 </td>
                                                 <td class="tableRow">
-                                                    <span ng-bind="unpaidCase.amount"></span> 원
+                                                    <span ng-bind="unpaidCase.amount | number:'0'"></span> 원
                                                 </td>
                                                 <td class="tableRow">
                                                     예정일
@@ -326,7 +329,7 @@
 -->
             <td class="textCenter"><span ng-bind="ucase.expectedDate | date:'yyyy.MM'"></span></td>
             <td class="textCenter"><span ng-bind="ucase.number"></span></td>
-            <td class="textCenter"><span ng-bind="ucase.totalFee"></span></td>
+            <td class="textCenter"><span ng-bind="ucase.totalFee | number:'0'"></span></td>
             <td class="textCenter" ng-attr="{ colorGreen: !isLate(ucase), colorRed: isLate(ucase) }"><span ng-bind="today | date:'yyyy.MM'"></span><span ng-bind="ucase.leasePayDate"></span></td>
             <td class="textCenter">
                 <span ng-if="ucase.payStatus == -1">완납</span>
@@ -337,10 +340,10 @@
                 <span ng-if="ucase.payStatus != -1"><span ng-bind="ucase.payStatus"/>회</span>
             </td>
             <td class="textCenter">
-                <span ng-attr="{ colorRed: ucase.payStatus != -1 }"><span ng-bind="ucase.amountPay" /></span>
+                <span ng-attr="{ colorRed: ucase.payStatus != -1 }"><span ng-bind="ucase.amountPay | number:'0'" /></span>
             </td>
             <td class="textCenter">
-                <span ng-attr="{ colorRed: ucase.payStatus != -1 }"><span ng-bind="ucase.amountNoPay" /></span>
+                <span ng-attr="{ colorRed: ucase.payStatus != -1 }"><span ng-bind="ucase.amountNoPay | number:'0'" /></span>
             </td>
             <td class="textCenter"><span ng-bind="ucase.payDate | date:'yyyy.MM'"/></td>
     <!--
@@ -399,7 +402,7 @@
                                                 <td class="tableRow textCenter" width="50%">
                                                 </td>
                                                 <td class="tableRow medium textCenter" width="10%">
-                                                    합계 : <span ng-bind="unpaidDirected"></span>원
+                                                    합계 : <span ng-bind="unpaidDirected | number:'0'"></span>원
                                                 </td>
                                                 <td class="tableRow textCenter" width="10%">
                                                 </td>
@@ -503,7 +506,7 @@
                                                 <td class="tableRow textCenter" width="50%">
                                                 </td>
                                                 <td class="tableRow medium textCenter" width="10%">
-                                                    합계 : <span ng-bind="fee"></span>원
+                                                    합계 : <span ng-bind="fee | number:'0'"></span>원
                                                 </td>
                                                 <td class="tableRow textCenter" width="10%">
                                                 </td>

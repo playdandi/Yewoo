@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext, loader
@@ -10,6 +9,98 @@ from buildingApp.models import *
 from django.conf import settings
 import os, datetime
 from django.contrib.auth.models import User
+from django.core import serializers
+
+def get_or_create(model, **kwargs):
+    return model.objects.get_or_create(**kwargs)[0]
+
+def get_or_none(model, **kwargs):
+    try:
+        return model.objects.get(**kwargs)
+    except model.DoesNotExist:
+        return None
+
+def jsonResult(result):
+    return HttpResponse(convert_to_json(result), mimetype='application/json')
+
+def convert_to_json(result):
+    if type(result) == str:
+        return result
+    elif type(result) == list:
+        return serializers.serialize('json', result)
+    elif type(result) == dict:
+        return json.dumps(result)
+    else:
+        return serializers.serialize('json', [result])[1:-1]
+
+def convert_to_dict(val):
+    return json.loads(convert_to_json(val))
+
+def get_leaveowner(request, rid): #rid
+    item = get_or_none(LeaveOwner, resident_id = rid)
+
+    if item is None:
+        item = {}
+
+    resident = item.resident
+    unpaiditems = list(item.leaveunpaiditem_set.all())
+    payoffs = list(item.leavepayoff_set.all())
+    reads = list(item.leaveread_set.all())
+    unpaidaddeditems = list(item.leaveunpaidaddeditem_set.all())
+    feeitems = list(item.leavefeeitem_set.all())
+
+    result = convert_to_dict(item)
+    result['resident'] = convert_to_dict(resident)
+    result['unpaiditems'] = convert_to_dict(unpaiditems)
+    result['payoffs'] = convert_to_dict(payoffs)
+    result['reads'] = convert_to_dict(reads)
+    result['unpaidaddeditems'] = convert_to_dict(unpaidaddeditems)
+    result['feeitems'] = convert_to_dict(feeitems)
+
+    return jsonResult(result)
+
+def clear_and_save_items(queryset, items):
+    queryset.all().delete()
+    for item in items:
+        child = queryset.create()
+        for key in item:
+            try:
+                setattr(child, key, item[key])
+            except:
+                pass # please fix me
+        child.save()
+
+def save_leaveowner(request, rid):
+    item = get_or_create(LeaveOwner, resident_id = rid)
+
+    #if request.is_ajax() and request.method == 'POST':
+    if 'data' in request.REQUEST:
+        obj = json.loads(request.REQUEST['data'])
+
+        for key in obj:
+            val = obj[key]
+
+            if key == 'resident':
+                pass
+            if key == 'unpaiditems':
+                clear_and_save_items(item.leaveunpaiditem_set, val)
+            if key == 'payoffs':
+                clear_and_save_items(item.leavepayoff_set, val)
+            if key == 'reads':
+                clear_and_save_items(item.leaveread_set, val)
+            if key == 'feeitems':
+                clear_and_save_items(item.leavefeeitem_set, val)
+            if key == 'unpaidaddeditems':
+                clear_and_save_items(item.leaveunpaidaddeditem_set, val)
+            else:
+                try:
+                    setattr(item, key, val)
+                except:
+                    pass # please fix me
+
+        item.save()
+
+    return get_leaveowner(request, rid)
 
 def get_resident_info(uid):
     result = ResidentInfo.objects.get(id = uid)

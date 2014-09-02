@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -353,6 +354,83 @@ class StandardBill(models.Model):
     category = models.IntegerField()
     memo = models.TextField()
     status = models.IntegerField()
+
+class LeaveOwner(models.Model):
+    resident = models.ForeignKey('ResidentInfo')
+    # outReasen, realOutDate 등은 ResidentInfo에 들어가 있음
+    deposit = models.IntegerField(default = 0)
+    rent = models.IntegerField(default = 0)
+    returnMoney = models.IntegerField(default = 0)
+    unpaid = models.IntegerField(default = 0)
+    unpaidCollected = models.IntegerField(default = 0)
+    unpaidAdded = models.IntegerField(default = 0)
+    fee = models.IntegerField(default = 0)
+    bankName = models.CharField(max_length = 20, default = '')
+    accountNumber = models.CharField(max_length = 50, default = '')
+    accountHolder = models.CharField(max_length = 20, default = '')
+
+    # 갑지 완료
+    isUnpaidDone = models.BooleanField(default = False)
+    isFeeDone = models.BooleanField(default = False)
+    isOwnerDone = models.BooleanField(default = False)
+
+    # 을지 완료
+    isTenantDone = models.BooleanField(default = False)
+
+    # 임차인확인처리
+    isConfirmed = models.BooleanField(default = False)
+    confirmDate = models.DateField(null = True)
+    confirmComment = models.TextField(default = '')
+
+    def content_file_name(instance, filename):
+        return '/'.join(['content', str(instance.pk), filename])
+
+    # 정산서 파일
+    ownerFile = models.FileField(upload_to=content_file_name, null = True)
+    tenantFile = models.FileField(upload_to=content_file_name, null = True)
+
+    feeComment = models.TextField(default = '')
+    unpaidComment = models.TextField(default = '')
+
+# LeaveOwner에 연결된 Table
+class LeaveUnpaidItem(models.Model):
+    leaveOwner = models.ForeignKey('LeaveOwner')
+    month = models.IntegerField(default = 0)
+    year = models.IntegerField(default = 0)
+    num = models.IntegerField(default = 0)
+    amount = models.IntegerField(default = 0)
+    deposit = models.IntegerField(default = 0)
+    deposited = models.DateField(null=True) 
+    defaultAmount = models.IntegerField(default = 0)
+    stat = models.CharField(max_length = 20, default = '')
+
+# LeaveOwner에 연결된 Table
+class LeaveUnpaidAddedItem(models.Model):
+    leaveOwner = models.ForeignKey('LeaveOwner')
+    title = models.CharField(max_length = 20, default = '')
+    amount = models.IntegerField(default = 0)
+
+# LeaveOwner에 연결된 Table
+class LeaveFeeItem(models.Model):
+    leaveOwner = models.ForeignKey('LeaveOwner')
+    title = models.CharField(max_length = 20, default = '')
+    amount = models.IntegerField(default = 0)
+
+# LeaveOwner에 연결된 Table
+class LeavePayoff(models.Model):
+    leaveOwner = models.ForeignKey('LeaveOwner')
+    title = models.CharField(max_length = 20, default = '')
+    amount = models.IntegerField(default = 0)
+    stat = models.CharField(max_length = 20, default = '')
+    date = models.DateField(null = True)
+    comment = models.TextField(default = '')
+    
+# LeaveOwner에 연결된 Table
+class LeaveRead(models.Model):
+    leaveOwner = models.ForeignKey('LeaveOwner')
+    title = models.CharField(max_length = 20, default = '')
+    amount = models.IntegerField(default = 0)
+    comment = models.TextField(default = '')
 
 '''
 class StandardBillDetail(models.Model):

@@ -393,7 +393,7 @@
 -->
             <td class="textCenter"><span ng-bind="ucase.expectedDate | date:'yyyy.MM'"></span></td>
             <td class="textCenter"><span ng-bind="ucase.number"></span></td>
-            <td class="textCenter"><span ng-bind="ucase.totalFee"></span></td>
+            <td class="textCenter"><span ng-bind="ucase.totalFee | number:'0'"></span></td>
             <td class="textCenter" ng-attr="{ colorGreen: !isLate(ucase), colorRed: isLate(ucase) }"><span ng-bind="today | date:'yyyy.MM'"></span>.<span ng-if="ucase.leasePayDate < 10">0</span><span ng-bind="ucase.leasePayDate"></span></td>
             <td class="textCenter">
                 <span ng-if="ucase.payStatus == -1">완납</span>
@@ -404,10 +404,10 @@
                 <span ng-if="ucase.payStatus != -1"><span ng-bind="ucase.payStatus"/>회</span>
             </td>
             <td class="textCenter">
-                <span ng-attr="{ colorRed: ucase.payStatus != -1 }"><span ng-bind="ucase.amountPay" /></span>
+                <span ng-attr="{ colorRed: ucase.payStatus != -1 }"><span ng-bind="ucase.amountPay | number:'0'" /></span>
             </td>
             <td class="textCenter">
-                <span ng-attr="{ colorRed: ucase.payStatus != -1 }"><span ng-bind="ucase.amountNoPay" /></span>
+                <span ng-attr="{ colorRed: ucase.payStatus != -1 }"><span ng-bind="ucase.amountNoPay | number:'0'" /></span>
             </td>
             <td class="textCenter"><span ng-bind="ucase.payDate | date:'yyyy.MM'"/></td>
     <!--

@@ -5,6 +5,71 @@ angular.module('yewooApp', [])
         var payments = [];
         var paymentDetails = [];
 
+        // Sample Data
+
+        s.data = {
+            buildingName: "벨라루체 2",
+            roomNumber: "102 호",
+            name: "강민형",
+            rentStart: new Date(2014, 5, 17),
+            rentEnd: new Date(2015, 5, 18),
+            leaved: new Date(2014, 9, 18),
+            leaveReason: "만기로 퇴실함",
+            rentMethod: "선불제",
+            deposit: 10000000,
+            rent: 250000,
+            returnMoney: 299400,
+            unpaid: 250000,
+            fee: 250000,
+            bank: "국민은행",
+            account: "070-046646-01-034",
+            accountHolder: "강민형",
+            unpaidCollected: 250000,
+            unpaidAdded: 100000,
+            unpaidList: [
+                { month: 6, year: 2014, num: 1, amount: 21000, deposit: 21000, deposited: new Date(2014, 5, 26), defaultAmount: 0, stat: "처리" },
+                { month: 7, year: 2014, num: 1, amount: 21000, deposit: 21000, deposited: new Date(2014, 5, 26), defaultAmount: 0, stat: "처리" },
+                { month: 8, year: 2014, num: 1, amount: 21000, deposit: 21000, deposited: new Date(2014, 5, 26), defaultAmount: 0, stat: "처리" },
+                { month: 9, year: 2014, num: 1, amount: 21000, deposit: 21000, deposited: new Date(2014, 5, 26), defaultAmount: 0, stat: "처리" },
+                { month: 10, year: 2014, num: 1, amount: 21000, deposit: 21000, deposited: new Date(2014, 5, 26), defaultAmount: 0, stat: "처리" },
+                { month: 11, year: 2014, num: 1, amount: 21000, deposit: 21000, deposited: new Date(2014, 5, 26), defaultAmount: 0, stat: "처리" },
+            ],
+            unpaidAddedList: [
+                { title: "청소비", amount: 0 }
+            ],
+            unpaidComment: "기타사유 구구절절",
+            feeList: [
+                { title: "청소비", amount: 0 },
+                { title: "청소비", amount: 0 },
+                { title: "청소비", amount: 0 },
+                { title: "청소비", amount: 0 },
+                { title: "청소비", amount: 0 }
+            ],
+            feeComment: "",
+            contact: {
+                addr: "서울시 강서구 등촌동 639-59번지 벨라루체1",
+                infoList: [
+                    { title: "담당 매니저", value: "한지환 매니저" },
+                    { title: "담당 연락처", value: "02-882-6766" },
+                    { title: "임대 관리팀", value: "02-3661-0880" },
+                    { title: "경비 관리팀", value: "02-8747-4397" },
+                    { title: "시설 관리팀", value: "02-3661-0880" },
+                    { title: "본사 관리팀", value: "02-888-0005" }
+                ],
+                addrs: [ 
+                    { title: "임대 관리팀", value: "주소" },
+                    { title: "본사 관리팀", value: "주소" },
+                ],
+                email: "yewoo21@hanmail.net",
+                doc: {
+                    num: "2014-06-30 문서",
+                    title: "임대료 및 관리비(공과금) 내역 및 입금 계좌 안내",
+                    written: new Date(2014, 5, 30)
+                },
+                name: "(주) 예우 입주민 생활지원 센터"
+            }
+        };
+
         // 미납요금 내역 가져오기
 
         function AdjustPaymentYM(nowym, y, m, type)
@@ -91,21 +156,28 @@ angular.module('yewooApp', [])
                     */
                     
                     var cases = [];
-                    var lastPayment = null;
                     
                     for (var i = 0; i < payments.length; i++) {
                         var payment = payments[i];
-                        //if (payment.isThis == 1 || payment.payStatus == -1) continue;
+
+                        if (payment.payStatus == -1 ||
+                            (i > 0 && payments[i - 1].number == payment.number))
+                             continue;
+
                         payment.amount = payment.amountNoPay;
                         payment.revisiedAmount = payment.amountNoPay;
                         payment.expectedDate = new Date(payment.year, payment.month);
-                        payment.isPaid = payment.payStatus == -1 || (i > 0 && payment.number == payments[i - 1].number);
                         
                         cases.push(payment);
                     }
 
                     s.$apply(function () {
-                        s.cases = cases;
+                        s.unpaidCases = cases;
+                        s.toggleAllOfUnpaidCases();
+
+                        if (!!($("#print").val())) {
+                            window.print();
+                        }
                     });
                     
                     // 납부 상세 리스트 보여주기
@@ -121,7 +193,7 @@ angular.module('yewooApp', [])
 
         doAjaxAllList();
 
-        s.mode = 2;
+        s.mode = 1;
 
         s.today = new Date();
 
@@ -134,76 +206,33 @@ angular.module('yewooApp', [])
         s.account = ""; // 계좌번호
 
         s.unpaidClosed = false;
-
-        // MoneyChanges
-        s.moneyChangeTypes = [ 
-            { id:1, title: "선불제", subTypes: [ "입금", "입금대기", "출금", "출금대기", "입금완료", "출금완료" ], hasDate: true, amount: 0 },
-            { id:2, title: "임대계약금", subTypes: [ "입금", "입금대기", "출금", "출금대기", "입금완료", "출금완료" ], hasDate: true, amount: 0 },
-            { id:3, title: "중도금", subTypes: [ "입금", "입금대기", "출금", "출금대기", "입금완료", "출금완료" ], hasDate: true, amount: 0 },
-            { id:4, title: "임대 보증금 잔금", subTypes: [ "입금", "입금대기", "출금", "출금대기", "입금완료", "출금완료" ], hasDate: true, amount: 0 },
+        s.unpaidExtraTypes = [ 
+            { id:1, title: "미납 요금 및 공과금", subTypes: [ "임대료 및 관리비", "공과금" ], hasYear:true, hasMonth: true, amount: 0 },
+            { id:2, title: "청소비", amount: 50000 },
+            { id:3, title: "보증금 반환", isReturn: true, amount: 0 },
+            { id:4, title: "Card-Key 보증금", isReturn: true, amount: 20000 },
+            { id:5, title: "중도해지 수수료", amount: 0 },
+            { id:6, title: "추가사항", amount:0 }
         ];
 
-        s.updateMoneyChangeType = function() {
-            if (!s.moneyChange.type.subTypes) { s.moneyChange.subType = null; }
-            else { s.moneyChange.subType = s.moneyChange.type.subTypes[0]; }
-            if (!s.moneyChange.type.hasMonth) { s.moneyChange.month = null; }
-            else { s.moneyChange.month = new Date().getMonth() + 1; } 
-            if (!s.moneyChange.type.hasYear) { s.moneyChange.year = null; }
-            else { s.moneyChange.year = new Date().getFullYear(); } 
-            s.moneyChange.amount = s.moneyChange.type.amount;
-            s.moneyChange.date = new Date().getFullYear() + "." + (new Date().getMonth() + 1) + "." + (new Date().getDate());
+        s.extraCost = { type: s.unpaidExtraTypes[0], desc: "", amount: 0, subType: s.unpaidExtraTypes[0].subTypes ? s.unpaidExtraTypes[0].subTypes[0] : null, month: null, year: s.unpaidExtraTypes[0].hasYear ? new Date().getFullYear() : null, month: s.unpaidExtraTypes[0].hasMonth ? new Date().getMonth() + 1 : null };
+
+        s.updateExtraType = function() {
+            if (!s.extraCost.type.subTypes) { s.extraCost.subType = null; }
+            else { s.extraCost.subType = s.extraCost.type.subTypes[0]; }
+            if (!s.extraCost.type.hasMonth) { s.extraCost.month = null; }
+            else { s.extraCost.month = new Date().getMonth() + 1; } 
+            if (!s.extraCost.type.hasYear) { s.extraCost.year = null; }
+            else { s.extraCost.year = new Date().getFullYear(); } 
+            s.extraCost.amount = s.extraCost.type.amount;
         }
 
-        var moneyChangeType = s.moneyChangeTypes[0];
-        s.moneyChange = { type: moneyChangeType, desc: "", amount: 0 };
+        s.updateExtraType();
 
-        s.updateMoneyChangeType();
+        s.extraCosts = [];
 
-        s.moneyChanges = [];
-
-        s.addMoneyChange = function(cost) {
-            s.moneyChanges.push({
-                type: cost.type,
-                desc: cost.desc,
-                amount: cost.amount,
-                subType: cost.subType,
-                month: cost.month,
-                year: cost.year,
-                date: $(".datepicker").val(),
-                checked: true
-            });
-        }
-
-        s.removeMoneyChange = function(cost) {
-            s.moneyChanges = _.filter(s.moneyChanges, function(a) { return a != cost; });
-        }
-
-        // Records
-        s.recordTypes = [ 
-            { id:1, title: "전기", amount: 0 },
-            { id:2, title: "수도", amount: 0 },
-            { id:3, title: "가스", amount: 0 }
-        ];
-
-        s.updateRecordType = function() {
-            if (!s.record.type.subTypes) { s.record.subType = null; }
-            else { s.record.subType = s.record.type.subTypes[0]; }
-            if (!s.record.type.hasMonth) { s.record.month = null; }
-            else { s.record.month = new Date().getMonth() + 1; } 
-            if (!s.record.type.hasYear) { s.record.year = null; }
-            else { s.record.year = new Date().getFullYear(); } 
-            s.record.amount = s.record.type.amount;
-        }
-
-        var recordType = s.recordTypes[0];
-        s.record = { type: recordType, desc: "", amount: 0 };
-
-        s.updateRecordType();
-
-        s.records = [];
-
-        s.addRecord = function(cost) {
-            s.records.push({
+        s.addExtraCost = function(cost) {
+            s.extraCosts.push({
                 type: cost.type,
                 desc: cost.desc,
                 amount: cost.amount,
@@ -212,16 +241,126 @@ angular.module('yewooApp', [])
                 year: cost.year,
                 checked: true
             });
+            s.updateUnpaid();
         }
 
-        s.removeRecord = function(cost) {
-            s.records = _.filter(s.records, function(a) { return a != cost; });
+        s.removeExtraCost = function(cost) {
+            s.extraCosts = _.filter(s.extraCosts, function(a) { return a != cost; });
+            s.updateUnpaid();
         }
 
-        // 퇴거 정산 내역 
-        s.allListClosed = false;
+        // 미납 요금 및 공과금 section
+        //s.unpaidTableWidths = new Array(4,4,5,5,4, 14, 7, 4,4, 8,8,8, 4, 3,3,3, 6,6);
+        s.unpaidComputed = 0;
+        s.unpaidDirected = 0;
+        s.unpaidCases = [
+            { checked: false, amount: 10000, month: "2014/03", time: 10, paidDate: new Date(), expectedDate: new Date(), revisiedAmount: 10000 },
+            { checked: false, amount: 20000, month: "2013/03", time: 11, paidDate: new Date(), expectedDate: new Date(), revisiedAmount: 20000 },
+            { checked: false, amount: 30000, month: "2012/03", time: 12, paidDate: new Date(), expectedDate: new Date(), revisiedAmount: 30000 }
+        ]
+
+        s.toggleAllOfUnpaidCases = function() {
+            $timeout(function()
+            {
+                for (var i = 0; i < s.unpaidCases.length; i ++)
+                {
+                    s.unpaidCases[i].checked = s.isAllOfUnpaidCases;
+                }
+                s.updateUnpaidCases();
+                s.updateUnpaid();
+            });
+        }
+
+        s.updateUnpaidCases = function() {
+            $timeout(function()
+            {
+                s.isAllOfUnpaidCases = _.reduce(s.unpaidCases, function (r, unpaidCase) {
+                    if (unpaidCase.checked) return r;
+                    else return false;
+                }, true);
+            });
+        };
+
+        s.isAllOfUnpaidCases = true;
+        s.sumOfExtraCosts = 0;
+        s.updateUnpaid = function () {
+            s.fee = _.reduce(s.feeCosts, function (num, feeCost) {
+                var val = (feeCost.checked ? feeCost.amount : 0);
+                if (feeCost.type.isReturn)
+                    return num - val;
+                else
+                    return num + val;
+            }, 0);
+
+            s.sumOfExtraCosts = _.reduce(s.extraCosts, function (num, extraCost) {
+                if (extraCost.type.isReturn)
+                    return num - extraCost.amount;
+                else
+                    return num + extraCost.amount;
+            }, 0);
+            s.unpaidDirected = _.reduce(s.extraCosts, function (num, extraCost) {
+                var val = (extraCost.checked ? extraCost.amount : 0);
+                if (extraCost.type.isReturn)
+                    return num - val;
+                else
+                    return num + val;
+            }, 0);
+            s.unpaidComputed = _.reduce(s.unpaidCases, function (num, unpaidCase) {
+                var val = (unpaidCase.checked ? unpaidCase.revisiedAmount : 0);
+                return num + val;
+            }, 0);
+            s.unpaid = s.unpaidComputed + s.unpaidDirected;
+            s.updateTotalRefund();
+        };
+
+        // 시설 관리비
+        s.feeClosed = false;
         
-        // 퇴거 반환금 
+        s.feeTypes = [ 
+            { id:1, title: "변기커버", amount: 0 },
+            { id:2, title: "인덕션", amount: 50000 },
+            { id:3, title: "세탁기", amount: 0 },
+            { id:4, title: "가구", amount: 20000 },
+            { id:5, title: "에어컨 리모콘", amount: 0 },
+            { id:6, title: "도배", amount: 0 },
+            { id:7, title: "씽크대", amount: 0 },
+            { id:8, title: "W/C", amount: 0 },
+        ];
+
+        s.feeCost = { type: s.feeTypes[0], desc: "" };
+        s.feeCosts = [];
+
+        s.updateFeeType = function() {
+            if (!s.feeCost.type.subTypes) { s.feeCost.subType = null; }
+            else { s.feeCost.subType = s.extraCost.type.subTypes[0]; }
+            if (!s.feeCost.type.hasMonth) { s.feeCost.month = null; }
+            else { s.feeCost.month = new Date().getMonth() + 1; } 
+            if (!s.feeCost.type.hasYear) { s.feeCost.year = null; }
+            else { s.feeCost.year = new Date().getFullYear(); } 
+            s.feeCost.amount = s.feeCost.type.amount;
+        }
+
+        s.updateFeeType();
+
+        s.addFeeCost = function(cost) {
+            s.feeCosts.push({
+                type: cost.type,
+                desc: cost.desc,
+                amount: cost.amount,
+                subType: cost.subType,
+                month: cost.month,
+                year: cost.year,
+                checked: true
+            });
+            s.updateUnpaid();
+        }
+
+        s.removeFeeCost = function(cost) {
+            s.extraCosts = _.filter(s.extraCosts, function(a) { return a != cost; });
+            s.updateUnpaid();
+        }
+
+
         s.updateTotalRefund = function () {
             s.totalRefund = s.deposit - s.unpaid - s.fee;
             s.isMinusTotalRefund = s.totalRefund < 0;
@@ -231,6 +370,6 @@ angular.module('yewooApp', [])
             return s.totalRefund < 0;
         };
 
+        s.updateUnpaid();
         s.updateTotalRefund();
-              
     });
