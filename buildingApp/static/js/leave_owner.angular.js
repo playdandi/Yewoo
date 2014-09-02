@@ -1,5 +1,10 @@
 angular.module('yewooApp', [])
-    .controller('MainCtrl', function($scope, $timeout) {
+    .config(['$httpProvider', function($httpProvider) {
+        //var csrftoken = $.cookie('csrftoken');
+        $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+        $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+    }])
+    .controller('MainCtrl', function($scope, $timeout, $http) {
 
         var s = $scope;
         var payments = [];
@@ -37,6 +42,35 @@ angular.module('yewooApp', [])
             }
             return nowym;
         }
+
+        s.convert_to_unpaiditems = function (item) { 
+            if (!item.title)
+                item.title = item.type.title;
+            return item;
+        };
+
+        s.save = function() {
+            var item = {
+                'deposit' : s.deposit,
+                'fee' : s.fee,
+                'bankName' : s.bank,
+                'accountNumber' : s.account,
+                'accountHolder' : s.accountHolder,
+                'feeComment' : s.feeComments,
+                'unpaid' : s.unpaid,
+                'unpaidAdded' : s.unpaidDirected,
+                'unpaidCollected' : s.unpaidComputed,
+                'unpaidComment' : s.unpaidComments,
+                'returnMoney' : s.totalRefund,
+                'unpaiditems' : _.map(s.unpaidCases, function (i) { i.id = undefined; return i; }),
+                'unpaidaddeditems' : _.map(s.extraCosts, s.convert_to_unpaiditems),
+                'feeitems' : _.map(s.feeCosts, s.convert_to_unpaiditems)
+            };
+
+            $http.post('/lease/leave/owner/save/' + $("#rid").val() + '/', item).success(function (data) {
+                alert("저장했습니다.");
+            });
+        };
 
         var doAjaxAllList = function() {
             var postData = {};
@@ -123,8 +157,40 @@ angular.module('yewooApp', [])
                     }
 
                     s.$apply(function () {
-                        s.unpaidCases = cases;
-                        s.toggleAllOfUnpaidCases();
+
+                        $http.get('/lease/leave/owner/get/' + $("#rid").val() + '/').success(function (data) {
+                            s.deposit = data.fields.deposit;
+                            s.fee = data.fields.fee;
+                            s.bank = data.fields.bankName;
+                            s.account = data.fields.accountNumber;
+                            s.accountHolder = data.fields.accountHolder;
+                            s.feeComments = data.fields.feeComment;
+                            s.isFeeDone = data.fields.isFeeDone;
+                            s.isUnpaidDone = data.fields.isUnpaidDone;
+                            s.isOwnerDone = data.fields.isOwnerDone;
+                            s.unpaid = data.fields.unpaid;
+                            s.unpaidDirected = data.fields.unpaidAdded;
+                            s.unpaidComputed = data.fields.unpaidCollected;
+                            s.unpaidComments = data.fields.unpaidComment;
+                            s.totalRefund = data.fields.returnMoney;
+                    
+                            var convert_fn = function(item) {
+                                var i = item.fields;
+                                i.type = { title: i.title };
+                                return i;
+                            };
+                            
+                            s.unpaidCases = _.map(data.unpaiditems, function (i) { return i.fields; });
+                            s.extraCosts = _.map(data.unpaidaddeditems, convert_fn);
+                            s.feeCosts = _.map(data.feeitems, convert_fn);
+
+                            if (s.unpaidCases.length == 0) {
+                                s.unpaidCases = cases;
+                                s.toggleAllOfUnpaidCases();
+                            }
+                            s.updateUnpaidCases();
+                            s.updateUnpaid();
+                        });
                     });
                     
                     // 납부 상세 리스트 보여주기
@@ -200,11 +266,7 @@ angular.module('yewooApp', [])
         //s.unpaidTableWidths = new Array(4,4,5,5,4, 14, 7, 4,4, 8,8,8, 4, 3,3,3, 6,6);
         s.unpaidComputed = 0;
         s.unpaidDirected = 0;
-        s.unpaidCases = [
-            { checked: false, amount: 10000, month: "2014/03", time: 10, paidDate: new Date(), expectedDate: new Date(), revisiedAmount: 10000 },
-            { checked: false, amount: 20000, month: "2013/03", time: 11, paidDate: new Date(), expectedDate: new Date(), revisiedAmount: 20000 },
-            { checked: false, amount: 30000, month: "2012/03", time: 12, paidDate: new Date(), expectedDate: new Date(), revisiedAmount: 30000 }
-        ]
+        s.unpaidCases = [];
 
         s.toggleAllOfUnpaidCases = function() {
             $timeout(function()

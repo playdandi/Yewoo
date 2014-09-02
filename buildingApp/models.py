@@ -379,7 +379,7 @@ class LeaveOwner(models.Model):
 
     # 임차인확인처리
     isConfirmed = models.BooleanField(default = False)
-    confirmDate = models.DateField(null = True)
+    confirmDate = models.DateTimeField(null = True)
     confirmComment = models.TextField(default = '')
 
     def content_file_name(instance, filename):
@@ -395,42 +395,75 @@ class LeaveOwner(models.Model):
 # LeaveOwner에 연결된 Table
 class LeaveUnpaidItem(models.Model):
     leaveOwner = models.ForeignKey('LeaveOwner')
-    month = models.IntegerField(default = 0)
-    year = models.IntegerField(default = 0)
-    num = models.IntegerField(default = 0)
+    checked = models.BooleanField(default = False)
+    accumNumber = models.IntegerField(default = 0)
     amount = models.IntegerField(default = 0)
-    deposit = models.IntegerField(default = 0)
-    deposited = models.DateField(null=True) 
-    defaultAmount = models.IntegerField(default = 0)
-    stat = models.CharField(max_length = 20, default = '')
-
+    amountNoPay = models.IntegerField(default = 0)
+    amountPay = models.IntegerField(default = 0)
+    amountPaySum = models.IntegerField(default = 0)
+    confirmDate = models.CharField(max_length = 20, null = True)
+    confirmStatus = models.CharField(max_length = 20, null = True)
+    delayFee = models.IntegerField(default = 0)
+    delayNumber = models.IntegerField(default = 0)
+    expectedDate = models.DateTimeField(null = True)
+    isThis = models.IntegerField(default = 0)
+    leasePayDate = models.IntegerField(default = 0)
+    modifyNumber = models.IntegerField(default = 0)
+    month = models.IntegerField(default = 0)
+    number = models.IntegerField(default = 0)
+    payDate = models.CharField(max_length = 20, null = True)
+    payDateDay = models.IntegerField(default = 0)
+    payMsg = models.CharField(max_length = 20, null = True)
+    payStatus = models.IntegerField(default = 0)
+    revisiedAmount = models.IntegerField(default = 0)
+    totalFee = models.IntegerField(default = 0)
+    # 불필요 and python keyword
+    #type = model.CharField(max_length = 20, null = True) 
+    year = models.IntegerField(default = 0)
+    
 # LeaveOwner에 연결된 Table
 class LeaveUnpaidAddedItem(models.Model):
     leaveOwner = models.ForeignKey('LeaveOwner')
+    checked = models.BooleanField(default = False)
     title = models.CharField(max_length = 20, default = '')
+    subType = models.CharField(max_length = 20, null=True)
+    month = models.IntegerField(null=True)
+    year = models.IntegerField(null=True)
     amount = models.IntegerField(default = 0)
+    desc = models.TextField(default = '')
 
 # LeaveOwner에 연결된 Table
 class LeaveFeeItem(models.Model):
     leaveOwner = models.ForeignKey('LeaveOwner')
+    checked = models.BooleanField(default = False)
     title = models.CharField(max_length = 20, default = '')
+    subType = models.CharField(max_length = 20, null=True)
+    month = models.IntegerField(null=True)
+    year = models.IntegerField(null=True)
     amount = models.IntegerField(default = 0)
+    desc = models.TextField(default = '')
 
 # LeaveOwner에 연결된 Table
 class LeavePayoff(models.Model):
     leaveOwner = models.ForeignKey('LeaveOwner')
+    checked = models.BooleanField(default = False)
     title = models.CharField(max_length = 20, default = '')
+    subType = models.CharField(max_length = 20, null=True)
+    month = models.IntegerField(null=True)
+    year = models.IntegerField(null=True)
     amount = models.IntegerField(default = 0)
-    stat = models.CharField(max_length = 20, default = '')
-    date = models.DateField(null = True)
-    comment = models.TextField(default = '')
-    
+    desc = models.TextField(default = '')
+   
 # LeaveOwner에 연결된 Table
 class LeaveRead(models.Model):
     leaveOwner = models.ForeignKey('LeaveOwner')
+    checked = models.BooleanField(default = False)
     title = models.CharField(max_length = 20, default = '')
+    subType = models.CharField(max_length = 20, null=True)
+    month = models.IntegerField(null=True)
+    year = models.IntegerField(null=True)
     amount = models.IntegerField(default = 0)
-    comment = models.TextField(default = '')
+    desc = models.TextField(default = '')
 
 '''
 class StandardBillDetail(models.Model):

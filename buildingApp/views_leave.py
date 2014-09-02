@@ -24,7 +24,7 @@ def jsonResult(result):
     return HttpResponse(convert_to_json(result), mimetype='application/json')
 
 def convert_to_json(result):
-    if type(result) == str:
+    if type(result) == unicode or type(result) == str:
         return result
     elif type(result) == list:
         return serializers.serialize('json', result)
@@ -37,10 +37,7 @@ def convert_to_dict(val):
     return json.loads(convert_to_json(val))
 
 def get_leaveowner(request, rid): #rid
-    item = get_or_none(LeaveOwner, resident_id = rid)
-
-    if item is None:
-        item = {}
+    item = get_or_create(LeaveOwner, resident_id = rid)
 
     resident = item.resident
     unpaiditems = list(item.leaveunpaiditem_set.all())
@@ -70,12 +67,14 @@ def clear_and_save_items(queryset, items):
                 pass # please fix me
         child.save()
 
+# POST method
 def save_leaveowner(request, rid):
     item = get_or_create(LeaveOwner, resident_id = rid)
 
-    #if request.is_ajax() and request.method == 'POST':
-    if 'data' in request.REQUEST:
-        obj = json.loads(request.REQUEST['data'])
+    obj = json.loads(request.body)
+
+    if request.method == 'POST':
+        obj = json.loads(request.body)
 
         for key in obj:
             val = obj[key]
@@ -84,14 +83,14 @@ def save_leaveowner(request, rid):
                 pass
             if key == 'unpaiditems':
                 clear_and_save_items(item.leaveunpaiditem_set, val)
+            if key == 'unpaidaddeditems':
+                clear_and_save_items(item.leaveunpaidaddeditem_set, val)
+            if key == 'feeitems':
+                clear_and_save_items(item.leavefeeitem_set, val)
             if key == 'payoffs':
                 clear_and_save_items(item.leavepayoff_set, val)
             if key == 'reads':
                 clear_and_save_items(item.leaveread_set, val)
-            if key == 'feeitems':
-                clear_and_save_items(item.leavefeeitem_set, val)
-            if key == 'unpaidaddeditems':
-                clear_and_save_items(item.leaveunpaidaddeditem_set, val)
             else:
                 try:
                     setattr(item, key, val)
