@@ -102,6 +102,10 @@
         text-align:center;
         vertical-align:middle;
     }
+	.minifont {
+		font-size : 0.8em;
+		font-family : 'Malgun Gothic' !important;
+	}
 	</style>
 		
 </head>
@@ -152,15 +156,14 @@
                         <div class="pull-right" style="margin:3px 0px 0px 0px;">
                             <strong>시스템 선택</strong>
     						<select id="changesystem" class="margin0" style="width:180px">
-    							<option value="0" selected>1. 관리자 시스템</option>
-    							<option value="1">2. 통합 내역 시스템</option>
+    							<option value="0">1. 관리자 시스템</option>
+    							<option value="1" selected>2. 통합 내역 시스템</option>
     						</select>
                             <strong>세부 기능 선택</strong>
     						<select id="changepage" class="margin0" style="width:180px">
                                 <option value="" disabled selected style="display:none;"></option>
-    							<option value="department">1. 부서 생성</option>
-    							<option value="position">2. 직급 생성</option>
-    							<option value="companynum">3. 사번 설정</option>
+    							<option value="adjustment">1. 고지내역 연체료</option>
+    							<option value="bill">2.공과금 사용 기간</option>
     						</select>
                         </div>
                         <h3>시스템 목록 현황</h3>
@@ -170,56 +173,188 @@
 						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 							<table class="table table-bordered table-condensed table-center" style="margin-bottom:0px;">
 								<tr style="background:#d0d0d0;">
-                                    <td width="5%"><input type="checkbox" disabled /></td>
+                                    <td width="5%"><input type="checkbox"/></td>
 									<td width="15%">시스템 설정 기능</td>
-									<td width="15%">부서 생성</td>
-									<td width="55%">부서명</td>
+									<td width="15%">건물 연체료 설정</td>
+									<td width="55%"></td>
 									<td width="10%">설정하기</td>
 								</tr>
 								<tr>
-                                    <td><input type="checkbox" disabled /></td>
-									<td>부서 정보 설정</td>
-									<td>총 <font color="red">{{ departments|length }}</font>개 부서 생성 중</td>
-									<td>{% for department in departments %}
-                                    {{ department.name }} 
-                                    {% endfor %}</td>
-									<td><a class="btn btn-small disabled">변경▲</a></td>
-								</tr>
-								<tr>
-                                    <td colspan="5" style="text-align:left;">
-                                    <div style="padding:5px;">
-                                        <span>총 <font color="red">{{ departments|length }}</font>개 부서 생성 중</span>
-                                        <hr style="margin-top:10px;margin-bottom:10px;">
-							            <table class="table table-bordered table-condensed table-center borderless" style="margin-bottom:0px;background-color:transparent;">
-                                            {% for department_in in department_out %}
-                                            <tr>
-                                                {% for department in department_in %}
-        											
-                                                <td width="15%" style="text-align:left"><label style="display: inline-block"><input type="radio" name="depselect" value="{{ department.id }}"/></label>{{ department.name }}</td>
-                                                {% endfor %}
-                                                <td width="10%"></td>
-                                                {% if forloop.first %}
-                                                <td rowspan="{{ department_out|length }}" width="10%"><button class="btn btn-small btn-block" onclick="del();">삭제</button></td>
-                                                {% endif %}
-                                            </tr>
-                                            {% endfor %}
-                                        </table>
-                                        <hr style="margin-top:10px;margin-bottom:10px;">
-							            <table class="table table-bordered table-condensed table-center borderless" style="margin-bottom:0px;background-color:transparent;">
-                                            <tr>
-                                                <td width="20%"><input id="addtext" type="text" style="width:90%;margin:0px;"/></td>
-                                                <td width="10%"><button class="btn btn-small btn-block" onclick="add();">추가</button></td>
-                                                <td width="20%"><input id="modifytext" type="text" style="width:90%;margin:0px;"/></td>
-                                                <td width="10%"><button class="btn btn-small btn-block" onclick="modify();">이름 변경</button></td>
-                                                <td width="20%"></td>
-                                                <td width="10%"><button class="btn btn-small btn-block" disabled>취소</button></td>
-                                                <td width="10%"><button class="btn btn-small btn-block" disabled>확인</button></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    </td>
+                                    <td><input type="checkbox"/></td>
+									<td>건물 연체료 설정</td>
+									<td>총 <font color="red">{{ numOfBuilding }}</font>개 건물 적용 중</td>
+									<td></td>
+									<td><button class="btn btn-small" onclick="">변경 ▲</button></td>
 								</tr>
 							</table>
+						</div>
+						<div class="box-content" style="margin: 5px 0px 0px 0px; padding: 0px; border:0; background-color:#f8f8f8">
+							<div class="span6" style="">
+								<table class="table table-bordered table-condensed table-center" style="background-color:#c0c0c0; text-align:center; margin: 0px 0px 0px 0px">
+									<tr>
+										<td width="15%" style="text-align:center">건물명</td>
+										<td width="20%" style="text-align:center">
+											<select id="make_building" class="span12 margin0 fontmini" style="text-align:center">
+												{% for b in buildingList %}
+												<option value="b{{ b.id }}">{{ b.name }}</option>
+												{% endfor %}
+											</select>
+										</td>
+										<td width="15%" style="text-align:center">항목분류</td>
+										<td width="20%" style="text-align:center">
+											<select id="make_type" class="span12 margin0" style="text-align:center">
+												<option value="electricity">전기</option>
+												<option value="gas">가스</option>
+												<option value="water">수도</option>
+											</select>
+										</td>
+										<td width="30%"></td>
+									</tr>
+								</table>
+								<table class="table table-bordered table-condensed table-center" style="text-align:center">
+									<tr>
+										<td width="15%" style="text-align:center">시작 월분</td>
+										<td width="20%" style="text-align:center">
+											<select id="make_month" class="margin0 span12 fontmini">
+												<option value="1">1월분</option>
+												<option value="2">2월분</option>
+												<option value="3">3월분</option>
+												<option value="4">4월분</option>
+												<option value="5">5월분</option>
+												<option value="6">6월분</option>
+												<option value="7">7월분</option>
+												<option value="8">8월분</option>
+												<option value="9">9월분</option>
+												<option value="10">10월분</option>
+												<option value="11">11월분</option>
+												<option value="12">12월분</option>
+											</select>
+										</td>
+										<td width="10%" style="text-align:center">시작</td>
+										<td width="20%" style="text-align:center"><input id="make_sdate" type="text" class="span12 margin0 datedate datepicker" /></td>
+										<td width="10%" style="text-align:center">종료</td>
+										<td width="20%" style="text-align:center"><input id="make_edate" type="text" class="span12 margin0 datedate datepicker" /></td>
+										<td width="5%"></td>
+									</tr>
+									<tr>
+										<td width="15%" style="text-align:center">부과 단위</td>
+										<td width="20%" style="text-align:center">
+											<select id="make_month_unit" class="margin0 span12 fontmini">
+												<option value="1">1개월</option>
+												<option value="2">2개월</option>
+												<option value="3">3개월</option>
+												<option value="4">4개월</option>
+												<option value="5">5개월</option>
+												<option value="6">6개월</option>
+												<option value="7">7개월</option>
+												<option value="8">8개월</option>
+												<option value="9">9개월</option>
+												<option value="10">10개월</option>
+												<option value="11">11개월</option>
+												<option value="12">12개월</option>
+											</select>
+										</td>
+										<td width="10%" style="text-align:center">총</td>
+										<td width="20%" style="text-align:center">
+											<select id="make_month_total" class="margin0 span12 fontmini">
+												<option value="1">1개월</option>
+												<option value="2">2개월</option>
+												<option value="3">3개월</option>
+												<option value="4">4개월</option>
+												<option value="5">5개월</option>
+												<option value="6">6개월</option>
+												<option value="7">7개월</option>
+												<option value="8">8개월</option>
+												<option value="9">9개월</option>
+												<option value="10">10개월</option>
+												<option value="11">11개월</option>
+												<option value="12">12개월</option>
+											</select>
+										</td>
+										<td width="10%"></td>
+										<td width="20%">
+											<button class="btn btn-small">생성</button>
+											<button class="btn btn-small">초기화</button>
+										</td>
+										<td width="5%"></td>
+									</tr>
+								</table>
+							</div>
+
+							<div class="span6" style="float:left">
+								<table class="table table-bordered table-condensed table-center" style="text-align:center; background-color:#dbdbd2; margin: 0px 0px 0px 0px">
+									<tr>
+										<td width="25%">전체</td>
+										<td width="25%">전기</td>
+										<td width="25%">가스</td>
+										<td width="25%">수도</td>
+									</tr>
+								</table>
+								
+								<div class="row-fluid">
+								<div class="span12" style="height:700px; overflow-y:scroll">
+								<!-- for문 돌리기 -->
+								<table class="table table-bordered table-condensed table-center" style="background-color:#c0c0c0; text-align:center; margin: 5px 0px 0px 0px">
+									<tr>
+										<td width="15%" style="text-align:center">건물명</td>
+										<td width="20%" style="text-align:center">
+											<input type="text" class="span12 margin0" value="테스트건물" disabled />
+										</td>
+										<td width="15%" style="text-align:center">항목분류</td>
+										<td width="20%" style="text-align:center"><input type="text" class="span12 margin0" value="전기" disabled /></td>
+										<td width="30%"></td>
+									</tr>
+								</table>
+								<table class="table table-bordered table-condensed table-center" style="text-align:center">
+									<tr>
+										<td width="15%" style="text-align:center">시작 월분</td>
+										<td width="20%" style="text-align:center">
+											<input type="text" class="span12 margin0" value="1월분" disabled />
+										</td>
+										<td width="10%" style="text-align:center">시작</td>
+										<td width="20%" style="text-align:center">
+											<input type="text" class="span12 margin0 datedate datepicker" value="2013.12.18" disabled />
+										</td>
+										<td width="10%" style="text-align:center">종료</td>
+										<td width="20%" style="text-align:center">
+											<input type="text" class="span12 margin0 datedate datepicker" value="2014.1.17" disabled />
+										</td>
+										<td width="5%"></td>
+									</tr>
+									<tr>
+										<td width="15%" style="text-align:center">부과 단위</td>
+										<td width="20%" style="text-align:center">
+											<input type="text" class="span12 margin0" value="1개월" disabled />
+										</td>
+										<td width="10%" style="text-align:center">총</td>
+										<td width="20%" style="text-align:center">
+											<input type="text" class="span12 margin0" value="12개월" disabled />
+										</td>
+										<td width="35%" colspan="3"></td>
+									</tr>
+								</table>
+								<table class="table table-bordered table-condensed table-center" style="text-align:center">
+									<colgroup>
+										<col width="15%"></col>
+										<col width="20%"></col>
+										<col width="5%"></col>
+										<col width="20%"></col>
+										<col width="10%"></col>
+										<col width="20%"></col>
+										<col width="10%"></col>
+									<tr>
+										<th style="text-align:center">월</th>
+										<th colspan="3" style="text-align:center">부과 기간</th>
+										<th style="text-align:center"></th>
+										<th style="text-align:center">고지일</th>
+										<th style="text-align:center"></th>
+									</tr>
+								</table>
+								<!-- --------------------- -->	
+								</div>
+								</div>
+
+							</div>
 						</div>
 					</div>
 
@@ -230,6 +365,7 @@
 		</div>
 	</div>
 	
+	<input type="hidden" value="{{ csrf_token }}" />	
 	<div class="clearfix"></div>
 	<hr>
 	
@@ -287,8 +423,9 @@
 		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
 		<script src="{{ STATIC_URL }}ejs/view.js"></script>
 
-		<script src="{{ STATIC_URL }}js/04_04_setting_department.js"></script>
+		<!--<script src="{{ STATIC_URL }}js/03_01_electricity_show.js"></script>!-->
 		<script src="{{ STATIC_URL }}js/common.js"></script>
+		<script src="{{ STATIC_URL }}js/04_04_setting_bill.js"></script>
 		
 		<script type="text/javascript" language="JavaScript">
 			$(document).ready(function(){
@@ -301,10 +438,7 @@
                 $("#side-datepicker").datepicker();
                 $("#side-datepicker2").datepicker();
                 $("#side-datepicker3").datepicker();
-				// radio btn 클릭 시 동작
-				$('input[name=depselect]').change(function() {
-					changeRadio($(this).parent().parent().parent().parent().text());
-				});
+
                 $('#changesystem').change(function() {
                     var changepage = $('#changepage');
                     while(changepage.children().length > 0) {
@@ -352,6 +486,16 @@
                 $('#changepage').change(function() {
                     $(location).attr('href', '/manage/setting/' + $(this).val() + '/');
                 });
+				
+				// 날짜 . 변경
+				$('#make_sdate').change(function() {
+					var mdy = $('#make_sdate').val().split('/');
+					$('#make_sdate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
+				});
+				$('#make_edate').change(function() {
+					var mdy = $('#make_edate').val().split('/');
+					$('#make_edate').val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
+				});
 			});			
 		</script>
 		<!-- end: JavaScript-->

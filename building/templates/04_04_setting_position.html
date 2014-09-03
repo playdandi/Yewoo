@@ -343,6 +343,10 @@
                         option.text = "1. 고지 내역 연체료";
                         option.value = "adjustment";
                         changepage.append(option);
+                        option = document.createElement("option");
+                        option.text = "2. 공과금 사용 기간";
+                        option.value = "bill";
+                        changepage.append(option);
                     }
                 });
                 $('#changepage').change(function() {

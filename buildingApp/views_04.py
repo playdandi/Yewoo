@@ -500,5 +500,16 @@ def setting_adjustment_confirm(request):
 
 
 
+@permission_required('buildingApp.manage_setting', login_url='/login/')
+def setting_bill_html(request):
+	param = {}
+	si = SettingBill.objects.all()
+	buildingList = []
+	bi = BuildingInfo.objects.all()
+	for b in bi:
+		buildingList.append( {'id' : int(b.id), 'name' : str(b.name)} )
+	param['buildingList'] = buildingList
+
+	return render_to_response('04_04_setting_bill.html', param, context_instance=RequestContext(request))
 
 

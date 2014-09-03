@@ -339,10 +339,20 @@ class DepartmentList(models.Model):
 class PositionList(models.Model):
     name = models.CharField(max_length = 10)
 
+# 시스템 : 연체율
 class SettingPayment(models.Model):
 	building = models.ForeignKey('BuildingInfo')
 	month = models.IntegerField()
 	delayRate = models.FloatField()
+
+# 시스템 : 공과금 사용기간
+class SettingBill(models.Model):
+    building = models.ForeignKey('BuildingInfo')
+    type = models.CharField(max_length=13)
+    month = models.IntegerField()
+    startDate = models.DateField()
+    endDate = models.DateField()
+    noticeDate = models.DateField()
 
 class SystemSettings(models.Model):
     name = models.CharField(max_length = 20)
@@ -366,7 +376,7 @@ class WorkCareer(models.Model):
     position = models.CharField(max_length = 20)
     mission = models.CharField(max_length = 100)
 
-
+# 표준 고지서
 class StandardBill(models.Model):
     type = models.IntegerField()
     year = models.IntegerField()
@@ -500,12 +510,3 @@ class LeaveRead(models.Model):
     amount = models.IntegerField(default = 0)
     desc = models.TextField(default = '')
 
-'''
-class StandardBillDetail(models.Model):
-    bill = models.ForeignKey('StandardBill')
-    managerName = models.CharField(max_length = 12)
-    inputDate = models.DateField(null=True)
-    category = models.IntegerField()
-    memo = models.TextField()
-    status = models.IntegerField()
-'''
