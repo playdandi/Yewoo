@@ -143,6 +143,16 @@
                     </table>
 				</div>
 
+                <div class="span11" style="margin-bottom:5px; text-align:center">
+                    <button class="btn btn-small btn-inverse" ng-if="isFeeDone && isUnpaidDone" ng-click="previewOwner()">[갑]지 미리보기</button>
+                    <button class="btn btn-small " ng-if="!isFeeDone || !isUnpaidDone" >[갑]지 미리보기</button>
+                    <button class="btn btn-small btn-inverse" ng-if="isFeeDone && isUnpaidDone" ng-click="previewTenant()">[을]지 미리보기</button>
+                    <button class="btn btn-small " ng-if="!isFeeDone || !isUnpaidDone" >[을]지 미리보기</button>
+                    <button class="btn btn-small btn-inverse" ng-click="save()">저장하기</button>
+                    <button class="btn btn-small btn-inverse" ng-click="cancel()">목록으로</button>
+                </div>
+
+
 				<!-- 기본 정보 -->
                 <div class="row-fluid">
 					<div class="box span11" style="margin: 0px; padding: 0px">
@@ -339,6 +349,11 @@
                                         </table>  
                                     </div>
                                 </div>
+<div class="row-fluid textCenter">
+                                        <button class="btn btn-small btn-inverse" ng-if="!isTenantDone" ng-click="doneTenant()">저장하고 완료하기</button>
+                                        <button class="btn btn-small" ng-if="isTenantDone" ng-click="undoneTenant()">완료취소</button>
+                                    </div>
+
                             </div>
                         </div>
                     </div>
@@ -440,15 +455,17 @@
                     </div>
                     </div>
                 </div>
+
                 <br/>
 
                 <div class="span11" style="margin-bottom:5px; text-align:center">
-                    <button class="btn btn-small btn-inverse" ng-click="previewOwner()">[갑]지 미리보기</button>
-                    <button class="btn btn-small btn-inverse" ng-click="previewTenant()">[을]지 미리보기</button>
+                    <button class="btn btn-small btn-inverse" ng-if="isFeeDone && isUnpaidDone" ng-click="previewOwner()">[갑]지 미리보기</button>
+                    <button class="btn btn-small " ng-if="!isFeeDone || !isUnpaidDone" >[갑]지 미리보기</button>
+                    <button class="btn btn-small btn-inverse" ng-if="isFeeDone && isUnpaidDone" ng-click="previewTenant()">[을]지 미리보기</button>
+                    <button class="btn btn-small " ng-if="!isFeeDone || !isUnpaidDone" >[을]지 미리보기</button>
                     <button class="btn btn-small btn-inverse" ng-click="save()">저장하기</button>
-                    <button class="btn btn-small btn-inverse" ng-click="cancel()">취소하기</button>
+                    <button class="btn btn-small btn-inverse" ng-click="cancel()">목록으로</button>
                 </div>
-            </div>
 
 			<!-- end: Content -->
 		</div>

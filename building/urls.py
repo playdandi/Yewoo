@@ -92,6 +92,8 @@ urlpatterns = patterns('',
     url(r'^lease/payment/detail/saveModify/$', payment_detail_saveModify),
 
     url(r'^lease/leave/$', leave_html),
+    url(r'^lease/leave/down_owner/(?P<uid>\d+)/$', leave_down_owner),
+    url(r'^lease/leave/down_tenant/(?P<uid>\d+)/$', leave_down_tenant),
     url(r'^lease/leave/owner/(?P<uid>\d+)/$', leave_owner_html),
     url(r'^lease/leave/owner/get/(?P<rid>\d+)/$', get_leaveowner),
     url(r'^lease/leave/owner/save/(?P<rid>\d+)/$', save_leaveowner),

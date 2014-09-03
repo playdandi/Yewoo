@@ -337,3 +337,18 @@
     font-size: 12pt;
     font-weight: bold;
 }
+
+#leave .uploader
+{
+    width: auto;
+}
+
+#leave .uploader .filename
+{
+    width: 200px;
+}
+
+#leave .underline
+{
+    text-decoration: underline;
+}
