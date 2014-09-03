@@ -39,6 +39,7 @@ def setPostData(request, typestr = ''):
         building_name_id.append({'name' : b.name, 'id' : b.id})
         if int(b.id) == int(param['search_building_id']):
             param['cur_building_name'] = str(b.name)
+            param['cur_bid'] = int(b.id)
 
 	param['min_building_id'] = building_name_id[0]['id']
     param['building_name_id'] = building_name_id
@@ -66,8 +67,8 @@ def bill_show_html(request):
     param = {}
     data = StandardBill.objects.all()
     if request.method == 'GET':
-        param['search_type'] = int(0)
-        param['search_building_id'] = int(-1)
+        param['search_type'] = int(1)
+        param['search_building_id'] = int( BuildingInfo.objects.all()[0].id )
     elif request.method == 'POST':
         param['search_type'] = int(request.POST['type'])
         param['search_building_id'] = int(request.POST['building_id'])
@@ -173,6 +174,7 @@ def bill_show_html(request):
     params['each'] = eachNoti
     params['all_len'] = len(allNoti)
     params['each_len'] = len(eachNoti)
+    params['type'] = int(param['search_type'])
            
     return render(request, '03_05_bill_show.html', dict(setPostData(request).items() + params.items()))
 

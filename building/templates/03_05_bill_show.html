@@ -129,17 +129,17 @@
 								<td width="25%">
 									<div style="margin-right:5px; float:left">입력 분류</div>
 									<select id="search_type" class="margin0" style="width:130px">
-										<option value="0">전체 보기</option>
-										<option value="1">전체 안내</option>
-										<option value="2">개별 안내</option>
+										<!--<option value="0">전체 보기</option>-->
+										<option value="1" {% if type == 1 %}selected{% endif %}>전체 안내</option>
+										<option value="2" {% if type == 2 %}selected{% endif %}>개별 안내</option>
 									</select>
 								</td>
 								<td width="20%">
 									<div style="margin-right:5px; float:left">건물명</div>
 									<select id="search_building" class="margin0" style="width:120px">
-										<option value="-1">전체</option>
+										<!--<option value="-1">전체</option>-->
 										{% for b in building_name_id %}
-										<option value="b{{ b.id }}">{{ b.name }}</option>
+										<option value="b{{ b.id }}" {% if cur_bid == b.id %}selected{% endif %}>{{ b.name }}</option>
 										{% endfor %}
 									</select>
 								</td>
