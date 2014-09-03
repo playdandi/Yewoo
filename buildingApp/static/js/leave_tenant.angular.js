@@ -1,9 +1,19 @@
 angular.module('yewooApp', [])
-    .controller('MainCtrl', function($scope, $timeout) {
+    .config(['$httpProvider', function($httpProvider) {
+        //var csrftoken = $.cookie('csrftoken');
+        $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+        $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+    }])
+    .controller('MainCtrl', function($scope, $timeout, $http) {
 
         var s = $scope;
         var payments = [];
         var paymentDetails = [];
+
+        s.cancel = function() { window.location.href = "/lease/leave"; }
+
+        s.doneTenant = function() { s.isTenantDone = true; s.save(); }
+        s.undoneTenant = function() { s.isTenantDone = false; s.save(); }
 
         s.previewOwner = function(print) {
             window.open("/lease/leave/owner_print/" + $("#rid").val() + ((!!print) ? "?print=1" : ""));
@@ -37,6 +47,24 @@ angular.module('yewooApp', [])
             }
             return nowym;
         }
+
+        s.convert_to_items = function (item) { 
+            if (!item.title)
+                item.title = item.type.title;
+            return item;
+        };
+
+        s.save = function() {
+            var item = {
+                'payoffs' : _.map(s.moneyChanges, s.convert_to_items),
+                'reads' : _.map(s.records, s.convert_to_items),
+                'isTenantDone' : s.isTenantDone
+            };
+
+            $http.post('/lease/leave/owner/save/' + $("#rid").val() + '/', item).success(function (data) {
+                alert("저장했습니다.");
+            });
+        };
 
         var doAjaxAllList = function() {
             var postData = {};
@@ -122,6 +150,34 @@ angular.module('yewooApp', [])
 
                     s.$apply(function () {
                         s.cases = cases;
+
+                        $http.get('/lease/leave/owner/get/' + $("#rid").val() + '/').success(function (data) {
+                            s.deposit = data.fields.deposit;
+                            s.fee = data.fields.fee;
+                            s.bank = data.fields.bankName;
+                            s.account = data.fields.accountNumber;
+                            s.accountHolder = data.fields.accountHolder;
+                            s.feeComments = data.fields.feeComment;
+                            s.isFeeDone = data.fields.isFeeDone;
+                            s.isUnpaidDone = data.fields.isUnpaidDone;
+                            s.isOwnerDone = data.fields.isOwnerDone;
+                            s.isTenantDone = data.fields.isTenantDone;
+                            s.unpaid = data.fields.unpaid;
+                            s.unpaidDirected = data.fields.unpaidAdded;
+                            s.unpaidComputed = data.fields.unpaidCollected;
+                            s.unpaidComments = data.fields.unpaidComment;
+                            s.totalRefund = data.fields.returnMoney;
+                    
+                            var convert_fn = function(item) {
+                                var i = item.fields;
+                                i.type = { title: i.title };
+                                return i;
+                            };
+                            
+                            s.records = _.map(data.reads, convert_fn);
+                            s.moneyChanges = _.map(data.payoffs, convert_fn);
+                        });
+
                     });
                     
                     // 납부 상세 리스트 보여주기
