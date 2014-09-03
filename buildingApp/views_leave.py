@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import base64
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext, loader
@@ -55,6 +56,11 @@ def get_leaveowner(request, rid): #rid
     result['unpaidaddeditems'] = convert_to_dict(unpaidaddeditems)
     result['feeitems'] = convert_to_dict(feeitems)
     result['confirms'] = convert_to_dict(confirms)
+
+    if item.ownerFile:
+        result['ownerFilename'] = item.ownerFile.fileName
+    if item.tenantFile:
+        result['tenantFilename'] = item.tenantFile.fileName
 
     return jsonResult(result)
 
@@ -219,7 +225,42 @@ def leave_confirm_tenant_print_html(request, uid):
 
 def leave_confirm_html(request, uid):
     csrf_token = get_token(request)
+
+    if 'ownerFile' in request.FILES:
+        file = request.FILES['ownerFile']
+        data = file.read()
+        if len(data) > 0:
+            item = get_or_create(LeaveOwner, resident_id = uid)
+            item.ownerFile = LeaveFile.objects.create() 
+            item.ownerFile.fileName = file.name
+            item.ownerFile.file = base64.b64encode(data)
+            item.ownerFile.save()
+            item.save()
+        
+    if 'tenantFile' in request.FILES:
+        file = request.FILES['tenantFile']
+        data = file.read()
+        if len(data) > 0:
+            item = get_or_create(LeaveOwner, resident_id = uid)
+            item.tenantFile = LeaveFile.objects.create() 
+            item.tenantFile.fileName = file.name
+            item.tenantFile.file = base64.b64encode(data)
+            item.tenantFile.save()
+            item.save()
+
     return render(request, 'leave_confirm.html', get_resident_info(uid))
+
+def leave_down_owner(request, uid):
+    item = get_or_create(LeaveOwner, resident_id = uid)
+    response = HttpResponse(base64.b64decode(item.ownerFile.file), content_type='application/x-download')
+    response['Content-Disposition'] = 'attachment; filename="' + item.ownerFile.fileName + '"'
+    return response
+
+def leave_down_tenant(request, uid):
+    item = get_or_create(LeaveOwner, resident_id = uid)
+    response = HttpResponse(base64.b64decode(item.tenantFile.file), content_type='application/x-download')
+    response['Content-Disposition'] = 'attachment; filename="' + item.tenantFile.fileName + '"'
+    return response
 
 def leave_final_html(request, uid):
     csrf_token = get_token(request)

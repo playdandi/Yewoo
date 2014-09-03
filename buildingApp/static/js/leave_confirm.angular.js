@@ -9,6 +9,15 @@ angular.module('yewooApp', [])
         var payments = [];
         var paymentDetails = [];
 
+        s.downOwner = function(print) {
+            window.open("/lease/leave/down_owner/" + $("#rid").val());
+        };
+
+        s.downTenant = function(print) {
+            window.open("/lease/leave/down_tenant/" + $("#rid").val());
+        };
+
+
         s.previewOwner = function(print) {
             window.open("/lease/leave/owner_print/" + $("#rid").val() + ((!!print) ? "?print=1" : ""));
         };
@@ -26,7 +35,6 @@ angular.module('yewooApp', [])
         };
 
         s.saveConfirm = function() {
-            alert(1);
             var item = {
                 'isConfirmed' : s.records.length > 0,
                 'confirms' : s.records
@@ -54,6 +62,8 @@ angular.module('yewooApp', [])
             s.totalRefund = data.fields.returnMoney;
             s.ownerFile = data.fields.ownerFile;
             s.tenantFile = data.fields.tenantFile;
+            s.ownerFilename = data.ownerFilename;
+            s.tenantFilename = data.tenantFilename;
 
             var convert_fn = function(item) {
                 var i = item.fields;

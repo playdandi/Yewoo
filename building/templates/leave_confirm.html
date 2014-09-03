@@ -258,6 +258,8 @@
                         <div class="box-content">
                             <h3><a class="cursorHand" ng-click="uploadClosed = !uploadClosed">임차인 확인 퇴거 정산서 입력하기<span ng-show="uploadClosed">▲</span><span ng-show="!uploadClosed">▼</span></a> </h3>
                             <div ng-show="!uploadClosed">
+                                <form id="fileupload_form" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
                                 <!-- 1.임차인 확인퇴거 정산서 입력하기 (파일 업로드)-->
                                 <div class="row-fluid">
                                     <div class="box" style="margin:0px 0px 5px 0px; padding: 0px">
@@ -273,13 +275,7 @@
                                                         </td>
                                                         <td width="80%" class="textCenter tableRow">
                                                             <div>
-                                                                <div class="uploader" id="uniform-residentFileInput" style="display: none;"><input id="residentFileInput" type="file" name="file" style="display:none"><span class="filename" style="-webkit-user-select: none;">No file selected</span><span class="action" style="-webkit-user-select: none;">Choose File</span></div>
-                                                                <input id="filename" type="text" style="width:50%; max-width:500px;" class="margin0" placeholder="파일명" disabled="">
-                                                                <input id="file_id" type="hidden" value="">
-                                                                <button class="btn btn-small btn-inverse" onclick="$('input[id=residentFileInput]').click();">찾아보기</button>
-                                                                <button class="btn btn-small" onclick="LoadExcelFile();">불러오기</button>
-                                                                <!--<a id="alert" href="#" title="" data-rel="tooltip" class="margin0" data-original-title=""><button class="btn btn-small btn-danger" style="float:right">주의사항</button></a>-->
-                                                                <!--<a href="#" id="alert" title="" data-rel="tooltip" class="margin0"><button class="btn btn-small btn-danger" style="float:right">주의사항</button></a>-->
+                                                                <input id="ownerFile" type="file" name="ownerFile" />
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -289,11 +285,8 @@
                                                         </td>
                                                         <td width="80%" class="textCenter tableRow">
                                                             <div>
-                                                                <div class="uploader" id="uniform-residentFileInput" style="display: none;"><input id="residentFileInput" type="file" name="file" style="display:none"><span class="filename" style="-webkit-user-select: none;">No file selected</span><span class="action" style="-webkit-user-select: none;">Choose File</span></div>
-                                                                <input id="filename" type="text" style="width:50%; max-width:500px;" class="margin0" placeholder="파일명" disabled="">
-                                                                <input id="file_id" type="hidden" value="">
-                                                                <button class="btn btn-small btn-inverse" onclick="$('input[id=residentFileInput]').click();">찾아보기</button>
-                                                                <button class="btn btn-small" onclick="LoadExcelFile();">불러오기</button>
+                                                                <input id="tenantFile" type="file" name="tenantFile" />
+                                                                
                                                                 <!--<a id="alert" href="#" title="" data-rel="tooltip" class="margin0" data-original-title=""><button class="btn btn-small btn-danger" style="float:right">주의사항</button></a>-->
                                                                 <!--<a href="#" id="alert" title="" data-rel="tooltip" class="margin0"><button class="btn btn-small btn-danger" style="float:right">주의사항</button></a>-->
                                                             </div>
@@ -316,6 +309,7 @@
                                                             퇴거 정산서 [갑]지
                                                         </td>
                                                         <td width="70%" class="textCenter tableRow">
+                                                            <a ng-click="downOwner()" class="cursorHand underline" ng-bind="ownerFilename" ></a>
                                                         </td>
                                                         <td width="10%" class="textCenter tableRow">
                                                             <button class="btn btn-small" ng-click="previewOwner()" >미리보기</button>
@@ -329,6 +323,7 @@
                                                             퇴거 정산서 [을]지
                                                         </td>
                                                         <td width="70%" class="textCenter tableRow">
+                                                            <a ng-click="downOwner()" class="cursorHand underline" ng-bind="tenantFilename"></a>
                                                         </td>
                                                         <td width="10%" class="textCenter tableRow">
                                                             <button class="btn btn-small" ng-click="previewTenant()">미리보기</button>
@@ -341,8 +336,9 @@
                                     </div>
                                     <div class="textCenter">
                                         * 이 내용을 저장합니다. 
-                                        <button class="btn btn-small btn-inverse" ng-click="saveFiles()">저장하기</button>
+                                        <button class="btn btn-small btn-inverse" onclick="$('#fileupload_form').submit()">저장하기</button>
                                     </div>
+                                </form>
 
                             </div>
                            </div>

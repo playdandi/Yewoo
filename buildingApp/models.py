@@ -2,6 +2,30 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+# Mysql's BinaryFields for Django 1.5
+
+class TinyBlobField(models.Field):
+    description = "Tinyblob"
+    def db_type(self, connection):
+        return 'tinyblob'
+
+class BlobField(models.Field):
+    description = "Blob"
+    def db_type(self, connection):
+        return 'blob'
+
+class MediumBlobField(models.Field):
+    description = "Mediumblob"
+    def db_type(self, connection):
+        return 'mediumblob'
+
+class LongBlobField(models.Field):
+    description = "Longblob"
+    def db_type(self, connection):
+        return 'longblob'
+
+# Database models
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     passhint = models.CharField(max_length=50, null=True)
@@ -384,11 +408,16 @@ class LeaveOwner(models.Model):
         return '/'.join(['content', str(instance.pk), filename])
 
     # 정산서 파일
-    ownerFile = models.FileField(upload_to=content_file_name, null = True)
-    tenantFile = models.FileField(upload_to=content_file_name, null = True)
-
+    ownerFile = models.ForeignKey('LeaveFile', null = True, related_name = "owner")
+    tenantFile = models.ForeignKey('LeaveFile', null = True, related_name = "tenant")
+ 
     feeComment = models.TextField(default = '')
     unpaidComment = models.TextField(default = '')
+
+class LeaveFile(models.Model):
+    fileName = models.CharField(max_length = 256, null = True)
+    file = models.TextField(null = True)
+    uploaded = models.DateTimeField(null = True)
 
 class LeaveConfirm(models.Model):
     leaveOwner = models.ForeignKey('LeaveOwner')
