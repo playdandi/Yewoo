@@ -94,7 +94,7 @@ angular.module('yewooApp', [])
                                 (today <= Number(result[i].leasePayDate) || (result[i].payStatus == -1 && result[i].payDateDay <= Number(result[i].leasePayDate))) ) {
                                 while (result[i].number == thisNumber) {
                                     result[i].isThis = Number(1);
-                                    payments_thisMonth.push(result[i]);
+                                    //payments_thisMonth.push(result[i]);
                                     payments.push(result[i]);
                                     i++;
                                 }
@@ -162,6 +162,7 @@ angular.module('yewooApp', [])
                             s.isUnpaidDone = data.fields.isUnpaidDone;
                             s.isOwnerDone = data.fields.isOwnerDone;
                             s.isTenantDone = data.fields.isTenantDone;
+                            s.isConfirmed = data.fields.isConfirmed;
                             s.unpaid = data.fields.unpaid;
                             s.unpaidDirected = data.fields.unpaidAdded;
                             s.unpaidComputed = data.fields.unpaidCollected;

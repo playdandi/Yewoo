@@ -41,6 +41,7 @@ angular.module('yewooApp', [])
             };
 
             $http.post('/lease/leave/owner/save/' + $("#rid").val() + '/', item).success(function (data) {
+                s.isConfirmed = s.records.length > 0;
                 alert("저장했습니다.");
             });
         }
@@ -55,6 +56,8 @@ angular.module('yewooApp', [])
             s.isFeeDone = data.fields.isFeeDone;
             s.isUnpaidDone = data.fields.isUnpaidDone;
             s.isOwnerDone = data.fields.isOwnerDone;
+            s.isTenantDone = data.fields.isTenantDone;
+            s.isConfirmed = data.fields.isConfirmed;
             s.unpaid = data.fields.unpaid;
             s.unpaidDirected = data.fields.unpaidAdded;
             s.unpaidComputed = data.fields.unpaidCollected;
