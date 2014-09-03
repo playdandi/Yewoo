@@ -45,6 +45,7 @@ def get_leaveowner(request, rid): #rid
     reads = list(item.leaveread_set.all())
     unpaidaddeditems = list(item.leaveunpaidaddeditem_set.all())
     feeitems = list(item.leavefeeitem_set.all())
+    confirms = list(item.leaveconfirm_set.all())
 
     result = convert_to_dict(item)
     result['resident'] = convert_to_dict(resident)
@@ -53,6 +54,7 @@ def get_leaveowner(request, rid): #rid
     result['reads'] = convert_to_dict(reads)
     result['unpaidaddeditems'] = convert_to_dict(unpaidaddeditems)
     result['feeitems'] = convert_to_dict(feeitems)
+    result['confirms'] = convert_to_dict(confirms)
 
     return jsonResult(result)
 
@@ -91,6 +93,8 @@ def save_leaveowner(request, rid):
                 clear_and_save_items(item.leavepayoff_set, val)
             if key == 'reads':
                 clear_and_save_items(item.leaveread_set, val)
+            if key == 'confirms':
+                clear_and_save_items(item.leaveconfirm_set, val)
             else:
                 try:
                     setattr(item, key, val)

@@ -1,6 +1,10 @@
 angular.module('yewooApp', [])
-    .controller('MainCtrl', function($scope, $timeout) {
-
+    .config(['$httpProvider', function($httpProvider) {
+        //var csrftoken = $.cookie('csrftoken');
+        $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+        $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+    }])
+    .controller('MainCtrl', function($scope, $timeout, $http) {
         var s = $scope;
         var payments = [];
         var paymentDetails = [];
@@ -20,6 +24,45 @@ angular.module('yewooApp', [])
         s.previewConfirmTenant = function(print) {
             window.open("/lease/leave/confirm_tenant_print/" + $("#rid").val() + ((!!print) ? "?print=1" : ""));
         };
+
+        s.saveConfirm = function() {
+            alert(1);
+            var item = {
+                'isConfirmed' : s.records.length > 0,
+                'confirms' : s.records
+            };
+
+            $http.post('/lease/leave/owner/save/' + $("#rid").val() + '/', item).success(function (data) {
+                alert("저장했습니다.");
+            });
+        }
+
+        $http.get('/lease/leave/owner/get/' + $("#rid").val() + '/').success(function (data) {
+            s.deposit = data.fields.deposit;
+            s.fee = data.fields.fee;
+            s.bank = data.fields.bankName;
+            s.account = data.fields.accountNumber;
+            s.accountHolder = data.fields.accountHolder;
+            s.feeComments = data.fields.feeComment;
+            s.isFeeDone = data.fields.isFeeDone;
+            s.isUnpaidDone = data.fields.isUnpaidDone;
+            s.isOwnerDone = data.fields.isOwnerDone;
+            s.unpaid = data.fields.unpaid;
+            s.unpaidDirected = data.fields.unpaidAdded;
+            s.unpaidComputed = data.fields.unpaidCollected;
+            s.unpaidComments = data.fields.unpaidComment;
+            s.totalRefund = data.fields.returnMoney;
+            s.ownerFile = data.fields.ownerFile;
+            s.tenantFile = data.fields.tenantFile;
+
+            var convert_fn = function(item) {
+                var i = item.fields;
+                i.type = { title: i.title };
+                return i;
+            };
+            
+            s.records = _.map(data.confirms, convert_fn);
+        });
 
 
         s.mode = 3;

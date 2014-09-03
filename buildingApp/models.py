@@ -379,8 +379,6 @@ class LeaveOwner(models.Model):
 
     # 임차인확인처리
     isConfirmed = models.BooleanField(default = False)
-    confirmDate = models.DateTimeField(null = True)
-    confirmComment = models.TextField(default = '')
 
     def content_file_name(instance, filename):
         return '/'.join(['content', str(instance.pk), filename])
@@ -391,6 +389,14 @@ class LeaveOwner(models.Model):
 
     feeComment = models.TextField(default = '')
     unpaidComment = models.TextField(default = '')
+
+class LeaveConfirm(models.Model):
+    leaveOwner = models.ForeignKey('LeaveOwner')
+    checked = models.BooleanField(default = False)
+    adminuser = models.CharField(max_length = 20, null = True)
+    adminuserid = models.IntegerField(default = 0)
+    date = models.CharField(max_length = 20, null = True)
+    desc = models.CharField(max_length = 200, null = True)
 
 # LeaveOwner에 연결된 Table
 class LeaveUnpaidItem(models.Model):
