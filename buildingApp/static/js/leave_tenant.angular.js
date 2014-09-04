@@ -10,6 +10,38 @@ angular.module('yewooApp', [])
         var payments = [];
         var paymentDetails = [];
 
+        // money
+
+        s.edit_money = false;
+        s.input_money = function() {
+            oldMoneyChanges = angular.copy(s.moneyChanges);
+            s.edit_money = true;
+        }
+        s.save_money = function() { 
+            s.edit_money = false;
+            s.save();
+        }
+        s.cancel_money = function() {
+            s.moneyChanges = oldMoneyChanges;
+            s.edit_money = false;
+        }
+
+        //record 
+
+        s.edit_record = false;
+        s.input_record = function() {
+            oldRecords = angular.copy(s.records);
+            s.edit_record = true;
+        }
+        s.save_record = function() { 
+            s.edit_record = false;
+            s.save();
+        }
+        s.cancel_record = function() {
+            s.records = oldRecords;
+            s.edit_record = false;
+        }
+
         s.cancel = function() { window.location.href = "/lease/leave"; }
 
         s.doneTenant = function() { s.isTenantDone = true; s.save(); }
@@ -62,7 +94,6 @@ angular.module('yewooApp', [])
             };
 
             $http.post('/lease/leave/owner/save/' + $("#rid").val() + '/', item).success(function (data) {
-                alert("저장했습니다.");
             });
         };
 
