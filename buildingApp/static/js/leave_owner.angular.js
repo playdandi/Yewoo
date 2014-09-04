@@ -55,6 +55,85 @@ angular.module('yewooApp', [])
             s.save();
         }
 
+        // extra
+
+        s.edit_extra = false;
+        var oldExtraCosts = undefined;
+
+        s.input_extra = function() {
+            oldExtraCosts = angular.copy(s.extraCosts);
+            s.edit_extra = true;
+        }
+
+        s.cancel_extra = function() {
+            s.extraCosts = oldExtraCosts;
+            s.edit_extra = false;
+            s.updateUnpaid();
+        }
+    
+        s.save_extra = function() {
+            s.edit_extra = false;
+            s.save();
+        }
+
+        // unpaid comment
+
+        s.edit_unpaid_comment = false;
+
+        s.input_unpaid_comment = function() {
+            s.edit_unpaidComments = s.unpaidComments;
+            s.edit_unpaid_comment = true;
+        }
+
+        s.save_unpaid_comment = function() {
+            s.unpaidComments = s.edit_unpaidComments;
+            s.edit_unpaid_comment = false;
+            s.save();
+        }
+
+        s.cancel_unpaid_comment = function() {
+            s.edit_unpaid_comment = false;
+        }
+
+        // fee comment
+
+        s.edit_fee_comment = false;
+
+        s.input_fee_comment = function() {
+            s.edit_feeComments = s.feeComments;
+            s.edit_fee_comment = true;
+        }
+
+        s.save_fee_comment = function() {
+            s.feeComments = s.edit_feeComments;
+            s.edit_fee_comment = false;
+            s.save();
+        }
+
+        s.cancel_fee_comment = function() {
+            s.edit_fee_comment = false;
+        }
+
+        // feelist
+
+        s.edit_fee = false;
+        var oldFees = undefined;
+
+        s.input_fee = function() {
+            oldFees = angular.copy(s.feeCosts);
+            s.edit_fee = true;
+        }
+
+        s.cancel_fee = function() {
+            s.feeCosts = oldFees;
+            s.edit_fee = false;
+            s.updateUnpaid();
+        }
+    
+        s.save_fee = function() {
+            s.edit_fee = false;
+            s.save();
+        }
 
 
         s.cancel = function() { window.location.href = "/lease/leave"; }
