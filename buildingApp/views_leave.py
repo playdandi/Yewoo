@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
 import base64
+import mimetypes
+import json
+import os, datetime
+from buildingApp.models import *
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext, loader
 from django.middleware.csrf import get_token
 from django.db.models import Q
-import json
-from buildingApp.models import *
 from django.conf import settings
-import os, datetime
 from django.contrib.auth.models import User
 from django.core import serializers
+
+mimetypes.init()
 
 def get_or_create(model, **kwargs):
     return model.objects.get_or_create(**kwargs)[0]
@@ -252,13 +255,13 @@ def leave_confirm_html(request, uid):
 
 def leave_down_owner(request, uid):
     item = get_or_create(LeaveOwner, resident_id = uid)
-    response = HttpResponse(base64.b64decode(item.ownerFile.file), content_type='application/x-download')
+    response = HttpResponse(base64.b64decode(item.ownerFile.file), content_type=mimetypes.guess_type(item.ownerFile.file))
     response['Content-Disposition'] = 'attachment; filename="' + item.ownerFile.fileName + '"'
     return response
 
 def leave_down_tenant(request, uid):
     item = get_or_create(LeaveOwner, resident_id = uid)
-    response = HttpResponse(base64.b64decode(item.tenantFile.file), content_type='application/x-download')
+    response = HttpResponse(base64.b64decode(item.tenantFile.file), content_type=mimetypes.guess_type(item.ownerFile.file))
     response['Content-Disposition'] = 'attachment; filename="' + item.tenantFile.fileName + '"'
     return response
 

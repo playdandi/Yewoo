@@ -141,14 +141,23 @@
                             <th width="25%" ng-class="{ backgroundBlack: mode == 4, colorWhite: mode == 4 }"><a href="/lease/leave/final/{{uid}}/">4. 최종 퇴거 정산서 확인 [갑],[을]지</a></th>
                         </tr>
                     </table>
+                    <!--
+                    <table class="table table-bordered table-condensed" >
+                        <tr>
+                            <th width="25%" ng-class="{ backgroundBlack: mode == 1, colorWhite: mode == 1 }"><a href="/lease/leave/owner/{{uid}}/">1. 퇴거 정산서 [갑]지 입력/수정하기</a></th>
+                            <th width="25%" ng-class="{ backgroundBlack: mode == 2, colorWhite: mode == 2 }"><a href="/lease/leave/tenant/{{uid}}/" ng-if="isFeeDone && isUnpaidDone">2. 퇴거 정산서 [을]지 입력/수정하기</a></th>
+                            <th width="25%" ng-class="{ backgroundBlack: mode == 3, colorWhite: mode == 3 }"><a href="/lease/leave/confirm/{{uid}}/" ng-if="isFeeDone && isUnpaidDone && isTenantDone">3. 임차인 확인 처리(완료/미완료)</a></th>
+                            <th width="25%" ng-class="{ backgroundBlack: mode == 4, colorWhite: mode == 4 }"><a href="/lease/leave/final/{{uid}}/" ng-if="isFeeDone && isUnpaidDone && isTenantDone && isConfirmed">4. 최종 퇴거 정산서 확인 [갑],[을]지</a></th>
+                        </tr>
+                    </table>
+                    -->
 				</div>
 
-                <div class="span11" style="margin-bottom:5px; text-align:center">
+                <div class="span11" style="margin-bottom:5px; text-align:left">
                     <button class="btn btn-small btn-inverse" ng-if="isFeeDone && isUnpaidDone" ng-click="previewOwner()">[갑]지 미리보기</button>
                     <button class="btn btn-small " ng-if="!isFeeDone || !isUnpaidDone" >[갑]지 미리보기</button>
                     <button class="btn btn-small btn-inverse" ng-if="isFeeDone && isUnpaidDone" ng-click="previewTenant()">[을]지 미리보기</button>
                     <button class="btn btn-small " ng-if="!isFeeDone || !isUnpaidDone" >[을]지 미리보기</button>
-                    <button class="btn btn-small btn-inverse" ng-click="save()">저장하기</button>
                     <button class="btn btn-small btn-inverse" ng-click="cancel()">목록으로</button>
                 </div>
 
@@ -241,7 +250,10 @@
                                 <!-- 퇴거 정산 정보 (금액 정보) -->
                                 <div class="row-fluid" style="margin-top:20px;">
                                     <div class="box-header">
-                                        <h2><strong>퇴거 정산 금액 정보</strong></h2>
+                                        <h2><strong>퇴거 정산 금액 정보</strong>
+
+                                            <button class="btn btn-small btn-inverse" ng-click="input_money()" ng-show="!edit_money">입력/수정</button>
+</h2>
                                     </div>
                                     <div class="box-content noblank box-text">
                                         <table class="table table-bordered table-condensed">
@@ -264,15 +276,21 @@
                                                     <span ng-bind="m.desc"></span>
                                                 </td>
                                                 <td class="tableRow medium textCenter" width="10%">
+                                                <span ng-show="edit_money">
                                                     <input class="medium" type="number" ng-model="m.amount"  /> 원
+                                                </span>
+                                                <span ng-show="!edit_money">
+                                                    <input class="medium" type="number" ng-model="m.amount" readonly /> 원
+                                                </span>
                                                 </td>
                                                 <td class="tableRow textCenter" width="10%">
-                                                    <button ng-click="removeMoneyChange(m)">삭제</button>
+                                                    <button ng-click="removeMoneyChange(m)" ng-show="edit_money">삭제</button>
                                                 </td>
                                             </tr>
                                         </table>  
+
                                     </div>
-                                    <div class="box-content noblank box-text">
+                                    <div class="box-content noblank box-text" ng-show="edit_money">
                                         <table class="table table-bordered table-condensed">
                                             <tr class="white">
                                                 <td class="tableRow textCenter" width="30%">
@@ -294,11 +312,18 @@
                                             </tr>
                                         </table>  
                                     </div>
+<div ng-if="edit_money" class="textCenter span11">
+                                            <button class="btn btn-small btn-inverse" ng-click="save_money()">완료</button>
+                                            <button class="btn btn-small btn-inverse" ng-click="cancel_money()">취소</button>
+                                        </div>
+
                                 </div>
                                 <!-- 퇴거 정산 정보 (기록 정보) -->
                                 <div class="row-fluid">
                                     <div class="box-header">
-                                        <h2><strong>퇴거 정산 기록 정보</strong></h2>
+                                        <h2><strong>퇴거 정산 기록 정보</strong>
+                                            <button class="btn btn-small btn-inverse" ng-click="input_record()" ng-show="!edit_record">입력/수정</button>
+</h2>
                                     </div>
                                     <div class="box-content noblank box-text">
                                         <table class="table table-bordered table-condensed">
@@ -318,15 +343,15 @@
                                                     <span ng-bind="record.desc"></span>
                                                 </td>
                                                 <td class="tableRow medium textCenter" width="10%">
-                                                    사용량 : <input class="medium" type="text" ng-model="record.amount" />
+                                                    사용량 : <input class="medium" type="text" ng-model="record.amount" ng-show="edit_record" /><input class="medium" type="text" ng-model="record.amount" ng-show="!edit_record" readonly />
                                                 </td>
                                                 <td class="tableRow textCenter" width="10%">
-                                                    <button ng-click="removeRecord(record)">삭제</button>
+                                                    <button ng-show="edit_record" ng-click="removeRecord(record)">삭제</button>
                                                 </td>
                                             </tr>
                                         </table>  
                                     </div>
-                                    <div class="box-content noblank box-text">
+                                    <div class="box-content noblank box-text" ng-show="edit_record">
                                         <table class="table table-bordered table-condensed">
                                             <tr class="white">
                                                 <td class="tableRow textCenter" width="30%">
@@ -348,6 +373,10 @@
                                             </tr>
                                         </table>  
                                     </div>
+<div ng-if="edit_record" class="textCenter span11">
+                                            <button class="btn btn-small btn-inverse" ng-click="save_record()">완료</button>
+                                            <button class="btn btn-small btn-inverse" ng-click="cancel_record()">취소</button>
+                                        </div>
                                 </div>
 <div class="row-fluid textCenter">
                                         <button class="btn btn-small btn-inverse" ng-if="!isTenantDone" ng-click="doneTenant()">저장하고 완료하기</button>
@@ -458,12 +487,11 @@
 
                 <br/>
 
-                <div class="span11" style="margin-bottom:5px; text-align:center">
+                <div class="span11" style="margin-bottom:5px; text-align:left">
                     <button class="btn btn-small btn-inverse" ng-if="isFeeDone && isUnpaidDone" ng-click="previewOwner()">[갑]지 미리보기</button>
                     <button class="btn btn-small " ng-if="!isFeeDone || !isUnpaidDone" >[갑]지 미리보기</button>
                     <button class="btn btn-small btn-inverse" ng-if="isFeeDone && isUnpaidDone" ng-click="previewTenant()">[을]지 미리보기</button>
                     <button class="btn btn-small " ng-if="!isFeeDone || !isUnpaidDone" >[을]지 미리보기</button>
-                    <button class="btn btn-small btn-inverse" ng-click="save()">저장하기</button>
                     <button class="btn btn-small btn-inverse" ng-click="cancel()">목록으로</button>
                 </div>
 

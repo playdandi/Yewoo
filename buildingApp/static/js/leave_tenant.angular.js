@@ -10,6 +10,38 @@ angular.module('yewooApp', [])
         var payments = [];
         var paymentDetails = [];
 
+        // money
+
+        s.edit_money = false;
+        s.input_money = function() {
+            oldMoneyChanges = angular.copy(s.moneyChanges);
+            s.edit_money = true;
+        }
+        s.save_money = function() { 
+            s.edit_money = false;
+            s.save();
+        }
+        s.cancel_money = function() {
+            s.moneyChanges = oldMoneyChanges;
+            s.edit_money = false;
+        }
+
+        //record 
+
+        s.edit_record = false;
+        s.input_record = function() {
+            oldRecords = angular.copy(s.records);
+            s.edit_record = true;
+        }
+        s.save_record = function() { 
+            s.edit_record = false;
+            s.save();
+        }
+        s.cancel_record = function() {
+            s.records = oldRecords;
+            s.edit_record = false;
+        }
+
         s.cancel = function() { window.location.href = "/lease/leave"; }
 
         s.doneTenant = function() { s.isTenantDone = true; s.save(); }
@@ -62,7 +94,6 @@ angular.module('yewooApp', [])
             };
 
             $http.post('/lease/leave/owner/save/' + $("#rid").val() + '/', item).success(function (data) {
-                alert("저장했습니다.");
             });
         };
 
@@ -94,7 +125,7 @@ angular.module('yewooApp', [])
                                 (today <= Number(result[i].leasePayDate) || (result[i].payStatus == -1 && result[i].payDateDay <= Number(result[i].leasePayDate))) ) {
                                 while (result[i].number == thisNumber) {
                                     result[i].isThis = Number(1);
-                                    payments_thisMonth.push(result[i]);
+                                    //payments_thisMonth.push(result[i]);
                                     payments.push(result[i]);
                                     i++;
                                 }
@@ -162,6 +193,7 @@ angular.module('yewooApp', [])
                             s.isUnpaidDone = data.fields.isUnpaidDone;
                             s.isOwnerDone = data.fields.isOwnerDone;
                             s.isTenantDone = data.fields.isTenantDone;
+                            s.isConfirmed = data.fields.isConfirmed;
                             s.unpaid = data.fields.unpaid;
                             s.unpaidDirected = data.fields.unpaidAdded;
                             s.unpaidComputed = data.fields.unpaidCollected;

@@ -30,13 +30,33 @@
 		<td style="text-align:center <% if (color == 3 && colorDtl['leaseType'] == 'y') { %>; background-color:#ffa07a<% } %>"><%= data[i].leaseType %></td>
 		<td style="text-align:center <% if (color == 3 && colorDtl['inDate'] == 'y') { %>; background-color:#ffa07a<% } %>"><%= data[i].inDate %></td>
 		<td style="text-align:center <% if (color == 3 && colorDtl['outDate'] == 'y') { %>; background-color:#ffa07a<% } %>"><%= data[i].outDate %></td>
-		<td style="text-align:center"><a href="/lease/leave/owner/<%= data[i].id %>/"><button class="btn btn-mini">입력/수정</button></a></td>
-		<td style="text-align:center">입력완료</td>
-		<td style="text-align:center"><a href="/lease/leave/final/<%= data[i].id %>/"><button class="btn btn-mini" >미리보기</button></a></td>
-        <td style="text-align:center"><a href="/lease/leave/confirm/<%= data[i].id %>/"><button class="btn btn-mini">확인</button></a></td>
-		<td style="text-align:center">처리완료</td>
-		<td style="text-align:center"><a href="/lease/leave/final/<%= data[i].id %>/"><button class="btn btn-mini" >미리보기</button></a></td>
-
+		<td style="text-align:center">
+            <% if (!data[i].isLeaved) { %><a href="/lease/leave/owner/<%= data[i].id %>/"><button class="btn btn-mini">입력</button></a><% } %>
+            <% if (data[i].isLeaved) { %><a href="/lease/leave/owner/<%= data[i].id %>/"><button class="btn btn-mini">수정</button></a><% } %>
+        </td>
+		<td style="text-align:center">
+            <% if (data[i].isLeaved) { %>완료<% } %>
+        </td>
+		<td style="text-align:center">
+            <% if (data[i].isLeaved) { %>
+                <a href="/lease/leave/owner_print/<%= data[i].id %>/" target="_blank"><button class="btn btn-mini" >미리보기</button></a>
+            <% } %>
+        </td>
+        <td style="text-align:center">
+            <% if (data[i].isLeaved) { %>
+                <a href="/lease/leave/confirm/<%= data[i].id %>/"><button class="btn btn-mini">확인</button></a>
+            <% } %>
+        </td>
+		<td style="text-align:center">
+            <% if (data[i].isLeaved) { %>
+                <% if (data[i].isConfirmed) { %>미완료<% } %>
+                <% if (!data[i].isConfirmed) { %>완료<% } %>
+            <% } %>
+        </td>
+		<td style="text-align:center">
+            <% if (data[i].isConfirmed) { %>
+                <a href="/lease/leave/final/<%= data[i].id %>/"><button class="btn btn-mini" >미리보기</button></a></td>
+            <% } %>
 	</tr>
 	<% } %>
 	

@@ -273,7 +273,6 @@ def save_resident_info(request, data = None):
 
     return render_to_response('index.html')
 
-
 @permission_required('buildingApp.resident_show', login_url='/login/')
 def show_resident_info(request):
     if request.method == "POST":
@@ -569,6 +568,15 @@ def serialize(result):
         data['leaseType'] = res.leaseType
         data['inDate'] = str(res.inDate).replace('-', '.')
         data['outDate'] = str(res.outDate).replace('-', '.')
+
+        try:
+            leaveOwner = LeaveOwner.objects.get(resident_id = res.id)
+            data['isLeaved'] = leaveOwner.isOwnerDone and leaveOwner.isTenantDone
+            data['isConfirmed'] = leaveOwner.isOwnerDone and leaveOwner.isTenantDone and leaveOwner.isConfirmed
+        except:
+            data['isLeaved'] = False
+            data['isConfirmed'] = False 
+
         serialized.append(data)
     return serialized
 

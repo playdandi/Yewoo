@@ -10,6 +10,132 @@ angular.module('yewooApp', [])
         var payments = [];
         var paymentDetails = [];
 
+        s.editBank = false;
+
+        var bankInput = ['bank', 'account', 'accountHolder'];
+
+        s.inputBank = function() {
+            for (var i = 0; i < bankInput.length; i++) 
+            {
+                eval("s.edit_" + bankInput[i] + " = s." + bankInput[i]);
+            }
+            s.editBank = true;
+        }
+        s.cancelBank = function() {
+            s.editBank = false;
+        }
+        s.saveBank = function() {
+            for (var i = 0; i < bankInput.length; i++) 
+            {
+                eval("s." + bankInput[i] + " = s.edit_" + bankInput[i]);
+            }
+            s.editBank = false;
+            s.save();
+        }
+
+        // unpaid
+
+        s.edit_unpaid = false;
+        var oldUnpaidCases = undefined;
+
+        //var unpaidInput = ['bank', 'account', 'accountHolder'];
+
+        s.inputUnpaid = function() {
+            oldUnpaidCases = angular.copy(s.unpaidCases);
+            s.edit_unpaid = true;
+        }
+        s.cancelUnpaid = function() {
+            s.unpaidCases = oldUnpaidCases;
+            s.edit_unpaid = false;
+            s.updateUnpaidCases();
+            s.updateUnpaid();
+        }
+        s.saveUnpaid = function() {
+            s.edit_unpaid = false;
+            s.save();
+        }
+
+        // extra
+
+        s.edit_extra = false;
+        var oldExtraCosts = undefined;
+
+        s.input_extra = function() {
+            oldExtraCosts = angular.copy(s.extraCosts);
+            s.edit_extra = true;
+        }
+
+        s.cancel_extra = function() {
+            s.extraCosts = oldExtraCosts;
+            s.edit_extra = false;
+            s.updateUnpaid();
+        }
+    
+        s.save_extra = function() {
+            s.edit_extra = false;
+            s.save();
+        }
+
+        // unpaid comment
+
+        s.edit_unpaid_comment = false;
+
+        s.input_unpaid_comment = function() {
+            s.edit_unpaidComments = s.unpaidComments;
+            s.edit_unpaid_comment = true;
+        }
+
+        s.save_unpaid_comment = function() {
+            s.unpaidComments = s.edit_unpaidComments;
+            s.edit_unpaid_comment = false;
+            s.save();
+        }
+
+        s.cancel_unpaid_comment = function() {
+            s.edit_unpaid_comment = false;
+        }
+
+        // fee comment
+
+        s.edit_fee_comment = false;
+
+        s.input_fee_comment = function() {
+            s.edit_feeComments = s.feeComments;
+            s.edit_fee_comment = true;
+        }
+
+        s.save_fee_comment = function() {
+            s.feeComments = s.edit_feeComments;
+            s.edit_fee_comment = false;
+            s.save();
+        }
+
+        s.cancel_fee_comment = function() {
+            s.edit_fee_comment = false;
+        }
+
+        // feelist
+
+        s.edit_fee = false;
+        var oldFees = undefined;
+
+        s.input_fee = function() {
+            oldFees = angular.copy(s.feeCosts);
+            s.edit_fee = true;
+        }
+
+        s.cancel_fee = function() {
+            s.feeCosts = oldFees;
+            s.edit_fee = false;
+            s.updateUnpaid();
+        }
+    
+        s.save_fee = function() {
+            s.edit_fee = false;
+            s.save();
+        }
+
+
         s.cancel = function() { window.location.href = "/lease/leave"; }
 
         s.doneFee = function() { s.isFeeDone = true; s.save(); }
@@ -73,11 +199,12 @@ angular.module('yewooApp', [])
                 'unpaidaddeditems' : _.map(s.extraCosts, s.convert_to_unpaiditems),
                 'feeitems' : _.map(s.feeCosts, s.convert_to_unpaiditems),
                 'isUnpaidDone' : s.isUnpaidDone,
-                'isFeeDone' : s.isFeeDone
+                'isFeeDone' : s.isFeeDone,
+                'isOwnerDone' : s.isUnpaidDone && s.isFeeDone
             };
 
             $http.post('/lease/leave/owner/save/' + $("#rid").val() + '/', item).success(function (data) {
-                alert("저장했습니다.");
+                //alert("저장했습니다.");
             });
         };
 
@@ -109,7 +236,7 @@ angular.module('yewooApp', [])
                                 (today <= Number(result[i].leasePayDate) || (result[i].payStatus == -1 && result[i].payDateDay <= Number(result[i].leasePayDate))) ) {
                                 while (result[i].number == thisNumber) {
                                     result[i].isThis = Number(1);
-                                    payments_thisMonth.push(result[i]);
+                                    //payments_thisMonth.push(result[i]);
                                     payments.push(result[i]);
                                     i++;
                                 }
@@ -177,6 +304,8 @@ angular.module('yewooApp', [])
                             s.isFeeDone = data.fields.isFeeDone;
                             s.isUnpaidDone = data.fields.isUnpaidDone;
                             s.isOwnerDone = data.fields.isOwnerDone;
+                            s.isTenantDone = data.fields.isTenantDone;
+                            s.isConfirmed = data.fields.isConfirmed;
                             s.unpaid = data.fields.unpaid;
                             s.unpaidDirected = data.fields.unpaidAdded;
                             s.unpaidComputed = data.fields.unpaidCollected;
