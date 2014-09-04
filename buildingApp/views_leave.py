@@ -255,13 +255,13 @@ def leave_confirm_html(request, uid):
 
 def leave_down_owner(request, uid):
     item = get_or_create(LeaveOwner, resident_id = uid)
-    response = HttpResponse(base64.b64decode(item.ownerFile.file), content_type='application/x-download')
+    response = HttpResponse(base64.b64decode(item.ownerFile.file), content_type=mimetypes.guess_type(item.ownerFile.file))
     response['Content-Disposition'] = 'attachment; filename="' + item.ownerFile.fileName + '"'
     return response
 
 def leave_down_tenant(request, uid):
     item = get_or_create(LeaveOwner, resident_id = uid)
-    response = HttpResponse(base64.b64decode(item.tenantFile.file), content_type='application/x-download')
+    response = HttpResponse(base64.b64decode(item.tenantFile.file), content_type=mimetypes.guess_type(item.ownerFile.file))
     response['Content-Disposition'] = 'attachment; filename="' + item.tenantFile.fileName + '"'
     return response
 

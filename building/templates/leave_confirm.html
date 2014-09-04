@@ -319,10 +319,10 @@
                                                             퇴거 정산서 [갑]지
                                                         </td>
                                                         <td width="70%" class="textCenter tableRow">
-                                                            <a ng-click="downOwner()" class="cursorHand underline" ng-bind="ownerFilename" ></a>
+                                                            <a ng-click="previewConfirmOwner()" class="cursorHand underline" ng-bind="ownerFilename" ></a>
                                                         </td>
                                                         <td width="10%" class="textCenter tableRow">
-                                                            <button class="btn btn-small" ng-click="previewOwner()" >미리보기</button>
+                                                            <button class="btn btn-small" ng-click="previewConfirmOwner()">미리보기</button>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -333,10 +333,10 @@
                                                             퇴거 정산서 [을]지
                                                         </td>
                                                         <td width="70%" class="textCenter tableRow">
-                                                            <a ng-click="downOwner()" class="cursorHand underline" ng-bind="tenantFilename"></a>
+                                                            <a ng-click="previewConfirmTenant()" class="cursorHand underline" ng-bind="tenantFilename"></a>
                                                         </td>
                                                         <td width="10%" class="textCenter tableRow">
-                                                            <button class="btn btn-small" ng-click="previewTenant()">미리보기</button>
+                                                            <button class="btn btn-small" ng-click="previewConfirmTenant()">미리보기</button>
                                                         </td>
                                                    </tr>
                                                 </tbody>
