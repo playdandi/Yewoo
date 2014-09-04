@@ -189,7 +189,7 @@
 							</table>
 						</div>
 						<div class="box-content" style="margin: 5px 0px 0px 0px; padding: 0px; border:0; background-color:#f8f8f8">
-							<div class="span6" style="">
+							<div class="span6" style="text-align:center">
 								<table class="table table-bordered table-condensed table-center" style="background-color:#c0c0c0; text-align:center; margin: 0px 0px 0px 0px">
 									<tr>
 										<td width="15%" style="text-align:center">건물명</td>
@@ -273,12 +273,14 @@
 										</td>
 										<td width="10%"></td>
 										<td width="20%">
-											<button class="btn btn-small">생성</button>
-											<button class="btn btn-small">초기화</button>
+											<button class="btn btn-small" onclick="create();">생성</button>
+											<button class="btn btn-small" onclick="init_create();">초기화</button>
 										</td>
 										<td width="5%"></td>
 									</tr>
 								</table>
+								<div id="create_here" class="span12 margin0">
+								</div>
 							</div>
 
 							<div class="span6" style="float:left">
@@ -292,66 +294,67 @@
 								</table>
 								
 								<div class="row-fluid">
-								<div class="span12" style="height:700px; overflow-y:scroll">
-								<!-- for문 돌리기 -->
-								<table class="table table-bordered table-condensed table-center" style="background-color:#c0c0c0; text-align:center; margin: 5px 0px 0px 0px">
-									<tr>
-										<td width="15%" style="text-align:center">건물명</td>
-										<td width="20%" style="text-align:center">
-											<input type="text" class="span12 margin0" value="테스트건물" disabled />
-										</td>
-										<td width="15%" style="text-align:center">항목분류</td>
-										<td width="20%" style="text-align:center"><input type="text" class="span12 margin0" value="전기" disabled /></td>
-										<td width="30%"></td>
-									</tr>
-								</table>
-								<table class="table table-bordered table-condensed table-center" style="text-align:center">
-									<tr>
-										<td width="15%" style="text-align:center">시작 월분</td>
-										<td width="20%" style="text-align:center">
-											<input type="text" class="span12 margin0" value="1월분" disabled />
-										</td>
-										<td width="10%" style="text-align:center">시작</td>
-										<td width="20%" style="text-align:center">
-											<input type="text" class="span12 margin0 datedate datepicker" value="2013.12.18" disabled />
-										</td>
-										<td width="10%" style="text-align:center">종료</td>
-										<td width="20%" style="text-align:center">
-											<input type="text" class="span12 margin0 datedate datepicker" value="2014.1.17" disabled />
-										</td>
-										<td width="5%"></td>
-									</tr>
-									<tr>
-										<td width="15%" style="text-align:center">부과 단위</td>
-										<td width="20%" style="text-align:center">
-											<input type="text" class="span12 margin0" value="1개월" disabled />
-										</td>
-										<td width="10%" style="text-align:center">총</td>
-										<td width="20%" style="text-align:center">
-											<input type="text" class="span12 margin0" value="12개월" disabled />
-										</td>
-										<td width="35%" colspan="3"></td>
-									</tr>
-								</table>
-								<table class="table table-bordered table-condensed table-center" style="text-align:center">
-									<colgroup>
-										<col width="15%"></col>
-										<col width="20%"></col>
-										<col width="5%"></col>
-										<col width="20%"></col>
-										<col width="10%"></col>
-										<col width="20%"></col>
-										<col width="10%"></col>
-									<tr>
-										<th style="text-align:center">월</th>
-										<th colspan="3" style="text-align:center">부과 기간</th>
-										<th style="text-align:center"></th>
-										<th style="text-align:center">고지일</th>
-										<th style="text-align:center"></th>
-									</tr>
-								</table>
-								<!-- --------------------- -->	
-								</div>
+									<div class="span12" style="height:700px; overflow-y:scroll">
+										<!-- for문 돌리기 -->
+										<table class="table table-bordered table-condensed table-center" style="background-color:#c0c0c0; text-align:center; margin: 5px 0px 0px 0px">
+											<tr>
+												<td width="15%" style="text-align:center">건물명</td>
+												<td width="20%" style="text-align:center">
+													<input type="text" class="span12 margin0" value="테스트건물" disabled />
+												</td>
+												<td width="15%" style="text-align:center">항목분류</td>
+												<td width="20%" style="text-align:center"><input type="text" class="span12 margin0" value="전기" disabled /></td>
+												<td width="30%"></td>
+											</tr>
+										</table>
+										<table class="table table-bordered table-condensed table-center" style="text-align:center">
+											<tr>
+												<td width="15%" style="text-align:center">시작 월분</td>
+												<td width="20%" style="text-align:center">
+													<input type="text" class="span12 margin0" value="1월분" disabled />
+												</td>
+												<td width="10%" style="text-align:center">시작</td>
+												<td width="20%" style="text-align:center">
+													<input type="text" class="span12 margin0 datedate datepicker" value="2013.12.18" disabled />
+												</td>
+												<td width="10%" style="text-align:center">종료</td>
+												<td width="20%" style="text-align:center">
+													<input type="text" class="span12 margin0 datedate datepicker" value="2014.1.17" disabled />
+												</td>
+												<td width="5%"></td>
+											</tr>
+											<tr>
+												<td width="15%" style="text-align:center">부과 단위</td>
+												<td width="20%" style="text-align:center">
+													<input type="text" class="span12 margin0" value="1개월" disabled />
+												</td>
+												<td width="10%" style="text-align:center">총</td>
+												<td width="20%" style="text-align:center">
+													<input type="text" class="span12 margin0" value="12개월" disabled />
+												</td>
+												<td width="35%" colspan="3"></td>
+											</tr>
+										</table>
+										<table class="table table-bordered table-condensed table-center" style="text-align:center">
+											<colgroup>
+												<col width="15%"></col>
+												<col width="20%"></col>
+												<col width="5%"></col>
+												<col width="20%"></col>
+												<col width="10%"></col>
+												<col width="20%"></col>
+												<col width="10%"></col>
+											</colgroup>
+											<tr>
+												<th style="text-align:center">월</th>
+												<th colspan="3" style="text-align:center">부과 기간</th>
+												<th style="text-align:center"></th>
+												<th style="text-align:center">고지일</th>
+												<th style="text-align:center"></th>
+											</tr>
+										</table>
+										<!-- --------------------- -->	
+									</div>
 								</div>
 
 							</div>

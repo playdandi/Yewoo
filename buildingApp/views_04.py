@@ -513,3 +513,25 @@ def setting_bill_html(request):
 	return render_to_response('04_04_setting_bill.html', param, context_instance=RequestContext(request))
 
 
+@permission_required('buildingApp.manage_setting', login_url='/login/')
+def setting_bill_create(request):
+	if request.method == 'POST':
+		bid = int(request.POST['bid'])
+		type = str(request.POST['type'])
+		smonth = request.POST.getlist('smonth[]')
+		sdate = request.POST.getlist('sdate[]')
+		edate = request.POST.getlist('edate[]')
+		ndate = request.POST.getlist('ndate[]')
+
+		for i in range(len(smonth)):
+			sb = SettingBill()
+			sb.building = BuildingInfo.objects.get(id = int(bid))
+			sb.type = type
+			sb.month = int(smonth[i])
+			sb.startDate = str(sdate[i].replace('.','-'))
+			sb.endDate = str(edate[i].replace('.','-'))
+			sb.noticeDate = str(ndate[i].replace('.','-'))
+			sb.save()
+
+		return HttpResponse('OK')
+	return HttpResponse('NOT POST')
