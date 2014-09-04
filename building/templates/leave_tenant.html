@@ -136,11 +136,21 @@
                     <table class="table table-bordered table-condensed" >
                         <tr>
                             <th width="25%" ng-class="{ backgroundBlack: mode == 1, colorWhite: mode == 1 }"><a href="/lease/leave/owner/{{uid}}/">1. 퇴거 정산서 [갑]지 입력/수정하기</a></th>
+                            <th width="25%" ng-class="{ backgroundBlack: mode == 2, colorWhite: mode == 2 }"><a href="/lease/leave/tenant/{{uid}}/">2. 퇴거 정산서 [을]지 입력/수정하기</a></th>
+                            <th width="25%" ng-class="{ backgroundBlack: mode == 3, colorWhite: mode == 3 }"><a href="/lease/leave/confirm/{{uid}}/">3. 임차인 확인 처리(완료/미완료)</a></th>
+                            <th width="25%" ng-class="{ backgroundBlack: mode == 4, colorWhite: mode == 4 }"><a href="/lease/leave/final/{{uid}}/">4. 최종 퇴거 정산서 확인 [갑],[을]지</a></th>
+                        </tr>
+                    </table>
+                    <!--
+                    <table class="table table-bordered table-condensed" >
+                        <tr>
+                            <th width="25%" ng-class="{ backgroundBlack: mode == 1, colorWhite: mode == 1 }"><a href="/lease/leave/owner/{{uid}}/">1. 퇴거 정산서 [갑]지 입력/수정하기</a></th>
                             <th width="25%" ng-class="{ backgroundBlack: mode == 2, colorWhite: mode == 2 }"><a href="/lease/leave/tenant/{{uid}}/" ng-if="isFeeDone && isUnpaidDone">2. 퇴거 정산서 [을]지 입력/수정하기</a></th>
                             <th width="25%" ng-class="{ backgroundBlack: mode == 3, colorWhite: mode == 3 }"><a href="/lease/leave/confirm/{{uid}}/" ng-if="isFeeDone && isUnpaidDone && isTenantDone">3. 임차인 확인 처리(완료/미완료)</a></th>
                             <th width="25%" ng-class="{ backgroundBlack: mode == 4, colorWhite: mode == 4 }"><a href="/lease/leave/final/{{uid}}/" ng-if="isFeeDone && isUnpaidDone && isTenantDone && isConfirmed">4. 최종 퇴거 정산서 확인 [갑],[을]지</a></th>
                         </tr>
                     </table>
+                    -->
 				</div>
 
                 <div class="span11" style="margin-bottom:5px; text-align:center">

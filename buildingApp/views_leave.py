@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
 import base64
+import mimetypes
+import json
+import os, datetime
+from buildingApp.models import *
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext, loader
 from django.middleware.csrf import get_token
 from django.db.models import Q
-import json
-from buildingApp.models import *
 from django.conf import settings
-import os, datetime
 from django.contrib.auth.models import User
 from django.core import serializers
+
+mimetypes.init()
 
 def get_or_create(model, **kwargs):
     return model.objects.get_or_create(**kwargs)[0]
