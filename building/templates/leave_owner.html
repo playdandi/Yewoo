@@ -225,14 +225,33 @@
                                     </th>
 								</tr>
 								<tr class="white">
-									<td colspan="2" class="tableRow">
-                                        입금 은행
-                                        <input type="text" class="margin0" ng-model="bank" />
-                                        입금 계좌 
-                                        <input type="text" class="margin0 large" ng-model="account" />
-                                        예금주 
-                                        <input type="text" class="margin0 large" ng-model="accountHolder" />
-
+									<td class="tableRow">
+                                        <span ng-show="!editBank">
+                                            입금 은행
+                                            <input type="text" class="margin0" readonly ng-model="bank" />
+                                            입금 계좌 
+                                            <input type="text" class="margin0 " style="width:200px;" readonly ng-model="account" />
+                                            예금주 
+                                            <input type="text" class="margin0 " readonly ng-model="accountHolder" />
+                                        </span>
+                                        <span ng-show="editBank">
+                                            입금 은행
+                                            <input type="text" class="margin0" ng-model="edit_bank" />
+                                            입금 계좌 
+                                            <input type="text" class="margin0 "  style="width:200px;" ng-model="edit_account" />
+                                            예금주 
+                                            <input type="text" class="margin0 " ng-model="edit_accountHolder" />
+                                        </span>
+                                    </td>
+									<td class="tableRow textCenter">
+                                         <span ng-if="!editBank">
+                                            <button class="btn btn-small btn-inverse" ng-click="inputBank()">입력/수정</button>
+                                        </span>
+                                        <span ng-if="editBank">
+                                            <button class="btn btn-small btn-inverse" ng-click="saveBank()">완료</button>
+                                            <button class="btn btn-small btn-inverse" ng-click="cancelBank()">취소</button>
+                                        </span>
+   
                                     </td>
                                 </tr>
 							</table>  
@@ -267,8 +286,15 @@
                                 <!-- 미납 내역 추가 사항 -->
                                 <div class="row-fluid">
                                     <div class="box-header">
-                                        <h2><strong>미납 내역 추가사항</strong></h2>
+                                        <h2 style="padding-bottom:20px"><strong>미납 내역 추가사항</strong>
+<button class="btn btn-small btn-inverse" ng-show="!edit_unpaid" ng-click="inputUnpaid()">입력/수정</button>
+</h2>
+                    
+                </div>
+
                                     </div>
+                
+
                                     <div class="box-content noblank box-text">
                                         <table class="table table-bordered table-condensed">
                                             <tr class="white" ng-repeat="unpaidCase in unpaidCases | filter:{checked:true}">
@@ -297,14 +323,19 @@
                                                     <span ng-bind="unpaidCase.paidDate | date:'yyyy.MM.dd'"></span>
                                                 </td>
                                                 <td class="tableRow medium">
-                                                    <input class="medium" type="number" ng-model="unpaidCase.revisiedAmount" ng-change="updateUnpaid()" /> 원
+                                                    <span ng-show='edit_unpaid'>
+                                                        <input class="medium" type="number" ng-model="unpaidCase.revisiedAmount" ng-change="updateUnpaid()" ng-show='edit_unpaid' /> 원
+                                                    </span>
+                                                    <span ng-show='!edit_unpaid'>
+                                                        <input class="medium" type="number" ng-model="unpaidCase.revisiedAmount" ng-change="updateUnpaid()" ng-show='!edit_unpaid' readonly /> 원
+                                                    </span>
                                                 </td>
                                             </tr>
                                         </table>  
                                     </div>
                                 </div>
                                 <!-- 미납 내역 -->
-                                <div class="row-fluid">
+                                <div class="row-fluid" ng-show='edit_unpaid'>
                                     <div class="box-header">
                                         <h2><strong>미납 내역</strong></h2>
                                     </div>
@@ -382,6 +413,12 @@
             </td>
         </tr>
     </table>  
+<div class="span11" style="margin-bottom:5px; text-align:center">
+<br/>
+                    <button class="btn btn-small btn-inverse" ng-click="saveUnpaid()">완료</button>
+                    <button class="btn btn-small btn-inverse" ng-click="cancelUnpaid()">취소</button>
+                </div>
+
                                     </div>
                                 </div>
 

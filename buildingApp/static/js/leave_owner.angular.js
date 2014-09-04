@@ -10,6 +10,53 @@ angular.module('yewooApp', [])
         var payments = [];
         var paymentDetails = [];
 
+        s.editBank = false;
+
+        var bankInput = ['bank', 'account', 'accountHolder'];
+
+        s.inputBank = function() {
+            for (var i = 0; i < bankInput.length; i++) 
+            {
+                eval("s.edit_" + bankInput[i] + " = s." + bankInput[i]);
+            }
+            s.editBank = true;
+        }
+        s.cancelBank = function() {
+            s.editBank = false;
+        }
+        s.saveBank = function() {
+            for (var i = 0; i < bankInput.length; i++) 
+            {
+                eval("s." + bankInput[i] + " = s.edit_" + bankInput[i]);
+            }
+            s.editBank = false;
+            s.save();
+        }
+
+        // unpaid
+
+        s.edit_unpaid = false;
+        var oldUnpaidCases = undefined;
+
+        //var unpaidInput = ['bank', 'account', 'accountHolder'];
+
+        s.inputUnpaid = function() {
+            oldUnpaidCases = angular.copy(s.unpaidCases);
+            s.edit_unpaid = true;
+        }
+        s.cancelUnpaid = function() {
+            s.unpaidCases = oldUnpaidCases;
+            s.edit_unpaid = false;
+            s.updateUnpaidCases();
+            s.updateUnpaid();
+        }
+        s.saveUnpaid = function() {
+            s.edit_unpaid = false;
+            s.save();
+        }
+
+
+
         s.cancel = function() { window.location.href = "/lease/leave"; }
 
         s.doneFee = function() { s.isFeeDone = true; s.save(); }
@@ -78,7 +125,7 @@ angular.module('yewooApp', [])
             };
 
             $http.post('/lease/leave/owner/save/' + $("#rid").val() + '/', item).success(function (data) {
-                alert("저장했습니다.");
+                //alert("저장했습니다.");
             });
         };
 
