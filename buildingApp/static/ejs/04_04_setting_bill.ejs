@@ -1,0 +1,115 @@
+<% for (i = 0; i < category.length; i++) { %>
+<% if (type != '' && category[i].type != type) { continue; } %>
+<table class="table table-bordered table-condensed table-center" style="background-color:#c0c0c0; text-align:center; margin: 5px 0px 0px 0px" onclick="showDetail_brief('<%= i %>');">
+	<tr>
+		<td width="15%" style="text-align:center">▼ 건물명</td>
+		<td width="20%" style="text-align:center">
+			<input type="text" class="span12 margin0" value="<%= category[i].bname %>" disabled />
+		</td>
+		<td width="15%" style="text-align:center">항목분류</td>
+		<td width="20%" style="text-align:center"><input type="text" class="span12 margin0" value="<% if (category[i].type == 'electricity') { %>전기<% } else if (category[i].type == 'gas') { %>가스<% } else { %>수도<% } %>" disabled /></td>
+		<td width="30%"></td>
+	</tr>
+</table>
+<table id="category<%= i %>" class="table table-bordered table-condensed table-center" style="text-align:center; display:none">
+	<tr>
+		<td width="15%" style="text-align:center">시작 월분</td>
+		<td width="20%" style="text-align:center">
+			<input type="text" class="span12 margin0" value="<%= data[0].month %>월분" disabled />
+		</td>
+		<td width="10%" style="text-align:center">시작</td>
+		<td width="20%" style="text-align:center">
+			<input type="text" class="span12 margin0 datedate datepicker" value="<%= data[0].startDate %>" disabled />
+		</td>
+		<td width="10%" style="text-align:center">종료</td>
+		<td width="20%" style="text-align:center">
+			<input type="text" class="span12 margin0 datedate datepicker" value="<%= data[data.length-1].endDate %>" disabled />
+		</td>
+		<td width="5%"></td>
+	</tr>
+	<tr>
+		<td width="15%" style="text-align:center">부과 단위</td>
+		<td width="20%" style="text-align:center">
+			<input type="text" class="span12 margin0" value="<%= category[i].month_unit %>개월" disabled />
+		</td>
+		<td width="10%" style="text-align:center">총</td>
+		<td width="20%" style="text-align:center">
+			<input type="text" class="span12 margin0" value="<%= category[i].cnt %>개월" disabled />
+		</td>
+		<td width="35%" colspan="3"></td>
+	</tr>
+	<tr>
+		<td colspan="7">
+			<button class="btn btn-small" onclick="showDetail('<%= i %>');">보기/수정</button>
+			<button class="btn btn-small" onclick="deleteData('<%= category[i].bid %>', '<%= category[i].type %>');">삭제</button>
+	</tr>
+</table>
+
+<% var monthday = new Array(-1, 31,28,31,30,31, 30,31,31,30,31, 30,31); %>
+<% var sy = Number(data[0].startDate.split('.')[0].trim()); %>
+<% var sm = Number(data[0].startDate.split('.')[1].trim()); %>
+<% var sd = Number(data[0].startDate.split('.')[2].trim()); %>
+<% var ey = Number(data[data.length-1].endDate.split('.')[0].trim()); %>
+<% var em = Number(data[data.length-1].endDate.split('.')[1].trim()); %>
+<% var ed = Number(data[data.length-1].endDate.split('.')[2].trim()); %>
+<table id="datatable<%= i %>" class="table table-bordered table-condensed table-center" style="text-align:center; display:none">
+	<colgroup>
+		<col width="15%"></col>
+		<col width="20%"></col>
+		<col width="5%"></col>
+		<col width="20%"></col>
+		<col width="10%"></col>
+		<col width="20%"></col>
+		<col width="10%"></col>
+	</colgroup>
+	<tr>
+		<th style="text-align:center">월</th>
+		<th colspan="3" style="text-align:center">부과 기간</th>
+		<th style="text-align:center"></th>
+		<th style="text-align:center">고지일</th>
+		<th style="text-align:center"></th>
+	</tr>
+	<tbody>
+	<% for (j = 0; j < data.length; j++) { %>
+		<% if (data[j].type != category[i].type || data[j].bid != category[i].bid) { continue; } %>
+		<tr id="modify<%= j %>">
+			<td><div id="modify<%= j %>_smonth"><%= data[j].month %>월분</div></td>
+			<td><input id="modify<%= j %>_sdate" type="text" class="span12 margin0" value="<%= data[j].startDate %>" onclick="show_datepicker_modify('<%= j %>', 's');" onchange="change_date_modify('<%= j %>', 's');" disabled /></td>
+			<td>~</td>
+			<td><input id="modify<%= j %>_edate" type="text" class="span12 margin0" value="<%= data[j].endDate %>" onclick="show_datepicker_modify('<%= j %>', 'e');" onchange="change_date_modify('<%= j %>', 'e');" disabled /></td>
+			<td>
+				<button id="modify<%= j %>_0_m" class="btn btn-small" onclick="modify_modify0('<%= j %>', 'm');">수정</button>
+				<button id="modify<%= j %>_0_d" class="btn btn-small" onclick="modify_modify0('<%= j %>', 'd');" style="display:none">완료</button>
+			</td>
+			<td><input id="modify<%= j %>_ndate" type="text" class="span12 margin0" value="<%= data[j].noticeDate %>" onclick="show_datepicker_modify('<%= j %>', 'n');" onchange="change_date_modify('<%= j %>', 'n');" disabled /></td>
+			<td>
+				<button id="modify<%= j %>_1_m" class="btn btn-small" onclick="modify_modify1('<%= j %>', 'm');">수정</button>
+				<button id="modify<%= j %>_1_d" class="btn btn-small" onclick="modify_modify1('<%= j %>', 'd');" style="display:none">완료</button>
+			</td>
+		</tr>
+	<% } %>
+		<tr>
+			<td colspan="7">
+				<button class="btn btn-small" onclick="modify_done('<%= category[i].bid %>', '<%= category[i].type %>');">완료</button>
+				<button class="btn btn-small" onclick="cancel();">취소</button>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<% } %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

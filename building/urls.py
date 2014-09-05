@@ -129,4 +129,7 @@ urlpatterns = patterns('',
     url(r'^manage/setting/adjustment/confirm/$', setting_adjustment_confirm),
     url(r'^manage/setting/bill/$', setting_bill_html),
     url(r'^manage/setting/bill/create/$', setting_bill_create),
+    url(r'^manage/setting/bill/getContents/$', setting_bill_get_contents),
+    url(r'^manage/setting/bill/modify/$', setting_bill_modify),
+    url(r'^manage/setting/bill/deleteData/$', setting_bill_delete_data),
 )

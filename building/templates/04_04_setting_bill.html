@@ -284,76 +284,18 @@
 							</div>
 
 							<div class="span6" style="float:left">
-								<table class="table table-bordered table-condensed table-center" style="text-align:center; background-color:#dbdbd2; margin: 0px 0px 0px 0px">
+								<table id="content_table" class="table table-bordered table-condensed table-center" style="text-align:center; background-color:#e9e9e9; margin: 0px 0px 0px 0px; display:none">
 									<tr>
-										<td width="25%">전체</td>
-										<td width="25%">전기</td>
-										<td width="25%">가스</td>
-										<td width="25%">수도</td>
+										<td id="content_td" width="25%" style="background-color:#dbdbd2"><a href="#" onclick="show_content('');">전체</a></td>
+										<td id="content_td_e" width="25%"><a href="#" onclick="show_content('e');">전기</a></td>
+										<td id="content_td_g" width="25%"><a href="#" onclick="show_content('g');">가스</a></td>
+										<td id="content_td_w" width="25%"><a href="#" onclick="show_content('w');">수도</a></td>
 									</tr>
 								</table>
 								
 								<div class="row-fluid">
-									<div class="span12" style="height:700px; overflow-y:scroll">
-										<!-- for문 돌리기 -->
-										<table class="table table-bordered table-condensed table-center" style="background-color:#c0c0c0; text-align:center; margin: 5px 0px 0px 0px">
-											<tr>
-												<td width="15%" style="text-align:center">건물명</td>
-												<td width="20%" style="text-align:center">
-													<input type="text" class="span12 margin0" value="테스트건물" disabled />
-												</td>
-												<td width="15%" style="text-align:center">항목분류</td>
-												<td width="20%" style="text-align:center"><input type="text" class="span12 margin0" value="전기" disabled /></td>
-												<td width="30%"></td>
-											</tr>
-										</table>
-										<table class="table table-bordered table-condensed table-center" style="text-align:center">
-											<tr>
-												<td width="15%" style="text-align:center">시작 월분</td>
-												<td width="20%" style="text-align:center">
-													<input type="text" class="span12 margin0" value="1월분" disabled />
-												</td>
-												<td width="10%" style="text-align:center">시작</td>
-												<td width="20%" style="text-align:center">
-													<input type="text" class="span12 margin0 datedate datepicker" value="2013.12.18" disabled />
-												</td>
-												<td width="10%" style="text-align:center">종료</td>
-												<td width="20%" style="text-align:center">
-													<input type="text" class="span12 margin0 datedate datepicker" value="2014.1.17" disabled />
-												</td>
-												<td width="5%"></td>
-											</tr>
-											<tr>
-												<td width="15%" style="text-align:center">부과 단위</td>
-												<td width="20%" style="text-align:center">
-													<input type="text" class="span12 margin0" value="1개월" disabled />
-												</td>
-												<td width="10%" style="text-align:center">총</td>
-												<td width="20%" style="text-align:center">
-													<input type="text" class="span12 margin0" value="12개월" disabled />
-												</td>
-												<td width="35%" colspan="3"></td>
-											</tr>
-										</table>
-										<table class="table table-bordered table-condensed table-center" style="text-align:center">
-											<colgroup>
-												<col width="15%"></col>
-												<col width="20%"></col>
-												<col width="5%"></col>
-												<col width="20%"></col>
-												<col width="10%"></col>
-												<col width="20%"></col>
-												<col width="10%"></col>
-											</colgroup>
-											<tr>
-												<th style="text-align:center">월</th>
-												<th colspan="3" style="text-align:center">부과 기간</th>
-												<th style="text-align:center"></th>
-												<th style="text-align:center">고지일</th>
-												<th style="text-align:center"></th>
-											</tr>
-										</table>
-										<!-- --------------------- -->	
+									<div id="all_content" class="span12" style="height:700px; overflow-y:scroll">
+										<!-- 모든 내용 불러오는 영역 -->
 									</div>
 								</div>
 
@@ -441,6 +383,9 @@
                 $("#side-datepicker").datepicker();
                 $("#side-datepicker2").datepicker();
                 $("#side-datepicker3").datepicker();
+
+				// 내용 불러오기
+				getAllContents();
 
                 $('#changesystem').change(function() {
                     var changepage = $('#changepage');

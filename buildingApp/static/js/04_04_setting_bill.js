@@ -198,143 +198,190 @@ var doAjax_Create = function() {
 	});
 }
 
-/*
-function show(bid, cnt)
+
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+
+// 오른쪽 화면 보여주기
+function getAllContents()
 {
-	if (isChanging) {
-		alert('먼저 취소 버튼을 누르고 진행해주세요.');
-		return;
-	}
-
-	isChanging = true;
-	for (var i = 1; i <= numOfBuilding; i++) {
-		$('.show_'+i).hide();
-		$('#'+bid+'_'+i).attr('colspan', 2);
-		//$('.'+i+'_input').attr('disabled', true);
-	}
-	$('.show_'+cnt).show();
-	$('#'+bid+'_'+cnt).attr('colspan', 4);
-	//$('.'+cnt+'_input').attr('disabled', false);
+	doAjaxAllContents();
 }
-
-function add(bid, p)
-{
-	var month = $('#'+bid+'_select').val().trim();
-	var rate = $('#'+bid+'_newrate').val().replace('%','').trim();
-
-	var html = '';
-	if (Number(month) == 13) html = '<tr id="'+bid+'_'+temp_spid+'"><td>최대</td>';
-	else html = '<tr id="'+bid+'_'+temp_spid+'"><td>'+month+'개월</td>';
-	html += '<td><input id="'+temp_spid+'_d" type="text" style="text-align:center; font-size:0.9em" class="span12 margin0" value="'+rate+'%" disabled /></td>';
-	html += '<td>';
-	html += '<button class="btn btn-mini btn-block margin0" onclick="change_start('+"'"+temp_spid+"', '"+bid+"'"+', $(this));">수정</button>';
-	html += '<button class="btn btn-mini btn-block margin0" style="display:none" onclick="change_end('+"'"+temp_spid+"', '"+bid+"'"+', $(this));">완료</button>';
-	html += '</td>';
-	html += '<td><button class="btn btn-mini btn-block margin0" onclick="del('+"'"+temp_spid+"'"+', $(this));">삭제</button></td>';
-	p.parent().parent().before(html);
-
-	$('#'+bid+'_newrate').val('');
-
-	spid.push(temp_spid); // id가 10,000,000 이상이면 새로 추가된 것을 의미함.
-	spmt.push(month);
-	spdr.push(rate);
-
-	temp_spid = temp_spid + 1;
-}
-
-function change_start(sp_id, bid, p) //수정누를 때
-{ 
-	var bid_spid = p.parent().parent().attr('id');
-	var bid = bid_spid.split('_')[0].trim();
-
-	p.parent().parent().find('td:eq(1)').children().attr('disabled', false);
-
-	p.hide();
-	p.parent().find('button:eq(1)').show();
-
-	$('#'+bid+'_done').attr('disabled', true);
-}
-function change_end(sp_id, bid, p) // 수정하고 다시 완료누를 때
-{
-	p.hide();
-	p.parent().find('button:eq(0)').show();
-	
-	p.parent().parent().find('td:eq(1)').children().attr('disabled', true);
-	
-	$('#'+bid+'_done').attr('disabled', false);
-
-	var dr = $('#'+sp_id+'_d').val().replace('%','').trim();
-	for (var i = 0; i < spid.length; i++) {
-		if (Number(spid[i]) == Number(sp_id)) {
-			spdr[i] = dr;
-			break;
-		}
-	}
-}
-
-function del(sp_id, p)
-{
-	p.parent().parent().remove();
-
-	for (var i = 0; i < spid.length; i++) {
-		if (Number(spid[i]) == Number(sp_id)) {
-			spid[i] = Number(spid[i]) * -1; // 삭제할 id에 -1을 곱해 음수로 표시하자.
-			break;
-		}
-	}
-}
-*/
-
-
-function done(bid)
-{
-	for (var i = 0; i < spid.length; i++) {
-		if (Number(spid[i]) >= 10000000)
-			spid[i] = Number(0); // 새로 추가할 목록들은 id를 0으로 맞춰준다.
-	}
-	doAjax_Done(bid);
-}
-var doAjax_Done = function(bid) {
-	var postData = {};
-	postData['csrfmiddlewaretoken'] = $.cookie('csrftoken');
-	postData['bid'] = bid;
-	postData['spid'] = spid;
-	postData['spmt'] = spmt;
-	postData['spdr'] = spdr;
+var category;
+var data;
+var doAjaxAllContents = function() {
+	param = {}
+	var csrftoken = $.cookie('csrftoken');
+	param['csrfmiddlewaretoken'] = csrftoken;
 
 	$.ajax({
 		type : 'POST',
-		url : '/manage/setting/adjustment/confirm/',
+		url : '/manage/setting/bill/getContents/',
+		data : param,
+		success : function(result) {
+			category = result[0];
+			data = result[1];
+
+			var template = new EJS({url : '/static/ejs/04_04_setting_bill.ejs'}).render({'category' : category, 'data' : data, 'type' : ''});
+			$('#all_content').html(template);
+			$('#content_table').show();
+		},
+		error : function(msg) {
+			alert('실패하였습니다... 다시 시도해 주세요.');
+		},
+	});
+};
+
+function show_content(type)
+{
+	$('#all_content').html('');
+
+	var template;
+	if (type == '')
+		template = new EJS({url : '/static/ejs/04_04_setting_bill.ejs'}).render({'category' : category, 'data' : data, 'type' : ''});
+	else if (type == 'e')
+		template = new EJS({url : '/static/ejs/04_04_setting_bill.ejs'}).render({'category' : category, 'data' : data, 'type' : 'electricity'});
+	else if (type == 'g')
+		template = new EJS({url : '/static/ejs/04_04_setting_bill.ejs'}).render({'category' : category, 'data' : data, 'type' : 'gas'});
+	else if (type == 'w')
+		template = new EJS({url : '/static/ejs/04_04_setting_bill.ejs'}).render({'category' : category, 'data' : data, 'type' : 'water'});
+
+	$('#all_content').html(template);
+}
+
+function showDetail_brief(num)
+{
+	if ($('#category'+num).css('display') == 'none')
+		$('#category'+num).show();
+	else {
+		$('#category'+num).hide();
+		$('#datatable'+num).hide();
+	}
+}
+
+function showDetail(num)
+{
+	if ($('#datatable'+num).css('display') == 'none')
+		$('#datatable'+num).show();
+	else
+		$('#datatable'+num).hide();
+}
+
+function deleteData(bid, type)
+{
+	if (confirm('삭제하시겠습니까?'))
+		doAjaxDelete(bid, type);
+}
+var doAjaxDelete = function(bid, type) {
+	var param = {}
+	var csrftoken = $.cookie('csrftoken');
+	param['csrfmiddlewaretoken'] = csrftoken;
+	param['bid'] = bid;
+	param['type'] = type;
+
+	$.ajax({
+		type : 'POST',
+		url : '/manage/setting/bill/deleteData/',
+		data : param,
+		success : function(result) {
+			alert('성공적으로 삭제되었습니다.');
+			location.reload();
+		},
+		error : function(msg) {
+			alert('실패하였습니다... 다시 시도해 주세요.');
+		},
+	});
+};
+
+function show_datepicker_modify(num, t) // datepicker 보여주기
+{
+	$('#modify'+num+'_'+t+'date').datepicker();
+}
+function change_date_modify(num, t) // yyyy.mm.dd 형태로 변환하기
+{
+	var str = '#modify'+num+'_'+t+'date';
+	var mdy = $(str).val().split('/');
+	$(str).val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
+}
+function modify_modify0(num, t) // 부과 기간 수정/완료
+{
+	if (t == 'm') {
+		$('#modify'+num+'_sdate').attr('disabled', false);
+		$('#modify'+num+'_edate').attr('disabled', false);
+		$('#modify'+num+'_0_m').hide();
+		$('#modify'+num+'_0_d').show();
+		$('#modify'+num+'_sdate').click();
+		$('#modify'+num+'_edate').click();
+	}
+	else if (t == 'd') {
+		$('#modify'+num+'_sdate').attr('disabled', true);
+		$('#modify'+num+'_edate').attr('disabled', true);
+		$('#modify'+num+'_0_m').show();
+		$('#modify'+num+'_0_d').hide();
+	}
+}
+function modify_modify1(num, t) // 고지일 수정/완료
+{
+	if (t == 'm') {
+		$('#modify'+num+'_ndate').attr('disabled', false);
+		$('#modify'+num+'_1_m').hide();
+		$('#modify'+num+'_1_d').show();
+		$('#modify'+num+'_ndate').click();
+	}
+	else if (t == 'd') {
+		$('#modify'+num+'_ndate').attr('disabled', true);
+		$('#modify'+num+'_1_m').show();
+		$('#modify'+num+'_1_d').hide();
+	}
+}
+
+var smonth_modify;
+var sdate_modify;
+var edate_modify;
+var ndate_modify;
+function modify_done(bid, type) // 완료해서 모두 서버에 저장하기
+{
+	smonth_modify = null; sdate_modify = null; edate_modify = null; ndate_modify = null;
+	smonth_modify = []; sdate_modify = []; edate_modify = []; ndate_modify = [];
+
+	for (var j = 0; j < data.length; j++)
+	{
+		if (data[j].type != type || data[j].bid != bid)
+			continue;
+		
+		smonth_modify.push( $('#modify'+j+'_smonth').html().replace('월분','').trim() );
+		sdate_modify.push( $('#modify'+j+'_sdate').val().trim() );
+		edate_modify.push( $('#modify'+j+'_edate').val().trim() );
+		ndate_modify.push( $('#modify'+j+'_ndate').val().trim() );
+	}
+
+	doAjax_Modify(bid, type);
+}
+var doAjax_Modify = function(bid, type) {
+	var postData = {};
+	postData['csrfmiddlewaretoken'] = $.cookie('csrftoken');
+	postData['bid'] = bid;
+	postData['type'] = type;
+	postData['smonth_modify'] = smonth_modify;
+	postData['sdate_modify'] = sdate_modify;
+	postData['edate_modify'] = edate_modify;
+	postData['ndate_modify'] = ndate_modify;
+
+	$.ajax({
+		type : 'POST',
+		url : '/manage/setting/bill/modify/',
 		data : postData,
 		success : function(result) {
-			alert('정상적으로 변경되었습니다.');
+			alert('정상적으로 수정되었습니다.');
 			location.reload();
-			/*
-			var url = location.href;
-			if (url.indexOf('?') == -1)
-				location.replace('?s1='+show1_status+'&s2='+show2_status);
-			else
-				location.replace(url.split('?')[0]+'?s1='+show1_status+'&s2='+show2_status);
-			*/
 		},
 		error : function(msg) {
 			alert('실패하였습니다...\n다시 시도해 주세요.');
 		},
 	});
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

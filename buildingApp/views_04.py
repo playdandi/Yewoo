@@ -535,3 +535,75 @@ def setting_bill_create(request):
 
 		return HttpResponse('OK')
 	return HttpResponse('NOT POST')
+
+@permission_required('buildingApp.manage_setting', login_url='/login/')
+def setting_bill_get_contents(request):
+	if request.method == 'POST':
+		sb = SettingBill.objects.all().values('building', 'type').distinct()
+		sb2 = SettingBill.objects.all()
+		return toJSON(serialize_setting_bill(sb, sb2))
+	return HttpResponse('NOT POST')
+
+def serialize_setting_bill(sb, sb2):
+    serial_sb = []
+    serial_data = []
+    for s in sb:
+        data = {}
+        data['bid'] = int(s['building'])
+        data['bname'] = str( BuildingInfo.objects.get(id = int(data['bid'])).name )
+        data['type'] = str(s['type'])
+        this_sb = SettingBill.objects.filter(building_id = data['bid'], type = data['type'])
+        data['cnt'] = len(this_sb)
+        data['month_unit'] = int(1)
+        if len(this_sb) > 1:
+            data['month_unit'] = int(this_sb[1].month) - int(this_sb[0].month)
+        serial_sb.append(data)
+    for s in sb2:
+        data = {}
+        data['bid'] = int(s.building_id)
+        data['type'] = str(s.type)
+        data['month'] = int(s.month)
+        data['startDate'] = str(s.startDate).replace('-','.')
+        data['endDate'] = str(s.endDate).replace('-','.')
+        data['noticeDate'] = str(s.noticeDate).replace('-','.')
+        serial_data.append(data)
+    return [serial_sb, serial_data]
+
+def toJSON(objs, status=200):
+    j = json.dumps(objs, ensure_ascii=False)
+    return HttpResponse(j, status=status, content_type='application/json; charset=utf-8')
+
+@permission_required('buildingApp.manage_setting', login_url='/login/')
+def setting_bill_modify(request):
+	if request.method == 'POST':
+		bid = int(request.POST['bid'])
+		typ = str(request.POST['type'])
+		smonth = request.POST.getlist('smonth_modify[]')
+		sdate = request.POST.getlist('sdate_modify[]')
+		edate = request.POST.getlist('edate_modify[]')
+		ndate = request.POST.getlist('ndate_modify[]')
+
+		saveData = []
+		for i in range(len(smonth)):
+			sb = SettingBill.objects.get(building_id = int(bid), type = str(typ), month = int(smonth[i]))
+			sb.startDate = str(sdate[i].replace('.','-'))
+			sb.endDate = str(edate[i].replace('.','-'))
+			sb.noticeDate = str(ndate[i].replace('.','-'))
+			saveData.append(sb)
+		for s in saveData:
+			s.save()
+
+		return HttpResponse('OK')
+	return HttpResponse('NOT POST')
+
+@permission_required('buildingApp.manage_setting', login_url='/login/')
+def setting_bill_delete_data(request):
+	if request.method == 'POST':
+		bid = int(request.POST['bid'])
+		typ = str(request.POST['type'])
+		SettingBill.objects.filter(building_id = bid, type = typ).delete()
+		return HttpResponse('OK') 
+	return HttpResponse('NOT POST')
+
+
+
