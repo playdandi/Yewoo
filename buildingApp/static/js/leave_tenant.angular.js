@@ -10,19 +10,24 @@ angular.module('yewooApp', [])
         var payments = [];
         var paymentDetails = [];
 
+        s.isEditing = 0;
+
         // money
 
         s.edit_money = false;
         s.input_money = function() {
             oldMoneyChanges = angular.copy(s.moneyChanges);
             s.edit_money = true;
+            s.isEditing++;
         }
         s.save_money = function() { 
             s.edit_money = false;
+            s.isEditing--;
             s.save();
         }
         s.cancel_money = function() {
             s.moneyChanges = oldMoneyChanges;
+            s.isEditing--;
             s.edit_money = false;
         }
 
@@ -32,14 +37,17 @@ angular.module('yewooApp', [])
         s.input_record = function() {
             oldRecords = angular.copy(s.records);
             s.edit_record = true;
+            s.isEditing++;
         }
         s.save_record = function() { 
             s.edit_record = false;
+            s.isEditing--;
             s.save();
         }
         s.cancel_record = function() {
             s.records = oldRecords;
             s.edit_record = false;
+            s.isEditing--;
         }
 
         s.cancel = function() { window.location.href = "/lease/leave"; }

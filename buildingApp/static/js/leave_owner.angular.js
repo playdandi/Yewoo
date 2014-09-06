@@ -10,6 +10,7 @@ angular.module('yewooApp', [])
         var payments = [];
         var paymentDetails = [];
 
+        s.isEditing = 0;
         s.editBank = false;
 
         var bankInput = ['bank', 'account', 'accountHolder'];
@@ -20,9 +21,11 @@ angular.module('yewooApp', [])
                 eval("s.edit_" + bankInput[i] + " = s." + bankInput[i]);
             }
             s.editBank = true;
+            s.isEditing++;
         }
         s.cancelBank = function() {
             s.editBank = false;
+            s.isEditing--;
         }
         s.saveBank = function() {
             for (var i = 0; i < bankInput.length; i++) 
@@ -30,6 +33,7 @@ angular.module('yewooApp', [])
                 eval("s." + bankInput[i] + " = s.edit_" + bankInput[i]);
             }
             s.editBank = false;
+            s.isEditing--;
             s.save();
         }
 
@@ -43,15 +47,18 @@ angular.module('yewooApp', [])
         s.inputUnpaid = function() {
             oldUnpaidCases = angular.copy(s.unpaidCases);
             s.edit_unpaid = true;
+            s.isEditing++;
         }
         s.cancelUnpaid = function() {
             s.unpaidCases = oldUnpaidCases;
             s.edit_unpaid = false;
+            s.isEditing--;
             s.updateUnpaidCases();
             s.updateUnpaid();
         }
         s.saveUnpaid = function() {
             s.edit_unpaid = false;
+            s.isEditing--;
             s.save();
         }
 
@@ -63,16 +70,19 @@ angular.module('yewooApp', [])
         s.input_extra = function() {
             oldExtraCosts = angular.copy(s.extraCosts);
             s.edit_extra = true;
+            s.isEditing++;
         }
 
         s.cancel_extra = function() {
             s.extraCosts = oldExtraCosts;
             s.edit_extra = false;
+            s.isEditing--;
             s.updateUnpaid();
         }
     
         s.save_extra = function() {
             s.edit_extra = false;
+            s.isEditing--;
             s.save();
         }
 
@@ -83,16 +93,19 @@ angular.module('yewooApp', [])
         s.input_unpaid_comment = function() {
             s.edit_unpaidComments = s.unpaidComments;
             s.edit_unpaid_comment = true;
+            s.isEditing++;
         }
 
         s.save_unpaid_comment = function() {
             s.unpaidComments = s.edit_unpaidComments;
+            s.isEditing--;
             s.edit_unpaid_comment = false;
             s.save();
         }
 
         s.cancel_unpaid_comment = function() {
             s.edit_unpaid_comment = false;
+            s.isEditing--;
         }
 
         // fee comment
@@ -102,16 +115,19 @@ angular.module('yewooApp', [])
         s.input_fee_comment = function() {
             s.edit_feeComments = s.feeComments;
             s.edit_fee_comment = true;
+            s.isEditing++;
         }
 
         s.save_fee_comment = function() {
             s.feeComments = s.edit_feeComments;
             s.edit_fee_comment = false;
+            s.isEditing--;
             s.save();
         }
 
         s.cancel_fee_comment = function() {
             s.edit_fee_comment = false;
+            s.isEditing--;
         }
 
         // feelist
@@ -122,16 +138,19 @@ angular.module('yewooApp', [])
         s.input_fee = function() {
             oldFees = angular.copy(s.feeCosts);
             s.edit_fee = true;
+            s.isEditing++;
         }
 
         s.cancel_fee = function() {
             s.feeCosts = oldFees;
             s.edit_fee = false;
+            s.isEditing--;
             s.updateUnpaid();
         }
     
         s.save_fee = function() {
             s.edit_fee = false;
+            s.isEditing--;
             s.save();
         }
 
