@@ -57,6 +57,8 @@ angular.module('yewooApp', [])
             s.unpaidComputed = data.fields.unpaidCollected;
             s.unpaidComments = data.fields.unpaidComment;
             s.totalRefund = data.fields.returnMoney;
+        }).error(function() {
+            alert("서버와의 연결을 실패했습니다.");
         });
 
         // MoneyChanges

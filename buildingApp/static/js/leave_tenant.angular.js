@@ -94,6 +94,9 @@ angular.module('yewooApp', [])
             };
 
             $http.post('/lease/leave/owner/save/' + $("#rid").val() + '/', item).success(function (data) {
+                alert("저장했습니다.");
+            }).error(function() {
+                alert("서버와의 연결을 실패했습니다.");
             });
         };
 
@@ -208,7 +211,10 @@ angular.module('yewooApp', [])
                             
                             s.records = _.map(data.reads, convert_fn);
                             s.moneyChanges = _.map(data.payoffs, convert_fn);
+                        }).error(function() {
+                            alert("서버와의 연결을 실패했습니다.");
                         });
+;
 
                     });
                     
