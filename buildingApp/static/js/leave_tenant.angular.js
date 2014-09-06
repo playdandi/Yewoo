@@ -98,7 +98,7 @@ angular.module('yewooApp', [])
             var item = {
                 'payoffs' : _.map(s.moneyChanges, s.convert_to_items),
                 'reads' : _.map(s.records, s.convert_to_items),
-                'isTenantDone' : s.isTenantDone
+                'isTenantDone' : true
             };
 
             $http.post('/lease/leave/owner/save/' + $("#rid").val() + '/', item).success(function (data) {

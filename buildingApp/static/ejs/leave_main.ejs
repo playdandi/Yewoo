@@ -49,8 +49,8 @@
         </td>
 		<td style="text-align:center">
             <% if (data[i].isLeaved) { %>
-                <% if (data[i].isConfirmed) { %>미완료<% } %>
-                <% if (!data[i].isConfirmed) { %>완료<% } %>
+                <% if (!data[i].isConfirmed) { %>미완료<% } %>
+                <% if (data[i].isConfirmed) { %>완료<% } %>
             <% } %>
         </td>
 		<td style="text-align:center">

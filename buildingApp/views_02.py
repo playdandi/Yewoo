@@ -571,8 +571,8 @@ def serialize(result):
 
         try:
             leaveOwner = LeaveOwner.objects.get(resident_id = res.id)
-            data['isLeaved'] = leaveOwner.isOwnerDone and leaveOwner.isTenantDone
-            data['isConfirmed'] = leaveOwner.isOwnerDone and leaveOwner.isTenantDone and leaveOwner.isConfirmed
+            data['isLeaved'] = leaveOwner.isOwnerDone or leaveOwner.isTenantDone
+            data['isConfirmed'] = (leaveOwner.isOwnerDone or leaveOwner.isTenantDone) and leaveOwner.isConfirmed
         except:
             data['isLeaved'] = False
             data['isConfirmed'] = False 

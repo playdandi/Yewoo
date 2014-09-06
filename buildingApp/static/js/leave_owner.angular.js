@@ -217,9 +217,9 @@ angular.module('yewooApp', [])
                 'unpaiditems' : _.map(s.unpaidCases, function (i) { i.id = undefined; return i; }),
                 'unpaidaddeditems' : _.map(s.extraCosts, s.convert_to_unpaiditems),
                 'feeitems' : _.map(s.feeCosts, s.convert_to_unpaiditems),
-                'isUnpaidDone' : s.isUnpaidDone,
-                'isFeeDone' : s.isFeeDone,
-                'isOwnerDone' : s.isUnpaidDone && s.isFeeDone
+                'isUnpaidDone' : true,
+                'isFeeDone' : true,
+                'isOwnerDone' : true
             };
 
             $http.post('/lease/leave/owner/save/' + $("#rid").val() + '/', item).success(function (data) {
