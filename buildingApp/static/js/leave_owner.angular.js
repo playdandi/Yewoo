@@ -245,9 +245,11 @@ angular.module('yewooApp', [])
                 data : postData,
                 success : function(result) {
                     var today = Number(new Date().getDate());
-                    var thisYear = result[0].year;
-                    var thisMonth = result[0].month;
-                    var thisNumber = result[0].number;
+                    if (result.length > 0) {
+                        thisYear = result[0].year;
+                        thisMonth = result[0].month;
+                        thisNumber = result[0].number;
+                    }
 
                     // 연체리스트, 수정사항리스트 두 가지로 분리하기
                     for (i = 0; i < result.length; i++) {
