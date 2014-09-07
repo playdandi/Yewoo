@@ -1,5 +1,5 @@
 angular.module('yewooApp', [])
-    .controller('MainCtrl', function($scope, $timeout) {
+    .controller('MainCtrl', function($scope, $timeout, $http) {
 
         var s = $scope;
         var payments = [];
@@ -95,9 +95,11 @@ angular.module('yewooApp', [])
                     for (var i = 0; i < payments.length; i++) {
                         var payment = payments[i];
 
+                        /*
                         if (payment.payStatus == -1 ||
                             (i > 0 && payments[i - 1].number == payment.number))
                              continue;
+                        */
 
                         payment.amount = payment.amountNoPay;
                         payment.revisiedAmount = payment.amountNoPay;
@@ -106,15 +108,50 @@ angular.module('yewooApp', [])
                         cases.push(payment);
                     }
 
-                    s.$apply(function () {
-                        s.unpaidCases = cases;
-                        s.toggleAllOfUnpaidCases();
+                    function convert_to_date(str) {
+                        if (!str) return undefined;
+                        return new Date(parseInt(str.slice(0, 4)), parseInt(str.slice(5, 7)) - 1, parseInt(str.slice(8, 10)));
+                    }
 
-                        if (!!($("#print").val())) {
-                            window.print();
-                        }
-                    });
+                    s.$apply(function () {
+                        $http.get('/lease/leave/owner/get/' + $("#rid").val() + '/').success(function (data) {
+                            s.data = data;
+                            s.sum_fee = s.sum_pay = s.sum_nopay = 0;
+                            var startRow = null;
+                            var year = null;
+                            for (var i = 0; i < cases.length; i++) {
+                                var c = cases[i];
+                                if (c.year == year) {
+                                    startRow.yearSpan ++;
+                                } else {
+                                    startRow = c;
+                                    year = startRow.year;
+                                    startRow.yearSpan = 1;
+                                }
+                                s.sum_pay += c.amountPay;
+                                if (!(i > 0 && cases[i - 1].number == c.number)) {
+                                    s.sum_nopay += c.amountNoPay;
+                                    s.sum_fee += c.totalFee;
+                                }
+                            }
+                            s.cases = cases;
+                            console.log(data);
+                            
+                            if (!!($("#print").val())) {
+                                window.print();
+                            }
+
+                        }).error(function() {
+                            alert("서버와의 연결을 실패했습니다.");
+                        });
+
+
+
+                                            });
                     
+                    // 납부 상세 리스트 보여주기
+                    //var template = new EJS({url : '/static/ejs/03_03_payment_detail_tab1_list.ejs'}).render({'data' : payments, 'minym' : minym, 'maxym' : maxym, 'payCnt' : payCnt, 'totalAmountNoPay' : totalAmountNoPay});
+                    //$('#payment_list').html(template);
                 },
 
                 error : function(msg) {
