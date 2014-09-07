@@ -213,7 +213,7 @@
 							<div class="box span12" style="margin:10px 3px 3px 3px; padding: 0px">
 								<div class="box-content span12" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 									{% for ym in yearmonth %}
-									<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+									<table class="table table-bordered table-condensed" style="margin-bottom:0px; margin-top:10px">
 										<tr style="background-color:#dbdbd2">
 											<th width="6%" style="text-align:right; vertical-align:middle">건물명</th>
 											<th width="10%"><input type="text" class="margin0 span12" style="text-align:center" value="{{ bname }}" disabled /></th>
@@ -228,7 +228,7 @@
 										</tr>
 									</table>
 										{% for d in ym.data %}
-									<table class="table table-bordered table-condensed" style="margin-bottom:15px">
+									<table class="table table-bordered table-condensed" style="margin-bottom:0px">
 										<tr>
 											<td width="8%" style="text-align:center">개별안내</td>
 											<td width="4%" style="text-align:center">{{ d.number }}</td>

@@ -127,12 +127,23 @@ def building_save(request):
         building.name = param['name']
         building.remote = param['remote']
         building.address = param['address']
-        building.manager = param['manager']
         building.floorFrom = param['floorFrom']
         building.floorTo = param['floorTo']
         building.numRoom = param['numRoom']
         building.numStore = param['numStore']
         building.numParking = param['numParking']
+        building.manager = param['manager']
+        building.managerNumber = param['managerNumber']
+        building.leaseNumber = param['leaseNumber']
+        building.guardNumber = param['guardNumber']
+        building.facilityNumber = param['facilityNumber']
+        building.mainNumber = param['mainNumber']
+        building.leaseFax = param['leaseFax']
+        building.mainFax = param['mainFax']
+        building.bankName = param['bankName']
+        building.bankAccount = param['bankAccount']
+        building.bankAccountHolder = param['bankAccountHolder']
+        building.email = param['email']
         building.save()
 
         floors = []
@@ -251,9 +262,16 @@ def building_show_contents_html(request, uid):
                 break
         if not flag:
             building_info.append({'number' : i, 'name' : ''})
+
+    p = {}
+    p['range'] = range(1, 20+1)
+    p['building_info'] = building_info
+    p['building'] = building
+    p['floors'] = floors
+    p['building_id'] = uid
     
-    return render(request, '01_04_building_show_contents.html',
-            {'range' : range(1, 20+1), 'building_info' : building_info, 'building' : building, 'floors' : floors, 'building_id' : uid})
+    return render(request, '01_04_building_show_contents.html', p)
+#            {'range' : range(1, 20+1), 'building_info' : building_info, 'building' : building, 'floors' : floors, 'building_id' : uid})
 
 @permission_required('buildingApp.building_search_building', login_url='/login/')
 def building_update(request, uid):
@@ -274,12 +292,23 @@ def building_update(request, uid):
         building.name = param['name']
         building.remote = param['remote']
         building.address = param['address']
-        building.manager = param['manager']
         building.floorFrom = param['floorFrom']
         building.floorTo = param['floorTo']
         building.numRoom = param['numRoom']
         building.numStore = param['numStore']
         building.numParking = param['numParking']
+        building.manager = param['manager']
+        building.managerNumber = param['managerNumber']
+        building.leaseNumber = param['leaseNumber']
+        building.guardNumber = param['guardNumber']
+        building.facilityNumber = param['facilityNumber']
+        building.mainNumber = param['mainNumber']
+        building.leaseFax = param['leaseFax']
+        building.mainFax = param['mainFax']
+        building.bankName = param['bankName']
+        building.bankAccount = param['bankAccount']
+        building.bankAccountHolder = param['bankAccountHolder']
+        building.email = param['email']
         building.save()
 
         floors = []
@@ -377,11 +406,22 @@ def serialize_building(result):
         data['number'] = res.number
         data['name'] = res.name
         data['type'] = res.type
-        data['manager'] = res.manager
         data['floorFrom'] = res.floorFrom
         data['floorTo'] = res.floorTo
         data['numRoom'] = res.numRoom
         data['numParking'] = res.numParking
+        data['manager'] = res.manager
+        data['managerNumber'] = res.manager
+        data['leaseNumber'] = res.leaseNumber
+        data['guardNumber'] = res.guardNumber
+        data['facilityNumber'] = res.facilityNumber
+        data['mainNumber'] = res.mainNumber
+        data['leaseFax'] = res.leaseFax
+        data['mainFax'] = res.mainFax
+        data['bankName'] = res.bankName
+        data['bankAccount'] = res.bankAccount
+        data['bankAccountHolder'] = res.bankAccountHolder
+        data['email'] = res.email
         serialized.append(data)
     return serialized
 

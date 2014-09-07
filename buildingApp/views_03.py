@@ -491,7 +491,7 @@ def serialize_electricity(result):
         data['floor'] = int(data['roomnum']) / int(100)
         data['name'] = res.resident.contractorName
         data['date'] = prettyDate(res.resident.inDate) #res.resident.inDate
-        data['checkE'] = res.resident.checkE
+        data['readIn'] = res.readIn
         data['usePeriod'] = res.usePeriod
         data['readBefore'] = res.readBefore
         data['readNow'] = res.readNow
@@ -517,7 +517,7 @@ def serialize_water(result):
         data['floor'] = int(data['roomnum']) / int(100)
         data['name'] = res.resident.contractorName
         data['date'] = prettyDate(res.resident.inDate)
-        data['checkW'] = res.resident.checkW
+        data['readIn'] = res.readIn
         data['usePeriod'] = res.usePeriod
         data['readBefore'] = res.readBefore
         data['readNow'] = res.readNow
@@ -542,7 +542,7 @@ def serialize_gas(result):
         data['floor'] = int(data['roomnum']) / int(100)
         data['name'] = res.resident.contractorName
         data['date'] = prettyDate(res.resident.inDate)
-        data['checkG'] = res.resident.checkG
+        data['readIn'] = res.readIn
         data['usePeriod'] = res.usePeriod
         data['readBefore'] = res.readBefore
         data['readNow'] = res.readNow
@@ -621,7 +621,9 @@ def excel_file_upload(request):
                     temp_roomnum = 0
                     temp_name = ''
                     for j in range(len(result[i])):
-                        if column[j] == '사용기간':
+                        if column[j] == '입주검침':
+                            elem.readIn = int(result[i][j])
+                        elif column[j] == '사용기간':
                             elem.usePeriod = int(result[i][j])
                         elif column[j] == '전월검침':
                             elem.readBefore = int(result[i][j])
@@ -661,7 +663,9 @@ def excel_file_upload(request):
                     temp_roomnum = 0
                     temp_name = ''
                     for j in range(len(result[i])):
-                        if column[j] == '사용기간':
+                        if column[j] == '입주검침':
+                            elem.readIn = int(result[i][j])
+                        elif column[j] == '사용기간':
                             elem.usePeriod = int(result[i][j])
                         elif column[j] == '전월검침':
                             elem.readBefore = int(result[i][j])
@@ -699,7 +703,9 @@ def excel_file_upload(request):
                     temp_roomnum = 0
                     temp_name = ''
                     for j in range(len(result[i])):
-                        if column[j] == '사용기간':
+                        if column[j] == '입주검침':
+                            elem.readIn = int(result[i][j])
+                        elif column[j] == '사용기간':
                             elem.usePeriod = int(result[i][j])
                         elif column[j] == '전월검침':
                             elem.readBefore = int(result[i][j])

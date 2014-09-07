@@ -152,10 +152,6 @@ function filter(f) // label (ㄱ,ㄴ,ㄷ,...) 클릭했을 때 검사하는 함�
 		$('#labelall').addClass('label-inverse');
 		for (i = 0; i < resultData.length; i++)
 			resultData[i].isShown = true;
-
-//		var r = new Array('김','납','닭','롬','마','백','샹','임','정','촥','킴','탁','푱','활');
-//		for (i = 0; i < r.length; i++)
-//			iSound(r[i], '');
 	}
 	else {
 		$('#label'+f).addClass('label-inverse');
@@ -180,7 +176,6 @@ function iSound(a) // 한 글자의 '초성'으로 idx 구하기
 {
 	var res = new Array(0,2,3,5,6,7,9,11,12,14,15,16,17,18);
 	var r = parseInt( (a.charCodeAt(0) - parseInt('0xAC00',16)) / 588 );
-//	var t = String.fromCharCode(r + parseInt('0x1100',16));
 
 	for (var i = 0; i < res.length; i++)
 		if (res[i] == r)

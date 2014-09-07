@@ -213,7 +213,7 @@
 							<div class="box span12" style="margin:10px 3px 3px 3px; padding: 0px">
 								<div class="box-content span12" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8">
 									{% for ym in yearmonth %}
-									<table class="table table-bordered table-condensed" style="margin-bottom:0px">
+									<table class="table table-bordered table-condensed" style="margin-bottom:0px; margin-top:10px">
 										<tr style="background-color:#dbdbd2">
 											<th width="6%" style="text-align:right; vertical-align:middle">건물명</th>
 											<th width="10%"><input type="text" class="margin0 span12" style="text-align:center" value="{{ bname }}" disabled /></th>
@@ -221,31 +221,63 @@
 											<th width="8%"><input type="text" class="margin0 span12" style="text-align:center" value="{{ roomnum }}" disabled /></th>
 											<th width="8%" style="text-align:right; vertical-align:middle">안내회차</th>
 											<th width="10%"><input type="text" class="margin0 span12" style="text-align:center" value="{{ ym.yymm }}" disabled /></th>
-											<th width="52%" style="vertical-align:middle">총 <font style="color:red">{{ ym.cnt }}</font>개의 개별 안내 사항이 있습니다.<div style="float:right"><button class="btn btn-small btn-inverse" onclick="modify('');">입력/수정</button></div></th>
+											<th width="52%" style="vertical-align:middle">총 <font style="color:red">{{ ym.cnt }}</font>개의 개별 안내 사항이 있습니다.<div style="float:right"><button class="btn btn-small btn-inverse" onclick="modify('{{ ym.yymm_ }}');">입력/수정</button></div></th>
 										</tr>
 										<tr>
 											<td colspan="7" style="background-color:#f0f0f0; text-align:center">개별 안내 내역보기</td>
 										</tr>
 									</table>
+									<table id="contentTable_{{ ym.yymm_ }}" class="table table-bordered table-condensed" style="margin-bottom:0px">
 										{% for d in ym.data %}
-									<table class="table table-bordered table-condensed" style="margin-bottom:15px">
-										<tr>
+										<tr class="item_{{ d.id }}">
 											<td width="8%" style="text-align:center">개별안내</td>
 											<td width="4%" style="text-align:center">{{ d.number }}</td>
 											<td width="8%" style="text-align:center; background-color:#f8f8f8">입력담당자</td>
-											<td width="8%" style="text-align:center">{{ d.manager }}</td>
-											<td width="8%"><input type="text" class="margin0 span12" value="{{ d.date }}" disabled /></td>
+											<td width="8%" style="text-align:center" class="name_{{ d.id }} modify_{{ d.id }}">{{ d.manager }}</td>
+											<td width="8%"><input type="text" id="inputDate_{{ d.id }}" class="margin0 span12 datepicker date_{{ d.id }} modify_{{ d.id }}" value="{{ d.date }}" disabled onchange="adjustDate('inputDate_{{ d.id }}');" /></td>
 											<td width="5%" style="text-align:center; background-color:#f8f8f8">분류</td>
 											<td width="10%">
-												<select class="margin0 span12 fontmini" disabled>
+												<select id="sel_item_{{ d.id }}" class="margin0 span12 fontmini modify_{{ d.id }}" disabled>
 													<option value="1" {% if d.category == 1 %}selected{% endif %}>기타사항</option>
 												</select>
 											</td>
-											<td width="43%"><input type="text" class="margin0 span12" value="{{ d.memo }}" disabled /></td>
-											<td width="6%" style="text-align:center"><strong>입력완료</strong></td>
+											<td width="37%"><input type="text" class="margin0 span12 memo_{{ d.id }} modify_{{ d.id }}" value="{{ d.memo }}" disabled /></td>
+											<td width="12%" style="text-align:center">
+												<div class="not_modifying_{{ ym.yymm_ }}"><strong>입력완료</strong></div>
+												<div class="modifying_{{ ym.yymm_ }}" style="display:none"><button class="btn btn-small" onclick="modifyEach('{{ d.id }}');">수정</button><button class="btn btn-small" onclick="del('{{ d.id }}', '{{ ym.yymm_ }}');">삭제</button></div>
+											</td>
+										</tr>
+										{% endfor %}
+									</table>
+									<table class="table table-bordered table-condensed modifying_{{ ym.yymm_ }}" style="margin-bottom:0px; display:none">
+										<tr>
+											<td style="background-color:#dbdbd2; text-align:center">개별 안내 추가하기</td>
 										</tr>
 									</table>
-										{% endfor %}
+									<table class="table table-bordered table-condensed modifying_{{ ym.yymm_ }}" style="margin-bottom:0px; display:none">
+										<tr>
+											<td width="3%"></td>
+											<td width="8%" style="text-align:center">개별안내</td>
+											<td width="4%" style="text-align:center"><div id="add_number_{{ ym.yymm_ }}"></div></td>
+											<td width="8%" style="text-align:center; background-color:#f8f8f8">입력담당자</td>
+											<td width="8%" style="text-align:center"><input id="add_name_{{ ym.yymm_ }}" type="text" class="margin0 span12" /></td>
+											<td width="8%"><input id="add_date_{{ ym.yymm_ }}" type="text" class="margin0 span12 datepicker dateinput fontmini" onchange="adjustDate('add_date_{{ ym.yymm_ }}');" /></td>
+											<td width="5%" style="text-align:center; background-color:#f8f8f8">분류</td>
+											<td width="10%">
+												<select id="add_category_{{ ym.yymm_ }}" class="margin0 span12">
+													<option value="1">기타사항</option>
+												</select>
+											</td>
+											<td width="34%"><input id="add_memo_{{ ym.yymm_ }}" type="text" class="margin0 span12" /></td>
+											<td width="12%" style="text-align:center"><button class="btn btn-small btn-inverse" onclick="addItem('{{ roomid }}', '{{ ym.cnt }}', '{{ ym.yymm_ }}');">추가</button></td>
+										</tr>
+										<tr>
+											<td colspan="11" style="text-align:center">
+												<button class="btn btn-inverse" onclick="cancel();">취소</button>
+												<button class="btn btn-inverse" onclick="done('{{ ym.yymm }}');">완료</button>
+											</td>
+										</tr>
+									</table>
 									{% endfor %}
 								</div>
 							</div>
@@ -371,6 +403,11 @@
                         (this).firstChild.data = "보기▼";
                     }
                 });
+
+				ids = new Array();
+				ids = {{ data_id|safe }};
+				curBid = '{{ bid }}';
+				curRoomid = '{{ roomid }}';
 			});
 		</script>
 		<!-- end: JavaScript-->

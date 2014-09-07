@@ -110,11 +110,13 @@ urlpatterns = patterns('',
     url(r'^lease/bill/total/(?P<bid>\d+)/look/(?P<year>\d+)/(?P<month>\d+)/(?P<searchYear>\d+)/$', bill_total_look_html),
     url(r'^lease/bill/total/(?P<bid>\d+)/manage/(?P<year>\d+)/(?P<month>\d+)/(?P<searchYear>\d+)/$', bill_total_manage_html),
 	url(r'^lease/bill/total/input/confirm/$', bill_total_input_confirm),
+	url(r'^lease/bill/total/manage/confirm/$', bill_total_manage_confirm),
     
 	url(r'^lease/bill/each/(?P<bid>\d+)/(?P<roomid>\d+)/input/(?P<year>\d+)/(?P<month>\d+)/$', bill_each_input_html),
     url(r'^lease/bill/each/(?P<bid>\d+)/(?P<roomid>\d+)/look/(?P<year>\d+)/(?P<month>\d+)/(?P<searchYear>\d+)/$', bill_each_look_html),
     url(r'^lease/bill/each/(?P<bid>\d+)/(?P<roomid>\d+)/manage/(?P<year>\d+)/(?P<month>\d+)/(?P<searchYear>\d+)/$', bill_each_manage_html),
 	url(r'^lease/bill/each/input/confirm/$', bill_each_input_confirm),
+	url(r'^lease/bill/each/manage/confirm/$', bill_each_manage_confirm),
 
 
     url(r'^manage/activate/$', activate_html), 

@@ -155,9 +155,21 @@ function SaveBuildingInfo()
 	data['number'] = $('#number').val();
 	data['type'] = $('#type').val();
 	data['remote'] = $('#remote').val();
-	data['name'] = $('#name').val();
-	data['address'] = $('#address').val();
-	data['manager'] = $('#manager').val();
+	data['name'] = $('#name').val().trim();
+	data['address'] = $('#address').val().trim();
+	
+	data['manager'] = $('#manager_name').val().trim();
+	data['managerNumber'] = $('#manager_number').val().trim();
+	data['leaseNumber'] = $('#lease_number').val().trim();
+	data['guardNumber'] = $('#guard_number').val().trim();
+	data['facilityNumber'] = $('#facility_number').val().trim();
+	data['mainNumber'] = $('#main_number').val().trim();
+	data['leaseFax'] = $('#lease_fax').val().trim();
+	data['mainFax'] = $('#main_fax').val().trim();
+	data['bankName'] = $('#bank_name').val().trim();
+	data['bankAccount'] = $('#bank_account').val().trim();
+	data['bankAccountHolder'] = $('#bank_account_holder').val().trim();
+	data['email'] = $('#email').val().trim();
 
 	data['floorFrom'] = fromFloor;
 	data['floorTo'] = toFloor;

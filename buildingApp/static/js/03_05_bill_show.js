@@ -60,3 +60,24 @@ function Input(type, bid, roomid, y, m)
 	else if (type == 'each')
 		$(location).attr('href', '/lease/bill/'+type+'/'+bid+'/'+roomid+'/input/'+y+'/'+m);
 }
+
+function changeRadio(val) // 라디오 필터링 한 경우
+{
+	if (val == '1') {
+		$('.zero').show();
+		$('.nonzero').show();
+	}
+	else if (val == '2') { // 입력 완료
+		$('.zero').hide();
+		$('.nonzero').show();
+	}
+	else if (val == '3') { // 입력 없음
+		$('.zero').show();
+		$('.nonzero').hide();
+	}
+}
+
+
+
+
+

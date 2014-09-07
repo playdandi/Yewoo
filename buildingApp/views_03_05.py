@@ -316,6 +316,7 @@ def bill_total_manage_html(request, bid, year, month, searchYear):
     for i in range(12):
         pa = {}
         pa['yymm'] = str(searchYear)+'/'+str(i+1)
+        pa['yymm_'] = str(searchYear)+'_'+str(i+1)
         pa['cnt'] = int(0)
         pa['data'] = []
         arr.append(pa)
@@ -328,6 +329,7 @@ def bill_total_manage_html(request, bid, year, month, searchYear):
         pa['date'] = str(s.inputDate).replace('-','.')
         pa['category'] = int(s.category)
         pa['memo'] = str(s.memo)
+        pa['id'] = int(s.id)
         arr[int(s.month)-1]['data'].append(pa)
 
     yearmonth = []
@@ -338,7 +340,50 @@ def bill_total_manage_html(request, bid, year, month, searchYear):
         m -= 1
     p['yearmonth'] = yearmonth
 
+    p['data_id'] = []
+    for s in sb:
+        p['data_id'].append(int(s.id))
+
     return render(request, '03_05_total_manage.html', p)
+
+@permission_required('buildingApp.lease_bill', login_url='/login/')
+def bill_total_manage_confirm(request):
+    if request.method == 'POST':
+        y = int(request.POST['year'])
+        m = int(request.POST['month'])
+        type = int(request.POST['type'])
+        bid = int(request.POST['bid'])
+        ids = request.POST.getlist('ids[]')
+        names = request.POST.getlist('names[]')
+        dates = request.POST.getlist('dates[]')
+        categories = request.POST.getlist('categories[]')
+        memos = request.POST.getlist('memos[]')
+        removes = request.POST.getlist('removes[]')
+        
+        for i in range(len(ids)):
+            sb = None
+            if str(ids[i][0]) == '-':
+                sb = StandardBill()
+            else:
+                sb = StandardBill.objects.get(id = int(ids[i]))
+                if int(sb.year) != int(y) or int(sb.month) != int(m):
+                    continue
+            sb.year = int(y)
+            sb.month = int(m)
+            sb.type = int(type)
+            sb.building_id = int(bid)
+            sb.managerName = str(names[i])
+            sb.category = int(categories[i])
+            sb.inputDate = str(dates[i].replace('.','-'))
+            sb.memo = str(memos[i])
+            sb.status = 0
+            sb.save()
+
+        StandardBill.objects.filter(id__in = removes).delete()
+
+        return HttpResponse('OK')
+    return HttpResponse('NOT POST')
+
 
 
 ####################################################################
@@ -491,6 +536,7 @@ def bill_each_manage_html(request, bid, roomid, year, month, searchYear):
     for i in range(12):
         pa = {}
         pa['yymm'] = str(searchYear)+'/'+str(i+1)
+        pa['yymm_'] = str(searchYear)+'_'+str(i+1)
         pa['cnt'] = int(0)
         pa['data'] = []
         arr.append(pa)
@@ -503,6 +549,7 @@ def bill_each_manage_html(request, bid, roomid, year, month, searchYear):
         pa['date'] = str(s.inputDate).replace('-','.')
         pa['category'] = int(s.category)
         pa['memo'] = str(s.memo)
+        pa['id'] = int(s.id)
         arr[int(s.month)-1]['data'].append(pa)
 
     yearmonth = []
@@ -512,7 +559,52 @@ def bill_each_manage_html(request, bid, roomid, year, month, searchYear):
             yearmonth.append(arr[m-1])
         m -= 1
     p['yearmonth'] = yearmonth
+    p['room_id'] = []
+    for s in sb:
+        p['room_id'].append(int(s.id))
+
+    p['data_id'] = []
+    for s in sb:
+        p['data_id'].append(int(s.id))
 
     return render(request, '03_05_each_manage.html', p)
 
+@permission_required('buildingApp.lease_bill', login_url='/login/')
+def bill_each_manage_confirm(request):
+    if request.method == 'POST':
+        y = int(request.POST['year'])
+        m = int(request.POST['month'])
+        type = int(request.POST['type'])
+        bid = int(request.POST['bid'])
+        roomid = int(request.POST['roomid'])
+        ids = request.POST.getlist('ids[]')
+        names = request.POST.getlist('names[]')
+        dates = request.POST.getlist('dates[]')
+        categories = request.POST.getlist('categories[]')
+        memos = request.POST.getlist('memos[]')
+        removes = request.POST.getlist('removes[]')
+        
+        for i in range(len(ids)):
+            sb = None
+            if str(ids[i])[0] == '-':
+                sb = StandardBill()
+            else:
+                sb = StandardBill.objects.get(id = int(ids[i]))
+                if int(sb.year) != int(y) or int(sb.month) != int(m):
+                    continue
+            sb.year = int(y)
+            sb.month = int(m)
+            sb.type = int(type)
+            sb.building_id = int(bid)
+            sb.room_id = int(roomid)
+            sb.managerName = str(names[i])
+            sb.category = int(categories[i])
+            sb.inputDate = str(dates[i].replace('.','-'))
+            sb.memo = str(memos[i])
+            sb.status = 0
+            sb.save()
 
+        StandardBill.objects.filter(id__in = removes).delete()
+
+        return HttpResponse('OK')
+    return HttpResponse('NOT POST')

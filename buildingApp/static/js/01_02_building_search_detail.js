@@ -27,7 +27,20 @@ function Revise(done)
 	$('#remote').attr('disabled', done);
 	$('#name').attr('disabled', done);
 	$('#address').attr('disabled', done);
-	$('#manager').attr('disabled', done);
+
+	$('#manager_name').attr('disabled', done);
+	$('#manager_number').attr('disabled', done);
+	$('#lease_number').attr('disabled', done);
+	$('#guard_number').attr('disabled', done);
+	$('#facility_number').attr('disabled', done);
+	$('#main_number').attr('disabled', done);
+	$('#lease_fax').attr('disabled', done);
+	$('#main_fax').attr('disabled', done);
+	$('#bank_name').attr('disabled', done);
+	$('#bank_account').attr('disabled', done);
+	$('#bank_account_holder').attr('disabled', done);
+	$('#email').attr('disabled', done);
+
 
 	$('#startFloor').attr('disabled', done);
 	$('#startFloorNumber').attr('disabled', done);
@@ -223,7 +236,19 @@ function UpdateBuildingInfo()
 	data['remote'] = $('#remote').val();
 	data['name'] = $('#name').val();
 	data['address'] = $('#address').val();
-	data['manager'] = $('#manager').val();
+	
+	data['manager'] = $('#manager_name').val().trim();
+	data['managerNumber'] = $('#manager_number').val().trim();
+	data['leaseNumber'] = $('#lease_number').val().trim();
+	data['guardNumber'] = $('#guard_number').val().trim();
+	data['facilityNumber'] = $('#facility_number').val().trim();
+	data['mainNumber'] = $('#main_number').val().trim();
+	data['leaseFax'] = $('#lease_fax').val().trim();
+	data['mainFax'] = $('#main_fax').val().trim();
+	data['bankName'] = $('#bank_name').val().trim();
+	data['bankAccount'] = $('#bank_account').val().trim();
+	data['bankAccountHolder'] = $('#bank_account_holder').val().trim();
+	data['email'] = $('#email').val().trim();
 
 	data['floorFrom'] = fromFloor;
 	data['floorTo'] = toFloor;
@@ -267,8 +292,8 @@ function UpdateBuildingInfo()
 	}
 	data['floors'] = floors;
 
-	if (confirm('수정하시겠습니까?'))
-		doAjax(data);
+	//if (confirm('수정하시겠습니까?'))
+	doAjax(data);
 }
 
 var doAjax = function(postData) {

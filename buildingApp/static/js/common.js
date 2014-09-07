@@ -1,3 +1,45 @@
+function filter(f) // label (ㄱ,ㄴ,ㄷ,...) 클릭했을 때 검사하는 함수
+{
+	// label 색 선택
+	for (i = 0; i <= 14; i++)
+		$('#label'+i).removeClass('label-inverse');
+	$('#labelall').removeClass('label-inverse');
+	
+	if (f == 'all') {
+		$('#labelall').addClass('label-inverse');
+		for (i = 0; i < resultData.length; i++)
+			resultData[i].isShown = true;
+	}
+	else {
+		$('#label'+f).addClass('label-inverse');
+		for (var i = 0; i < resultData.length; i++) {
+			if (iSound(resultData[i].residentName[0]) == Number(f))
+				resultData[i].isShown = true;
+			else
+				resultData[i].isShown = false;
+		}
+	}
+
+	// check
+	for (var i = 0; i < resultData.length; i++)
+		$('#selCheck'+i).attr('checked', resultData[i].isShown);
+		
+	
+	var template = new EJS({url : '/static/ejs/02_02_resident_show.ejs'}).render({'data' : resultData, 'color' : color, 'colorDtl' : colorDtl});
+	$('#search_result_content').html(template);
+}
+
+function iSound(a) // 한 글자의 '초성'으로 idx 구하기
+{
+	var res = new Array(0,2,3,5,6,7,9,11,12,14,15,16,17,18);
+	var r = parseInt( (a.charCodeAt(0) - parseInt('0xAC00',16)) / 588 );
+
+	for (var i = 0; i < res.length; i++)
+		if (res[i] == r)
+			return i;
+	return -1;
+}
+
 // IE 8에서 trim()함수가 지원되지 않음. 그에 대한 해결방안.
 if (typeof String.prototype.trim !== 'function') {
 	String.prototype.trim = function() {
@@ -286,14 +328,11 @@ function excelParser(result)
 	parsed_result = [];
 
 	for (i = 2; i < res.length; i++) {
-//		elem = {};
 		elem = [];
 		temp = res[i].split(',');
 		for (j = 0; j < temp.length; j++)
-			//elem[j] = temp[j].trim();
 			elem.push(temp[j].trim());
 		parsed_result.push(elem);
-//		parsed_result[i] = elem;
 		parsed_length_each = temp.length;
 	}
 

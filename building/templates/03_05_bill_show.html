@@ -17,7 +17,6 @@
 	<link id="base-style" href="{{ STATIC_URL }}bootstrap/css/style.css" rel="stylesheet">
 	<link id="base-style-responsive" href="{{ STATIC_URL }}bootstrap/css/style-responsive.css" rel="stylesheet">
 	<link href="{{ STATIC_URL }}bootstrap/css/datepicker.css" rel="stylesheet">
-	<link href="{{ STATIC_URL }}bootstrap/css/datepicker.css" rel="stylesheet">
 	<link href="{{ STATIC_URL }}css/common.css" rel="stylesheet">
 	<!-- end: CSS -->
 
@@ -185,15 +184,15 @@
 					<div class="box span11" style="margin:15px 0px 0px 0px; padding: 0px">
 						<div class="box-content" style="margin: 0px; padding: 3px; border:1; background-color:#f8f8f8">
 							<strong>목록 현황</strong>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="0" checked />전체</label>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="1" />전체안내</label>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="2" />개별안내</label>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="3" />입력완료</label>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="4" />전체안내 입력완료</label>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="5" />개별안내 입력완료</label>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="6" />입력없음</label>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="7" />전체안내 입력없음</label>
-							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="8" />개별안내 입력없음</label>
+							{% if type == 1 %}
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN1" class="radio" value="1" checked />전체안내</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN1" class="radio" value="2" />전체안내 입력완료</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN1" class="radio" value="3" />전체안내 입력없음</label>
+							{% else %}
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN2" class="radio" value="1" checked />개별안내</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN2" class="radio" value="2" />개별안내 입력완료</label>
+							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN2" class="radio" value="3" />개별안내 입력없음</label>
+							{% endif %}
 							<!--
 							<div style="text-align:right; float:right">
 								<button class="btn btn-small btn-inverse" onclick="pagePrint();">출력</button>
@@ -234,7 +233,7 @@
 									<th width="24%" colspan="3"  style="text-align:center">전체 안내 입력 처리하기</th>
 								</tr>
                                 {% for a in all %}
-								<tr>
+								<tr class="{% if a.numOfNotice == 0 %}zero{% else %}nonzero{% endif %}">
 									<td style="text-align:center"><input id="" type="checkbox" disabled /></td>
 									<td style="text-align:center">{{ a.year }}/{{ a.month }}</td>
 									<td style="text-align:center">전체안내</td>
@@ -265,7 +264,7 @@
 									<th width="24%" colspan="3"  style="text-align:center">전체 안내 입력 처리하기</th>
 								</tr>
                                 {% for e in each %}
-								<tr>
+								<tr class="{% if e.numOfNotice == 0 %}zero{% else %}nonzero{% endif %}">
 									<td style="text-align:center"><input id="" type="checkbox" disabled /></td>
 									<td style="text-align:center">{{ e.year }}/{{ e.month }}</td>
 									<td style="text-align:center">개별안내</td>
@@ -371,8 +370,6 @@
 			$(document).ready(function(){
 				// show sidebar
 				show_sidebar();
-
-				/*
 				$('#tabmenu a').click(function(e) {
 					e.preventDefault();
 					$(this).tab('show');
@@ -380,19 +377,23 @@
                 $("#side-datepicker").datepicker();
                 $("#side-datepicker2").datepicker();
                 $("#side-datepicker3").datepicker();
-
-				$('.dateinput').change(function() {
-					var mdy = $(this).val().split('/');
-					$(this).val(mdy[2]+'.'+mdy[0]+'.'+mdy[1]);
-				});
-			
+                $('.showdetail').click(function() {
+                    if ((this).parentNode.parentNode.nextSibling.nextSibling.style.display == 'none') {
+                        (this).parentNode.parentNode.nextSibling.nextSibling.style.display = '';
+                        (this).firstChild.data = "보기▲";
+                    } else {
+                        (this).parentNode.parentNode.nextSibling.nextSibling.style.display = 'none';
+                        (this).firstChild.data = "보기▼";
+                    }
+                });
+				
 				// radio 버튼 클릭 시
-				$('input[name=radioN]').change(function() {
+				$('input[name=radioN1]').change(function() {
 					changeRadio(Number($(this).val()));
 				});
-
-				Search();
-				*/
+				$('input[name=radioN2]').change(function() {
+					changeRadio(Number($(this).val()));
+				});
 			});			
 		</script>
 		<!-- end: JavaScript-->

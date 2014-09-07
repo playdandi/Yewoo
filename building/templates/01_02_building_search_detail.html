@@ -203,14 +203,55 @@
 											<div class="labels" style="margin-right:41px"><strong>건물명</strong></div>
 											<input id="name" class="margin0" style="width:110px" type="text" placeholder="건물명을 입력하세요." value="{{ building.name }}" disabled />
 										</td>
-										<td colspan="10">
+										<td colspan="15">
 											<div class="labels" style="margin-right:26px"><strong>건물 주소</strong></div>
 											<input id="address" class="margin0" style="width:320px" type="text" placeholder="건물 주소를 입력하세요." value="{{ building.address }}" disabled />
 										</td>
-										<td colspan="5">
-											<div class="labels" style="margin-right:26px"><strong>담담자</strong></div>
-											<input id="manager" class="margin0" style="width:110px" type="text" placeholder="담당자를 입력하세요." value="{{ building.manager }}" disabled />
-										</td>
+									</tr>
+									<tr>
+										<td colspan="2" rowspan="4"><div class="labels" style="margin-right:41px"><strong>연락처</strong></div></td>
+										<td colspan="4" style="text-align:center">담당 매니저</td>
+										<td colspan="5"><input id="manager_name" type="text" class="margin0 span12" placeholder="담당자 이름 입력" value="{{ building.manager }}" disabled /></td>
+										<td colspan="4" style="text-align:center">담당 연락처</td>
+										<td colspan="5"><input id="manager_number" type="text" class="margin0 span12" placeholder="전화번호" value="{{ building.managerNumber }}" disabled /></td>
+									</tr>
+									<tr>
+										<td colspan="4" style="text-align:center">임대 관리팀</td>
+										<td colspan="5"><input id="lease_number" type="text" class="margin0 span12" placeholder="전화번호" value="{{ building.leaseNumber }}" disabled /></td>
+										<td colspan="4" style="text-align:center">경비 관리팀</td>
+										<td colspan="5"><input id="guard_number" type="text" class="margin0 span12" placeholder="전화번호" value="{{ building.guardNumber }}" disabled /></td>
+									</tr>
+									<tr>
+										<td colspan="4" style="text-align:center">시설 관리팀</td>
+										<td colspan="5"><input id="facility_number" type="text" class="margin0 span12" placeholder="전화번호" value="{{ building.facilityNumber }}" disabled /></td>
+										<td colspan="4" style="text-align:center">본사 관리팀</td>
+										<td colspan="5"><input id="main_number" type="text" class="margin0 span12" placeholder="전화번호" value="{{ building.mainNumber }}" disabled /></td>
+									</tr>
+									<tr>
+										<td colspan="4" style="text-align:center"></td>
+										<td colspan="5"></td>
+										<td colspan="4" style="text-align:center"></td>
+										<td colspan="5"></td>
+									</tr>
+									<tr>
+										<td colspan="2"><div class="labels" style="margin-right:41px"><strong>팩스</strong></div>
+										<td colspan="4" style="text-align:center">임대 관리팀</td>
+										<td colspan="5"><input id="lease_fax" type="text" class="margin0 span12" placeholder="팩스번호" value="{{ building.leaseFax }}" disabled /></td>
+										<td colspan="4" style="text-align:center">본사 관리팀</td>
+										<td colspan="5"><input id="main_fax" type="text" class="margin0 span12" placeholder="팩스번호" value="{{ building.mainFax }}" disabled /></td>
+									</tr>
+									<tr>
+										<td colspan="2"><div class="labels" style="margin-right:41px"><strong>입금 계좌</strong></div>
+										<td colspan="2" style="text-align:center">입금 은행</td>
+										<td colspan="2"><input id="bank_name" type="text" class="margin0 span12" placeholder="ex) 외환은행" value="{{ building.bankName }}" disabled /></td>
+										<td colspan="2" style="text-align:center">입금 계좌</td>
+										<td colspan="7"><input id="bank_account" type="text" class="margin0 span12" placeholder="ex) 000-11-22222-3" value="{{ building.bankAccount }}" disabled /></td>
+										<td colspan="2" style="text-align:center">예금주</td>
+										<td colspan="3"><input id="bank_account_holder" type="text" class="margin0 span12" value="{{ building.bankAccountHolder }}" disabled /></td>
+									</tr>
+									<tr>
+										<td colspan="2"><div class="labels" style="margin-right:41px"><strong>E-mail</strong></div>
+										<td colspan="18"><input id="email" type="text" class="margin0 span12" value="{{ building.email }}" disabled /></td>
 									</tr>
 
 									<tr>
