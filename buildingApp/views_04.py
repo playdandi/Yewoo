@@ -240,6 +240,10 @@ def right_html(request):
             user.user_permissions.add(Permission.objects.get(codename="manage_right"))
         if request.POST['perm[12]'] == 'true':
             user.user_permissions.add(Permission.objects.get(codename="manage_setting"))
+        if request.POST['perm[13]'] == 'true':
+            user.user_permissions.add(Permission.objects.get(codename="lease_bill"))
+        if request.POST['perm[14]'] == 'true':
+            user.user_permissions.add(Permission.objects.get(codename="lease_leave"))
         return render(request, 'index.html')
     else:
         users = User.objects.filter(is_superuser=False).exclude(userprofile__status=0)
@@ -270,6 +274,8 @@ def right_html(request):
             user.perm.append(user.has_perm("buildingApp.manage_accountinfo"))
             user.perm.append(user.has_perm("buildingApp.manage_right"))
             user.perm.append(user.has_perm("buildingApp.manage_setting"))
+            user.perm.append(user.has_perm("buildingApp.lease_bill"))
+            user.perm.append(user.has_perm("buildingApp.lease_leave"))
             for pe in user.perm:
                 if pe:
                     user.permcount = user.permcount + 1
@@ -288,6 +294,10 @@ def right_html(request):
             for i in range(9,13):
                 if user.perm[i]:
                     user.permstr = user.permstr + "관리자 시스템, "
+                    break
+            for i in range(13,15):
+                if user.perm[i]:
+                    user.permstr = user.permstr + "통합 내역 관리 시스템, "
                     break
             if len(user.permstr) != 0:
                 user.permstr = user.permstr[0:-2] 

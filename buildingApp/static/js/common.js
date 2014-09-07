@@ -464,14 +464,6 @@ var curMonth;
 
 
 
-
-
-////////////////////////////////////////
-/* 각종 tooltip 메시지들 모음 변수 */
-////////////////////////////////////////
-
-//var 03_02_tip_1 = "<고지 내역 입력>\n이달에 고지해야 할 총 금액을 확인할 수 있습니다.\n1. 고지 내역 입력(상단)\n1)"; 
-
 function sidebar_hide3(header) {
     if ($(header).children().text().indexOf("▼") > -1) {
         $(header).children().text($(header).children().text().replace("▼","▲"))
@@ -499,5 +491,23 @@ function sidebar_hide4(header) {
         $(header).next().next().css('display','none')
         $(header).next().next().next().css('display','none')
         $(header).next().next().next().next().css('display','none')
+    }
+}
+
+function sidebar_hide5(header) {
+    if ($(header).children().text().indexOf("▼") > -1) {
+        $(header).children().text($(header).children().text().replace("▼","▲"))
+        if(!$(header).next().hasClass('noperm')) $(header).next().css('display','block')
+        if(!$(header).next().next().hasClass('noperm')) $(header).next().next().css('display','block')
+        if(!$(header).next().next().next().hasClass('noperm')) $(header).next().next().next().css('display','block')
+        if(!$(header).next().next().next().next().hasClass('noperm')) $(header).next().next().next().next().css('display','block')
+        if(!$(header).next().next().next().next().next().hasClass('noperm')) $(header).next().next().next().next().next().css('display','block')
+    } else {
+        $(header).children().text($(header).children().text().replace("▲","▼"))
+        $(header).next().css('display','none')
+        $(header).next().next().css('display','none')
+        $(header).next().next().next().css('display','none')
+        $(header).next().next().next().next().css('display','none')
+        $(header).next().next().next().next().next().css('display','none')
     }
 }

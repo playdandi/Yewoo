@@ -3,7 +3,7 @@ function setperm(uid) {
         return;
     else {
         var perm = {}
-        for(i=0; i<13; i++) {
+        for(i = 0; i <= 14; i++) {
             perm[i] = $('#check' + i + '_' + uid).parent().hasClass('checked')
         }
         
@@ -21,7 +21,8 @@ function setperm(uid) {
                 $(location).attr('href', '/manage/right/');
             },
             error : function(msg) {
-                alert('error : ' + msg.responseText);
+				alert('실패하였습니다. 다시 시도해 주세요...');
+                //alert('error : ' + msg.responseText);
             },
         });
     }
