@@ -306,16 +306,29 @@
     border: 1px solid #eee;
     font-size:2pt;
 }
+#leave td.whitecell
+{
+    border: 1px solid #eee;
+    font-size:2pt;
+}
+#leave td.graycell 
+{
+    background-color: #eee;
+    border: 1px solid #eee;
+    font-size:2pt;
+}
 
 #leave tr.itemcell > td {
     border: 1px solid #eee;
     font-size:2pt;
 }
 
+/*
 #leave tr.itemcell > :first-child {
     background-color: #eee;
     border: 1px solid #eee;
 }
+*/
 
 #leave .print-comment
 {

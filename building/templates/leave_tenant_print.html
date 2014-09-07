@@ -140,20 +140,44 @@
                         <td colspan="2">미납 회차</td>
                         <td>누적</td>
                     </tr>
-                    <tr ng-repeat="item in data.unpaidList" class="itemcell">
-                        <td><span ng-bind="item.year"></span></td>
-                        <td><span ng-bind="item.year"></span>년 <span ng-if="item.month < 10">0</span><span ng-bind="item.month"></span>월</td>
-                        <td><span ng-bind="item.number"></span></td>
-                        <td><span ng-bind="item.totalFee | number:0"></span></td>
-                        <td><span ng-bind="item.amountPay | number:0"></span></td>
-                        <td><span ng-bind="item.payDate | date:'yy.MM.dd'"></span></td>
-                        <td><span ng-bind="item.amountNoPay | number:0"></span></td>
-                        <td><span ng-bind="item.amountNoPay | number:0"></span></td>
-                        <td><span ng-bind="item.amountNoPay | number:0"></span></td>
-                        <td><span ng-bind="item.amountNoPay | number:0"></span></td>
-                        <td><span ng-bind="item.amountNoPay | number:0"></span></td>
-                        <td><span ng-bind="item.amountNoPay | number:0"></span></td>
-                        <td><span ng-bind="item.amountNoPay | number:0"></span></td>
+                    <tr ng-repeat="c in cases" class="itemcell">
+                        <td class="graycell" ng-if="c.yearSpan > 0" ng-attr-rowspan="&#123;&#123;c.yearSpan&#125;&#125;"><span ng-bind="c.year"></span>년</td>
+                        <td><span ng-bind="c.year"></span>년 <span ng-if="item.month < 10">0</span><span ng-bind="c.month"></span>월</td>
+                        <td><span ng-bind="c.number"></span></td>
+                        <td><span ng-bind="c.totalFee | number:0"></span></td>
+                        <td><span ng-bind="c.amountPay | number:0"></span></td>
+                        <td><span ng-bind="c.payDate | date:'yy.MM.dd'"></span></td>
+                        <td><span ng-bind="c.amountNoPay | number:0"></span></td>
+            <td>
+                <span ng-if="c.delayNumber > 0">
+                    <span ng-if="c.amountPay == 0 && c.amountNoPay > 0">미납</span>
+                    <span ng-if="c.amountPay > 0 && c.amountNoPay > 0">부분</span>
+                    <span ng-if="c.amountNoPay == 0">완납</span>
+                </span>
+                <span ng-if="c.delayNumber <= 0">고지</span>
+            </td>
+
+            <td>
+                <span ng-if="c.delayNumber > 0"><span ng-bind="c.delayNumber" ></span>회</span>
+                <span ng-if="c.delayNumber <= 0"><span ng-bind="c.number"></span>회</span>
+            </td>
+            <td>
+                <span ng-if="c.delayNumber > 0" ><span ng-bind="c.accumNumber"></span>회</span>
+                <span ng-if="c.delayNumber <= 0">0회</span>
+            </td>
+            <td>
+                <span ng-if="c.payStatus == -1">완납</span>
+                <span ng-if="c.payStatus != -1">납부</span>
+            </td>
+            <td>
+                <span ng-if="c.payStatus == -1">없음</span>
+                <span ng-if="c.payStatus != -1"><span ng-bind="c.payStatus"/>회</span>
+            </td>
+            <td>
+                <span ng-if="c.payStatus == -1">납부</span>
+                <span ng-if="c.payStatus == 0">미납</span>
+                <span ng-if="c.payStatus != 0 && c.payStatus != -1">부분</span>
+            </td>
                     </tr>
                 </table>
                 <!-- end 내역 table -->
@@ -166,32 +190,32 @@
                 <div class="titlebox">임차인</div>
                 <div class="row-fluid">
                     <div class="span8">
-                        <span ng-bind="data.buildingName"></span> <span ng-bind="data.roomNumber"></span>
+                        <span ng-bind="data.resident.fields.buildingNameKor"></span> <span ng-bind="data.resident.fields.roomNumber"></span>호실
                     </div>
                     <div class="span4 textRight">
-                        <span ng-bind="data.name"></span> 님
+                        <span ng-bind="data.resident.fields.residentName"></span> 님
                     </div>
                 </div>
                 <div class="row-fluid boldgray">
                     <div class="span4">임대 기간</div>
                     <div class="span8 textRight">
-                        <span ng-bind="data.rentStart | date:'yyyy.MM.dd'"></span> ~ <span ng-bind="data.rentEnd | date:'yyyy.MM.dd'"></span> (<span ng-bind="data.rentMethod"></span>)
+                        <span ng-bind="data.resident.fields.inDate | date:'yyyy.MM.dd'"></span> ~ <span ng-bind="data.resident.fields.outDate | date:'yyyy.MM.dd'"></span> (<span ng-bind="data.resident.fields.leasePayWay"></span>)
                     </div>
                 </div>
                 <div class="row-fluid lightgray">
                     <div class="span6">임대일</div>
-                    <div class="span6 textRight"><span ng-bind="data.rentStart | date:'yyyy.MM.dd'"></span></div>
+                    <div class="span6 textRight"><span ng-bind="data.resident.fields.inDate | date:'yyyy.MM.dd'"></span></div>
                 </div>
                 <div class="row-fluid lightgray">
                     <div class="span6">만료일</div>
-                    <div class="span6 textRight"><span ng-bind="data.rentEnd | date:'yyyy.MM.dd'"></span></div>
+                    <div class="span6 textRight"><span ng-bind="data.resident.fields.outDate | date:'yyyy.MM.dd'"></span></div>
                 </div>
                 <div class="row-fluid lightgray">
                     <div class="span6">퇴거일</div>
-                    <div class="span6 textRight"><span ng-bind="data.leaved | date:'yyyy.MM.dd'"></span></div>
+                    <div class="span6 textRight"><span ng-bind="data.resident.fields.realOutDate | date:'yyyy.MM.dd'"></span></div>
                 </div>
                 <div class="whitebox">
-                    퇴거 사유 : <span ng-bind="data.leaveReason"></span>
+                    퇴거 사유 : <span ng-bind="data.resident.fields.outReason"></span>
                 </div>
  
                 <!-- 미납금 명세 -->
@@ -203,13 +227,13 @@
                         현재, 미납된<br />임대료 및 공과금액은 
                     </div>
                     <div class="span8 textRight textLarge padding5">
-                        <span ng-bind="data.returnMoney | number:0"></span> 원
+                        <span ng-bind="sum_nopay | number:0"></span> 원
                     </div>
                 </div>
 
                 <div class="boldgray">
                     <div>
-                        납무 상세 명세
+                        납부 상세 명세
                     </div>
                 </div>
 
@@ -218,7 +242,7 @@
                         총 납부 금액
                     </div>
                     <div class="span6 textRight">
-                        <span ng-bind="data.deposit | number:0"></span> 원
+                        <span ng-bind="sum_fee | number:0"></span> 원
                     </div>
                 </div>
                 <div class="row-fluid lightgray">
@@ -226,7 +250,7 @@
                         &nbsp;&nbsp;입금액
                     </div>
                     <div class="span6 textRight">
-                        <span ng-bind="data.unpaid | number:0"></span> 원
+                        <span ng-bind="sum_pay | number:0"></span> 원
                     </div>
                 </div>
                 <div class="row-fluid lightgray">
@@ -234,7 +258,7 @@
                         &nbsp;&nbsp;미납액
                     </div>
                     <div class="span8 textRight">
-                        <span ng-bind="data.fee | number:0"></span> 원
+                        <span ng-bind="sum_nopay | number:0"></span> 원
                     </div>
                 </div>
 
@@ -242,28 +266,52 @@
                 <div class="titlebox">
                     금액 명세
                 </div>
-                <div class="row-fluid lightgray" ng-repeat="item in data.feeList">
-                    <div class="span6">
-                        <span ng-bind="item.title"></span>
-                    </div>
-                    <div class="span6 textRight">
-                        <span ng-bind="item.amount | number:0"></span> 원
-                    </div>
-                </div>
+                <table>
+                    <tr ng-repeat="m in data.payoffs" class=" textCenter">
+                        <td class="tableRow graycell" width="30%">
+                            <span ng-bind="m.fields.title"></span>
+                        </td>
+                        <td class="tableRow  whitecell" width="10%">
+                            <span ng-bind="m.fields.subType"></span>
+                        </td>
+                        <td class="tableRow  whitecell" width="10%">
+                            <span ng-bind="m.fields.date"></span>
+                        </td>
+                        <td class="tableRow  whitecell" width="30%">
+                            <span ng-bind="m.fields.desc"></span>
+                        </td>
+                        <td class="tableRow medium whitecell " width="20%">
+                            <span ng-bind="m.fields.amount"  /> 원
+                        </span>
+                        </td>
+                    </tr>
+                </table>  
                 <!-- end 추가 금액 table -->
                 <!-- 시설 관리비 발생 내역 table -->
                 <div class="titlebox">
                     검침 명세
                 </div>
-                <div class="row-fluid lightgray" ng-repeat="item in data.feeList">
-                    <div class="span6">
-                        <span ng-bind="item.title"></span>
-                    </div>
-                    <div class="span6 textRight">
-                        <span ng-bind="item.amount | number:0"></span> 원
-                    </div>
-                </div>
-                <!-- end 추가 금액 table -->
+                <table>
+                    <tr ng-repeat="m in data.reads" class=" textCenter">
+                        <td class="tableRow graycell" width="30%">
+                            <span ng-bind="m.fields.title"></span>
+                        </td>
+                        <td class="tableRow whitecell" width="10%">
+                            <span ng-bind="m.fields.subType"></span>
+                        </td>
+                        <td class="tableRow  whitecell" width="10%">
+                            <span ng-if="m.fields.year && m.fields.month">
+                                (<span ng-bind="m.fields.year"></span>년 <span ng-bind="m.fields.month"></span>월)
+                            </span>
+                        </td>
+                        <td class="tableRow  whitecell" width="30%">
+                            <span ng-bind="m.fields.desc"></span>
+                        </td>
+                        <td class="tableRow medium  whitecell " width="20%">
+                            사용량 : <span ng-bind="m.fields.amount"></span>
+                        </td>
+                    </tr>
+                </table>  
             </div>
             <!-- end second column -->
 
