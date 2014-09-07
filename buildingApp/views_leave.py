@@ -44,6 +44,7 @@ def get_leaveowner(request, rid): #rid
     item = get_or_create(LeaveOwner, resident_id = rid)
 
     resident = item.resident
+    resident_info = get_resident_info(rid)
     unpaiditems = list(item.leaveunpaiditem_set.all())
     payoffs = list(item.leavepayoff_set.all())
     reads = list(item.leaveread_set.all())
@@ -53,6 +54,9 @@ def get_leaveowner(request, rid): #rid
 
     result = convert_to_dict(item)
     result['resident'] = convert_to_dict(resident)
+    result['resident']['fields']['buildingNameKor'] = resident_info['result'].buildingNameKor;
+    result['resident']['fields']['roomNumber'] = resident_info['result'].roomNumber;
+
     result['unpaiditems'] = convert_to_dict(unpaiditems)
     result['payoffs'] = convert_to_dict(payoffs)
     result['reads'] = convert_to_dict(reads)

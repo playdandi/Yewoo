@@ -124,7 +124,7 @@
                 <div class="titlebox">임차인</div>
                 <div class="row-fluid">
                     <div class="span8">
-                        <span ng-bind="data.buildingName"></span> <span ng-bind="data.roomNumber"></span>
+                        <span ng-bind="data.buildingName"></span> <span ng-bind="data.roomNumber"></span>호실
                     </div>
                     <div class="span4 textRight">
                         <span ng-bind="data.name"></span> 님
@@ -336,12 +336,12 @@
                     </tr>
                     <tr ng-repeat="item in data.unpaidList" class="itemcell">
                         <td><span ng-bind="item.year"></span>/<span ng-if="item.month < 10">0</span><span ng-bind="item.month"></span></td>
-                        <td><span ng-bind="item.num"></span></td>
-                        <td><span ng-bind="item.amount | number:0"></span></td>
-                        <td><span ng-bind="item.deposit | number:0"></span></td>
-                        <td><span ng-bind="item.deposited | date:'yy.MM.dd'"></span></td>
-                        <td><span ng-bind="item.defaultAmount | number:0"></span></td>
-                        <td><span ng-bind="item.stat"></span></td>
+                        <td><span ng-bind="item.number"></span></td>
+                        <td><span ng-bind="item.totalFee | number:0"></span></td>
+                        <td><span ng-bind="item.amountPay | number:0"></span></td>
+                        <td><span ng-bind="item.payDate | date:'yy.MM.dd'"></span></td>
+                        <td><span ng-bind="item.revisiedAmount | number:0"></span></td>
+                        <td><span >처리</span></td>
                     </tr>
                 </table>
                 <!-- end 미납 내역 table -->
