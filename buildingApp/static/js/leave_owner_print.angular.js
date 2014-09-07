@@ -12,6 +12,7 @@ angular.module('yewooApp', [])
                 // Sample Data
         $http.get('/lease/leave/owner/get/' + $("#rid").val() + '/').success(function (data) {
             function convert_to_date(str) {
+                if (!str) return undefined;
                 return new Date(parseInt(str.slice(0, 4)), parseInt(str.slice(5, 7)) - 1, parseInt(str.slice(8, 10)));
             }
 
