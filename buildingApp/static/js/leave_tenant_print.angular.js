@@ -135,7 +135,6 @@ angular.module('yewooApp', [])
                                 }
                             }
                             s.cases = cases;
-                            console.log(data);
                             
                             if (!!($("#print").val())) {
                                 window.print();
