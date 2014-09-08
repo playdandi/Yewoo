@@ -96,25 +96,20 @@
 	
 	<div class="container-fluid">
 		<div class="row-fluid">
-        <div class="span2">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">사이드바 영역</li>
-                <p>사이드바 영역입니다.<br><br><br><br><br><br><br></p>
-            </ul>
-          </div><!--/.well -->
-        </div><!--/span-->
-						
+            <div class="span3" style="width:250px">
+              {% include "sidebar.html" with side_menu="department" %}
+            </div><!--/span-->
+					
 			<noscript>
-				<div class="alert alert-block span10">
+				<div class="alert alert-block span9">
 					<h4 class="alert-heading">Warning!</h4>
 					<p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
 				</div>
 			</noscript>
 			
 			<!-- start: Content -->	
-			<div id="content" class="span10">
-				<div class="span11">
+			<div id="content" class="span9">
+				<div class="span12">
 					<ul class="breadcrumb">
 						<li>
 							<a href="#">통합 내역 관리 시스템</a> <span class="divider">></span>
@@ -145,7 +140,7 @@
 				
 				<!-- start: table -->
 				<div id="search_detail" class="row-fluid" style="display:none">
-					<div class="span11" style="margin:0px 0px 0px 0px; padding:0px 0px 0px 0px">
+					<div class="span12" style="margin:0px 0px 0px 0px; padding:0px 0px 0px 0px">
 						<table class="table table-bordered table-condensed" style="margin-bottom:5px">
 							<colgroup>
 								<col width="5%"></col><col width="5%"></col>
@@ -256,7 +251,7 @@
 
 				<!-- 검색 결과 나타내기 -->
 				<div id="search_result" class="row-fluid" style="display:none">
-					<div class="box span11" style="margin:15px 0px 0px 0px; padding: 0px">
+					<div class="box span12" style="margin:15px 0px 0px 0px; padding: 0px">
 						<div class="box-content" style="margin: 0px; padding: 3px; border:1; background-color:#f8f8f8">
 							<strong>목록 현황</strong>
 							<label style="display:inline-block; font-size:0.95em"><input type="radio" name="radioN" class="radio" value="0" checked />전체</label>
@@ -267,7 +262,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="span11" style="margin:5px 0px 0px 0px; padding:0px">
+					<div class="span12" style="margin:5px 0px 0px 0px; padding:0px">
 						<span id="labelall" class="label" onclick="filter('all');">전체</span>
 						<span id="label0" class="label" onclick="filter('0');">ㄱ</span>
 						<span id="label1" class="label" onclick="filter('1');">ㄴ</span>
@@ -285,7 +280,7 @@
 						<span id="label13" class="label" onclick="filter('13');">ㅎ</span>
 						<span id="" class="label">기타</span>
 					</div>
-					<div class="box span11" style="margin: 0px; padding: 0px">
+					<div class="box span12" style="margin: 0px; padding: 0px">
 						<div id="search_result_content" class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8; font-size : 0.95em">
 						</div>
 					</div>

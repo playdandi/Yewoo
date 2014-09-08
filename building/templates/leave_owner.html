@@ -106,25 +106,20 @@
     <input type="hidden" id="bid" value="{{ result.buildingName }}" />
 	<div class="container-fluid">
 		<div class="row-fluid">
-        <div class="span2">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">사이드바 영역</li>
-                <p>사이드바 영역입니다.<br><br><br><br><br><br><br></p>
-            </ul>
-          </div><!--/.well -->
-        </div><!--/span-->
-						
+            <div class="span3" style="width:250px">
+              {% include "sidebar.html" with side_menu="department" %}
+            </div><!--/span-->
+					
 			<noscript>
-				<div class="alert alert-block span10">
+				<div class="alert alert-block span9">
 					<h4 class="alert-heading">Warning!</h4>
 					<p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
 				</div>
 			</noscript>
 			
 			<!-- start: Content -->	
-			<div id="content" class="span10">
-				<div class="span11">
+			<div id="content" class="span9">
+				<div class="span12">
 					<ul class="breadcrumb" style="margin-bottom:0px;">
 						<li>
 							<a href="#">통합 내역 관리</a> <span class="divider">&gt;</span>
@@ -153,7 +148,7 @@
                     </table>
 				</div>
 
-                <div class="span11" style="margin-bottom:5px; text-align:left">
+                <div class="span12" style="margin-bottom:5px; text-align:left">
                     <button class="btn btn-small btn-inverse" ng-if="isEditing == 0" ng-click="previewOwner()">[갑]지 미리보기</button>
                     <button class="btn btn-small " ng-if="isEditing > 0" >[갑]지 미리보기</button>
                     <button class="btn btn-small btn-inverse" ng-if="isEditing == 0" ng-click="previewTenant()">[을]지 미리보기</button>
@@ -162,7 +157,7 @@
                 </div>
 				<!-- 기본 정보 -->
                 <div class="row-fluid">
-					<div class="box span11" style="margin: 0px; padding: 0px">
+					<div class="box span12" style="margin: 0px; padding: 0px">
 						<div class="box-header">
 							<h2><strong>입주자 상세 정보 확인</strong></h2>
 						</div>
@@ -208,7 +203,7 @@
 
                 <!-- 총 반환금 -->
 				<div class="row-fluid">
-					<div class="box span11" style="margin: 0px; padding: 0px">
+					<div class="box span12" style="margin: 0px; padding: 0px">
 						<div class="box-header">
 							<h2><strong>총 반환금</strong></h2>
 						</div>
@@ -260,7 +255,7 @@
 				</div>
 
 				<div class="row-fluid">
-                    <div class="span11">
+                    <div class="span12">
                         <div class="box-content">
                             <h3><a class="cursorHand" ng-click="unpaidClosed = !unpaidClosed">미납 요금 및 공과금 <span ng-show="unpaidClosed">▲</span><span ng-show="!unpaidClosed">▼</span></a> </h3>
                             <div ng-show="!unpaidClosed">
@@ -413,7 +408,7 @@
             </td>
         </tr>
     </table>  
-<div class="span11" style="margin-bottom:5px; text-align:center">
+<div class="span12" style="margin-bottom:5px; text-align:center">
 <br/>
                     <button class="btn btn-small btn-inverse" ng-click="saveUnpaid()">완료</button>
                     <button class="btn btn-small btn-inverse" ng-click="cancelUnpaid()">취소</button>
@@ -515,7 +510,7 @@
                                                         </td>
                                                     </tr>
                                                 </table>  
-<div class="span11" style="margin-bottom:5px; text-align:center" ng-show="edit_unpaid_comment">
+<div class="span12" style="margin-bottom:5px; text-align:center" ng-show="edit_unpaid_comment">
                     <button class="btn btn-small btn-inverse" ng-click="save_unpaid_comment()">완료</button>
                     <button class="btn btn-small btn-inverse" ng-click="cancel_unpaid_comment()">취소</button>
 
@@ -529,7 +524,7 @@
                         </div>
                     </div>
                     <div class="row-fluid">
-                    <div class="span11" style="margin-top:20px;">
+                    <div class="span12" style="margin-top:20px;">
                         <div class="box-content">
                             <h3><a class="cursorHand" ng-click="feeClosed = !feeClosed">시설 관리비 <span ng-show="feeClosed">▲</span><span ng-show="!feeClosed">▼</span></a> </h3>
                             <div ng-show="!feeClosed">
@@ -644,7 +639,7 @@
                                                         </td>
                                                     </tr>
                                                 </table>  
-<div class="span11" style="margin-bottom:5px; text-align:center" ng-show="edit_fee_comment">
+<div class="span12" style="margin-bottom:5px; text-align:center" ng-show="edit_fee_comment">
                     <button class="btn btn-small btn-inverse" ng-click="save_fee_comment()">완료</button>
                     <button class="btn btn-small btn-inverse" ng-click="cancel_fee_comment()">취소</button>
 </div>
@@ -658,7 +653,7 @@
                 </div>
                 <br/>
 
-                <div class="span11" style="margin-bottom:5px; text-align:left">
+                <div class="span12" style="margin-bottom:5px; text-align:left">
                     <button class="btn btn-small btn-inverse" ng-if="isEditing == 0" ng-click="previewOwner()">[갑]지 미리보기</button>
                     <button class="btn btn-small " ng-if="isEditing > 0" >[갑]지 미리보기</button>
                     <button class="btn btn-small btn-inverse" ng-if="isEditing == 0" ng-click="previewTenant()">[을]지 미리보기</button>
