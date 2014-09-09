@@ -417,12 +417,12 @@
                                 <col width="50%"/>
                                 <col width="50%"/>
                             </colgroup>
-                            <tr ng-repeat="item in data.feeList | limitTo: 5" class="itemcell">
+                            <tr ng-repeat="item in data.feeList | limitTo: 10" class="itemcell">
                                 <td class="bold paddingLeft whitecell">
                                     <span ng-bind="item.title"></span>
                                 </td>
                                 <td class="textRight paddingRight whitecell noborderright">
-                                    <span ng-bind="item.amount | number:0"></span>원
+                                    <span ng-if="!item.nodata"><span ng-bind="item.amount | number:0"></span>원</span>&nbsp;
                                 </td>
                             </tr>
                         </table>
