@@ -250,18 +250,134 @@
     text-align: right;
 }
 
+#leave .titlebox::before
+{
+    content: "| ";
+}
+
+#leave .fullbox
+{
+    width: 100%;
+}
+
+#leave .fullbox td
+{
+    vertical-align: middle;
+}
+
+#leave .three-columns > tbody > tr > td
+{
+    vertical-align: top;
+}
+
+#leave .three-columns > tbody > tr > td
+{
+    padding-left : 20px;
+    padding-right : 20px;
+}
+
+#leave .three-columns > tbody > tr > td:first-child
+{
+    border-right: 1px solid black;
+}
+
+#leave .three-columns > tbody > tr > td:nth-child(2)
+{
+    border-right: 1px solid black;
+}
+
+#leave .table-content tr
+{
+}
+
+#leave .table-content tr:first-child
+{
+    background-color: rgb(232, 232, 232) !important;
+}
+#leave .table-content tr > td
+{
+    border-bottom: 1px solid rgb(135, 135, 135) !important;
+}
+#leave .contactbox tr:first-child.borderBlackTop > td
+{
+    border-top: 1px solid black !important;
+}
+#leave .contactbox tr:first-child > td.borderBlackTop
+{
+    border-top: 1px solid black !important;
+}
+#leave .contactbox tr:first-child > td
+{
+    border-top: medium double black !important;
+}
+
+#leave .table-content tr:first-child > td
+{
+    border-top: medium double black !important;
+/*
+    border-bottom: 1px solid rgb(135, 135, 135) !important;
+*/
+}
+#leave .paddingSmallLeft
+{
+    padding-left: 10px;
+}
+#leave .paddingLeft
+{
+    padding-left: 20px;
+}
+
+.dotum *
+{
+    font-family:dotum, 돋움;
+}
+
+#leave .paddingRight
+{
+    padding-right: 20px;
+}
+
 #leave .titlebox
 {
-    border-bottom: 3px solid #eee;
+    color: rgb(27, 50, 113) !important;
     margin-top: 10px;
     margin-bottom: 5px;
-    font-size: 12pt;
+    font-size: 12pt !important;
+}
+
+#leave .boldgray span
+{
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+#leave .textSmall
+{
+    font-size:8pt !important;
 }
 
 #leave .boldgray
 {
-    margin-top: 10px;
-    background-color: #ccc;
+    /*margin-top: 10px;*/
+    background-color: rgb(232, 232, 232) !important;
+   /*display:table-cell !important;*/
+    /*vertical-align: middle !important;*/
+    border-top: medium double black !important;
+    -webkit-print-color-adjust: exact;
+}
+
+@media print {
+    *
+    {
+        font-size:8pt !important;
+        -webkit-print-color-adjust: exact;
+    }
+
+
+    #leave .boldgray
+    {
+        -webkit-print-color-adjust: exact; 
+    }
 }
 
 #leave .boldgray > div
@@ -297,30 +413,71 @@
 
 #leave .textLarge
 {
-    font-size: 15pt;
+    font-size: 15pt !important;
 }
 
 #leave tr.graycell > td
 {
-    background-color: #eee;
-    border: 1px solid #eee;
-    font-size:2pt;
+    background-color:  rgb(232, 232, 232)!important;
 }
 #leave td.whitecell
 {
-    border: 1px solid #eee;
-    font-size:2pt;
+    background-color: white !important;
 }
 #leave td.graycell 
 {
-    background-color: #eee;
-    border: 1px solid #eee;
-    font-size:2pt;
+    background-color:  rgb(232, 232, 232) !important;
+}
+#leave .noborderright
+{
+    border-right: 0px solid white !important;
+}
+
+#leave .contactbox td
+{
+    border-bottom: 1px solid rgb(135, 135, 135) ;
+    border-right: 1px solid rgb(135, 135, 135) ;
+}
+
+#leave .layout
+{
+    display: table;
+    height: 100%;
+    width: 100%;
+}
+
+#leave .layout-fixed
+{
+
+    display: table-row;
+}
+#leave .layout-content
+{
+    display: table-row;  /* height is dynamic, and will expand... */
+    height: 100%;        /* ...as content is added (won't scroll) */
+}
+
+#leave .graybox
+{
+    border-top: medium double black !important;
+    background-color:  rgb(232, 232, 232) !important;
+    border-bottom: 0px solid white !important;
+}
+
+#leave .borderBlackTop
+{
+    border-top: 1px solid black !important;
+}
+
+#leave .borderBlackBottom > td
+{
+    border-bottom: 1px solid black !important;
 }
 
 #leave tr.itemcell > td {
-    border: 1px solid #eee;
-    font-size:2pt;
+    border-bottom: 1px solid rgb(135, 135, 135) ;
+    border-right: 1px solid rgb(135, 135, 135) ;
+    font-size:7pt !important;
 }
 
 /*
@@ -364,4 +521,9 @@
 #leave .underline
 {
     text-decoration: underline;
+}
+
+#leave .bold
+{
+    font-weight: bold;
 }

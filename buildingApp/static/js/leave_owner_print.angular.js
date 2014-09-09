@@ -16,6 +16,7 @@ angular.module('yewooApp', [])
                 return new Date(parseInt(str.slice(0, 4)), parseInt(str.slice(5, 7)) - 1, parseInt(str.slice(8, 10)));
             }
 
+            s.resident = data.resident.fields;
             s.data.buildingName = data.resident.fields.buildingNameKor;
             s.data.roomNumber = data.resident.fields.roomNumber;
             s.data.name = data.resident.fields.residentName;
@@ -39,6 +40,8 @@ angular.module('yewooApp', [])
             s.data.unpaidList = _.map(data.unpaiditems, function(i) { if (i.fields.payDate) i.fields.payDate = new Date(i.fields.payDate); return i.fields; });
             s.data.unpaidAddedList = _.map(data.unpaidaddeditems, function(i) { return i.fields; });
             s.data.feeList = _.map(data.feeitems, function(i) { return i.fields; });
+            s.data.feeGroupList = _.groupBy(s.data.feeList, 'title');
+            s.data.feeGroupList = _.map(s.data.feeGroupList, function (i) { return { title: i[0].title, amount: _.reduce(i, function (sum, j) { return sum + j.amount;}, 0) }; });
             
         }).error(function() {
             alert("서버와의 연결을 실패했습니다.");
@@ -88,21 +91,19 @@ angular.module('yewooApp', [])
             contact: {
                 addr: "서울시 강서구 등촌동 639-59번지 벨라루체1",
                 infoList: [
-                    { title: "담당 매니저", value: "한지환 매니저" },
-                    { title: "담당 연락처", value: "02-882-6766" },
-                    { title: "임대 관리팀", value: "02-3661-0880" },
-                    { title: "경비 관리팀", value: "02-8747-4397" },
-                    { title: "시설 관리팀", value: "02-3661-0880" },
-                    { title: "본사 관리팀", value: "02-888-0005" }
-                ],
-                addrs: [ 
-                    { title: "임대 관리팀", value: "주소" },
-                    { title: "본사 관리팀", value: "주소" },
+                    { title: "매니저", value: "한지환" },
+                    { title: "연락처", value: "02-882-6766" },
+                    { title: "임대관리", value: "02-3661-0880" },
+                    { title: "경비관리", value: "02-8747-4397" },
+                    { title: "시설관리", value: "02-3661-0880" },
+                    { title: "본사관리", value: "02-888-0005" },
+                    { title: "임대관리", value: "02-3661-2772" },
+                    { title: "본사관리", value: "02-3661-2772" }
                 ],
                 email: "yewoo21@hanmail.net",
                 doc: {
                     num: new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + (new Date().getDate()) + " 문서",
-                    title: "임대료 및 관리비(공과금) 내역 및 입금 계좌 안내",
+                    title: "임대료 및 관리비(공과금) 내역 및 입금계좌 안내",
                     written: new Date()
                 },
                 name: "(주) 예우 입주민 생활지원 센터"
