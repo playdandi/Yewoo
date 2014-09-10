@@ -117,7 +117,7 @@ angular.module('yewooApp', [])
                                 (today <= Number(result[i].leasePayDate) || (result[i].payStatus == -1 && result[i].payDateDay <= Number(result[i].leasePayDate))) ) {
                                 while (result[i].number == thisNumber) {
                                     result[i].isThis = Number(1);
-                                    payments_thisMonth.push(result[i]);
+                                    //payments_thisMonth.push(result[i]);
                                     payments.push(result[i]);
                                     i++;
                                 }

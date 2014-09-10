@@ -117,7 +117,8 @@
         </noscript>
 		<div class="row-fluid">
 			<!-- start: Content -->	
-            <img src="/lease/leave/down_tenant/{{result.id}}" border="0" onload="$('img').show()" style="display:none;"/>
+            <img src="/lease/leave/down_tenant/{{result.id}}" border="0" onload="$('img').show(); $('#down').hide()" style="display:none;"/>
+            <div id="down">업로드된 파일이 없습니다.</div>
 			<!-- end: Content -->
 		</div>
 	</div>
