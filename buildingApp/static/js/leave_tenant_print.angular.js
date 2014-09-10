@@ -158,7 +158,9 @@ angular.module('yewooApp', [])
                             }
                             
                             if (!!($("#print").val())) {
-                                window.print();
+                                setTimeout(function () {
+                                    window.print();
+                                }, 1000);
                             }
 
                         }).error(function() {

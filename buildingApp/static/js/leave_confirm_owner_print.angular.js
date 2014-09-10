@@ -178,8 +178,9 @@ angular.module('yewooApp', [])
                         s.toggleAllOfUnpaidCases();
 
                         if (!!($("#print").val())) {
-                            window.print();
+                            setTimeout(function() { window.print(); }, 1000);
                         }
+
                     });
                     
                     // 납부 상세 리스트 보여주기

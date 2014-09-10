@@ -178,7 +178,7 @@ angular.module('yewooApp', [])
                         s.toggleAllOfUnpaidCases();
 
                         if (!!($("#print").val())) {
-                            window.print();
+                            setTimeout(function() { window.print(); }, 1000);
                         }
                     });
                     
