@@ -272,8 +272,8 @@
 
 #leave .three-columns > tbody > tr > td
 {
-    padding-left : 20px;
-    padding-right : 20px;
+    padding-left : 10px;
+    padding-right : 10px;
 }
 
 #leave .three-columns > tbody > tr > td:first-child

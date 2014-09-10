@@ -138,6 +138,7 @@ angular.module('yewooApp', [])
             }
 
             s.resident = data.resident.fields;
+            s.building = data.building.fields;
             s.data.buildingName = data.resident.fields.buildingNameKor;
             s.data.roomNumber = data.resident.fields.roomNumber;
             s.data.name = data.resident.fields.residentName;

@@ -45,6 +45,12 @@ def get_leaveowner(request, rid): #rid
 
     resident = item.resident
     resident_info = get_resident_info(rid)
+    building = BuildingInfo.objects.all()
+    building_name_id = []
+    for b in building:
+        if resident.buildingName == b.id:
+            building = b
+
     unpaiditems = list(item.leaveunpaiditem_set.all())
     payoffs = list(item.leavepayoff_set.all())
     reads = list(item.leaveread_set.all())
@@ -53,6 +59,7 @@ def get_leaveowner(request, rid): #rid
     confirms = list(item.leaveconfirm_set.all())
 
     result = convert_to_dict(item)
+    result['building'] = convert_to_dict(building)
     result['resident'] = convert_to_dict(resident)
     result['resident']['fields']['buildingNameKor'] = resident_info['result'].buildingNameKor;
     result['resident']['fields']['roomNumber'] = resident_info['result'].roomNumber;
