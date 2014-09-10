@@ -117,19 +117,12 @@ angular.module('yewooApp', [])
 
                     s.$apply(function () {
                         $http.get('/lease/leave/owner/get/' + $("#rid").val() + '/').success(function (data) {
+                            //for (var i = 0 ; i<100;i++) { cases.push(angular.copy(cases[0])); }
                             s.data = data;
                             s.sum_fee = s.sum_pay = s.sum_nopay = 0;
-                            var startRow = null;
-                            var year = null;
+
                             for (var i = 0; i < cases.length; i++) {
                                 var c = cases[i];
-                                if (c.year == year) {
-                                    startRow.yearSpan ++;
-                                } else {
-                                    startRow = c;
-                                    year = startRow.year;
-                                    startRow.yearSpan = 1;
-                                }
                                 s.sum_pay += c.amountPay;
                                 if (!(i > 0 && cases[i - 1].number == c.number)) {
                                     s.sum_nopay += c.amountNoPay;
@@ -137,6 +130,32 @@ angular.module('yewooApp', [])
                                 }
                             }
                             s.cases = cases;
+                            s.pagedCases = [];
+
+                            var div = 24;
+                            var len = Math.floor((s.cases.length - 1) / div) + 1;
+
+                            for (var i = 0; i < len; i++) 
+                            {
+                                s.pagedCases[i] = [];
+                                for (var j = 0; i * div + j < s.cases.length && j < div; j++)
+                                {
+                                    s.pagedCases[i][j] = s.cases[i * div + j];
+                                }
+                                var startRow = null;
+                                var year = null;
+                                for (var j = 0; j < s.pagedCases[i].length; j ++)
+                                {
+                                    var c = s.pagedCases[i][j];
+                                    if (c.year == year) {
+                                        startRow.yearSpan ++;
+                                    } else {
+                                        startRow = c;
+                                        year = startRow.year;
+                                        startRow.yearSpan = 1;
+                                    }
+                                }
+                            }
                             
                             if (!!($("#print").val())) {
                                 window.print();
