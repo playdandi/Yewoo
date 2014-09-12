@@ -548,3 +548,8 @@
 {
     margin-bottom: 0px !important;
 }
+
+#leave .input-header
+{
+    height: 30px;
+}

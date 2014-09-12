@@ -203,19 +203,18 @@
 					</div>
 				</div>
 
-                <!-- 퇴거 정산정보 -->
+                <!-- 퇴거 정산 정보 내역 -->
 				<div class="row-fluid">
-					<div class="box span11" style="margin: 0px; padding: 0px">
-						<div class="box-header">
-							<h2><strong>퇴거 정산 정보</strong></h2>
-						</div>
-						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8; font-size : 0.95em">
-							<table class="table table-bordered table-condensed">
+                    <div class="span11">
+                        <div class="box-content">
+                            <h3><a class="cursorHand" ng-click="unpaidClosed = !unpaidClosed">퇴거 정산 정보<span ng-show="unpaidClosed">▲</span><span ng-show="!unpaidClosed">▼</span></a> </h3>
+
+                            <table class="table table-bordered table-condensed">
 								<tr>
 									<th width="75%" class="tableRow">
-                                        보증금 <input class="margin0" type="text" placeholder="보증금을 입력하세요." ng-model="deposit" ng-change="updateTotalRefund()" format="number" readonly/> 원
-                                        - 미납 요금 및 공과금 <input class="margin0" type="text" placeholder="금액을 입력하세요." ng-model="unpaid" ng-change="updateTotalRefund()" format="number" readonly/> 원
-                                        - 시설관리비 <input class="margin0" type="text" placeholder="관리비를 입력하세요." ng-model="fee" ng-change="updateTotalRefund()" format="number" readonly /> 원
+                                        보증금 <input style="width:80px !important;" class="margin0" type="text" placeholder="보증금을 입력하세요." ng-model="deposit" ng-change="updateTotalRefund()" format="number" readonly/> 원
+                                        - 미납 요금 및 공과금 <input style="width:80px !important;" class="margin0" type="text" placeholder="금액을 입력하세요." ng-model="unpaid" ng-change="updateTotalRefund()" format="number" readonly/> 원
+                                        - 시설관리비 <input style="width:80px !important;" class="margin0" type="text" placeholder="관리비를 입력하세요." ng-model="fee" ng-change="updateTotalRefund()" format="number" readonly /> 원
                                     </th>
 									<th width="25%" class="tableRow textRight" style="padding-right:12px;">
     반환금 <input class="margin0 red-warning" type="text" ng-model="totalRefund" format="number" readonly/> 원
@@ -232,20 +231,12 @@
                                 </tr>
                                 -->
 							</table>  
-						</div>
-					</div>
-				</div>
 
-                <!-- 퇴거 정산 정보 내역 -->
-				<div class="row-fluid">
-                    <div class="span11">
-                        <div class="box-content">
-                            <h3><a class="cursorHand" ng-click="unpaidClosed = !unpaidClosed">퇴거 정산 정보 내역<span ng-show="unpaidClosed">▲</span><span ng-show="!unpaidClosed">▼</span></a> </h3>
                             <div ng-show="!unpaidClosed">
                                 <!-- 퇴거 정산 정보 (금액 정보) -->
                                 <div class="row-fluid" style="margin-top:20px;">
-                                    <div class="box-header">
-                                        <h2><strong>퇴거 정산 금액 정보</strong>
+                                    <div class="box-header" style=" height:30px;">
+                                        <h2><strong>퇴거 정산 정보</strong>
 
                                             <button class="btn btn-small btn-inverse" ng-click="input_money()" ng-show="!edit_money">입력/수정</button>
 </h2>
@@ -316,7 +307,7 @@
                                 </div>
                                 <!-- 퇴거 정산 정보 (기록 정보) -->
                                 <div class="row-fluid">
-                                    <div class="box-header">
+                                    <div class="box-header" style=" height:30px;">
                                         <h2><strong>퇴거 정산 기록 정보</strong>
                                             <button class="btn btn-small btn-inverse" ng-click="input_record()" ng-show="!edit_record">입력/수정</button>
 </h2>
