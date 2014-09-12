@@ -5,6 +5,11 @@ angular.module('yewooApp', [])
         $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     }])
     .controller('MainCtrl', function($scope, $timeout, $http) {
+
+        var imgTenant = null;
+        var imgOwner = null;
+
+
         var s = $scope;
         var payments = [];
         var paymentDetails = [];
@@ -27,11 +32,25 @@ angular.module('yewooApp', [])
         };
 
         s.previewConfirmOwner = function(print) {
-            window.open("/lease/leave/confirm_owner_print/" + $("#rid").val() + ((!!print) ? "?print=1" : ""));
+            if (imgOwner == null)
+                window.open("/lease/leave/confirm_owner_print/" + $("#rid").val() + ((!!print) ? "?print=1" : ""));
+            else
+            {
+                img = imgOwner;
+                $("#overlay-img").attr("src", img);
+                $("#overlay").show();
+            }
         };
 
         s.previewConfirmTenant = function(print) {
-            window.open("/lease/leave/confirm_tenant_print/" + $("#rid").val() + ((!!print) ? "?print=1" : ""));
+            if (imgTenant == null)
+                window.open("/lease/leave/confirm_tenant_print/" + $("#rid").val() + ((!!print) ? "?print=1" : ""));
+            else
+            {
+                img = imgTenant;
+                $("#overlay-img").attr("src", img);
+                $("#overlay").show();
+            }
         };
 
         s.saveConfirm = function() {
@@ -103,33 +122,49 @@ angular.module('yewooApp', [])
             { id:2, title: "임대계약금", subTypes: [ "입금", "입금대기", "출금", "출금대기", "입금완료", "출금완료" ], hasDate: true, amount: 0 },
             { id:3, title: "중도금", subTypes: [ "입금", "입금대기", "출금", "출금대기", "입금완료", "출금완료" ], hasDate: true, amount: 0 },
             { id:4, title: "임대 보증금 잔금", subTypes: [ "입금", "입금대기", "출금", "출금대기", "입금완료", "출금완료" ], hasDate: true, amount: 0 },
-        ];
+        ];    
 
-        var img = null;
+        var imgTenantCandidate = null;
+        var imgOwnerCandidate = null;
 
-        function readURL(input) {
+        function readURL1(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
 
                 reader.onload = function (e) {
-                    img = e.target.result;
+                    imgTenantCandidate = e.target.result;
                 }
 
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        $("#upload_select").change(function() { img = null; });
+        function readURL2(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
 
-        $("input[type=file]").change(function() { readURL(this); });
+                reader.onload = function (e) {
+                    imgOwnerCandidate = e.target.result;
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#upload_select").change(function() { });
+
+        $("#ownerFile").change(function() { readURL2(this); });
+        $("#tenantFile").change(function() { readURL1(this); });
 
         s.previewOwnerFile = function() {
-            $("#overlay-img").attr('src', img);
-            $("#overlay").show();
+            if (imgOwnerCandidate == null) return;
+            imgOwner = imgOwnerCandidate;
+            s.ownerFilename = $("#ownerFile").val();
         }
         s.previewTenantFile = function() {
-            $("#overlay-img").attr('src', img);
-            $("#overlay").show();
+            if (imgTenantCandidate== null) return;
+            imgTenant = imgTenantCandidate;
+            s.tenantFilename = $("#tenantFile").val();
         }
 
         s.updateMoneyChangeType = function() {
