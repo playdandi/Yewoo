@@ -508,6 +508,7 @@ class LeavePayoff(models.Model):
     checked = models.BooleanField(default = False)
     title = models.CharField(max_length = 20, default = '')
     subType = models.CharField(max_length = 20, null=True)
+    date = models.CharField(max_length = 20, null=True)
     month = models.IntegerField(null=True)
     year = models.IntegerField(null=True)
     amount = models.IntegerField(default = 0)

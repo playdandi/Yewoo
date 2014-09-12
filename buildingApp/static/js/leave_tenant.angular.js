@@ -13,16 +13,13 @@ angular.module('yewooApp', [])
 
                 ctrl.$formatters.push(function (a) {
                     var retval = $filter(attrs.format)(ctrl.$modelValue)
-                    console.log(['formatters', a, retval, elem]);
                     return retval;
                 });
 
 
                 ctrl.$parsers.push(function (viewValue) {
-                    return viewValue;
                     var plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
                     elem.val($filter(attrs.format)(plainNumber));
-                    console.log(['parsers', viewValue, plainNumber, elem]);
                     return plainNumber;
                 });
             }
@@ -47,7 +44,6 @@ angular.module('yewooApp', [])
         s.save_money = function() { 
             s.edit_money = false;
             s.isEditing--;
-            s.save();
         }
         s.cancel_money = function() {
             s.moneyChanges = oldMoneyChanges;
@@ -66,7 +62,6 @@ angular.module('yewooApp', [])
         s.save_record = function() { 
             s.edit_record = false;
             s.isEditing--;
-            s.save();
         }
         s.cancel_record = function() {
             s.records = oldRecords;

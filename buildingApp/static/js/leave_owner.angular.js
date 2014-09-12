@@ -13,16 +13,13 @@ angular.module('yewooApp', [])
 
                 ctrl.$formatters.push(function (a) {
                     var retval = $filter(attrs.format)(ctrl.$modelValue)
-                    console.log(['formatters', a, retval, elem]);
                     return retval;
                 });
 
 
                 ctrl.$parsers.push(function (viewValue) {
-                    return viewValue;
                     var plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
                     elem.val($filter(attrs.format)(plainNumber));
-                    console.log(['parsers', viewValue, plainNumber, elem]);
                     return plainNumber;
                 });
             }
