@@ -242,7 +242,7 @@
 									<td style="text-align:center">{{ a.allroom }}</td>
 									<td style="text-align:center">{{ a.manager }}</td>
 									<td style="text-align:center">{% if a.numOfNotice == 0 %}.{% else %}총 {{ a.numOfNotice }}개의 안내사항이 입력되어 있습니다.{% endif %}</td>
-									<td style="text-align:center">입력완료</td>
+									<td style="text-align:center">{% if a.numOfNotice == 0 %}입력없음{% else %}입력완료{% endif %}</td>
 									<td style="text-align:center"><button class="btn btn-small btn-block" onclick="Input('total', '{{ a.bid }}', '', '{{ a.year }}', '{{ a.month }}');">입력하기</button></td>
 									<td style="text-align:center"><button class="btn btn-small btn-block">미리보기</button></td>
 								</tr>
@@ -261,7 +261,7 @@
 									<th width="6%" style="text-align:center">입주자</th>
 									<th width="4%" style="text-align:center">성별</th>
 									<th width="26%" style="text-align:center">안내 사항 처리 현황</th>
-									<th width="24%" colspan="3"  style="text-align:center">전체 안내 입력 처리하기</th>
+									<th width="24%" colspan="3"  style="text-align:center">개별 안내 입력 처리하기</th>
 								</tr>
                                 {% for e in each %}
 								<tr class="{% if e.numOfNotice == 0 %}zero{% else %}nonzero{% endif %}">
@@ -274,7 +274,7 @@
 									<td style="text-align:center">{{ e.residentName }}</td>
 									<td style="text-align:center">{{ e.residentGender }}</td>
 									<td style="text-align:center">{% if e.numOfNotice == 0 %}.{% else %}총 {{ e.numOfNotice }}개의 안내사항이 입력되어 있습니다.{% endif %}</td>
-									<td style="text-align:center">입력완료</td>
+									<td style="text-align:center">{% if e.numOfNotice == 0 %}입력없음{% else %}입력완료{% endif %}</td>
 									<td style="text-align:center"><button class="btn btn-small btn-block" onclick="Input('each', '{{ e.bid }}', '{{ e.roomid }}', '{{ e.year }}', '{{ e.month }}');">입력하기</button></td>
 									<td style="text-align:center"><button class="btn btn-small btn-block">미리보기</button></td>
 								</tr>
