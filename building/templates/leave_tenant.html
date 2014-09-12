@@ -213,12 +213,12 @@
 							<table class="table table-bordered table-condensed">
 								<tr>
 									<th width="75%" class="tableRow">
-                                        보증금 <input class="margin0" type="number" placeholder="보증금을 입력하세요." ng-model="deposit" ng-change="updateTotalRefund()" readonly/> 원
-                                        - 미납 요금 및 공과금 <input class="margin0" type="number" placeholder="금액을 입력하세요." ng-model="unpaid" ng-change="updateTotalRefund()" readonly/> 원
-                                        - 시설관리비 <input class="margin0" type="number" placeholder="관리비를 입력하세요." ng-model="fee" ng-change="updateTotalRefund()" readonly /> 원
+                                        보증금 <input class="margin0" type="text" placeholder="보증금을 입력하세요." ng-model="deposit" ng-change="updateTotalRefund()" format="number" readonly/> 원
+                                        - 미납 요금 및 공과금 <input class="margin0" type="text" placeholder="금액을 입력하세요." ng-model="unpaid" ng-change="updateTotalRefund()" format="number" readonly/> 원
+                                        - 시설관리비 <input class="margin0" type="text" placeholder="관리비를 입력하세요." ng-model="fee" ng-change="updateTotalRefund()" format="number" readonly /> 원
                                     </th>
-									<th width="25%" class="tableRow textCenter">
-    반환금 <input class="margin0" type="number" ng-class="{ 'red-warning': isMinusTotalRefund }" ng-model="totalRefund" readonly/> 원
+									<th width="25%" class="tableRow textRight" style="padding-right:12px;">
+    반환금 <input class="margin0 red-warning" type="text" ng-model="totalRefund" format="number" readonly/> 원
                                     </th>
 								</tr>
                                 <!--
@@ -270,15 +270,13 @@
                                                 <td class="tableRow textCenter" width="30%">
                                                     <span ng-bind="m.desc"></span>
                                                 </td>
-                                                <td class="tableRow medium textCenter" width="10%">
+                                                <td class="tableRow medium textRight" width="20%">
                                                 <span ng-show="edit_money">
-                                                    <input class="medium" type="number" ng-model="m.amount"  /> 원
+                                                    <input class="medium" type="text" ng-model="m.amount"  /> 원
                                                 </span>
                                                 <span ng-show="!edit_money">
-                                                    <input class="medium" type="number" ng-model="m.amount" readonly /> 원
+                                                    <input class="medium" type="text" ng-model="m.amount" readonly format="number" /> 원
                                                 </span>
-                                                </td>
-                                                <td class="tableRow textCenter" width="10%">
                                                     <button ng-click="removeMoneyChange(m)" ng-show="edit_money">삭제</button>
                                                 </td>
                                             </tr>
@@ -292,14 +290,17 @@
                                                     <select ng-model="moneyChange.type" ng-options="type.title for type in moneyChangeTypes" ng-change="updateMoneyChangeType()"></select>
                                                 </td>
                                                 <td class="tableRow textCenter" width="50%">
-                                                    <select ng-if="moneyChange.type.subTypes" ng-model="moneyChange.subType" ng-options="type for type in moneyChange.type.subTypes"></select>
-                                                    <span ng-if="moneyChange.type.hasDate"><input class="medium datepicker" type="text" ng-model="moneyChange.date" /></span>
-                                                    <span ng-if="moneyChange.type.hasYear"><input class="small" type="number" ng-model="moneyChange.year" /> 년</span>
-                                                    <span ng-if="moneyChange.type.hasMonth"><input ng-if="moneyChange.type.hasMonth" class="small" type="number" ng-model="moneyChange.month" /> 월</span>
-                                                    <input type="text" style="width:95%;" ng-model="moneyChange.desc"></span>
+                                                    <span ng-show="moneyChange.type.subTypes && moneyChange.type.hasDate">
+                                                        <select style="min-width:80px; width:10% !important;" ng-model="moneyChange.subType" ng-options="type for type in moneyChange.type.subTypes"></select>
+                                                        <span ng-if="moneyChange.type.hasDate"><input style="min-width:80px; width:5% !important;" class="medium datepicker" type="text" ng-model="moneyChange.date" /></span>
+                                                        <input type="text" style="width:45% !important;" ng-model="moneyChange.desc"></span>
+                                                    </span>
+                                                    <span ng-show="!moneyChange.type.subTypes && !moneyChange.type.hasYear && !moneyChange.type.hasMonth">
+                                                        <input type="text" style="width:95%;" ng-model="moneyChange.desc"></span>
+                                                    </span>
                                                 </td>
                                                 <td class="tableRow medium textCenter" width="10%">
-                                                    <input class="medium" type="number" ng-model="moneyChange.amount" /> 원
+                                                    <input class="medium" type="text" ng-model="moneyChange.amount" /> 원
                                                 </td>
                                                 <td class="tableRow textCenter" width="10%">
                                                     <button ng-click="addMoneyChange(moneyChange)">추가</button>
@@ -328,19 +329,17 @@
                                                     <input data-no-uniform="true" type="checkbox" ng-model="extraCost.checked"></span>
                                                 </td>
                                                 -->
-                                                <td class="tableRow textCenter" width="30%">
+                                                <td class="tableRow textCenter" width="20%">
                                                     <span ng-bind="record.type.title"></span> </td>
-                                                <td class="tableRow textCenter" width="50%">
+                                                <td class="tableRow textCenter" width="45%">
                                                     <span ng-bind="record.subType" ></span>
                                                     <span ng-if="record.year && record.month">
                                                         (<span ng-bind="record.year"></span>년 <span ng-bind="record.month"></span>월)
                                                     </span>
                                                     <span ng-bind="record.desc"></span>
                                                 </td>
-                                                <td class="tableRow medium textCenter" width="10%">
-                                                    사용량 : <input class="medium" type="text" ng-model="record.amount" ng-show="edit_record" /><input class="medium" type="text" ng-model="record.amount" ng-show="!edit_record" readonly />
-                                                </td>
-                                                <td class="tableRow textCenter" width="10%">
+                                                <td class="tableRow medium textRight" width="35%">
+                                                    사용량 : <input class="medium" type="text" ng-model="record.amount" ng-show="edit_record" /><input class="medium" type="text" ng-model="record.amount" ng-show="!edit_record" readonly format="number" style="margin-right:18px" />
                                                     <button ng-show="edit_record" ng-click="removeRecord(record)">삭제</button>
                                                 </td>
                                             </tr>
@@ -359,8 +358,8 @@
                                                     <input type="text" style="width:95%;" ng-model="record.desc"></span>
                                                 </td>
                                                 <td class="tableRow medium textCenter" width="10%">
-                                                    사용량<br />
-                                                    <input class="medium" type="text" ng-model="record.amount" />
+                                                    사용량
+                                                    <input class="medium" type="text" ng-model="record.amount" style="width:40% !important;" />
                                                 </td>
                                                 <td class="tableRow textCenter" width="10%">
                                                     <button ng-click="addRecord(record)">추가</button>
