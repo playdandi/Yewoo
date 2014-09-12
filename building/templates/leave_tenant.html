@@ -291,9 +291,10 @@
                                                                 (<span ng-bind="record.year"></span>년 <span ng-bind="record.month"></span>월)
                                                             </span>
                                                             <span ng-bind="record.desc"></span>
+                                                            <span ng-if="!record.desc && !record.subType && !record.year && !record.month">-</span>
                                                         </td>
                                                         <td class="tableRow medium textCenter" width="35%">
-                                                            사용량 : <input class="medium" style="width:60px;" type="text" ng-model="record.amount" ng-show="edit_record" /><input class="medium" type="text" ng-model="record.amount" ng-show="!edit_record" readonly format="number" style="margin-right:0px; width:60px;" />
+                                                            <input class="medium" style="width:60px;" type="text" ng-model="record.amount" ng-show="edit_record" /><input class="medium" type="text" ng-model="record.amount" ng-show="!edit_record" readonly format="number" style="margin-right:0px; width:60px;" />
                                                             <button ng-show="edit_record" ng-click="removeRecord(record)">삭제</button>
                                                         </td>
                                                     </tr>
