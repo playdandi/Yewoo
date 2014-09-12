@@ -179,7 +179,7 @@
 }
 #leave .medium
 {
-    width: 150px;
+    width: 120px;
 }
 
 #leave .large
@@ -526,4 +526,16 @@
 #leave .bold
 {
     font-weight: bold;
+}
+
+#leave .edit-button
+{
+    position: absolute;
+    left: 150px;
+    top: 30px;
+}
+
+#leave h2
+{
+    font-size: 10pt;
 }

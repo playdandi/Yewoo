@@ -4,6 +4,30 @@ angular.module('yewooApp', [])
         $httpProvider.defaults.xsrfCookieName = 'csrftoken';
         $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     }])
+    .directive('format', ['$filter', function ($filter) {
+        return {
+            require: '?ngModel',
+            link: function (scope, elem, attrs, ctrl) {
+                if (!ctrl) return;
+
+
+                ctrl.$formatters.push(function (a) {
+                    var retval = $filter(attrs.format)(ctrl.$modelValue)
+                    console.log(['formatters', a, retval, elem]);
+                    return retval;
+                });
+
+
+                ctrl.$parsers.push(function (viewValue) {
+                    return viewValue;
+                    var plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
+                    elem.val($filter(attrs.format)(plainNumber));
+                    console.log(['parsers', viewValue, plainNumber, elem]);
+                    return plainNumber;
+                });
+            }
+        };
+    }])
     .controller('MainCtrl', function($scope, $timeout, $http) {
 
         var s = $scope;
