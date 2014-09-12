@@ -148,6 +148,7 @@
 #leave input.margin0
 {
     width: 120px;
+    margin-bottom:0px !important;
 }
 
 #leave input.small
@@ -180,6 +181,7 @@
 #leave .medium
 {
     width: 120px;
+    margin-bottom:0px !important;
 }
 
 #leave .large
