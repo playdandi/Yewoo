@@ -200,6 +200,11 @@ angular.module('yewooApp', [])
                     var cases = [];
                     var lastPayment = null;
                     
+                    function daysInMonth(iMonth, iYear)
+                    {
+                        return 32 - new Date(iYear, iMonth, 32).getDate();
+                    }
+
                     for (var i = 0; i < payments.length; i++) {
                         var payment = payments[i];
                         //if (payment.isThis == 1 || payment.payStatus == -1) continue;
@@ -207,6 +212,8 @@ angular.module('yewooApp', [])
                         payment.revisiedAmount = payment.amountNoPay;
                         payment.expectedDate = new Date(payment.year, payment.month);
                         payment.isPaid = payment.payStatus == -1 || (i > 0 && payment.number == payments[i - 1].number);
+
+                        payment.lastDate = daysInMonth(payment.month, payment.year);
                         
                         cases.push(payment);
                     }
