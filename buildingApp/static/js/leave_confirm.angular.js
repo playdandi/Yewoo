@@ -48,6 +48,8 @@ angular.module('yewooApp', [])
             });
         }
 
+        s.loadmode = "owner";
+
         $http.get('/lease/leave/owner/get/' + $("#rid").val() + '/').success(function (data) {
             s.deposit = data.fields.deposit;
             s.fee = data.fields.fee;
@@ -102,6 +104,33 @@ angular.module('yewooApp', [])
             { id:3, title: "중도금", subTypes: [ "입금", "입금대기", "출금", "출금대기", "입금완료", "출금완료" ], hasDate: true, amount: 0 },
             { id:4, title: "임대 보증금 잔금", subTypes: [ "입금", "입금대기", "출금", "출금대기", "입금완료", "출금완료" ], hasDate: true, amount: 0 },
         ];
+
+        var img = null;
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    img = e.target.result;
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#upload_select").change(function() { img = null; });
+
+        $("input[type=file]").change(function() { readURL(this); });
+
+        s.previewOwnerFile = function() {
+            $("#overlay-img").attr('src', img);
+            $("#overlay").show();
+        }
+        s.previewTenantFile = function() {
+            $("#overlay-img").attr('src', img);
+            $("#overlay").show();
+        }
 
         s.updateMoneyChangeType = function() {
             if (!s.moneyChange.type.subTypes) { s.moneyChange.subType = null; }
