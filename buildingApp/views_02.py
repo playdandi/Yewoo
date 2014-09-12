@@ -573,10 +573,11 @@ def serialize(result):
             leaveOwner = LeaveOwner.objects.get(resident_id = res.id)
             data['isLeaved'] = leaveOwner.isOwnerDone or leaveOwner.isTenantDone
             data['isConfirmed'] = (leaveOwner.isOwnerDone or leaveOwner.isTenantDone) and leaveOwner.isConfirmed
+            data['isFinal'] = (leaveOwner.isOwnerDone or leaveOwner.isTenantDone) and leaveOwner.isConfirmed and leaveOwner.ownerFile is not None and leaveOwner.tenantFile is not None 
         except:
             data['isLeaved'] = False
             data['isConfirmed'] = False 
-
+            data['isFinal'] = False 
         serialized.append(data)
     return serialized
 

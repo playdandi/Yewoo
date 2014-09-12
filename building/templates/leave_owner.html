@@ -438,16 +438,16 @@
                                                     <input data-no-uniform="true" type="checkbox" ng-model="extraCost.checked" ng-change="updateUnpaid()" readonly ng-show="!edit_extra" disabled>
                                                     <input data-no-uniform="true" type="checkbox" ng-model="extraCost.checked" ng-change="updateUnpaid()" ng-show="edit_extra" >
                                                 </td>
-                                                <td class="tableRow textCenter" width="25%">
+                                                <td class="tableRow textCenter" width="20%">
                                                     <span ng-bind="extraCost.type.title"></span> </td>
-                                                <td class="tableRow textCenter" width="50%">
+                                                <td class="tableRow textCenter" width="40%">
                                                     <span ng-bind="extraCost.subType" ></span>
                                                     <span ng-if="extraCost.year && extraCost.month">
                                                         (<span ng-bind="extraCost.year"></span>년 <span ng-bind="extraCost.month"></span>월)
                                                     </span>
                                                     <span ng-bind="extraCost.desc"></span>
                                                 </td>
-                                                <td class="tableRow medium textRight" width="20%">
+                                                <td class="tableRow medium textRight" width="35%">
                                                 <span ng-show="edit_extra">
                                                     <input class="medium" type="text" ng-model="extraCost.amount" ng-change="updateUnpaid()" /> 원
                                                 </span>
@@ -574,16 +574,16 @@
                                                     <input data-no-uniform="true" type="checkbox" ng-model="feeCost.checked" ng-change="updateUnpaid()" readonly disabled></span>
 
                                                 </td>
-                                                <td class="tableRow textCenter" width="25%">
+                                                <td class="tableRow textCenter" width="20%">
                                                     <span ng-bind="feeCost.type.title"></span> </td>
-                                                <td class="tableRow textCenter" width="50%">
+                                                <td class="tableRow textCenter" width="40%">
                                                     <span ng-bind="feeCost.subType" ></span>
                                                     <span ng-if="feeCost.year && feeCost.month">
                                                         (<span ng-bind="feeCost.year"></span>년 <span ng-bind="feeCost.month"></span>월)
                                                     </span>
                                                     <span ng-bind="feeCost.desc"></span>
                                                 </td>
-                                                <td class="tableRow medium textRight" width="20%">
+                                                <td class="tableRow medium textRight" width="35%">
                                                     <span ng-show="edit_fee">
                                                     <input class="medium" type="text" ng-model="feeCost.amount" ng-change="updateUnpaid()" /> 원
                                                     </span>

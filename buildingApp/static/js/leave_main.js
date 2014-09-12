@@ -196,7 +196,7 @@ function changeRadio(val) // 라디오 필터링 한 경우
 		if (val == 0)
 			continue;
 		else if (val == 1) { // 최종 처리 확인  
-			resultData[i].isFiltered = !!resultData[i].isConfirmed;
+			resultData[i].isFiltered = !!resultData[i].isFinal;
 		}
 		else if (val == 2) { // 입력완료 
 			resultData[i].isFiltered = !!resultData[i].isLeaved;
