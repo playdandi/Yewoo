@@ -195,14 +195,21 @@ function changeRadio(val) // 라디오 필터링 한 경우
 		resultData[i].isFiltered = true;
 		if (val == 0)
 			continue;
-		else if (val == 1) { // 재실
-			if (resultData[i].livingState == '퇴실')
-				resultData[i].isFiltered = false;
+		else if (val == 1) { // 최종 처리 확인  
+			resultData[i].isFiltered = !!resultData[i].isConfirmed;
 		}
-		else { // 퇴실
-			if (resultData[i].livingState == '재실')
-				resultData[i].isFiltered = false;
+		else if (val == 2) { // 입력완료 
+			resultData[i].isFiltered = !!resultData[i].isLeaved;
 		}
+        else if (val == 3) { // 입력 미완료
+			resultData[i].isFiltered = !resultData[i].isLeaved;
+        }
+		else if (val == 4) { // 퇴거 확인 
+			resultData[i].isFiltered = !!resultData[i].isConfirmed;
+		}
+        else if (val == 5) { // 퇴거 미확인 
+			resultData[i].isFiltered = !resultData[i].isConfirmed;
+        }
 	}
 
 	var template = new EJS({url : '/static/ejs/leave_main.ejs'}).render({'data' : resultData, 'color' : color, 'colorDtl' : colorDtl});
