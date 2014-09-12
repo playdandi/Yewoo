@@ -230,7 +230,7 @@
                                             <input type="text" class="margin0 " readonly ng-model="accountHolder" />
                                         </span>
                                         <span ng-show="editBank">
-                                            입금 은행
+                                            입금 은행&nbsp;&nbsp;&nbsp;&nbsp;
                                             <input type="text" class="margin0" ng-model="edit_bank" />
                                             입금 계좌 
                                             <input type="text" class="margin0 "  style="width:200px;" ng-model="edit_account" />
@@ -481,7 +481,7 @@
                                                         <select style="min-width:80px; width:10% !important;" ng-if="extraCost.type.subTypes" ng-model="extraCost.subType" ng-options="type for type in extraCost.type.subTypes"></select>
                                                         <span ng-if="extraCost.type.hasYear"><input  style="min-width:40px; width:5% !important;"class="small" type="text" ng-model="extraCost.year" >년</span>
                                                         <span ng-if="extraCost.type.hasMonth"><input style="min-width:40px; width:5% !important;" ng-if="extraCost.type.hasMonth" class="small" type="text" ng-model="extraCost.month" />월</span>
-                                                        <input style="width:45% !important;" type="text" ng-model="extraCost.desc"/>
+                                                        <input style="width:35% !important; margin-bottom:0px !important;" type="text" ng-model="extraCost.desc"/>
                                                     </span>
                                                     <span ng-show="!extraCost.type.subTypes && !extraCost.type.hasYear && !extraCost.type.hasMonth">
                                                         <input type="text" style="width:95%;" ng-model="extraCost.desc"/>
