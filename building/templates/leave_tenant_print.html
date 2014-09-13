@@ -318,35 +318,34 @@
                 </div>
                 <table class="fullbox contactbox">
                     <colgroup>
-                        <col width="30%" class="textCenter"/>
+                        <col width="20%" class="textCenter"/>
+                        <col width="15%" class="textCenter"/>
                         <col width="15%" class="textCenter"/>
                         <col width="20%" class="textCenter"/>
-                        <col width="20%" class="textCenter"/>
+                        <col width="15%" class="textCenter"/>
                         <col width="15%" class="textCenter"/>
                     </colgroup>
                     <tr ng-repeat="m in data.reads" class=" textCenter">
                         <td class="graycell">
+                            원격검침
+                        </td>
+                        <td class="whitecell">
                             <span ng-bind="m.fields.title"></span>
-
+                        </td>
+                        <td class="whitecell">
+                            <span ng-bind="m.fields.amount" ng-show="m.fields.amount"></span>
+                            <span ng-if="!m.fields.amount">-</span>
+                        </td>
+                        <td class="graycell">
+                            실계량기 
                         </td>
                         <td class="whitecell">
                             <span ng-if="m.fields.subType" ng-bind="m.fields.subType"></span>
                             <span ng-if="!m.fields.subType">-</span>
                         </td>
-                        <td class="whitecell">
-                            <span ng-if="m.fields.year && m.fields.month">
-                                (<span ng-bind="m.fields.year"></span>년 <span ng-bind="m.fields.month"></span>월)
-                            </span>
-                            <span ng-if="!(m.fields.year && m.fields.month)">
-                                -
-                            </span>
-                        </td>
-                        <td class="whitecell">
+                        <td class="whitecell noborderright">
                             <span ng-if="m.fields.desc" ng-bind="m.fields.desc"></span>
                             <span ng-if="!m.fields.desc">-</span>
-                        </td>
-                        <td class="whitecell noborderright">
-                            <span ng-bind="m.fields.amount"></span>
                         </td>
                     </tr>
                 </table>  

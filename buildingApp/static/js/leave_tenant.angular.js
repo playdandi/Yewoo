@@ -283,10 +283,10 @@ angular.module('yewooApp', [])
 
         // MoneyChanges
         s.moneyChangeTypes = [ 
-            { id:1, title: "선불제", subTypes: [ "입금", "입금완료" ], hasDate: true, amount: null },
-            { id:2, title: "임대계약금", subTypes: [ "입금", "입금완료" ], hasDate: true, amount: null },
-            { id:3, title: "중도금", subTypes: [ "입금", "입금완료" ], hasDate: true, amount: null },
-            { id:4, title: "임대보증금 잔금", subTypes: [ "입금", "입금완료" ], hasDate: true, amount: null }
+            { id:1, title: "선불제", subTypes: [ "입금", "입금완료" ], hasDate: true, amount: 0},
+            { id:2, title: "임대계약금", subTypes: [ "입금", "입금완료" ], hasDate: true, amount: 0},
+            { id:3, title: "중도금", subTypes: [ "입금", "입금완료" ], hasDate: true, amount: 0},
+            { id:4, title: "임대보증금 잔금", subTypes: [ "입금", "입금완료" ], hasDate: true, amount: 0}
         ];
 
         s.updateMoneyChangeType = function() {
@@ -326,9 +326,9 @@ angular.module('yewooApp', [])
 
         // Records
         s.recordTypes = [ 
-            { id:1, title: "전기", amount: null, subTypes: [ '전기', '수도', '가스' ] },
-            { id:2, title: "수도", amount: null, subTypes: [ '전기', '수도', '가스' ] },
-            { id:3, title: "가스", amount: null, subTypes: [ '전기', '수도', '가스' ] }
+            { id:1, title: "전기", amount: 0, subTypes: [ '전기', '수도', '가스' ], desc:0  },
+            { id:2, title: "수도", amount: 0, subTypes: [ '전기', '수도', '가스' ], desc:0  },
+            { id:3, title: "가스", amount: 0, subTypes: [ '전기', '수도', '가스' ], desc:0 }
         ];
 
         s.modifyMoneyChange = function(record) {
@@ -354,7 +354,7 @@ angular.module('yewooApp', [])
         }
 
         var recordType = s.recordTypes[0];
-        s.record = { type: recordType, desc: "", amount: 0 };
+        s.record = { type: recordType, desc: 0, amount: 0 };
 
         s.updateRecordType();
 
@@ -376,9 +376,10 @@ angular.module('yewooApp', [])
             s.records = _.filter(s.records, function(a) { return a != cost; });
         }
         s.modifyRecord = function(record) {
-            record.desc_copy = record.desc;
-            record.amount_copy = record.amount;
+            record.desc_copy = parseInt(record.desc);
+            record.amount_copy = parseInt(record.amount);
             record.edit = true;
+            console.log(record);
         }
         s.saveRecord = function(record) {
             record.desc = record.desc_copy;

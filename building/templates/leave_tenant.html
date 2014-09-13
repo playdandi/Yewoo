@@ -276,7 +276,7 @@
                                                             </span>
                                                             <span ng-show="m.edit">
                                                                 <button ng-click="saveMoneyChange(m)" ng-show="edit_money">완료</button> 
-                                                                <button ng-click="cancelMoneyChange(m)" ng-show="edit_money">삭제</button>
+                                                                <button ng-click="cancelMoneyChange(m)" ng-show="edit_money">취소</button>
                                                             </span>
                                                         </td>
                                                     </tr>
@@ -294,7 +294,8 @@
                                                             <span ng-bind="m.date"></span>
                                                         </td>
                                                         <td class="tableRow medium textCenter" width="8%">
-                                                            <span ng-bind="m.amount | number:'0'"></span>
+                                                            <span ng-show="m.amount != ''" ng-bind="m.amount | number:'0'"></span>
+                                                            <span ng-show="m.amount == ''" ng-bind="m.amount | number:'0'"></span>
                                                         </td>
                                                         <td class="tableRow textCenter" width="34%">
                                                             <span ng-bind="m.subType"></span>
@@ -323,7 +324,7 @@
                                                             <span ng-bind="record.subType"></span> 
                                                         </td>
                                                         <td class="tableRow textCenter" width="20%">
-                                                            <span ng-bind="record.desc" ng-show="!edit_record"></span> 
+                                                            <span ng-bind="record.desc"></span> 
                                                         </td>
                                                     </tr>
                                                     <tr class="white" ng-repeat="record in records" ng-show="edit_record">
@@ -334,8 +335,8 @@
                                                             <span ng-bind="record.type.title"></span> 
                                                         </td>
                                                         <td class="tableRow textCenter" width="15%">
-                                                            <input type="text" readonly ng-model="record.amount" ng-show="!record.edit" style="width:30px;" />
-                                                            <input type="text" ng-model="record.amount_copy" ng-show="record.edit" style="width:30px;" />
+                                                            <input type="number" readonly ng-model="record.amount" ng-show="!record.edit" style="width:30px;" />
+                                                            <input type="number" ng-model="record.amount_copy" ng-show="record.edit" style="width:30px;" />
                                                         </td>
                                                         <td class="tableRow textCenter" width="15%" style="background-color:#eee;">
                                                             실계량기 
@@ -397,10 +398,10 @@
                                                     <select style="width:120px;" ng-model="record.type" ng-options="type.title for type in recordTypes " ng-change="updateRecordType()"></select>
                                                     <span ng-if="record.type.hasYear"><input style="width:120px !important;" class="small" type="number" ng-model="record.year" /> 년</span>
                                                     <span ng-if="record.type.hasMonth"><input ng-if="record.type.hasMonth" class="small" type="number" ng-model="record.month" /> 월</span>
-                                                    <input type="text" placeholder="사용량을 입력해주세요." style="width:120px !important; margin-bottom:0px !important;" ng-model="record.desc"></span>
+                                                    <input type="number" placeholder="사용량을 입력해주세요." style="width:120px !important; margin-bottom:0px !important;" ng-model="record.amount"></span>
                                                     <input type="text" disabled readonly value="실계량기" style="text-align:left;width:120px !important; margin-bottom:0px !important;" ></span>
                                                     <select style="width:100px;" ng-if="record.type.subTypes" ng-model="record.subType" ng-options="type for type in record.type.subTypes"></select>
-                                                    <input class="medium" type="text" ng-model="record.amount"  placeholder="사용량을 입력해주세요."/>
+                                                    <input class="medium" type="number" ng-model="record.desc"  placeholder="사용량을 입력해주세요."/>
                                                 </td>
                                                 <td class="tableRow textCenter" width="10%">
                                                     <button ng-click="addRecord(record)">추가</button>
