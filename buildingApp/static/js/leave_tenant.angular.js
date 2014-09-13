@@ -283,10 +283,10 @@ angular.module('yewooApp', [])
 
         // MoneyChanges
         s.moneyChangeTypes = [ 
-            { id:1, title: "선불제", subTypes: [ "입금", "입금대기", "출금", "출금대기", "입금완료", "출금완료" ], hasDate: true, amount: 0 },
-            { id:2, title: "임대계약금", subTypes: [ "입금", "입금대기", "출금", "출금대기", "입금완료", "출금완료" ], hasDate: true, amount: 0 },
-            { id:3, title: "중도금", subTypes: [ "입금", "입금대기", "출금", "출금대기", "입금완료", "출금완료" ], hasDate: true, amount: 0 },
-            { id:4, title: "임대 보증금 잔금", subTypes: [ "입금", "입금대기", "출금", "출금대기", "입금완료", "출금완료" ], hasDate: true, amount: 0 },
+            { id:1, title: "선불제", subTypes: [ "입금", "입금완료" ], hasDate: true, amount: null },
+            { id:2, title: "임대계약금", subTypes: [ "입금", "입금완료" ], hasDate: true, amount: null },
+            { id:3, title: "중도금", subTypes: [ "입금", "입금완료" ], hasDate: true, amount: null },
+            { id:4, title: "임대보증금 잔금", subTypes: [ "입금", "입금완료" ], hasDate: true, amount: null }
         ];
 
         s.updateMoneyChangeType = function() {
@@ -297,7 +297,7 @@ angular.module('yewooApp', [])
             if (!s.moneyChange.type.hasYear) { s.moneyChange.year = null; }
             else { s.moneyChange.year = new Date().getFullYear(); } 
             s.moneyChange.amount = s.moneyChange.type.amount;
-            s.moneyChange.date = new Date().getFullYear() + "." + (new Date().getMonth() + 1) + "." + (new Date().getDate());
+            s.moneyChange.date = null;//new Date().getFullYear() + "." + (new Date().getMonth() + 1) + "." + (new Date().getDate());
         }
 
         var moneyChangeType = s.moneyChangeTypes[0];
@@ -326,10 +326,22 @@ angular.module('yewooApp', [])
 
         // Records
         s.recordTypes = [ 
-            { id:1, title: "전기", amount: 0 },
-            { id:2, title: "수도", amount: 0 },
-            { id:3, title: "가스", amount: 0 }
+            { id:1, title: "전기", amount: null, subTypes: [ '전기', '수도', '가스' ] },
+            { id:2, title: "수도", amount: null, subTypes: [ '전기', '수도', '가스' ] },
+            { id:3, title: "가스", amount: null, subTypes: [ '전기', '수도', '가스' ] }
         ];
+
+        s.modifyMoneyChange = function(record) {
+            record.amount_copy = record.amount;
+            record.edit = true;
+        }
+        s.saveMoneyChange = function(record) {
+            record.amount = record.amount_copy;
+            record.edit = false;
+        }
+        s.cancelMoneyChange = function(record) {
+            record.edit = false;
+        }
 
         s.updateRecordType = function() {
             if (!s.record.type.subTypes) { s.record.subType = null; }
@@ -362,6 +374,19 @@ angular.module('yewooApp', [])
 
         s.removeRecord = function(cost) {
             s.records = _.filter(s.records, function(a) { return a != cost; });
+        }
+        s.modifyRecord = function(record) {
+            record.desc_copy = record.desc;
+            record.amount_copy = record.amount;
+            record.edit = true;
+        }
+        s.saveRecord = function(record) {
+            record.desc = record.desc_copy;
+            record.amount = record.amount_copy;
+            record.edit = false;
+        }
+        s.cancelRecord = function(record) {
+            record.edit = false;
         }
 
         // 퇴거 정산 내역 
