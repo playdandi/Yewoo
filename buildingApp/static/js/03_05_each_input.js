@@ -6,6 +6,12 @@ var curMonth;
 var curBid;
 var curRoomid;
 
+function Preview(roomid)
+{
+    //window.open("/lease/leave/owner_print/" + $("#rid").val() + ((!!print) ? "?print=1" : ""));
+    window.open("/lease/bill/each/print/" + roomid);
+}
+
 function GoToList()
 {
 	$(location).attr('href', '/lease/bill/');

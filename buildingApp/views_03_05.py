@@ -608,3 +608,78 @@ def bill_each_manage_confirm(request):
 
         return HttpResponse('OK')
     return HttpResponse('NOT POST')
+
+@permission_required('buildingApp.lease_bill', login_url='/login/')
+def bill_each_print_html(request, roomid):
+    return render(request, '03_05_bill_print.html', print_info(request, get_resident_info(roomid)))
+
+def print_info(request, dic):
+    if request.GET.get("print", None):
+       dic['print'] = True 
+    return dic
+
+def get_resident_info(uid):
+    result = ResidentInfo.objects.get(id = uid)
+
+    # 표기법 달리할 것들 처리하기
+    import re
+    result.inDate = re.sub('[년월일\-]+', '.', str(result.inDate))
+    result.outDate = re.sub('[년월일\-]+', '.', str(result.outDate))
+    result.realInDate = re.sub('[년월일\-]+', '.', str(result.realInDate))
+    if result.realOutDate != None:
+        result.realOutDate = re.sub('[년월일\-]+', '.', str(result.realOutDate))
+    else:
+        result.realOutDate = ''
+
+    result.readDate = re.sub('[년월일\-]+', '.', str(result.readDate))
+
+    result.roomNumber = result.buildingRoomNumber
+    if result.buildingRoomNumber < 0:
+        result.roomNumber = 'B ' + str(-result.buildingRoomNumber)
+
+    result.contractorRegNumber_1 = result.contractorRegNumber.split('-')[0]
+    result.contractorRegNumber_2 = result.contractorRegNumber.split('-')[1]
+    result.contractorContactNumber1_1 = result.contractorContactNumber1.split('-')[0]
+    result.contractorContactNumber1_2 = result.contractorContactNumber1.split('-')[1]
+    result.contractorContactNumber1_3 = result.contractorContactNumber1.split('-')[2]
+    if result.contractorContactNumber2 != '':
+        result.contractorContactNumber2_1 = result.contractorContactNumber2.split('-')[0]
+        result.contractorContactNumber2_2 = result.contractorContactNumber2.split('-')[1]
+        result.contractorContactNumber2_3 = result.contractorContactNumber2.split('-')[2]
+
+    result.residentRegNumber_1 = result.residentRegNumber.split('-')[0]
+    result.residentRegNumber_2 = result.residentRegNumber.split('-')[1]
+    result.residentContactNumber1_1 = result.residentContactNumber1.split('-')[0]
+    result.residentContactNumber1_2 = result.residentContactNumber1.split('-')[1]
+    result.residentContactNumber1_3 = result.residentContactNumber1.split('-')[2]
+    if result.residentContactNumber2 != '':
+        result.residentContactNumber2_1 = result.residentContactNumber2.split('-')[0]
+        result.residentContactNumber2_2 = result.residentContactNumber2.split('-')[1]
+        result.residentContactNumber2_3 = result.residentContactNumber2.split('-')[2]
+    if result.residentOfficeContactNumber != '':
+        result.residentOfficeContactNumber_1 = result.residentOfficeContactNumber.split('-')[0]
+        result.residentOfficeContactNumber_2 = result.residentOfficeContactNumber.split('-')[1]
+        result.residentOfficeContactNumber_3 = result.residentOfficeContactNumber.split('-')[2]
+
+    # 모든 건물 정보 가져오기
+    building = BuildingInfo.objects.all()
+    building_name_id = []
+    for b in building:
+        building_name_id.append({'name' : b.name, 'id' : b.id})
+        if result.buildingName == b.id:
+            result.buildingNameKor = b.name
+
+    # 현재 빌딩에 따른 방 호실 가져오기
+    floor = BuildingFloor.objects.filter(building_id = int(result.buildingName))
+    rooms = []
+    for r in floor:
+        for n in range(1, r.roomNum+1):
+            zero = ''
+            if n < 10:
+                zero = '0'
+            if r.floor > 0:
+                rooms.append({'num' : int(str(r.floor)+zero+str(n)), 'kor' : int(str(r.floor)+zero+str(n))})
+            else:
+                rooms.append({'num' : int(str(r.floor)+zero+str(n)), 'kor' : 'B '+str(-r.floor)+zero+str(n)})
+
+    return {'result' : result, 'rooms' : rooms, 'building_name_id' : building_name_id, 'uid' : uid, 'range' : range(1, 32)}

@@ -328,6 +328,10 @@
 {
     padding-left: 15px;
 }
+#leave .paddingMoreLeft
+{
+    padding-left: 20px;
+}
 
 .dotum *
 {
@@ -422,13 +426,21 @@
 {
     background-color:  rgb(232, 232, 232)!important;
 }
-#leave td.whitecell
-{
-    background-color: white !important;
-}
 #leave td.graycell 
 {
     background-color:  rgb(232, 232, 232) !important;
+}
+#leave tr.smallgraycell > td
+{
+    background-color:  rgb(240, 240, 240)!important;
+}
+#leave td.smallgraycell 
+{
+    background-color:  rgb(240, 240, 240) !important;
+}
+#leave td.whitecell
+{
+    background-color: white !important;
 }
 #leave .noborderright
 {
