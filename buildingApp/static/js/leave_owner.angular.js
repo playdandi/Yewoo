@@ -13,16 +13,13 @@ angular.module('yewooApp', [])
 
                 ctrl.$formatters.push(function (a) {
                     var retval = $filter(attrs.format)(ctrl.$modelValue)
-                    console.log(['formatters', a, retval, elem]);
                     return retval;
                 });
 
 
                 ctrl.$parsers.push(function (viewValue) {
-                    return viewValue;
                     var plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
                     elem.val($filter(attrs.format)(plainNumber));
-                    console.log(['parsers', viewValue, plainNumber, elem]);
                     return plainNumber;
                 });
             }
@@ -201,6 +198,10 @@ angular.module('yewooApp', [])
         s.previewConfirmTenant = function(print) {
             window.open("/lease/leave/confirm_tenant_print/" + $("#rid").val() + ((!!print) ? "?print=1" : ""));
         };
+
+        s.modifyExtraCost = function(e) { e.amount_copy = parseInt(e.amount); e.edit= true; }
+        s.saveExtraCost = function(e) { e.amount= e.amount_copy; e.edit= false;s.updateUnpaid(); }
+        s.cancelExtraCost = function(e) { e.edit= false; }
 
         // 미납요금 내역 가져오기
 
@@ -552,9 +553,12 @@ angular.module('yewooApp', [])
         }
 
         s.removeFeeCost = function(cost) {
-            s.extraCosts = _.filter(s.extraCosts, function(a) { return a != cost; });
+            s.feeCosts = _.filter(s.feeCosts, function(a) { return a != cost; });
             s.updateUnpaid();
         }
+        s.modifyFeeCost = function(cost) { cost.amount_copy = cost.amount; cost.edit = true; }
+        s.saveFeeCost = function(cost) { cost.amount = parseInt(cost.amount_copy); cost.edit = false; s.updateUnpaid();}
+        s.cancelFeeCost = function(cost) { cost.edit = false; }
 
 
         s.updateTotalRefund = function () {

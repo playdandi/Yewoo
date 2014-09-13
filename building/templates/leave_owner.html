@@ -148,7 +148,7 @@
                     </table>
 				</div>
 
-                <div class="span11" style="margin-bottom:5px; text-align:left">
+                <div class="span11" style="margin-bottom:5px; margin-left:0; padding-left:0px; text-align:left">
                     <button class="btn btn-small btn-inverse" ng-if="isEditing == 0" ng-click="previewOwner()">[갑]지 미리보기</button>
                     <button class="btn btn-small " ng-if="isEditing > 0" >[갑]지 미리보기</button>
                     <button class="btn btn-small btn-inverse" ng-if="isEditing == 0" ng-click="previewTenant()">[을]지 미리보기</button>
@@ -159,7 +159,7 @@
                 <div class="row-fluid">
 					<div class="box span11" style="margin: 0px; padding: 0px">
 						<div class="box-header" style="padding:5px; padding-top:10px; padding-bottom:10px;">
-							<h2><strong>입주자 상세 정보 확인</strong></h2>
+							<h2><strong>입주자 정보</strong></h2>
 						</div>
 						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8; font-size : 0.95em">
 							<table class="table table-bordered table-condensed">
@@ -230,7 +230,7 @@
                                             <input type="text" class="margin0 " readonly ng-model="accountHolder" />
                                         </span>
                                         <span ng-show="editBank">
-                                            입금 은행
+                                            입금 은행&nbsp;&nbsp;&nbsp;&nbsp;
                                             <input type="text" class="margin0" ng-model="edit_bank" />
                                             입금 계좌 
                                             <input type="text" class="margin0 "  style="width:200px;" ng-model="edit_account" />
@@ -280,7 +280,7 @@
 
                                 <!-- 미납 내역 추가 사항 -->
                                 <div class="row-fluid">
-<div class="box-header" style="padding:5px; padding-top:10px; padding-bottom:10px;">
+<div class="box-header" style="padding:5px; padding-top:10px; padding-bottom:10px; height:30px;">
                                         <div style="width:50%; float:left;">
                                             <h2 style="padding-bottom:20px"><strong>미납 금액 <button class="btn btn-small btn-inverse" ng-show="!edit_unpaid" ng-click="inputUnpaid()">입력/수정</button>
                                         </div>
@@ -421,7 +421,7 @@
 
                                 <!-- 추가 금액 사항 -->
                                 <div  ng-show="!unpaidClosed" class="row-fluid" style="margin-top:20px;">
-<div class="box-header" style="padding:5px; padding-top:10px; padding-bottom:10px;">
+<div class="box-header" style="padding:5px; padding-top:10px; padding-bottom:10px; height:30px;">
                                         <div style="width:50%; float:left;">
                                         <h2><strong>추가 금액</strong>
 <button class="btn btn-small btn-inverse" ng-show="!edit_extra" ng-click="input_extra()">입력/수정</button>
@@ -440,22 +440,26 @@
                                                 </td>
                                                 <td class="tableRow textCenter" width="20%">
                                                     <span ng-bind="extraCost.type.title"></span> </td>
-                                                <td class="tableRow textCenter" width="40%">
+                                                <td class="tableRow textCenter" width="25%">
                                                     <span ng-bind="extraCost.subType" ></span>
                                                     <span ng-if="extraCost.year && extraCost.month">
                                                         (<span ng-bind="extraCost.year"></span>년 <span ng-bind="extraCost.month"></span>월)
                                                     </span>
                                                     <span ng-bind="extraCost.desc"></span>
                                                 </td>
-                                                <td class="tableRow medium textRight" width="35%">
+                                                <td class="tableRow medium textRight" width="50%">
                                                 <span ng-show="edit_extra">
-                                                    <input class="medium" type="text" ng-model="extraCost.amount" ng-change="updateUnpaid()" /> 원
+                                                    <span ng-show="extraCost.edit"><input ng-show="extraCost.edit" class="medium" type="number" ng-model="extraCost.amount_copy" /> 원</span>
+                                                    <span ng-show="!extraCost.edit"><input ng-show="!extraCost.edit" class="medium" type="text" ng-model="extraCost.amount" ng-change="updateUnpaid()" readonly /> 원</span>
                                                 </span>
                                                 <span ng-show="!edit_extra">
-                                                    <input class="medium" type="text" ng-model="extraCost.amount" ng-change="updateUnpaid()"  format="number" readonly/> 원
-                                                </span>
-                                                    <button ng-click="removeExtraCost(extraCost)" ng-show="edit_extra">삭제</button>
-                                                </td>
+                                                    <input class="medium" ng-show="!extraCost.edit" type="text" ng-model="extraCost.amount" ng-change="updateUnpaid()"  format="number" readonly/><input class="medium" ng-show="extraCost.edit" type="text" ng-model="extraCost.amount_copy" ng-change="updateUnpaid()" > 원</span><span ng-show="!extraCost.edit">
+                                                        <button ng-click="modifyExtraCost(extraCost)" ng-show="edit_extra">수정</button>
+                                                        <button ng-click="removeExtraCost(extraCost)" ng-show="edit_extra">삭제</button>
+                                                    </span><span ng-show="extraCost.edit">
+                                                        <button ng-click="saveExtraCost(extraCost)" ng-show="edit_extra">완료</button>
+                                                        <button ng-click="cancelExtraCost(extraCost)" ng-show="edit_extra">취소</button>
+                                                    </span></td>
                                             </tr>
                                             <tr>
                                                 <td class="tableRow textCenter" width="5%">
@@ -481,7 +485,7 @@
                                                         <select style="min-width:80px; width:10% !important;" ng-if="extraCost.type.subTypes" ng-model="extraCost.subType" ng-options="type for type in extraCost.type.subTypes"></select>
                                                         <span ng-if="extraCost.type.hasYear"><input  style="min-width:40px; width:5% !important;"class="small" type="text" ng-model="extraCost.year" >년</span>
                                                         <span ng-if="extraCost.type.hasMonth"><input style="min-width:40px; width:5% !important;" ng-if="extraCost.type.hasMonth" class="small" type="text" ng-model="extraCost.month" />월</span>
-                                                        <input style="width:45% !important;" type="text" ng-model="extraCost.desc"/>
+                                                        <input style="width:35% !important; margin-bottom:0px !important;" type="text" ng-model="extraCost.desc"/>
                                                     </span>
                                                     <span ng-show="!extraCost.type.subTypes && !extraCost.type.hasYear && !extraCost.type.hasMonth">
                                                         <input type="text" style="width:95%;" ng-model="extraCost.desc"/>
@@ -504,7 +508,7 @@
                                     <!-- 미납요금 기타 의견 -->
                                     <div class="row-fluid">
                                         <div class="box" style="margin: 0px; padding: 0px">
-                                            <div class="box-header" style="padding:5px; padding-top:10px; padding-bottom:10px;">
+                                            <div class="box-header" style="padding:5px; padding-top:10px; padding-bottom:10px; height:30px;">
                                                 <h2><strong>기타 의견</strong>
 <button class="btn btn-small btn-inverse" ng-show="!edit_unpaid_comment" ng-click="input_unpaid_comment()">입력/수정</button>
 </h2>
@@ -556,7 +560,7 @@
                                 </div>
                                 <!-- 시설 관리비 사항 -->
                                 <div class="row-fluid" style="">
-                                    <div class="box-header" style="padding:5px; padding-top:10px; padding-bottom:10px;">
+                                    <div class="box-header" style="padding:5px; padding-top:10px; padding-bottom:10px; height:30px;">
                                         <div style="width:50%; float:left;">
                                             <h2><strong>미납 금액</strong> <button class="btn btn-small btn-inverse" ng-show="!edit_fee" ng-click="input_fee()">입력/수정</button></h2>
                                         </div>
@@ -574,24 +578,25 @@
                                                     <input data-no-uniform="true" type="checkbox" ng-model="feeCost.checked" ng-change="updateUnpaid()" readonly disabled></span>
 
                                                 </td>
-                                                <td class="tableRow textCenter" width="20%">
+                                                <td class="tableRow textCenter" width="15%">
                                                     <span ng-bind="feeCost.type.title"></span> </td>
-                                                <td class="tableRow textCenter" width="40%">
+                                                <td class="tableRow textCenter" width="30%">
                                                     <span ng-bind="feeCost.subType" ></span>
                                                     <span ng-if="feeCost.year && feeCost.month">
                                                         (<span ng-bind="feeCost.year"></span>년 <span ng-bind="feeCost.month"></span>월)
                                                     </span>
                                                     <span ng-bind="feeCost.desc"></span>
                                                 </td>
-                                                <td class="tableRow medium textRight" width="35%">
+                                                <td class="tableRow medium textRight" width="50%">
                                                     <span ng-show="edit_fee">
-                                                    <input class="medium" type="text" ng-model="feeCost.amount" ng-change="updateUnpaid()" /> 원
-                                                    </span>
-                                                    <span ng-show="!edit_fee">
-                                                    <input class="medium" type="text" ng-model="feeCost.amount" ng-change="updateUnpaid()" format="number" readonly/> 원
-                                                    </span>
-                                                    <button ng-click="removeFeeCost(feeCost)" ng-show="edit_fee">삭제</button>
-                                                </td>
+                                                        <span ng-show="!feeCost.edit"><input class="medium" type="text" ng-model="feeCost.amount" ng-change="updateUnpaid()" format="number" readonly/> 원</span><span ng-show="feeCost.edit"><input class="medium" type="number" ng-model="feeCost.amount_copy" ng-change="updateUnpaid()" /> 원</span></span><span ng-show="!edit_fee">
+                                                        <input class="medium" type="text" ng-model="feeCost.amount" ng-change="updateUnpaid()" format="number" readonly/> 원</span><span ng-show="!feeCost.edit">
+                                                        <button ng-click="modifyFeeCost(feeCost)" ng-show="edit_fee">수정</button>
+                                                        <button ng-click="removeFeeCost(feeCost)" ng-show="edit_fee">삭제</button>
+                                                    </span><span ng-show="feeCost.edit">
+                                                        <button ng-click="saveFeeCost(feeCost)" ng-show="edit_fee">완료</button>
+                                                        <button ng-click="cancelFeeCost(feeCost)" ng-show="edit_fee">취소</button>
+                                                    </span></td>
                                             </tr>
                                             <tr>
                                                 <td class="tableRow textCenter" width="5%">
@@ -615,7 +620,7 @@
                                                     <select ng-if="feeCost.type.subTypes" ng-model="feeCost.subType" ng-options="type for type in feeCost.type.subTypes"></select>
                                                     <span ng-if="feeCost.type.hasYear"><input class="small" type="text" ng-model="feeCost.year" /> 년</span>
                                                     <span ng-if="feeCost.type.hasMonth"><input ng-if="feeCost.type.hasMonth" class="small" type="text" ng-model="feeCost.month" /> 월</span>
-                                                    <input type="text" style="width:95%;" ng-model="feeCost.desc"></span>
+                                                    <input type="text" style="width:95%; margin-bottom: 0px !important;" ng-model="feeCost.desc"></span>
                                                 </td>
                                                 <td class="tableRow medium textCenter" width="10%">
                                                     <input class="medium" type="text" ng-model="feeCost.amount" /> 원
@@ -635,7 +640,7 @@
                                 <!-- 시설 관리비 기타 의견 -->
                                 <div class="row-fluid">
                                     <div class="box" style="margin: 0px; padding: 0px">
-                                        <div class="box-header" style="padding:5px; padding-top:10px; padding-bottom:10px;">
+                                        <div class="box-header" style="padding:5px; padding-top:10px; padding-bottom:10px; height:30px;">
                                             <h2><strong>기타 의견</strong>
                                     <button class="btn btn-small btn-inverse" ng-show="!edit_fee_comment" ng-click="input_fee_comment()">입력/수정</button>
 </h2>
@@ -663,7 +668,7 @@
                 </div>
                 <br/>
 
-                <div class="span11" style="margin-bottom:5px; text-align:left">
+                <div class="span11" style="margin-bottom:5px; margin-left:0; padding-left:0px; text-align:left">
                     <button class="btn btn-small btn-inverse" ng-if="isEditing == 0" ng-click="previewOwner()">[갑]지 미리보기</button>
                     <button class="btn btn-small " ng-if="isEditing > 0" >[갑]지 미리보기</button>
                     <button class="btn btn-small btn-inverse" ng-if="isEditing == 0" ng-click="previewTenant()">[을]지 미리보기</button>

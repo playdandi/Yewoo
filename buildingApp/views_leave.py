@@ -240,7 +240,7 @@ def leave_confirm_tenant_print_html(request, uid):
 def leave_confirm_html(request, uid):
     csrf_token = get_token(request)
 
-    if 'ownerFile' in request.FILES:
+    if 'owner_upload' in request.POST and request.POST['owner_upload'] == 'upload' and 'ownerFile' in request.FILES:
         file = request.FILES['ownerFile']
         data = file.read()
         if len(data) > 0:
@@ -251,7 +251,7 @@ def leave_confirm_html(request, uid):
             item.ownerFile.save()
             item.save()
         
-    if 'tenantFile' in request.FILES:
+    if 'tenant_upload' in request.POST and request.POST['tenant_upload'] == 'upload' and 'tenantFile' in request.FILES:
         file = request.FILES['tenantFile']
         data = file.read()
         if len(data) > 0:

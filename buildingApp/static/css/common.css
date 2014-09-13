@@ -153,12 +153,14 @@
 
 #leave input.small
 {
+    margin-bottom:0px !important;
     width: 60px;
 }
 
 #leave input.margin0.large
 {
     width: 250px;
+    margin-bottom:0px !important;
 }
 
 #leave .noblank
@@ -346,7 +348,7 @@
 #leave .titlebox
 {
     color: rgb(27, 50, 113) !important;
-    margin-top: 10px;
+    margin-top: 7px;
     margin-bottom: 5px;
     font-size: 12pt !important;
 }
@@ -552,4 +554,20 @@
 #leave h2
 {
     font-size: 10pt;
+}
+
+#leave select
+{
+    margin-bottom: 0px !important;
+}
+
+#leave .input-header
+{
+    height: 30px;
+}
+
+#leave .ggg
+{
+    vertical-align:middle;
+    text-align:center;
 }

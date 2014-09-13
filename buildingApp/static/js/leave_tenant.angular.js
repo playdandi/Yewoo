@@ -13,16 +13,13 @@ angular.module('yewooApp', [])
 
                 ctrl.$formatters.push(function (a) {
                     var retval = $filter(attrs.format)(ctrl.$modelValue)
-                    console.log(['formatters', a, retval, elem]);
                     return retval;
                 });
 
 
                 ctrl.$parsers.push(function (viewValue) {
-                    return viewValue;
                     var plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
                     elem.val($filter(attrs.format)(plainNumber));
-                    console.log(['parsers', viewValue, plainNumber, elem]);
                     return plainNumber;
                 });
             }
@@ -47,7 +44,6 @@ angular.module('yewooApp', [])
         s.save_money = function() { 
             s.edit_money = false;
             s.isEditing--;
-            s.save();
         }
         s.cancel_money = function() {
             s.moneyChanges = oldMoneyChanges;
@@ -66,7 +62,6 @@ angular.module('yewooApp', [])
         s.save_record = function() { 
             s.edit_record = false;
             s.isEditing--;
-            s.save();
         }
         s.cancel_record = function() {
             s.records = oldRecords;
@@ -205,6 +200,11 @@ angular.module('yewooApp', [])
                     var cases = [];
                     var lastPayment = null;
                     
+                    function daysInMonth(iMonth, iYear)
+                    {
+                        return 32 - new Date(iYear, iMonth, 32).getDate();
+                    }
+
                     for (var i = 0; i < payments.length; i++) {
                         var payment = payments[i];
                         //if (payment.isThis == 1 || payment.payStatus == -1) continue;
@@ -212,6 +212,8 @@ angular.module('yewooApp', [])
                         payment.revisiedAmount = payment.amountNoPay;
                         payment.expectedDate = new Date(payment.year, payment.month);
                         payment.isPaid = payment.payStatus == -1 || (i > 0 && payment.number == payments[i - 1].number);
+
+                        payment.lastDate = daysInMonth(payment.month, payment.year);
                         
                         cases.push(payment);
                     }
@@ -281,10 +283,10 @@ angular.module('yewooApp', [])
 
         // MoneyChanges
         s.moneyChangeTypes = [ 
-            { id:1, title: "선불제", subTypes: [ "입금", "입금대기", "출금", "출금대기", "입금완료", "출금완료" ], hasDate: true, amount: 0 },
-            { id:2, title: "임대계약금", subTypes: [ "입금", "입금대기", "출금", "출금대기", "입금완료", "출금완료" ], hasDate: true, amount: 0 },
-            { id:3, title: "중도금", subTypes: [ "입금", "입금대기", "출금", "출금대기", "입금완료", "출금완료" ], hasDate: true, amount: 0 },
-            { id:4, title: "임대 보증금 잔금", subTypes: [ "입금", "입금대기", "출금", "출금대기", "입금완료", "출금완료" ], hasDate: true, amount: 0 },
+            { id:1, title: "선불제", subTypes: [ "입금", "입금완료" ], hasDate: true, amount: 0},
+            { id:2, title: "임대계약금", subTypes: [ "입금", "입금완료" ], hasDate: true, amount: 0},
+            { id:3, title: "중도금", subTypes: [ "입금", "입금완료" ], hasDate: true, amount: 0},
+            { id:4, title: "임대보증금 잔금", subTypes: [ "입금", "입금완료" ], hasDate: true, amount: 0}
         ];
 
         s.updateMoneyChangeType = function() {
@@ -295,7 +297,7 @@ angular.module('yewooApp', [])
             if (!s.moneyChange.type.hasYear) { s.moneyChange.year = null; }
             else { s.moneyChange.year = new Date().getFullYear(); } 
             s.moneyChange.amount = s.moneyChange.type.amount;
-            s.moneyChange.date = new Date().getFullYear() + "." + (new Date().getMonth() + 1) + "." + (new Date().getDate());
+            s.moneyChange.date = null;//new Date().getFullYear() + "." + (new Date().getMonth() + 1) + "." + (new Date().getDate());
         }
 
         var moneyChangeType = s.moneyChangeTypes[0];
@@ -324,10 +326,22 @@ angular.module('yewooApp', [])
 
         // Records
         s.recordTypes = [ 
-            { id:1, title: "전기", amount: 0 },
-            { id:2, title: "수도", amount: 0 },
-            { id:3, title: "가스", amount: 0 }
+            { id:1, title: "전기", amount: 0, subTypes: [ '전기', '수도', '가스' ], desc:0  },
+            { id:2, title: "수도", amount: 0, subTypes: [ '전기', '수도', '가스' ], desc:0  },
+            { id:3, title: "가스", amount: 0, subTypes: [ '전기', '수도', '가스' ], desc:0 }
         ];
+
+        s.modifyMoneyChange = function(record) {
+            record.amount_copy = record.amount;
+            record.edit = true;
+        }
+        s.saveMoneyChange = function(record) {
+            record.amount = record.amount_copy;
+            record.edit = false;
+        }
+        s.cancelMoneyChange = function(record) {
+            record.edit = false;
+        }
 
         s.updateRecordType = function() {
             if (!s.record.type.subTypes) { s.record.subType = null; }
@@ -340,7 +354,7 @@ angular.module('yewooApp', [])
         }
 
         var recordType = s.recordTypes[0];
-        s.record = { type: recordType, desc: "", amount: 0 };
+        s.record = { type: recordType, desc: 0, amount: 0 };
 
         s.updateRecordType();
 
@@ -360,6 +374,20 @@ angular.module('yewooApp', [])
 
         s.removeRecord = function(cost) {
             s.records = _.filter(s.records, function(a) { return a != cost; });
+        }
+        s.modifyRecord = function(record) {
+            record.desc_copy = parseInt(record.desc);
+            record.amount_copy = parseInt(record.amount);
+            record.edit = true;
+            console.log(record);
+        }
+        s.saveRecord = function(record) {
+            record.desc = record.desc_copy;
+            record.amount = record.amount_copy;
+            record.edit = false;
+        }
+        s.cancelRecord = function(record) {
+            record.edit = false;
         }
 
         // 퇴거 정산 내역 
