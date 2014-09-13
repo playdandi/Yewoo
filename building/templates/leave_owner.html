@@ -589,21 +589,14 @@
                                                 </td>
                                                 <td class="tableRow medium textRight" width="50%">
                                                     <span ng-show="edit_fee">
-                                                        <span ng-show="!feeCost.edit"><input class="medium" type="text" ng-model="feeCost.amount" ng-change="updateUnpaid()" format="number" readonly/> 원</span>
-                                                        <span ng-show="feeCost.edit"><input class="medium" type="number" ng-model="feeCost.amount_copy" ng-change="updateUnpaid()" /> 원</span>
-                                                    </span>
-                                                    <span ng-show="!edit_fee">
-                                                        <input class="medium" type="text" ng-model="feeCost.amount" ng-change="updateUnpaid()" format="number" readonly/> 원
-                                                    </span>
-                                                    <span ng-show="!feeCost.edit">
+                                                        <span ng-show="!feeCost.edit"><input class="medium" type="text" ng-model="feeCost.amount" ng-change="updateUnpaid()" format="number" readonly/> 원</span><span ng-show="feeCost.edit"><input class="medium" type="number" ng-model="feeCost.amount_copy" ng-change="updateUnpaid()" /> 원</span></span><span ng-show="!edit_fee">
+                                                        <input class="medium" type="text" ng-model="feeCost.amount" ng-change="updateUnpaid()" format="number" readonly/> 원</span><span ng-show="!feeCost.edit">
                                                         <button ng-click="modifyFeeCost(feeCost)" ng-show="edit_fee">수정</button>
                                                         <button ng-click="removeFeeCost(feeCost)" ng-show="edit_fee">삭제</button>
-                                                    </span>
-                                                    <span ng-show="feeCost.edit">
+                                                    </span><span ng-show="feeCost.edit">
                                                         <button ng-click="saveFeeCost(feeCost)" ng-show="edit_fee">완료</button>
                                                         <button ng-click="cancelFeeCost(feeCost)" ng-show="edit_fee">취소</button>
-                                                    </span>
-                                                </td>
+                                                    </span></td>
                                             </tr>
                                             <tr>
                                                 <td class="tableRow textCenter" width="5%">
