@@ -620,7 +620,7 @@
                                                     <select ng-if="feeCost.type.subTypes" ng-model="feeCost.subType" ng-options="type for type in feeCost.type.subTypes"></select>
                                                     <span ng-if="feeCost.type.hasYear"><input class="small" type="text" ng-model="feeCost.year" /> 년</span>
                                                     <span ng-if="feeCost.type.hasMonth"><input ng-if="feeCost.type.hasMonth" class="small" type="text" ng-model="feeCost.month" /> 월</span>
-                                                    <input type="text" style="width:95%;" ng-model="feeCost.desc"></span>
+                                                    <input type="text" style="width:95%; margin-bottom: 0px !important;" ng-model="feeCost.desc"></span>
                                                 </td>
                                                 <td class="tableRow medium textCenter" width="10%">
                                                     <input class="medium" type="text" ng-model="feeCost.amount" /> 원
