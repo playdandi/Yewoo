@@ -120,7 +120,7 @@
 			<!-- start: Content -->	
 
             <!-- first column -->
-            <td width="30%">
+            <td width="27%">
                 <!-- 임차인 -->
                 <div class="titlebox">임 차 인</div>
                 <table class="fullbox">
@@ -138,14 +138,14 @@
                 <table>
                 <table class="fullbox table-content">
                     <colgroup>
-                        <col width="25%"/>
+                        <col width="30%"/>
                         <col width="5%"/>
-                        <col width="70%"/>
+                        <col width="65%"/>
                     </colgroup>
                     <tr>
                         <td class="bold paddingSmallLeft">임대기간</td>
                         <td class="textCenter bold">|</td>
-                        <td class="">
+                        <td class="" style="letter-spacing:-1px;">
                             <span ng-bind="data.rentStart | date:'yyyy.MM.dd'"></span> ~ <span ng-bind="data.rentEnd | date:'yyyy.MM.dd'"></span> (<span ng-bind="data.rentMethod"></span>)
                         </td>
                     </tr>
@@ -187,7 +187,7 @@
                         <td width="40%" style="line-height:110%">
                             퇴거시<br />반환 받으신 금액은
                         </td>
-                        <td width="60%" class="textRight textLarge padding5">
+                        <td width="60%" class="textRight textLarge padding5 lsSmall">
                             <span class="textLarge" ng-bind="data.returnMoney | number:0"></span>원
                         </td>
                     </tr>
@@ -198,11 +198,11 @@
                 </div>
                 <table class="fullbox table-content">
                     <colgroup>
-                        <col width="50%"/>
-                        <col width="50%"/>
+                        <col width="55%"/>
+                        <col width="45%"/>
                     </colgroup>
                     <tr>
-                        <td class="bold paddingSmallLeft">임대기간</td>
+                        <td class="bold paddingSmallLeft">보증금</td>
                         <td class="bold textRight paddingRight">
                             <span ng-bind="data.deposit | number:0"></span>원
                         </td>
@@ -285,7 +285,7 @@
             <!-- end first column -->
 
             <!-- second column -->
-            <td width="35%" height="17cm">
+            <td width="36.5%" height="17cm">
                 <div class="layout">
                     <div class="layout-fixed">
                         <div class="titlebox">상세명세1/ 미납임대료 및 공과금</div>
@@ -325,20 +325,20 @@
                         </div>
                         <table class="fullbox table-content textCenter">
                             <tr class="graycell bold itemcell">
-                                <td width="25%">년도/월</td>
-                                <!--<td>회차</td>-->
-                                <td width="20%">납부금액</td>
-                                <td width="20%">입금액</td>
-                                <!--<td>입금일</td>-->
-                                <td width="20%">미납액</td>
-                                <td width="15%" class="noborderright">처리</td>
+                                <td width="17%">년도/월</td>
+                                <td width="8%">회차</td>
+                                <td width="16%">납부금액</td>
+                                <td width="16%">입금액</td>
+                                <td width="20%">입금일</td>
+                                <td width="15%">미납액</td>
+                                <td width="8%" class="noborderright">처리</td>
                             </tr>
                             <tr ng-repeat="item in data.unpaidList | limitTo: 15" class="itemcell">
                                 <td class="bold graycell"><span ng-bind="item.year"></span>/<span ng-if="item.month < 10">0</span><span ng-bind="item.month"></span></td>
-                                <!--<td><span ng-bind="item.number"></span></td>-->
+                                <td><span ng-bind="item.number"></span></td>
                                 <td><span ng-bind="item.totalFee | number:0"></span></td>
                                 <td><span ng-bind="item.amountPay | number:0"></span></td>
-                                <!--<td><span ng-bind="item.payDate | date:'yy.MM.dd'"></span></td>-->
+                                <td><span ng-bind="item.payDate | date:'yy.MM.dd'"></span></td>
                                 <td><span ng-bind="item.revisiedAmount | number:0"></span></td>
                                 <td class="noborderright">
                                     <span ng-if="item.payStatus == -1">완납</span>
@@ -377,7 +377,7 @@
             <!-- end second column -->
 
             <!-- third column -->
-            <td width="35%" height="18cm">
+            <td width="36.5%" height="18cm">
 
                 <div class="layout">
                     <div class="layout-fixed">
@@ -444,13 +444,13 @@
                         <div>
                             문의 사항은 하단의 관련부서로 연락 주시기 바랍니다.
                         <div>
-                        <table class="contactbox fullbox textCenter" style="font-size:7pt !important">
+                        <table class="contactbox fullbox textCenter nopadding" style="font-size:7pt !important">
                             <colgroup>
-                                <col width="14%" class="graycell"/>
-                                <col width="20%"/>
-                                <col width="23%"/>
-                                <col width="20%"/>
-                                <col width="23%"/>
+                                <col width="12%" class="graycell"/>
+                                <col width="17%"/>
+                                <col width="27%"/>
+                                <col width="17%"/>
+                                <col width="27%"/>
                             </colgroup>
                             <tr class="borderBlackTop">
                                 <td class="graycell">주소</td>
@@ -461,26 +461,26 @@
                                 <td class="graycell"><span ng-bind="data.contact.infoList[0].title"></span>&nbsp;</td>
                                 <td><span ng-bind="building.manager"></span</td>
                                 <td class="graycell"><span ng-bind="data.contact.infoList[1].title"></span></td>
-                                <td class="noborderright"><span ng-bind="building.managerNumber"></span</td>
+                                <td class="noborderright lsSmall"><span ng-bind="building.managerNumber"></span</td>
                             </tr>
                             <tr>
                                 <td class="graycell"><span ng-bind="data.contact.infoList[2].title"></span>&nbsp;</td>
-                                <td><span ng-bind="building.leaseNumber"></span</td>
+                                <td><span class=" lsSmall" ng-bind="building.leaseNumber"></span</td>
                                 <td class="graycell"><span ng-bind="data.contact.infoList[3].title"></span></td>
-                                <td class="noborderright"><span ng-bind="building.guardNumber"></span</td>
+                                <td class="noborderright lsSmall"><span ng-bind="building.guardNumber"></span</td>
                             </tr>
                             <tr>
                                 <td class="graycell"><span ng-bind="data.contact.infoList[4].title"></span>&nbsp;</td>
-                                <td><span ng-bind="building.facilityNumber"></span</td>
+                                <td><span class=" lsSmall" ng-bind="building.facilityNumber"></span</td>
                                 <td class="graycell"><span ng-bind="data.contact.infoList[5].title"></span></td>
-                                <td class="noborderright"><span ng-bind="building.mainNumber"></span</td>
+                                <td class="noborderright lsSmall"><span ng-bind="building.mainNumber"></span</td>
                             </tr>
                             <tr>
                                 <td class="graycell">팩스</td>
                                 <td class="graycell"><span ng-bind="data.contact.infoList[6].title"></span>&nbsp;</td>
-                                <td><span ng-bind="building.leaseFax"></span</td>
+                                <td><span class=" lsSmall" ng-bind="building.leaseFax"></span</td>
                                 <td class="graycell"><span ng-bind="data.contact.infoList[7].title"></span></td>
-                                <td class="noborderright"><span ng-bind="building.mainFax"></span</td>
+                                <td class="noborderright lsSmall"><span ng-bind="building.mainFax"></span</td>
                             </tr>
                             <tr>
                                 <td class="graycell">E-mail</td>

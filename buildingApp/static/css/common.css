@@ -465,6 +465,16 @@
 	padding: 0px 0px 0px 0px; !important;
 }
 
+#leave .nopadding td
+{
+	padding: 0px 0px 0px 0px; !important;
+}
+
+#leave .lsSmall
+{
+    letter-spacing: -1px;
+}
+
 #leave .layout
 {
     display: table;
