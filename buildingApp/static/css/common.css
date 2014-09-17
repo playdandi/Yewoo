@@ -124,6 +124,11 @@
     }
 
 
+#leave
+{
+	font-size: 0.8em !important;
+}
+
 #leave input.red-warning
 {
     background-color: red;
@@ -173,7 +178,7 @@
 {
     border:0;
     background-color:#f8f8f8;
-    font-size : 0.95em;
+    font-size : 0.95em; !important;
 }
 
 #leave td.medium
@@ -292,6 +297,11 @@
 
 #leave .table-content tr
 {
+	font-size : 0.8em; !important;
+	padding-top : 0px; !important;
+	padding-bottom : 0px; !important;
+	margin-top : 0px; !important;
+	margin-bottom : 0px; !important;
 }
 
 #leave .table-content tr:first-child
@@ -381,7 +391,6 @@
         -webkit-print-color-adjust: exact;
     }
 
-
     #leave .boldgray
     {
         -webkit-print-color-adjust: exact; 
@@ -453,6 +462,7 @@
 {
     border-bottom: 1px solid rgb(135, 135, 135) ;
     border-right: 1px solid rgb(135, 135, 135) ;
+	padding: 0px 0px 0px 0px; !important;
 }
 
 #leave .layout
@@ -496,6 +506,9 @@
     font-size:7pt !important;
 }
 
+#leave .nopadding > td {
+	padding: 0px 0px 0px 0px; !important;
+}
 /*
 #leave tr.itemcell > :first-child {
     background-color: #eee;
@@ -520,7 +533,7 @@
 
 #leave .sign
 {
-    font-size: 12pt;
+    font-size: 12pt; !important;
     font-weight: bold;
 }
 
