@@ -155,41 +155,45 @@
 							<h2><strong>입주자 정보</strong></h2>
 						</div>
 						<div class="box-content" style="margin: 0px; padding: 0px; border:0; background-color:#f8f8f8; font-size : 0.95em">
-							<table class="table table-bordered table-condensed">
+                            <table class="table table-bordered table-condensed">
 								<tr>
-									<th width="15%">건물명</th>
+									<th width="15%" colspan="2">건물명</th>
 									<th width="9%">호실</th>
-									<th width="10%">이름</th>
+									<th width="9%">재실여부</th>
+									<th width="10%">입주자</th>
 									<th width="7%">성별</th>
-									<th width="10%">임대구분</th>
-									<th width="16%">보증금</th>
-									<th width="13%">임대료</th>
-									<th width="13%">연체</th>
-									<th width="7%">주차</th>
+									<th width="10%">연락처</th>
+									<th width="16%" colspan="2">이메일</th>
 								</tr>
 								<tr class="white">
 									
-									<td>{{ result.buildingNameKor }}</td>
+									<td colspan="2">{{ result.buildingNameKor }}</td>
 									<td>{{ result.roomNumber }}</td>
+									<td>{% if result.checkOut == 'n' %}재실{% else %}퇴실{% endif %}</td>
 									<td>{{ result.contractorName }}</td>
 									<td>{{ result.contractorGender }}</td>
-									<td>{{ result.leaseType }}</td>
-									<td>{{ result.leaseDeposit | intcomma }} 원</td>
-									<td>{{ result.leaseMoney | intcomma }} 원</td>
-									<td></td><!--<td>{{ result.연체 }}</td>-->
-									<td>{% if result.haveCar == 'y' %}있음{% else %}없음{% endif %}</td>
+									<td colspan="1">{{ result.residentContactNumber1 }}{%if result.residentContactNumber2 != "" %}, {{ result.residentContactNumber2 }}{% endif %}</td>
+									<td colspan="2">{{ result.residentEmail }}</td>
 								</tr>
 								<tr>
-									<th colspan="3">입주일 ~ 만료일</th>
-									<th colspan="3">연락처</th>
-									<th colspan="3">이메일</th>
+									<th>입주 회차</th>
+									<th>임대 구분</th>
+									<th colspan="2">입주일</th>
+									<th colspan="2">만료일</th>
+									<th>퇴거일</th>
+									<th>임대보증금</th>
+									<th>임대료</th>
 								</tr>
 								<tr class="white">
-									<td colspan="3">{{ result.inDate }} ~ {{ result.outDate }}</td>
-									<td colspan="3">{{ result.residentContactNumber1 }}{%if result.residentContactNumber2 != "" %}, {{ result.residentContactNumber2 }}{% endif %}</td>
-									<td colspan="3">{{ result.residentEmail }}</td>
+									<td colspan="1">{{ result.leaseNumber }}회차</td>
+									<td colspan="1">{{ result.leaseType }}</td>
+									<td colspan="2">{{ result.inDate }}</td>
+                                    <td colspan="2">{{ result.outDate }}</td>
+                                    <td>{{ result.realOutDate }}</td>
+                                    <td>{{ result.leaseDeposit | intcomma }} 원</td>
+                                    <td>{{ result.leaseMoney | intcomma }} 원</td>
 								</tr>
-							</table>  
+							</table>
 						</div>
 					</div>
 				</div>
@@ -206,13 +210,13 @@
                                     <div class="box-content noblank box-text">
                                         <table class="table table-bordered table-condensed">
                                             <tr class="white">
-                                                <td class="tableRow textCenter" width="25%">
+                                                <td class="tableRow textCenter" width="20%">
                                                     <b>처리 담당자</b> <span ng-bind="record.adminuser"></span>
                                                     <input type="hidden" id="adminuser" ng-model="record.adminuser" value="{{user.userprofile.name}}"/>
                                                     <input type="hidden" id="adminuserid" ng-model="record.adminuserid" value="{{user.id}}"/>
 
                                                 </td>
-                                                <td class="tableRow textCenter" width="20%">
+                                                <td class="tableRow textCenter" width="25%">
                                                     <b>처리 날짜</b> 
                                                     <input class="medium datepicker" type="text" id="recordDate" ng-model="record.date" style="width:45% !important;"/></span>
                                                 </td>
@@ -221,47 +225,49 @@
                                                     <input type="text" style="width:60%; margin:0px !important;" ng-model="record.desc"></span>
                                                 </td>
                                                 <td class="tableRow textCenter" width="15%">
-                                                    <button ng-click="addRecord(record)">입력</button>
+                                                    <button ng-click="addOrModifyRecord(record)">입력/수정</button>
                                                 </td>
                                             </tr>
                                         </table>  
                                     </div>
-                                    <div class="box-content noblank box-text" ng-if="records.length > 0">
-                                        <table class="table table-bordered table-condensed">
-                                            <tr class="white" ng-repeat="r in records">
-                                                <td class="tableRow textCenter" width="5%">
-                                                    <input data-no-uniform="true" type="checkbox" ng-model="r.checked" ></span>
-                                                </td>
-                                                <td class="tableRow textCenter" width="20%">
-                                                    <b>처리 담당자<b/> <span ng-bind="r.adminuser"></span>
-                                                </td>
-                                                <td class="tableRow textCenter" width="20%">
-                                                    <b>처리 날짜</b>
-                                                    <input class="medium datepicker recordDates" type="text" ng-model="r.date" style="width:45% !important;" readonly ng-show="!r.mod"/>
-                                                    <input class="medium datepicker recordDates" type="text" ng-model="r.date_copy" style="width:45% !important;"  ng-show="r.mod"/>
-                                                </td>
-                                                <td class="tableRow textCenter" width="40%">
-                                                    <b>특이사항</b>
-                                                    <input type="text" style="width:60% !important; margin:0px !important;" ng-model="r.desc" readonly ng-show="!r.mod"/>
-                                                    <input type="text" style="width:60% !important; margin:0px !important;" ng-model="r.desc_copy" ng-show="r.mod"/>
+                                    <div ng-show="record_edit">
+                                        <div class="box-content noblank box-text" ng-if="records.length > 0">
+                                            <table class="table table-bordered table-condensed">
+                                                <tr class="white" ng-repeat="r in records">
+                                                    <td class="tableRow textCenter" width="5%">
+                                                        <input data-no-uniform="true" type="checkbox" ng-model="r.checked" disabled ></span>
+                                                    </td>
+                                                    <td class="tableRow textCenter" width="15%">
+                                                        <b>처리 담당자<b/> <span ng-bind="r.adminuser"></span>
+                                                    </td>
+                                                    <td class="tableRow textCenter" width="25%">
+                                                        <b>처리 날짜</b>
+                                                        <input class="medium datepicker recordDates" type="text" ng-model="r.date" style="width:45% !important;" readonly ng-show="!r.mod"/>
+                                                        <input class="medium datepicker recordDates" type="text" ng-model="r.date_copy" style="width:45% !important;"  ng-show="r.mod"/>
+                                                    </td>
+                                                    <td class="tableRow textCenter" width="40%">
+                                                        <b>특이사항</b>
+                                                        <input type="text" style="width:60% !important; margin:0px !important;" ng-model="r.desc" readonly ng-show="!r.mod"/>
+                                                        <input type="text" style="width:60% !important; margin:0px !important;" ng-model="r.desc_copy" ng-show="r.mod"/>
 
-                                                </td>
-                                                <td class="tableRow textCenter" width="15%">
-                                                    <span ng-show="!r.mod">
-                                                        <button ng-click="removeRecord(r)">삭제</button>
-                                                        <button ng-click="r.desc_copy = r.desc; r.date_copy = r.date;r.mod = true">수정</button>
-                                                    </span>
-                                                    <span ng-show="r.mod">
-                                                        <button ng-click="r.mod = false; r.desc = r.desc_copy; r.date = r.date_copy;">완료</button>
-                                                        <button ng-click="r.mod = false">취소</button>
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </table>  
-                                    </div>
-                                    <div class="textCenter">
-                                        * 이 내용을 저장합니다. 
-                                        <button class="btn btn-small btn-inverse" ng-click="saveConfirm()">저장하기</button>
+                                                    </td>
+                                                    <td class="tableRow textCenter" width="15%">
+                                                        <span ng-show="!r.mod">
+                                                            <button ng-click="removeRecord(r)">삭제</button>
+                                                            <button ng-click="r.desc_copy = r.desc; r.date_copy = r.date;r.mod = true">수정</button>
+                                                        </span>
+                                                        <span ng-show="r.mod">
+                                                            <button ng-click="r.mod = false; r.desc = r.desc_copy; r.date = r.date_copy;">완료</button>
+                                                            <button ng-click="r.mod = false">취소</button>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </table>  
+                                        </div>
+                                        <div class="textCenter">
+                                            * 이 내용을 저장합니다. 
+                                            <button class="btn btn-small btn-inverse" ng-click="saveConfirm()">저장하기</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -1,4 +1,4 @@
-angular.module('yewooApp', [])
+angular.module('yewooApp', ['fcsa-number'])
     .config(['$httpProvider', function($httpProvider) {
         //var csrftoken = $.cookie('csrftoken');
         $httpProvider.defaults.xsrfCookieName = 'csrftoken';
@@ -61,6 +61,12 @@ angular.module('yewooApp', [])
 
             $http.post('/lease/leave/owner/save/' + $("#rid").val() + '/', item).success(function (data) {
                 s.isConfirmed = s.records.length > 0;
+
+                if (s.records.length > 0) {
+                    s.record.date = s.records[0].date;
+                    s.record.desc = s.records[0].desc;
+                }
+                s.record_edit = false;
                 alert("저장했습니다.");
             }).error(function() {
                 alert("서버와의 연결을 실패했습니다.");
@@ -226,6 +232,14 @@ angular.module('yewooApp', [])
 
         s.records = [];
 
+        s.addOrModifyRecord = function(cost) {
+            if (s.records.length == 0) {
+                s.addRecord(cost);
+            } else {
+            }
+            s.record_edit = true;
+        };
+
         s.addRecord = function(cost) {
             s.records.push({
                 type: cost.type,
@@ -239,6 +253,7 @@ angular.module('yewooApp', [])
                 adminuserid: cost.adminuserid,
                 checked: true
             });
+            s.mod = true;
 
             $timeout(function() {
                 $(".datepicker").datepicker({ dateFormat: "yy.mm.dd" });
