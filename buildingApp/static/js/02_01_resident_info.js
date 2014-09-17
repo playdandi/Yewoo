@@ -135,6 +135,7 @@ function SaveResidentInfo()
 	}
 
 	// 입주일은 지금 폼을 입력하는 그 달에만 가능하다.
+	/*
 	var date = new Date();
 	mm = Number(date.getMonth() + 1);
 	yy = Number(date.getFullYear());
@@ -145,6 +146,7 @@ function SaveResidentInfo()
 		$('#inDate').focus();
 		return;
 	}
+	*/
 	
 
 	if (confirm('저장하시겠습니까? (미리보기로 꼭 확인해주세요)'))
