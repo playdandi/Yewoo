@@ -1,4 +1,4 @@
-angular.module('yewooApp', [])
+angular.module('yewooApp', ['fcsa-number'])
     .config(['$httpProvider', function($httpProvider) {
         //var csrftoken = $.cookie('csrftoken');
         $httpProvider.defaults.xsrfCookieName = 'csrftoken';
@@ -483,30 +483,24 @@ angular.module('yewooApp', [])
         s.updateUnpaid = function () {
             s.fee = _.reduce(s.feeCosts, function (num, feeCost) {
                 var val = (feeCost.checked ? feeCost.amount : 0);
-                if (feeCost.type.isReturn)
-                    return num - val;
-                else
-                    return num + val;
+                //if (feeCost.type.isReturn)
+                //   return num - val;
+                //else
+                return num + parseInt(val);
             }, 0);
 
             s.sumOfExtraCosts = _.reduce(s.extraCosts, function (num, extraCost) {
-                if (extraCost.type.isReturn)
-                    return num - extraCost.amount;
-                else
-                    return num + extraCost.amount;
+                return num + parseInt(extraCost.amount);
             }, 0);
             s.unpaidDirected = _.reduce(s.extraCosts, function (num, extraCost) {
                 var val = (extraCost.checked ? extraCost.amount : 0);
-                if (extraCost.type.isReturn)
-                    return num - val;
-                else
-                    return num + val;
+                return num + parseInt(val);
             }, 0);
             s.unpaidComputed = _.reduce(s.unpaidCases, function (num, unpaidCase) {
                 var val = (unpaidCase.checked ? unpaidCase.revisiedAmount : 0);
-                return num + val;
+                return num + parseInt(val);
             }, 0);
-            s.unpaid = s.unpaidComputed + s.unpaidDirected;
+            s.unpaid = s.unpaidComputed - s.unpaidDirected;
             s.updateTotalRefund();
         };
 

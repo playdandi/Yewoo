@@ -24,6 +24,7 @@
     <script src="{{ STATIC_URL }}underscorejs/underscore-min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.js"></script>
     <!--<script src="{{ STATIC_URL }}angularjs/angular.min.js"></script>-->
+    <script src="{{ STATIC_URL }}angularjs/fcsaNumber.min.js"></script>
 	<script src="{{ STATIC_URL }}js/leave_owner.angular.js"></script>
     <!-- end: angular scripts -->
 
@@ -215,7 +216,7 @@
 							<table class="table table-bordered table-condensed">
 								<tr>
 									<th width="75%" class="tableRow">
-                                        보증금&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input class="margin0" type="text" placeholder="보증금을 입력하세요." ng-model="deposit" ng-change="updateTotalRefund()" /> 원
+                                        보증금&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input  class="margin0" type="text" placeholder="보증금을 입력하세요." ng-model="deposit" ng-change="updateTotalRefund()" fcsa-number /> 원
                                         - 미납 요금 및 공과금 <input class="margin0" type="text" placeholder="금액을 입력하세요." format="number" ng-model="unpaid" ng-change="updateTotalRefund()" readonly/> 원
                                         - 시설관리비 <input class="margin0" type="text" placeholder="관리비를 입력하세요." format="number" ng-model="fee" ng-change="updateTotalRefund()" readonly/> 원
                                     </th>
@@ -337,7 +338,7 @@
                                                 </td>
                                                 <td class="tableRow medium textRight">
                                                     <span ng-show='edit_unpaid'>
-                                                        <input class="medium" type="text" ng-model="unpaidCase.revisiedAmount" ng-change="updateUnpaid()" ng-show='edit_unpaid' /> 원
+                                                        <input fcsa-number class="medium" type="text" ng-model="unpaidCase.revisiedAmount" ng-change="updateUnpaid()" ng-show='edit_unpaid' /> 원
                                                     </span>
                                                     <span ng-show='!edit_unpaid'>
                                                         <input class="medium" type="text" ng-model="unpaidCase.revisiedAmount" ng-change="updateUnpaid()" ng-show='!edit_unpaid'  format="number" readonly /> 원
@@ -465,11 +466,11 @@
                                                 </td>
                                                 <td class="tableRow medium textRight" width="50%">
                                                 <span ng-show="edit_extra">
-                                                    <span ng-show="extraCost.edit"><input ng-show="extraCost.edit" class="medium" type="number" ng-model="extraCost.amount_copy" /> 원</span>
-                                                    <span ng-show="!extraCost.edit"><input ng-show="!extraCost.edit" class="medium" type="text" ng-model="extraCost.amount" ng-change="updateUnpaid()" readonly /> 원</span>
+                                                    <span ng-show="extraCost.edit"><input fcsa-number ng-show="extraCost.edit" class="medium" type="text" ng-model="extraCost.amount_copy" /> 원</span>
+                                                    <span ng-show="!extraCost.edit"><input ng-show="!extraCost.edit" class="medium" type="text" ng-model="extraCost.amount" ng-change="updateUnpaid()" readonly format="number"/> 원</span>
                                                 </span>
                                                 <span ng-show="!edit_extra">
-                                                    <input class="medium" ng-show="!extraCost.edit" type="text" ng-model="extraCost.amount" ng-change="updateUnpaid()"  format="number" readonly/><input class="medium" ng-show="extraCost.edit" type="text" ng-model="extraCost.amount_copy" ng-change="updateUnpaid()" > 원</span><span ng-show="!extraCost.edit">
+                                                    <input class="medium" ng-show="!extraCost.edit" type="text" ng-model="extraCost.amount" format="number" ng-change="updateUnpaid()" readonly/><input class="medium" ng-show="extraCost.edit" type="text" ng-model="extraCost.amount_copy" ng-change="updateUnpaid()"  fcsa-number> 원</span><span ng-show="!extraCost.edit">
                                                         <button ng-click="modifyExtraCost(extraCost)" ng-show="edit_extra">수정</button>
                                                         <button ng-click="removeExtraCost(extraCost)" ng-show="edit_extra">삭제</button>
                                                     </span><span ng-show="extraCost.edit">
@@ -508,7 +509,7 @@
                                                     </span>
                                                 </td>
                                                 <td class="tableRow medium textRight" width="10%">
-                                                    <input class="medium" type="text" ng-model="extraCost.amount" /> 원
+                                                    <input fcsa-number class="medium" type="text" ng-model="extraCost.amount" /> 원
                                                 </td>
                                                 <td class="tableRow textCenter" width="10%">
                                                     <button ng-click="addExtraCost(extraCost)">추가</button>
@@ -606,7 +607,7 @@
                                                 </td>
                                                 <td class="tableRow medium textRight" width="50%">
                                                     <span ng-show="edit_fee">
-                                                        <span ng-show="!feeCost.edit"><input class="medium" type="text" ng-model="feeCost.amount" ng-change="updateUnpaid()" format="number" readonly/> 원</span><span ng-show="feeCost.edit"><input class="medium" type="number" ng-model="feeCost.amount_copy" ng-change="updateUnpaid()" /> 원</span></span><span ng-show="!edit_fee">
+                                                        <span ng-show="!feeCost.edit"><input class="medium" type="text" ng-model="feeCost.amount" ng-change="updateUnpaid()" format="number" readonly/> 원</span><span ng-show="feeCost.edit"><input fcsa-number class="medium" type="text" ng-model="feeCost.amount_copy" ng-change="updateUnpaid()" /> 원</span></span><span ng-show="!edit_fee">
                                                         <input class="medium" type="text" ng-model="feeCost.amount" ng-change="updateUnpaid()" format="number" readonly/> 원</span><span ng-show="!feeCost.edit">
                                                         <button ng-click="modifyFeeCost(feeCost)" ng-show="edit_fee">수정</button>
                                                         <button ng-click="removeFeeCost(feeCost)" ng-show="edit_fee">삭제</button>
@@ -640,7 +641,7 @@
                                                     <input type="text" style="width:95%; margin-bottom: 0px !important;" ng-model="feeCost.desc"></span>
                                                 </td>
                                                 <td class="tableRow medium textCenter" width="10%">
-                                                    <input class="medium" type="text" ng-model="feeCost.amount" /> 원
+                                                    <input fcsa-number class="medium" type="text" ng-model="feeCost.amount" /> 원
                                                 </td>
                                                 <td class="tableRow textCenter" width="10%">
                                                     <button ng-click="addFeeCost(feeCost)">추가</button>
