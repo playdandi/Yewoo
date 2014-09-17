@@ -1,4 +1,4 @@
-angular.module('yewooApp', ['fcsa-number'])
+angular.module('yewooApp', [])
     .config(['$httpProvider', function($httpProvider) {
         //var csrftoken = $.cookie('csrftoken');
         $httpProvider.defaults.xsrfCookieName = 'csrftoken';
