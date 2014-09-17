@@ -253,7 +253,7 @@ angular.module('yewooApp', [])
                 adminuserid: cost.adminuserid,
                 checked: true
             });
-            s.mod = true;
+            s.records[0].mod = true;
 
             $timeout(function() {
                 $(".datepicker").datepicker({ dateFormat: "yy.mm.dd" });
