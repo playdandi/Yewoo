@@ -117,7 +117,8 @@ urlpatterns = patterns('',
     url(r'^lease/bill/each/(?P<bid>\d+)/(?P<roomid>\d+)/manage/(?P<year>\d+)/(?P<month>\d+)/(?P<searchYear>\d+)/$', bill_each_manage_html),
 	url(r'^lease/bill/each/input/confirm/$', bill_each_input_confirm),
 	url(r'^lease/bill/each/manage/confirm/$', bill_each_manage_confirm),
-    url(r'^lease/bill/each/print/(?P<roomid>\d+)/$', bill_each_print_html),
+    url(r'^lease/bill/each/print/(?P<roomid>\d+)/(?P<y>\d+)/(?P<m>\d+)/$', bill_each_print_html),
+    url(r'^lease/bill/each/print/get/(?P<rid>\d+)/(?P<roomid>\d+)/(?P<y>\d+)/(?P<m>\d+)/$', get_bill_print_data),
 
 
     url(r'^manage/activate/$', activate_html), 

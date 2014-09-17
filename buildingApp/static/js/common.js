@@ -64,12 +64,12 @@ function getBaseUrl()
 	return location.host;
 }
 
-function getBuildingRooms(b_id, select_id)
+function getBuildingRooms(b_id, select_id, roomnum)
 {
-	doAjax_buildingRoom(b_id.replace('b', ''), select_id);
+	doAjax_buildingRoom(b_id.replace('b', ''), select_id, roomnum);
 }
 
-var doAjax_buildingRoom = function(id, select_id) {
+var doAjax_buildingRoom = function(id, select_id, roomnum) {
 	var csrftoken = $.cookie('csrftoken');
 	var postData = {};
 	postData['csrfmiddlewaretoken'] = csrftoken; 
@@ -87,7 +87,10 @@ var doAjax_buildingRoom = function(id, select_id) {
 			$('#'+select_id).append('<option value="">선택</option>');
 			for (i = 0; i < rooms.length; i++) {
 				roomKor = (rooms[i] < 0) ? 'B '+(-rooms[i]) : rooms[i];
-				$('#'+select_id).append('<option value="'+rooms[i]+'">' + roomKor+'호' + '</option>');
+				var html = '<option value="'+rooms[i]+'">' + roomKor+'호' + '</option>';
+				if (roomnum == rooms[i])
+				    html = '<option value="'+rooms[i]+'" selected>' + roomKor+'호' + '</option>';
+				$('#'+select_id).append(html);
 			}
 
 			$('#'+select_id).attr('disabled', false);

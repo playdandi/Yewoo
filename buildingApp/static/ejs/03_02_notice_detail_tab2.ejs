@@ -64,7 +64,7 @@
 		<td style="text-align:center"><%= data[i].noticeNumber %></td>
 		<td style="text-align:center">0회</td>
 		<% } %>
-		<td style="text-align:center"><button class="btn btn-mini" onclick="showBillModal();" disabled>확인</button></td>
+		<td style="text-align:center"><button class="btn btn-mini" onclick="Preview('<%= data[i].roomid %>', '<%= data[i].year %>', '<%= data[i].month %>');">확인</button></td>
 		<td style="text-align:center"><button class="btn btn-mini" onclick="showInputHistoryModal('<%= data[i].id %>', '<%= data[i].year %>.<%= data[i].month %>', '<%= data[i].noticeNumber %>');">확인</button></td>
 	</tr>
 	<% } %>

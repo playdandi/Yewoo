@@ -313,8 +313,6 @@
 								</div>
 
 
-
-								<!-------------------------------------------------------- -->
 								<!-- 2. 납부 내역 이력(확인) -->
 								<div class="tab-pane" id="paymentCheck_tab">
 									<!-- 최근 임대 정보 -->
@@ -564,16 +562,16 @@
 		
 		<script type="text/javascript" language="JavaScript">
 			$(document).ready(function(){
-				// tabmenu
-				$('#tabmenu li:eq({{ tab }}) a').tab('show');
-
-				// show sidebar
-				show_sidebar();
 				$('#tabmenu a').click(function(e) {
 					e.preventDefault();
 					$(this).tab('show');
 				});
-                $("#side-datepicker").datepicker();
+				// tab 자동이동
+				tabshow('{{ tab }}');
+                
+				// show sidebar
+				show_sidebar();
+				$("#side-datepicker").datepicker();
                 $("#side-datepicker2").datepicker();
                 $("#side-datepicker3").datepicker();
 

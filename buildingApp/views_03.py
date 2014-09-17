@@ -251,11 +251,16 @@ def get_lease_info(request):
         y = int(request.POST['year'])
         m = int(request.POST['month'])
         bid = int(request.POST['building_id'])
+        room_num = request.POST['roomnum']
         is_empty = request.POST['is_empty']
+
+        data = RoomInfo.objects.filter(building_id = bid)
+        if str(room_num) != '':
+            print('hi')
+            data = data.filter(roomnum = int(room_num))
         if is_empty == 'false':
-        	data = RoomInfo.objects.filter(building_id = bid, isOccupied = True)
-        else:
-        	data = RoomInfo.objects.filter(building_id = bid)
+            data = data.filter(isOccupied = True)
+
     	return toJSON(serialize_lease(data))
     return HttpResponse('NOT POST')
 
@@ -265,10 +270,15 @@ def get_notice_info(request):
         y = int(request.POST['year'])
         m = int(request.POST['month'])
         bid = int(request.POST['building_id'])
+        room_num = request.POST['roomnum']
         is_empty = request.POST['is_empty']
         #fromWhere = 0(03_01_notice), 1(03_02_check), 2(03_02_notice)
         fromWhere = int(request.POST['fromWhere'])
-    	data = EachMonthInfo.objects.filter(year = y, month = m, building = bid).order_by('room', 'id')
+
+        data = EachMonthInfo.objects.filter(year = y, month = m, building = bid).order_by('room', 'id')
+        if str(room_num) != '':
+            data = data.filter(room = RoomInfo.objects.get(building_id = bid, roomnum = int(room_num)))
+
         if len(data) == 0:
             # create new data for new month
             import datetime
@@ -326,10 +336,12 @@ def get_notice_info(request):
                     emd.changedFee = 0
                     emd.save()
     	    data = EachMonthInfo.objects.filter(year = y, month = m, building = bid)
+
+        rooms = RoomInfo.objects.filter(building_id = bid)
+        if str(room_num) != '':
+            rooms = rooms.filter(roomnum = int(room_num))
         if is_empty == 'false':
-            rooms = RoomInfo.objects.filter(building_id = bid, isOccupied = True)
-        else:
-            rooms = RoomInfo.objects.filter(building_id = bid)
+            rooms = rooms.filter(isOccupied = True)
 
         return toJSON(serialize_notice(data, rooms, fromWhere, is_empty))
     return HttpResponse('NOT POST')
@@ -340,20 +352,30 @@ def get_egw_info(request):
         y = int(request.POST['year'])
         m = int(request.POST['month'])
         bid = int(request.POST['building_id'])
+        room_num = request.POST['roomnum']
+
         data = None
         if type == "E":
             data = ElectricityInfo.objects.filter(year = y, month = m, building = bid)
+            data = egw_info_filter(data, bid, room_num)
             return toJSON(serialize_electricity(data))
         elif type == "G":
             data = GasInfo.objects.filter(year = y, month = m, building = bid)
+            data = egw_info_filter(data, bid, room_num)
             return toJSON(serialize_gas(data))
         elif type == "W":
             data = WaterInfo.objects.filter(year = y, month = m, building = bid)
+            data = egw_info_filter(data, bid, room_num)
             return toJSON(serialize_water(data))
 
         return HttpResponse('NO Matched Type')
     return HttpResponse('NOT POST')
-        
+
+def egw_info_filter(data, bid, room_num):	
+    if str(room_num) != '':
+        res = RoomInfo.objects.get(building_id = bid, roomnum = int(room_num)).nowResident
+        data = data.filter(resident = res)
+    return data
 
 def prettyDate(date):
     return str(date.year) + '.' + str(date.month) + '.' + str(date.day)
@@ -440,12 +462,16 @@ def serialize_notice(result, rooms, fromWhere, is_empty):
                 data['buildingnum'] = res.resident.buildingName
                 data['roomnum'] = res.resident.buildingRoomNumber
                 data['name'] = res.resident.contractorName
+                data['roomid'] = int(RoomInfo.objects.get(nowResident = res.resident, building = res.building).id)
             else:
                 data['resident_id'] = None
                 data['buildingnum'] = ''
                 data['roomnum'] = ''
                 data['name'] = ''
+                data['roomid'] = ''
             data['yearmonth'] = str(res.year) + "/" + str(res.month)
+            data['year'] = int(res.year)
+            data['month'] = int(res.month)
             data['noticeNumber'] = res.noticeNumber
             data['lease'] = res.leaseMoney
             data['maintenance'] = res.maintenanceFee
@@ -936,6 +962,9 @@ def serialize_notice_input_detail(notice):
 
 def serialize_notice_detail_tab2Info(data, modifyData, bid, rid):
     serialized = []
+    roomid = ''
+    if bid != '' and rid != '':
+        roomid = int( RoomInfo.objects.get(building_id = int(bid), nowResident_id = int(rid)).id )
     # 기본 리스트
     for d in data:
         p = {}
@@ -976,6 +1005,7 @@ def serialize_notice_detail_tab2Info(data, modifyData, bid, rid):
             p['accumNumber'] = allPayments[0].accumNumber
         else:
             p['accumNumber'] = 0
+        p['roomid'] = roomid
         serialized.append(p)
     # 변동 수정 리스트
     for d in modifyData:
@@ -1316,7 +1346,12 @@ def payment_input_getinfo(request):
         bid = int(request.POST['building_id'])
         y = int(request.POST['year'])
         m = int(request.POST['month'])
+        room_num = request.POST['roomnum']
         data = PaymentInfo.objects.filter(building = bid, year = y, month = m).order_by('resident', '-id')
+        if str(room_num) != '':
+            res = RoomInfo.objects.get(building_id = bid, roomnum = int(room_num)).nowResident
+            data = data.filter(resident = res)
+
         return toJSON(serialize_payment(data, bid, y, m))
     return HttpResponse('NOT POST')
 

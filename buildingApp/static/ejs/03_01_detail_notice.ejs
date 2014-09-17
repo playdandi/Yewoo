@@ -62,7 +62,7 @@
 		<td style="text-align:center; background-color:red; color:white"><%= data[i].delayNumber %>회</td>
 		<td style="text-align:center; background-color:red; color:white"><%= data[i].accumNumber %>회</td>
 		<% } %>
-		<td style="text-align:center"><button class="btn btn-mini" disabled>확인</button></td>
+		<td style="text-align:center"><button class="btn btn-mini" onclick="Preview('<%= data[i].roomid %>', '<%= data[i].year %>', '<%= data[i].month %>');">확인</button></td>
 	</tr>
 	<% } %>
 </table>  

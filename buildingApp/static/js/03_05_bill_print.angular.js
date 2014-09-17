@@ -4,16 +4,11 @@ angular.module('yewooApp', [])
         $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     }])
     .controller('MainCtrl', function($scope, $timeout, $http) {
-
-			alert('hihi');
-
         var s = $scope;
-		console.log(s);
         var payments = [];
         var paymentDetails = [];
 
         // 미납요금 내역 가져오기
-
         function AdjustPaymentYM(nowym, y, m, type)
         {
             nowy = Number(nowym.split('.')[0].trim());
@@ -35,6 +30,7 @@ angular.module('yewooApp', [])
             return item;
         };
 
+		/*
         s.save = function() {
             var item = {
                 'payoffs' : _.map(s.moneyChanges, s.convert_to_items),
@@ -48,6 +44,7 @@ angular.module('yewooApp', [])
                 alert("서버와의 연결을 실패했습니다.");
             });
         };
+		*/
 
         var doAjaxAllList = function() {
             var postData = {};
@@ -64,6 +61,7 @@ angular.module('yewooApp', [])
                 url : '/lease/payment/detail/getAllInfo/',
                 data : postData,
                 success : function(result) {
+				/*
                     var today = Number(new Date().getDate());
                     if (result.length > 0) {
                         thisYear = result[0].year;
@@ -110,14 +108,6 @@ angular.module('yewooApp', [])
                     }
                     if (minym == '9999.12') minym = '없음';
                     if (maxym == '0.0') maxym = '없음';
-            
-                    /*
-                    [
-                        { checked: false, amount: 10000, month: "2014/03", time: 10, paidDate: new Date(), expectedDate: new Date(), revisiedAmount: 10000 },
-                        { checked: false, amount: 20000, month: "2013/03", time: 11, paidDate: new Date(), expectedDate: new Date(), revisiedAmount: 20000 },
-                        { checked: false, amount: 30000, month: "2012/03", time: 12, paidDate: new Date(), expectedDate: new Date(), revisiedAmount: 30000 }
-                    ]
-                    */
                     
                     var cases = [];
                     var lastPayment = null;
@@ -129,71 +119,100 @@ angular.module('yewooApp', [])
                         payment.revisiedAmount = payment.amountNoPay;
                         payment.expectedDate = new Date(payment.year, payment.month);
                         payment.isPaid = payment.payStatus == -1 || (i > 0 && payment.number == payments[i - 1].number);
-                        
                         cases.push(payment);
                     }
+					*/
 
-                    s.$apply(function () {
-        $http.get('/lease/leave/owner/get/' + $("#rid").val() + '/').success(function (data) {
-            function convert_to_date(str) {
-                if (!str) return undefined;
-                return new Date(parseInt(str.slice(0, 4)), parseInt(str.slice(5, 7)) - 1, parseInt(str.slice(8, 10)));
-            }
+                    s.$apply( function() {
+						$http.get('/lease/bill/each/print/get/' + $("#rid").val()+'/'+$('#roomid').val()+'/'+$('#thisyear').val()+'/'+$('#thismonth').val()+'/').success(function (data) {
+							function convert_to_date(str) {
+								if (!str) return undefined;
+								return new Date(parseInt(str.slice(0, 4)), parseInt(str.slice(5, 7)) - 1, parseInt(str.slice(8, 10)));
+							}
+							function get_due_date(y, m, d, way) {
+								var day = new Array(-1, 31,28,31,30,31, 30,31,31,30,31, 30,31);
+								if (Number(y) % 4 == 0)
+									day[2] = 29;
 
-            s.resident = data.resident.fields;
-            s.building = data.building.fields;
-            s.data.buildingName = data.resident.fields.buildingNameKor;
-            s.data.roomNumber = data.resident.fields.roomNumber;
-            s.data.name = data.resident.fields.residentName;
-            s.data.rentStart = convert_to_date(data.resident.fields.inDate);
-            s.data.rentEnd = convert_to_date(data.resident.fields.outDate);
-            s.data.leaved = convert_to_date(data.resident.fields.realOutDate);
-            s.data.leavedReason = data.resident.fields.outReason;
-            s.data.rentMethod = data.resident.fields.leasePayWay;
-            s.data.deposit = data.fields.deposit;
-            s.data.rent = data.fields.rent;
-            s.data.returnMoney = data.fields.returnMoney;
-            s.data.unpaid = data.fields.unpaid;
-            s.data.unpaidCollected = data.fields.unpaidCollected;
-            s.data.unpaidAdded = data.fields.unpaidAdded;
-            s.data.fee = data.fields.fee;
-            s.data.bank = data.fields.bankName;
-            s.data.account = data.fields.accountNumber;
-            s.data.accountHolder = data.fields.accountHolder;
-            s.data.feeComment = data.fields.feeComment;
-            s.data.unpaidComment = data.fields.unpaidComment;
-            s.data.unpaidList = _.map(data.unpaiditems, function(i) { if (i.fields.payDate) i.fields.payDate = new Date(i.fields.payDate); return i.fields; });
-            s.data.unpaidAddedList = _.map(data.unpaidaddeditems, function(i) { return i.fields; });
-            s.data.feeList = _.map(data.feeitems, function(i) { return i.fields; });
-            s.data.feeGroupList = _.groupBy(s.data.feeList, 'title');
-            s.data.feeGroupList = _.map(s.data.feeGroupList, function (i) { return { title: i[0].title, amount: _.reduce(i, function (sum, j) { return sum + j.amount;}, 0) }; });
-        
-            s.data.unpaidAddedList = _.sortBy(s.data.unpaidAddedList, function(i) { if (i.title.lastIndexOf("미납", 0) === 0) { return 0; } else { return 1; } });
+								// ex) 매월 31일인데 30이나 28일 달일 때
+								if (Number(d) > day[Number(m)])
+								{
+									d = day[Number(m)];
+									return String(y) + '년 ' + String(m) + '월 ' + String(d) + '일까지';
+								}
 
-            if (s.data.feeList.length < 5) {
-                var len = 5 - s.data.feeList.length;
-                for (var i = 0; i < len; i++) { 
-                    s.data.feeList.push({nodata:true});
-                }
-            }
+								// 선불 : 해당일 , 후불 : 바로 전날
+								if (way == '후불') {
+									d = Number(d)-1;
+									if (d <= 0) {
+										m = Number(m)-1;
+										d = day[m];
+										if (m <= 0) {
+											y = Number(y)-1;
+											m = 12;
+											d = day[m];
+										}
+									}
+								}
+							
+								return String(y) + '년 ' + String(m) + '월 ' + String(d) + '일까지';
+							}
 
-            if (s.data.unpaidList.length == 0) {
-                s.data.unpaidList = cases;
-            }
+							s.resident = data.resident.fields;
+							s.building = data.building.fields;
+							s.thisyear = data.thisyear;
+							s.thismonth = data.thismonth;
+							s.dueDate = get_due_date(data.thisyear, data.thismonth, data.dueDate, s.resident.leasePayWay);
+							s.nextmonth = data.nextmonth;
+							s.electricity_period = data.e_period;
+							s.gas_period = data.g_period;
+							s.water_period = data.w_period;
+							s.em = data.em.fields;
+							s.electricity = data.electricity.fields;
+							s.gas = data.gas.fields;
+							s.water = data.water.fields;
+							s.em.electricityFee = Number(data.electricity.fields.totalFee) + Number(data.em.fields.electricityFee);
+							s.em.gasFee = Number(data.gas.fields.totalFee) + Number(data.em.fields.gasFee);
+							s.em.waterFee = Number(data.water.fields.totalFee) + Number(data.em.fields.waterFee);
+
+							//delayFee = 
+							//totalFee = 
+
+							s.notice_each = _.map(data.notice_each, function(i) { return i.fields; });
+							s.notice_total = _.map(data.notice_total, function(i) { return i.fields; });
+							s.payment = _.map(data.payment, function(i) { return i.fields; });
+							s.totalFee = data.totalFee;
+
+							//console.log(s);
+
+							/*
+							s.data.unpaidList = _.map(data.unpaiditems, function(i) { if (i.fields.payDate) i.fields.payDate = new Date(i.fields.payDate); return i.fields; });
+							s.data.unpaidAddedList = _.map(data.unpaidaddeditems, function(i) { return i.fields; });
+							s.data.feeList = _.map(data.feeitems, function(i) { return i.fields; });
+							s.data.feeGroupList = _.groupBy(s.data.feeList, 'title');
+							s.data.feeGroupList = _.map(s.data.feeGroupList, function (i) { return { title: i[0].title, amount: _.reduce(i, function (sum, j) { return sum + j.amount;}, 0) }; });
+						
+							s.data.unpaidAddedList = _.sortBy(s.data.unpaidAddedList, function(i) { if (i.title.lastIndexOf("미납", 0) === 0) { return 0; } else { return 1; } });
+
+							if (s.data.feeList.length < 5) {
+								var len = 5 - s.data.feeList.length;
+								for (var i = 0; i < len; i++) { 
+									s.data.feeList.push({nodata:true});
+								}
+							}
+							if (s.data.unpaidList.length == 0) {
+								s.data.unpaidList = cases;
+							}
+							*/
                             if (!!($("#print").val())) {
                                 setTimeout(function () {
                                     window.print();
                                 }, 1000);
                             }           
-        }).error(function() {
-            alert("서버와의 연결을 실패했습니다.");
-        });
-                
+						}).error(function() {
+							alert("정보가 일부 부족합니다.");
+						});
                     });
-                    
-                    // 납부 상세 리스트 보여주기
-                    //var template = new EJS({url : '/static/ejs/03_03_payment_detail_tab1_list.ejs'}).render({'data' : payments, 'minym' : minym, 'maxym' : maxym, 'payCnt' : payCnt, 'totalAmountNoPay' : totalAmountNoPay});
-                    //$('#payment_list').html(template);
                 },
 
                 error : function(msg) {
@@ -251,14 +270,14 @@ angular.module('yewooApp', [])
             contact: {
                 addr: "서울시 강서구 등촌동 639-59번지 벨라루체1",
                 infoList: [
-                    { title: "매니저", value: "한지환" },
-                    { title: "연락처", value: "02-882-6766" },
-                    { title: "임대관리", value: "02-3661-0880" },
-                    { title: "경비관리", value: "02-8747-4397" },
-                    { title: "시설관리", value: "02-3661-0880" },
-                    { title: "본사관리", value: "02-888-0005" },
-                    { title: "임대관리", value: "02-3661-2772" },
-                    { title: "본사관리", value: "02-3661-2772" }
+                    { title: "담당매니저", value: "한지환" },
+                    { title: "담당연락처", value: "02-882-6766" },
+                    { title: "임대관리팀", value: "02-3661-0880" },
+                    { title: "경비관리팀", value: "02-8747-4397" },
+                    { title: "시설관리팀", value: "02-3661-0880" },
+                    { title: "본사관리팀", value: "02-888-0005" },
+                    { title: "임대관리팀", value: "02-3661-2772" },
+                    { title: "본사관리팀", value: "02-3661-2772" }
                 ],
                 email: "yewoo21@hanmail.net",
                 doc: {

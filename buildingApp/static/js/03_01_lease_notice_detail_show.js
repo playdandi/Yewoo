@@ -1,18 +1,12 @@
-/*
-function getContents()
+
+function tabshow(tab)
 {
-	// Javascript to enable link to tab
-	var url = document.location.toString();
-	if (url.match('#')) {
-	    $('.nav-tabs a[href=#'+url.split('#')[1]+']').tab('show') ;
-	} 
-	
-	// Change hash for page-reload
-	$('.nav-tabs a').on('shown', function (e) {
-	    window.location.hash = e.target.hash;
-	})
+	var tabname = '';
+	if (tab == '0') tabname = 'leaseNotice_tab';
+	else if (tab == '1') tabname = 'noticeDetail_tab';
+	else if (tab == '2') tabname = 'paymentDetail_tab';
+	$('.nav-tabs a[href=#' + tabname + ']').tab('show');
 }
-*/
 
 var curRoomNum, curBid, curRid;
 function setCurInfo(rm, bid, rid)
@@ -22,6 +16,11 @@ function setCurInfo(rm, bid, rid)
 	curRid = rid;
 }
 
+// 고지서 확인
+function Preview(roomid, y, m)
+{
+    window.open("/lease/bill/each/print/" + roomid + '/' + y + '/' + m);
+}
 
 function getContentsLease()
 {

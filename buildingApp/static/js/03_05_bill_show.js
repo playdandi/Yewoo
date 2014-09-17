@@ -1,3 +1,8 @@
+function Preview(roomid, y, m)
+{
+    window.open("/lease/bill/each/print/" + roomid + '/' + y + '/' + m);
+}
+
 function showLeaseInfo(isForBillMove)
 {
 	var year, month, building_id, room_num, type, is_empty;

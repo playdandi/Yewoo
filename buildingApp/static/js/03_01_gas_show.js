@@ -60,18 +60,19 @@ function showLeaseInfo()
 }
 
 
-function getContents()
+function getContents(roomnum)
 {
-	doAjaxContents_G();
+	doAjaxContents_G(roomnum);
 }
 var EGW_G;
-var doAjaxContents_G = function() {
+var doAjaxContents_G = function(roomnum) {
 	var postData = {};
 	var csrftoken = $.cookie('csrftoken');
 	postData['csrfmiddlewaretoken'] = csrftoken; 
 	postData['building_id'] = Number($('#search_building').val().replace('b', ''));
 	postData['year'] = $('#search_year').val().trim();
 	postData['month'] = $('#search_month').val().trim();
+	postData['roomnum'] = roomnum;
 	postData['is_empty'] = $('#search_isEmpty').parent().hasClass('checked');
 	postData['type'] = 'G';
 

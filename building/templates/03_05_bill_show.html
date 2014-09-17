@@ -244,7 +244,7 @@
 									<td style="text-align:center">{% if a.numOfNotice == 0 %}.{% else %}총 {{ a.numOfNotice }}개의 안내사항이 입력되어 있습니다.{% endif %}</td>
 									<td style="text-align:center">{% if a.numOfNotice == 0 %}입력없음{% else %}입력완료{% endif %}</td>
 									<td style="text-align:center"><button class="btn btn-small btn-block" onclick="Input('total', '{{ a.bid }}', '', '{{ a.year }}', '{{ a.month }}');">입력하기</button></td>
-									<td style="text-align:center"><button class="btn btn-small btn-block">미리보기</button></td>
+									<td style="text-align:center"><button class="btn btn-small btn-block" disabled>미리보기</button></td>
 								</tr>
                                 {% endfor %}
 							</table>
@@ -276,7 +276,7 @@
 									<td style="text-align:center">{% if e.numOfNotice == 0 %}.{% else %}총 {{ e.numOfNotice }}개의 안내사항이 입력되어 있습니다.{% endif %}</td>
 									<td style="text-align:center">{% if e.numOfNotice == 0 %}입력없음{% else %}입력완료{% endif %}</td>
 									<td style="text-align:center"><button class="btn btn-small btn-block" onclick="Input('each', '{{ e.bid }}', '{{ e.roomid }}', '{{ e.year }}', '{{ e.month }}');">입력하기</button></td>
-									<td style="text-align:center"><button class="btn btn-small btn-block">미리보기</button></td>
+									<td style="text-align:center"><button class="btn btn-small btn-block" onclick="Preview('{{ e.roomid }}', '{{ e.year }}', '{{ e.month }}');">미리보기</button></td>
 								</tr>
                                 {% endfor %}
 							</table>

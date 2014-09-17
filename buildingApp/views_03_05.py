@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
-
+import base64
+import mimetypes
+import json
+import os
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext, loader
 from django.middleware.csrf import get_token
 from django.db.models import Q
-import json
 from buildingApp.models import *
 from django.conf import settings
 from django.utils import simplejson
-import os
+from django.core import serializers
 from django.contrib.auth.decorators import permission_required
 
-################################################
-#################### Chap.3 ####################
-################################################
+mimetypes.init()
 
 def setPostData(request, typestr = ''):
     param = {}
@@ -610,12 +610,17 @@ def bill_each_manage_confirm(request):
     return HttpResponse('NOT POST')
 
 @permission_required('buildingApp.lease_bill', login_url='/login/')
-def bill_each_print_html(request, roomid):
-    return render(request, '03_05_bill_print.html', print_info(request, get_resident_info(roomid)))
+def bill_each_print_html(request, roomid, y, m):
+	ri = RoomInfo.objects.get(id = int(roomid))
+	resident_id = int(ri.nowResident_id)
+	return render(request, '03_05_bill_print.html', print_info(request, get_resident_info(resident_id), roomid, y, m))
 
-def print_info(request, dic):
+def print_info(request, dic, roomid, y, m):
     if request.GET.get("print", None):
-       dic['print'] = True 
+       dic['print'] = True
+    dic['roomid'] = roomid
+    dic['thisyear'] = y
+    dic['thismonth'] = m
     return dic
 
 def get_resident_info(uid):
@@ -683,3 +688,123 @@ def get_resident_info(uid):
                 rooms.append({'num' : int(str(r.floor)+zero+str(n)), 'kor' : 'B '+str(-r.floor)+zero+str(n)})
 
     return {'result' : result, 'rooms' : rooms, 'building_name_id' : building_name_id, 'uid' : uid, 'range' : range(1, 32)}
+
+
+def get_or_create(model, **kwargs):
+    return model.objects.get_or_create(**kwargs)[0]
+
+def jsonResult(result):
+    return HttpResponse(convert_to_json(result), mimetype='application/json')
+
+def convert_to_json(result):
+    if type(result) == unicode or type(result) == str:
+        return result
+    elif type(result) == list:
+        return serializers.serialize('json', result)
+    elif type(result) == dict:
+        return json.dumps(result)
+    else:
+        return serializers.serialize('json', [result])[1:-1]
+
+def convert_to_dict(val):
+    return json.loads(convert_to_json(val))
+
+# 프린트할 때 필요한 데이터 가져오기
+def get_bill_print_data(request, rid, roomid, y, m):
+#item = get_or_create(LeaveOwner, resident_id = rid)
+    resident = ResidentInfo.objects.get(id = int(rid))
+    building = BuildingInfo.objects.get(id = int(resident.buildingName))
+    em = EachMonthInfo.objects.get(resident_id = int(rid), room_id = int(roomid), year = int(y), month = int(m))
+    electricity = ElectricityInfo.objects.get(resident_id = int(rid), year = int(y), month = int(m))
+    gas = GasInfo.objects.get(resident_id = int(rid), year = int(y), month = int(m))
+    water = WaterInfo.objects.get(resident_id = int(rid), year = int(y), month = int(m))
+    electricity_period = ''
+    gas_period = ''
+    water_period = ''
+    try:
+        electricity_period = SettingBill.objects.get(building_id = int(building.id), type = 'electricity', month = int(m))
+    except:
+        pass
+    try:
+        gas_period = SettingBill.objects.get(building_id = int(building.id), type = 'gas', month = int(m))
+    except:
+        pass
+    try:
+        water_period = SettingBill.objects.get(building_id = int(building.id), type = 'water', month = int(m))
+    except:
+        pass
+    notice_each = StandardBill.objects.filter(type = 2, year = int(y), month = int(m), room_id = int(roomid))
+    notice_total = StandardBill.objects.filter(type = 1, year = int(y), month = int(m), building_id = int(building.id))
+
+    payment = PaymentInfo.objects.filter(building_id = int(building.id), resident_id = int(rid), year__gte = int(y)-1).order_by('-year', '-month', '-id')
+    payment_data = []
+    for i in range(len(payment)):
+        if i > 0 and payment[i].year == payment[i-1].year and payment[i].month == payment[i-1].month:
+            continue
+        payment_data.append(payment[i])
+
+    result = {}
+    result['thisyear'] = int(y)
+    result['thismonth'] = int(m)
+    result['nextmonth'] = int(m)+1
+    result['dueDate'] = str(resident.inDate).split('-')[2].strip()
+    if int(m) == 12:
+        result['nextmonth'] = int(1)
+    result['resident'] = convert_to_dict(resident)
+    result['building'] = convert_to_dict(building)
+    result['em'] = convert_to_dict(em)
+    result['electricity'] = convert_to_dict(electricity)
+    result['gas'] = convert_to_dict(gas)
+    result['water'] = convert_to_dict(water)
+    result['e_period'] = ''
+    result['g_period'] = ''
+    result['w_period'] = ''
+    if electricity_period != '':
+        result['e_period'] = str(electricity_period.startDate).replace('-','.') + ' ~ ' + str(electricity_period.endDate).replace('-','.')
+	if gas_period != '':
+		result['g_period'] = str(gas_period.startDate).replace('-','.') + ' ~ ' + str(gas_period.endDate).replace('-','.')
+    if water_period != '':
+		result['w_period'] = str(water_period.startDate).replace('-','.') + ' ~ ' + str(water_period.endDate).replace('-','.')
+    result['notice_each'] = convert_to_dict( list(notice_each) )
+    result['notice_total'] = convert_to_dict( list(notice_total) )
+    result['payment'] = convert_to_dict( list(payment_data) )
+    # 총합에 연체료 들어가야 함...
+    result['totalFee'] = int(em.totalFee) + int(electricity.totalFee) + int(gas.totalFee) + int(water.totalFee)
+
+    '''
+    resident = item.resident
+    resident_info = get_resident_info(rid)
+    building = BuildingInfo.objects.all()
+    building_name_id = []
+    for b in building:
+        if resident.buildingName == b.id:
+            building = b
+
+    unpaiditems = list(item.leaveunpaiditem_set.all())
+    payoffs = list(item.leavepayoff_set.all())
+    reads = list(item.leaveread_set.all())
+    unpaidaddeditems = list(item.leaveunpaidaddeditem_set.all())
+    feeitems = list(item.leavefeeitem_set.all())
+    confirms = list(item.leaveconfirm_set.all())
+
+    result = convert_to_dict(item)
+    result['building'] = convert_to_dict(building)
+    result['resident'] = convert_to_dict(resident)
+    result['resident']['fields']['buildingNameKor'] = resident_info['result'].buildingNameKor;
+    result['resident']['fields']['roomNumber'] = resident_info['result'].roomNumber;
+
+    result['unpaiditems'] = convert_to_dict(unpaiditems)
+    result['payoffs'] = convert_to_dict(payoffs)
+    result['reads'] = convert_to_dict(reads)
+    result['unpaidaddeditems'] = convert_to_dict(unpaidaddeditems)
+    result['feeitems'] = convert_to_dict(feeitems)
+    result['confirms'] = convert_to_dict(confirms)
+    '''
+    return jsonResult(result)
+
+
+
+
+
+
+

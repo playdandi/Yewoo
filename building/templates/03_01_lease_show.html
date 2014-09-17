@@ -446,7 +446,7 @@
                 $("#side-datepicker3").datepicker();
 
 				// 건물을 하나 선택할 때, 그 건물에 속한 '호수' 전체 불러오기
-				getBuildingRooms('b{{ min_building_id }}', 'search_room_num');
+				getBuildingRooms('b{{ search_building_id }}', 'search_room_num', '{{ search_room_num }}');
 				$('#search_building').change(function() {
 					getBuildingRooms($(this).val(), 'search_room_num');
 				});
@@ -471,7 +471,7 @@
 				});
 
 				// ejs template 불러오기
-				getContents();
+				getContents('{{ search_room_num }}');
 
 				// radio btn 클릭 시 동작
 				$('input[name=radioN]').change(function() {
