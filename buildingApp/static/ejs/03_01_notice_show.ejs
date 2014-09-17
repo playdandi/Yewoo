@@ -69,7 +69,7 @@
 		<td style="text-align:center"><%= data[i].noticeNumber %></td>
 		<td style="text-align:center">0회</td>
 		<% } %>
-		<td style="text-align:center"><button class="btn btn-small" onclick="" disabled>확인</button></td>
+		<td style="text-align:center"><button class="btn btn-small" onclick="Preview('<%= data[i].roomid %>', '<%= data[i].year %>', '<%= data[i].month %>');">확인</button></td>
 		<td style="text-align:center"><button class="btn btn-small" onclick="showDetail('<%= data[i].building_id %>', '<%= data[i].resident_id %>');">확인</button></td>
 	</tr>
 	<% } %>

@@ -96,19 +96,25 @@ function setCurInfo()
 }
 
 
-
-function getContents()
+// 고지서 미리보기
+function Preview(roomid, y, m)
 {
-	doAjaxNoticeInfo();
+    window.open("/lease/bill/each/print/" + roomid + '/' + y + '/' + m);
+}
+
+function getContents(roomnum)
+{
+	doAjaxNoticeInfo(roomnum);
 }
 var noticeList;
-var doAjaxNoticeInfo = function() {
+var doAjaxNoticeInfo = function(roomnum) {
 	var postData = {};
 	var csrftoken = $.cookie('csrftoken');
 	postData['csrfmiddlewaretoken'] = csrftoken; 
 	postData['building_id'] = curBid;
 	postData['year'] = curYear;
 	postData['month'] = curMonth;
+	postData['roomnum'] = roomnum;
 	postData['is_empty'] = $('#search_isEmpty')[0].checked;
 	postData['fromWhere'] = 2;
 

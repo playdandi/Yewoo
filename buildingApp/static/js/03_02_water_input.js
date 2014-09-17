@@ -77,18 +77,19 @@ function setCurInfo()
 	curMonth = $('#search_month').val();
 }
 
-function getContents()
+function getContents(roomnum)
 {
-	doAjaxContents_W();
+	doAjaxContents_W(roomnum);
 }
 var EGW_W;
-var doAjaxContents_W = function() {
+var doAjaxContents_W = function(roomnum) {
 	var postData = {};
 	var csrftoken = $.cookie('csrftoken');
 	postData['csrfmiddlewaretoken'] = csrftoken; 
 	postData['building_id'] = curBid;
 	postData['year'] = curYear;
 	postData['month'] = curMonth;
+	postData['roomnum'] = roomnum;
 	postData['is_empty'] = $('#search_isEmpty').parent().hasClass('checked');
 	postData['type'] = 'W';
 

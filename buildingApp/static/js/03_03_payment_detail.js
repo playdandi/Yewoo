@@ -1,5 +1,14 @@
 var bid, rid, curYear, curMonth;
 var roomNum, leaseNumberTotal;
+
+function tabshow(tab)
+{
+	var tabname = '';
+	if (tab == '0') tabname = 'paymentInput_tab';
+	else if (tab == '1') tabname = 'paymentCheck_tab';
+	$('.nav-tabs a[href=#' + tabname + ']').tab('show');
+}
+
 function setData(building_id, resident_id, roomnum, lnt, year, month)
 {
 	bid = Number(building_id.trim());
