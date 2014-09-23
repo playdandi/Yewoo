@@ -153,6 +153,9 @@
                             <span ng-bind="resident.inDate | date:'yyyyMMdd'"></span> ~ <span ng-bind="resident.outDate | date:'yyyyMMdd'"></span> (<span ng-bind="resident.leasePayWay"></span>제)
                         </td>
                     </tr>
+					<tr>
+						<td colspan="3" style="line-height:110%" style="font-size:5px">예우 입주민 생활지원센터입니다. <strong>임대료, 관리비, 공과금, 미납금액</strong> 내역을 확인하시고 납부해 주시기 바랍니다.</td>
+					</tr>
                 </table>
 				<br />
 
@@ -169,6 +172,27 @@
                         </td>
                     </tr>
                 </table>
+				<br />
+
+                <table class="fullbox table-content textCenter lsSmall">
+					<tr class="whitecell noborderright">
+						<td class="noborderright">
+					입금계좌 <span ng-bind="building.bankName"></span> : <span ng-bind="building.bankAccount"></span>&nbsp;&nbsp;&nbsp;예금주 : <span ng-bind="building.bankAccountHolder"></span>
+						</td>
+					</tr>
+				</table>
+				
+					<!--
+				<div class="lsSmall textCenter" style="botder:1">
+					입금계좌 <span ng-bind="building.bankName"></span> : <span ng-bind="building.bankAccount"></span>&nbsp;&nbsp;&nbsp;예금주 : <span ng-bind="building.bankAccountHolder"></span>
+                    <tr>
+                        <td class="paddingLeft"><span class="bold">입금계좌</span></td>
+						<td colspan="3" class="textRight paddingRight">
+							<span ng-bind="building.bankName"></span> <span ng-bind="building.bankAccount"></span>&nbsp;&nbsp;예금주 : <span ng-bind="building.bankAccountHolder"></span>
+                        </td>
+                    </tr>
+				</div>
+					-->
 				<div class="bold">
 					+ <span class="bold" ng-bind="thismonth | number:0"></span>월 고지
 				</div>
@@ -179,7 +203,7 @@
                         <col width="20%"/>
                         <col width="30%"/>
                     </colgroup>
-					<tr class="graycell"> <!-- 임대료 및 관리비/(n+1)월 선불 -->
+					<tr class="graycell">
                         <td colspan="4" class="bold paddingLeft">임대료 및 관리비/<span class="bold" ng-bind="nextmonth | number:0"></span>월 선불</td>
                     </tr>
                     <tr>
@@ -194,8 +218,12 @@
                         <td colspan="3" class="bold paddingMoreLeft">주차비</td>
                         <td class="textRight paddingRight"><span ng-bind="em.parkingFee | number:0"></span>원</td>
                     </tr>
+                    <tr>
+                        <td colspan="3" class="bold paddingMoreLeft">부가세</td>
+                        <td class="textRight paddingRight"><span ng-bind="em.surtax | number:0"></span>원</td>
+                    </tr>
                     <tr class="graycell"> <!-- 공과금/n월분 -->
-                        <td colspan="4" class="bold paddingLeft">공과금/<span class="bold" ng-bind="data.month | number:0"></span>월분</td>
+                        <td colspan="4" class="bold paddingLeft">공과금/<span class="bold" ng-bind="thismonth | number:0"></span>월분</td>
                     </tr>
                     <tr>
                         <td colspan="3" class="bold paddingMoreLeft">전기</td>
@@ -210,62 +238,63 @@
                         <td class="textRight paddingRight"><span ng-bind="em.waterFee | number:0"></span>원</td>
                     </tr>
                     <tr>
-                        <td colspan="3" class="bold paddingMoreLeft">연체료</td>
-                        <td class="textRight paddingRight"><span ng-bind="delayFee | number:0"></span>원</td>
-                    </tr>
-                    <tr>
                         <td colspan="3" class="bold paddingMoreLeft">기타 비용/시설 유지 보수비</td>
                         <td class="textRight paddingRight"><span ng-bind="em.etcFee | number:0"></span>원</td>
                     </tr>
                     <tr class="graycell"> <!-- 총 금액 -->
-                        <td colspan="3" class="bold paddingSmallLeft">총 금액</td>
+                        <td colspan="3" class="bold paddingSmallLeft"><span ng-bind="thismonth | number:0"></span>월 총 금액</td>
                         <td class="bold textRight paddingRight"><span ng-bind="totalFee | number:0"></span>원</td>
                     </tr>
-                    <tr>
-                        <td class="paddingLeft"><span class="bold">입금계좌</span></td>
-						<td colspan="3" class="textRight paddingRight">
-							<span ng-bind="building.bankName"></span> <span ng-bind="building.bankAccount"></span>&nbsp;&nbsp;예금주 : <span ng-bind="building.bankAccountHolder"></span>
-                        </td>
-                    </tr>
+					<!--
                     <tr>
                         <td class="graycell bold paddingLeft">납기 내</td>
 						<td class="textCenter"><span ng-bind="totalFee | number:0"></span>원</td>
                         <td class="graycell bold paddingLeft">납기 후</td>
 						<td class="textCenter"></td>
 					</tr>
-					<tr>
-						<td colspan="4" style="line-height:110%">예우 입주민 생활지원센터입니다.<br />임대료, 관리비, 공과금 내역을 확인하시고 납부해 주시기 바랍니다.</td>
-					</tr>
+					-->
                 </table>
 				<br />
-				<!-- 납부 정보 -->
-				<div class="bold">
-					+ 납부정보
-				</div>
-				<table class="fullbox table-content textCenter contactbox lsSmall">
+				
+				<table class="fullbox table-content">
+                    <colgroup>
+                        <col width="40%"/>
+                        <col width="60%"/>
+                    </colgroup>
+					<tr class="graycell">
+						<td class="paddingSmallLeft">미납 금액</td>
+                        <td class="textRight paddingRight"><span ng-bind="totalNoPay | number:0"></span>원</td>
+					</tr>
+					<tr class="smallgraycell">
+						<td class="paddingLeft" colspan="2">미납<span class="bold" ng-bind="totalNoPayMonth"></span>개월</td>
+					</tr>
+				</table>
+				<table class="fullbox table-content textCenter contactbox">
 					<tr class="graycell bold itemcell">
-						<td width="17%">년도/월</td>
-						<td width="8%">회차</td>
-						<td width="16%">납부액</td>
-						<td width="16%">입금액</td>
-						<td width="20%">입금일</td>
-						<td width="15%">미납액</td>
-						<td width="8%" class="noborderright">처리</td>
+						<td width="18%">년도/월</td>
+						<!--<td width="8%">회차</td>-->
+						<td width="20%">납부액</td>
+						<td width="20%">입금액</td>
+						<td width="22%">입금일</td>
+						<td width="20%" class="noborderright">미납액</td>
+						<!--<td width="8%" class="noborderright">처리</td>-->
 					</tr>
 					<tr ng-repeat="item in payment | limitTo:6" class="itemcell">
-						<td class="bold graycell"><span ng-bind="item.year"></span>/<span ng-if="item.month < 10">0</span><span ng-bind="item.month"></span></td>
-                        <td><span ng-bind="item.number"></span></td>
+						<td class="bold graycell lsSmall"><span ng-bind="item.year"></span>년<span ng-if="item.month < 10">0</span><span ng-bind="item.month"></span>월</td>
+                        <!--<td><span ng-bind="item.number"></span></td>-->
 						<td><span ng-bind="item.totalFee | number:0"></span></td>
 						<td><span ng-bind="item.amountPaySum | number:0"></span></td>
                         <td><span ng-bind="item.payDate | date:'yyyy.MM.dd'"></span></td>
-						<td><span ng-bind="item.amountNoPay | number:0"></span></td>
+						<td class="noborderright"><span ng-bind="item.amountNoPay | number:0"></span></td>
+						<!--
 						<td class="noborderright">
 							<span ng-if="item.payStatus == -1">완납</span>
 							<span ng-if="item.payStatus != -1">미납</span>
 						</td>
+						-->
 					</tr>
 					<tr>
-						<td colspan="7" class="noborderright">* 기본적인 납부정보는 최근6개월 까지만 제공됩니다.</td>
+						<td colspan="5" class="noborderright">* 미납금액 내역은 최근 6개월까지만 제공되며, 6개월 이상은 금액만 표시됩니다.</td>
 					</tr>
 				</table>
             </td>

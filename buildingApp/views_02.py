@@ -217,59 +217,68 @@ def save_resident_info(request, data = None):
         import datetime
         ymd = datetime.datetime.now()
         if param['type'] == 'save':
-            em = EachMonthInfo()
-            em.building = BuildingInfo.objects.get(id = int(resident.buildingName))
-            em.resident = resident
-            em.room = roominfo
-            #em.year = int(param['inDate'].split('.')[0].strip())
-            #em.month = int(param['inDate'].split('.')[1].strip())
-            em.year = int(ymd.year)
-            em.month = int(ymd.month)
-            em.noticeNumber = int(1)
-            em.leaseMoney = resident.leaseMoney
-            em.maintenanceFee = resident.maintenanceFee
-            em.surtax = resident.surtax
-            em.parkingFee = resident.parkingFee
-            em.electricityFee = 0
-            em.waterFee = 0
-            em.gasFee = 0
-            em.etcFee = 0
-            em.totalFee = int(em.leaseMoney)+int(em.maintenanceFee)+int(em.surtax)+int(em.parkingFee)
-            em.changedFee = 0
-            em.inputCheck = False
-            em.inputDate = None
-            em.noticeCheck = False
-            em.noticeDate = None
-            em.isLiving = True
-            em.save()
-            # EachMonthDetailInfo (modifyNumber = 0)
-            emd = EachMonthDetailInfo()
-            emd.eachMonth = em
-            emd.year = em.year
-            emd.month = em.month
-            emd.modifyNumber = int(0)
-            emd.leaseMoney = em.leaseMoney
-            emd.maintenanceFee = em.maintenanceFee
-            emd.surtax = em.surtax
-            emd.parkingFee = em.parkingFee
-            emd.electricityFee = 0
-            emd.gasFee = 0
-            emd.waterFee = 0
-            emd.totalFee = em.totalFee
-            emd.etcFee = 0
-            emd.changedFee = 0
-            emd.msg = ''
-            emd.changeDate = None
-            emd.save()
+            sy = int( param['inDate'].split('.')[0].strip() )
+            sm = int( param['inDate'].split('.')[1].strip() )
+            for y in range(sy, int(ymd.year)+1):
+                real_sm = sm
+                real_em = 12
+                if y > sy:
+                    real_sm = 1
+                if y == int(ymd.year):
+                    real_em = int(ymd.month)
+                for m in range(real_sm, real_em+1):
+					em = EachMonthInfo()
+					em.building = BuildingInfo.objects.get(id = int(resident.buildingName))
+					em.resident = resident
+					em.room = roominfo
+					em.year = y #int(ymd.year)
+					em.month = m #int(ymd.month)
+					em.noticeNumber = int(1)
+					em.leaseMoney = resident.leaseMoney
+					em.maintenanceFee = resident.maintenanceFee
+					em.surtax = resident.surtax
+					em.parkingFee = resident.parkingFee
+					em.electricityFee = 0
+					em.waterFee = 0
+					em.gasFee = 0
+					em.etcFee = 0
+					em.totalFee = int(em.leaseMoney)+int(em.maintenanceFee)+int(em.surtax)+int(em.parkingFee)
+					em.changedFee = 0
+					em.inputCheck = False
+					em.inputDate = None
+					em.noticeCheck = False
+					em.noticeDate = None
+					em.isLiving = True
+					em.save()
+					# EachMonthDetailInfo (modifyNumber = 0)
+					emd = EachMonthDetailInfo()
+					emd.eachMonth = em
+					emd.year = em.year
+					emd.month = em.month
+					emd.modifyNumber = int(0)
+					emd.leaseMoney = em.leaseMoney
+					emd.maintenanceFee = em.maintenanceFee
+					emd.surtax = em.surtax
+					emd.parkingFee = em.parkingFee
+					emd.electricityFee = 0
+					emd.gasFee = 0
+					emd.waterFee = 0
+					emd.totalFee = em.totalFee
+					emd.etcFee = 0
+					emd.changedFee = 0
+					emd.msg = ''
+					emd.changeDate = None
+					emd.save()
         else:
-            em = EachMonthInfo.objects.filter(building_id = int(resident.buildingName), resident_id = int(resident.id)).order_by('-id')[0]
-            em.totalFee -= (int(em.leaseMoney) + int(em.maintenanceFee) + int(em.surtax) + int(em.parkingFee))
-            em.totalFee += (int(resident.leaseMoney) + int(resident.maintenanceFee) + int(resident.surtax) + int(resident.parkingFee))
-            em.leaseMoney = resident.leaseMoney
-            em.maintenanceFee = resident.maintenanceFee
-            em.surtax = resident.surtax
-            em.parkingFee = resident.parkingFee
-            em.save()
+            ems = EachMonthInfo.objects.filter(building_id = int(resident.buildingName), resident_id = int(resident.id)).order_by('-id')
+            for em in ems:
+                em.totalFee -= (int(em.leaseMoney) + int(em.maintenanceFee) + int(em.surtax) + int(em.parkingFee))
+                em.totalFee += (int(resident.leaseMoney) + int(resident.maintenanceFee) + int(resident.surtax) + int(resident.parkingFee))
+                em.leaseMoney = resident.leaseMoney
+                em.maintenanceFee = resident.maintenanceFee
+                em.surtax = resident.surtax
+                em.parkingFee = resident.parkingFee
+                em.save()
 
     return render_to_response('index.html')
 
