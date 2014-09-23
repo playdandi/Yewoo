@@ -189,6 +189,24 @@
                     </tr>
                 </table>
                 <!-- end 내역 table -->
+                <div class="titlebox">추가 금액 명세</div>
+                <!-- 추가금액 table -->
+                <table width="100%" class="fullbox table-content textCenter" style="border:1px solid black !important;">
+                    <tr ng-repeat="c in data.unpaidaddeditems"  style="border:1px solid black !important;">
+                        <td class="graycell" width="25%" style="border:1px solid black !important;"><b>추가 금액</b></td>
+                        <td width="30%" style="border:1px solid black !important; background-color: white !important;"><span ng-bind="c.fields.title"></span> <span ng-bind="c.fields.subType"></span><span ng-if="c.fields.year&&c.fields.month"> (<span ng-bind="c.fields.year"></span>년 <span ng-bind="c.fields.month"></span>월)</span></td>
+                        <td width="10%" style="border:1px solid black !important; background-color: white !important;"><span ng-bind="c.fields.amount | number:'0'"></span></td>
+                        <td width="35%" style="border:1px solid black !important; background-color: white !important;"></td>
+                    </tr>
+                    <tr class="graycell" style="border:1px solid black !important;">
+                        <td style="border:1px solid black !important;"><b>소계2</b></td>
+                        <td style="border:1px solid black !important;"></td>
+                        <td style="border:1px solid black !important;"><span ng-bind="sum_addeditems | number:'0'"></span></td>
+                        <td style="border:1px solid black !important;"></td>
+                    </tr>
+                </table>
+                <!-- end 추가금액 table -->
+
             </td>
             <!-- end first column -->
 

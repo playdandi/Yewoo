@@ -129,6 +129,12 @@ angular.module('yewooApp', [])
                                     s.sum_fee += c.totalFee;
                                 }
                             }
+                            s.sum_addeditems = 0;
+                            for (var i = 0; i < s.data.unpaidaddeditems.length; ++i)
+                            {
+                                s.sum_addeditems += parseInt(s.data.unpaidaddeditems[i].fields.amount);
+                            }
+
                             s.cases = cases;
                             s.pagedCases = [];
 
