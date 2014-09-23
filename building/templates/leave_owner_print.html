@@ -330,7 +330,7 @@
                                 <td width="16%">납부금액</td>
                                 <td width="16%">입금액</td>
                                 <td width="20%">입금일</td>
-                                <td width="15%">미납액</td>
+                                <td width="15%" class="noborderright">미납액</td>
                                 <!--<td width="8%" class="noborderright">처리</td>-->
                             </tr>
                             <tr ng-repeat="item in data.unpaidList | limitTo: 15" class="itemcell">
@@ -339,7 +339,7 @@
                                 <td><span ng-bind="item.totalFee | number:0"></span></td>
                                 <td><span ng-bind="item.amountPay | number:0"></span></td>
                                 <td><span ng-bind="item.payDate | date:'yyyy.MM.dd'"></span></td>
-                                <td class="noborderright"><span ng-bind="item.revisiedAmount | number:0"></span></td>
+                                <td class="noborderright"><span ng-bind="item.amountNoPay | number:0"></span></td>
                                 <!--<td class="noborderright">
                                     <span ng-if="item.payStatus == -1">완납</span>
                                     <span ng-if="item.payStatus != -1">미납</span>
