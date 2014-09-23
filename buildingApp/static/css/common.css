@@ -433,6 +433,14 @@
     font-size: 15pt !important;
 }
 
+#leave tr.whitecell > td
+{
+    background-color:  rgb(255, 255, 255)!important;
+}
+#leave td.whitecell 
+{
+    background-color:  rgb(255, 255, 255) !important;
+}
 #leave tr.graycell > td
 {
     background-color:  rgb(232, 232, 232)!important;

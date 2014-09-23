@@ -58,6 +58,12 @@ function movePage(type)
 		$(location).attr('href', '/resident/show/');
 }
 
+//  일반적인 이전 페이지 돌아가기
+function historyBack()
+{
+	history.back();
+}
+
 
 function getBaseUrl()
 {

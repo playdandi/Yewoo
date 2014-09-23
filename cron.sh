@@ -1,1 +1,1 @@
-python /root/Yewoo/manage.py runcrons
+python /root/Yewoo_yjjung/manage.py runcrons

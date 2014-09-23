@@ -515,21 +515,21 @@ def serialize_electricity(result):
         data['id'] = res.id
         data['roomnum'] = res.resident.buildingRoomNumber
         data['floor'] = int(data['roomnum']) / int(100)
-        data['name'] = res.resident.contractorName
+        data['name'] = res.resident.residentName
         data['date'] = prettyDate(res.resident.inDate) #res.resident.inDate
-        data['readIn'] = res.readIn
-        data['usePeriod'] = res.usePeriod
-        data['readBefore'] = res.readBefore
-        data['readNow'] = res.readNow
-        data['capacityBefore'] = res.capacityBefore
-        data['capacityNow'] = res.capacityNow
-        data['basicCharge'] = res.basicCharge
-        data['useCharge'] = res.useCharge
-        data['vat'] = res.vat
-        data['fundE'] = res.fundE
-        data['tvLicenseFee'] = res.tvLicenseFee
-        data['trimmedFee'] = res.trimmedFee
-        data['totalFee'] = res.totalFee
+        data['readIn'] = '' if res.readIn == None else res.readIn
+        data['usePeriod'] = '' if res.usePeriod == None else res.usePeriod
+        data['readBefore'] = '' if res.readBefore == None else res.readBefore
+        data['readNow'] = '' if res.readNow == None else res.readNow
+        data['capacityBefore'] = '' if res.capacityBefore == None else res.capacityBefore
+        data['capacityNow'] = '' if res.capacityNow == None else res.capacityNow
+        data['basicCharge'] = '' if res.basicCharge == None else res.basicCharge
+        data['useCharge'] = '' if res.useCharge == None else res.useCharge
+        data['vat'] = '' if res.vat == None else res.vat
+        data['fundE'] = '' if res.fundE == None else res.fundE
+        data['tvLicenseFee'] = '' if res.tvLicenseFee == None else res.tvLicenseFee
+        data['trimmedFee'] = '' if res.trimmedFee == None else res.trimmedFee
+        data['totalFee'] = '' if res.totalFee == None else res.totalFee
         serialized.append(data)
     return serialized
 
@@ -541,20 +541,20 @@ def serialize_water(result):
         data['id'] = res.id
         data['roomnum'] = res.resident.buildingRoomNumber
         data['floor'] = int(data['roomnum']) / int(100)
-        data['name'] = res.resident.contractorName
+        data['name'] = res.resident.residentName
         data['date'] = prettyDate(res.resident.inDate)
-        data['readIn'] = res.readIn
-        data['usePeriod'] = res.usePeriod
-        data['readBefore'] = res.readBefore
-        data['readNow'] = res.readNow
-        data['capacityBefore'] = res.capacityBefore
-        data['capacityNow'] = res.capacityNow
-        data['basicCharge'] = res.basicCharge
-        data['waterSupplyCharge'] = res.waterSupplyCharge
-        data['sewerageCharge'] = res.sewerageCharge
-        data['waterUseCharge'] = res.waterUseCharge
-        data['trimmedFee'] = res.trimmedFee
-        data['totalFee'] = res.totalFee
+        data['readIn'] = '' if res.readIn == None else res.readIn
+        data['usePeriod'] = '' if res.usePeriod == None else res.usePeriod
+        data['readBefore'] = '' if res.readBefore == None else res.readBefore
+        data['readNow'] = '' if res.readNow == None else res.readNow
+        data['capacityBefore'] = '' if res.capacityBefore == None else res.capacityBefore
+        data['capacityNow'] = '' if res.capacityNow == None else res.capacityNow
+        data['basicCharge'] = '' if res.basicCharge == None else res.basicCharge
+        data['waterSupplyCharge'] = '' if res.waterSupplyCharge == None else res.waterSupplyCharge
+        data['sewerageCharge'] = '' if res.sewerageCharge == None else res.sewerageCharge
+        data['waterUseCharge'] = '' if res.waterUseCharge == None else res.waterUseCharge
+        data['trimmedFee'] = '' if res.trimmedFee == None else res.trimmedFee
+        data['totalFee'] = '' if res.totalFee == None else res.totalFee
         serialized.append(data)
     return serialized
 
@@ -566,27 +566,27 @@ def serialize_gas(result):
         data['id'] = res.id
         data['roomnum'] = res.resident.buildingRoomNumber
         data['floor'] = int(data['roomnum']) / int(100)
-        data['name'] = res.resident.contractorName
+        data['name'] = res.resident.residentName
         data['date'] = prettyDate(res.resident.inDate)
-        data['readIn'] = res.readIn
-        data['usePeriod'] = res.usePeriod
-        data['readBefore'] = res.readBefore
-        data['readNow'] = res.readNow
-        data['capacityBefore'] = res.capacityBefore
-        data['capacityNow'] = res.capacityNow
-        data['readBeforeHotWater'] = res.readBeforeHotWater
-        data['readBeforeHeat'] = res.readBeforeHeat
-        data['readNowHotWater'] = res.readNowHotWater
-        data['readNowHeat'] = res.readNowHeat
-        data['capacityBeforeHotWater'] = res.capacityBeforeHotWater
-        data['capacityBeforeHeat'] = res.capacityBeforeHeat
-        data['capacityNowHotWater'] = res.capacityNowHotWater
-        data['capacityNowHeat'] = res.capacityNowHeat
-        data['basicCharge'] = res.basicCharge
-        data['useCharge'] = res.useCharge
-        data['vat'] = res.vat
-        data['trimmedFee'] = res.trimmedFee
-        data['totalFee'] = res.totalFee
+        data['readIn'] = '' if res.readIn == None else res.readIn
+        data['usePeriod'] = '' if res.usePeriod == None else res.usePeriod
+        data['readBefore'] = '' if res.readBefore == None else res.readBefore
+        data['readNow'] = '' if res.readNow == None else res.readNow
+        data['capacityBefore'] = '' if res.capacityBefore == None else res.capacityBefore
+        data['capacityNow'] = '' if res.capacityNow == None else res.capacityNow
+        data['readBeforeHotWater'] = '' if res.readBeforeHotWater == None else res.readBeforeHotWater
+        data['readBeforeHeat'] = '' if res.readBeforeHeat == None else res.readBeforeHeat
+        data['readNowHotWater'] = '' if res.readNowHotWater == None else res.readNowHotWater
+        data['readNowHeat'] = '' if res.readNowHeat == None else res.readNowHeat
+        data['capacityBeforeHotWater'] = '' if res.capacityBeforeHotWater == None else res.capacityBeforeHotWater
+        data['capacityBeforeHeat'] = '' if res.capacityBeforeHeat == None else res.capacityBeforeHeat
+        data['capacityNowHotWater'] = '' if res.capacityNowHotWater == None else res.capacityNowHotWater
+        data['capacityNowHeat'] = '' if res.capacityNowHeat == None else res.capacityNowHeat
+        data['basicCharge'] = '' if res.basicCharge == None else res.basicCharge
+        data['useCharge'] = '' if res.useCharge == None else res.useCharge
+        data['vat'] = '' if res.vat == None else res.vat
+        data['trimmedFee'] = '' if res.trimmedFee == None else res.trimmedFee
+        data['totalFee'] = '' if res.totalFee == None else res.totalFee
         serialized.append(data)
     return serialized
 
@@ -647,6 +647,8 @@ def excel_file_upload(request):
                     temp_roomnum = 0
                     temp_name = ''
                     for j in range(len(result[i])):
+                        if result[i][j] == '':
+                            continue
                         if column[j] == '입주검침':
                             elem.readIn = int(result[i][j])
                         elif column[j] == '사용기간':
@@ -677,7 +679,7 @@ def excel_file_upload(request):
                             temp_roomnum = int(result[i][j])
                         elif column[j] == '입주자':
                             temp_name = str(result[i][j])
-                    elem.resident = ResidentInfo.objects.get(buildingRoomNumber = temp_roomnum, contractorName = temp_name, buildingName = int(request.POST['building_id']))
+                    elem.resident = ResidentInfo.objects.get(buildingRoomNumber = temp_roomnum, residentName = temp_name, buildingName = int(request.POST['building_id']))
                     elem.building = BuildingInfo.objects.get(id = building_info.id)
                     elem.year = int(request.POST['year'])
                     elem.month = int(request.POST['month'])
@@ -689,6 +691,8 @@ def excel_file_upload(request):
                     temp_roomnum = 0
                     temp_name = ''
                     for j in range(len(result[i])):
+                        if result[i][j] == '':
+                            continue
                         if column[j] == '입주검침':
                             elem.readIn = int(result[i][j])
                         elif column[j] == '사용기간':
@@ -717,7 +721,7 @@ def excel_file_upload(request):
                             temp_roomnum = int(result[i][j])
                         elif column[j] == '입주자':
                             temp_name = str(result[i][j])
-                    elem.resident = ResidentInfo.objects.get(buildingRoomNumber = temp_roomnum, contractorName = temp_name.strip(), buildingName = int(request.POST['building_id']))
+                    elem.resident = ResidentInfo.objects.get(buildingRoomNumber = temp_roomnum, residentName = temp_name.strip(), buildingName = int(request.POST['building_id']))
                     elem.building = BuildingInfo.objects.get(id = building_info.id)
                     elem.year = int(request.POST['year'])
                     elem.month = int(request.POST['month'])
@@ -729,6 +733,8 @@ def excel_file_upload(request):
                     temp_roomnum = 0
                     temp_name = ''
                     for j in range(len(result[i])):
+                        if result[i][j] == '':
+                            continue
                         if column[j] == '입주검침':
                             elem.readIn = int(result[i][j])
                         elif column[j] == '사용기간':
@@ -771,7 +777,7 @@ def excel_file_upload(request):
                             temp_roomnum = int(result[i][j])
                         elif column[j] == '입주자':
                             temp_name = str(result[i][j])
-                    elem.resident = ResidentInfo.objects.get(buildingRoomNumber = temp_roomnum, contractorName = temp_name, buildingName = int(request.POST['building_id']))
+                    elem.resident = ResidentInfo.objects.get(buildingRoomNumber = temp_roomnum, residentName = temp_name, buildingName = int(request.POST['building_id']))
                     elem.building = BuildingInfo.objects.get(id = building_info.id)
                     elem.year = int(request.POST['year'])
                     elem.month = int(request.POST['month'])
@@ -1218,7 +1224,7 @@ def save_notice(request):
                 pay.building = data.building
                 pay.year = int(data.year)
                 pay.month = int(data.month)
-                pay.number = len(info) + 1
+                pay.number = int(data.noticeNumber)  #len(info) + 1
                 pay.amountPaySum = 0
                 pay.amountPay = 0
                 pay.amountNoPay = int(data.totalFee)

@@ -768,8 +768,16 @@ def get_bill_print_data(request, rid, roomid, y, m):
     result['notice_each'] = convert_to_dict( list(notice_each) )
     result['notice_total'] = convert_to_dict( list(notice_total) )
     result['payment'] = convert_to_dict( list(payment_data) )
-    # 총합에 연체료 들어가야 함...
-    result['totalFee'] = int(em.totalFee) + int(electricity.totalFee) + int(gas.totalFee) + int(water.totalFee)
+
+    result['totalNoPay'] = 0
+    result['totalNoPayMonth'] = 0
+    for p in payment_data:
+        result['totalNoPay'] += int(p.amountNoPay)
+        if int(p.amountNoPay) > 0:
+            result['totalNoPayMonth'] += 1
+
+    # 총합 : (임대료+관리비+주차비+부가세+기타금액) + 공과금(전기/가스/수도) + 미납금액
+    result['totalFee'] = int(em.totalFee) + int(electricity.totalFee) + int(gas.totalFee) + int(water.totalFee) + result['totalNoPay']
 
     '''
     resident = item.resident

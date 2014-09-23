@@ -174,16 +174,14 @@ angular.module('yewooApp', [])
 							s.em.electricityFee = Number(data.electricity.fields.totalFee) + Number(data.em.fields.electricityFee);
 							s.em.gasFee = Number(data.gas.fields.totalFee) + Number(data.em.fields.gasFee);
 							s.em.waterFee = Number(data.water.fields.totalFee) + Number(data.em.fields.waterFee);
-
-							//delayFee = 
-							//totalFee = 
-
+							
 							s.notice_each = _.map(data.notice_each, function(i) { return i.fields; });
 							s.notice_total = _.map(data.notice_total, function(i) { return i.fields; });
 							s.payment = _.map(data.payment, function(i) { return i.fields; });
-							s.totalFee = data.totalFee;
 
-							//console.log(s);
+							s.totalNoPay = data.totalNoPay;
+							s.totalNoPayMonth = data.totalNoPayMonth;
+							s.totalFee = data.totalFee;
 
 							/*
 							s.data.unpaidList = _.map(data.unpaiditems, function(i) { if (i.fields.payDate) i.fields.payDate = new Date(i.fields.payDate); return i.fields; });
