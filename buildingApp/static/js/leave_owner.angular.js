@@ -514,7 +514,7 @@ angular.module('yewooApp', ['fcsa-number'])
                 var val = (unpaidCase.checked ? unpaidCase.revisiedAmount : 0);
                 return num + parseInt(val);
             }, 0);
-            s.unpaid = s.unpaidComputed - s.unpaidDirected;
+            s.unpaid = s.unpaidComputed + s.unpaidDirected;
             s.updateTotalRefund();
         };
 
