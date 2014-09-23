@@ -334,11 +334,11 @@
                                 <!--<td width="8%" class="noborderright">처리</td>-->
                             </tr>
                             <tr ng-repeat="item in data.unpaidList | limitTo: 15" class="itemcell">
-                                <td class="bold graycell"><span ng-bind="item.year"></span>/<span ng-if="item.month < 10">0</span><span ng-bind="item.month"></span></td>
+                                <td class="bold graycell"><span ng-bind="item.year"></span>년 <span ng-if="item.month < 10">0</span><span ng-bind="item.month"></span>월</td>
                                 <!--<td><span ng-bind="item.number"></span></td>-->
                                 <td><span ng-bind="item.totalFee | number:0"></span></td>
                                 <td><span ng-bind="item.amountPay | number:0"></span></td>
-                                <td><span ng-bind="item.payDate | date:'yy.MM.dd'"></span></td>
+                                <td><span ng-bind="item.payDate | date:'yyyy.MM.dd'"></span></td>
                                 <td class="noborderright"><span ng-bind="item.revisiedAmount | number:0"></span></td>
                                 <!--<td class="noborderright">
                                     <span ng-if="item.payStatus == -1">완납</span>
