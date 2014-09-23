@@ -777,6 +777,7 @@ def get_bill_print_data(request, rid, roomid, y, m):
             result['totalNoPayMonth'] += 1
 
     # 총합 : (임대료+관리비+주차비+부가세+기타금액) + 공과금(전기/가스/수도) + 미납금액
+    #result['totalFee'] = int(em.totalFee) + int(electricity.totalFee) + int(gas.totalFee) + int(water.totalFee) + result['totalNoPay']
     result['totalFee'] = int(em.totalFee) + int(electricity.totalFee) + int(gas.totalFee) + int(water.totalFee) + result['totalNoPay']
 
     '''

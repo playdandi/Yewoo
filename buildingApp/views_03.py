@@ -398,7 +398,7 @@ def serialize_lease(result):
                     data['roomnum'] = "B" + str(-1 * res.buildingRoomNumber)
                 else:
                     data['roomnum'] = str(res.buildingRoomNumber)
-                data['name'] = res.contractorName
+                data['name'] = res.residentName
                 data['deposit'] = res.leaseDeposit
                 data['money'] = res.leaseMoney
                 data['maintenance'] = res.maintenanceFee
@@ -461,7 +461,7 @@ def serialize_notice(result, rooms, fromWhere, is_empty):
                 data['resident_id'] = res.resident.id
                 data['buildingnum'] = res.resident.buildingName
                 data['roomnum'] = res.resident.buildingRoomNumber
-                data['name'] = res.resident.contractorName
+                data['name'] = res.resident.residentName
                 data['roomid'] = int(RoomInfo.objects.get(nowResident = res.resident, building = res.building).id)
             else:
                 data['resident_id'] = None
@@ -807,14 +807,20 @@ def excel_file_upload(request):
                 for elem in em:
                     if int(elem.resident.id) == int(obj.resident.id):
                         if request.POST['type'] == 'electricity':
+                            changedFee = add_eachmonth_detail_by_excelfile('electricity', int(elem.id), int(obj.totalFee))
+                            elem.totalFee = elem.totalFee - elem.electricityFee + obj.totalFee
                             elem.electricityFee = obj.totalFee
-                            elem.totalFee += int(elem.electricityFee)
+                            elem.changedFee = changedFee
                         elif request.POST['type'] == 'gas':
+                            changedFee = add_eachmonth_detail_by_excelfile('gas', int(elem.id), int(obj.totalFee))
+                            elem.totalFee = elem.totalFee - elem.gasFee + obj.totalFee
                             elem.gasFee = obj.totalFee
-                            elem.totalFee += int(elem.gasFee)
+                            elem.changedFee = changedFee
                         else:
+                            changedFee = add_eachmonth_detail_by_excelfile('water', int(elem.id), int(obj.totalFee))
+                            elem.totalFee = elem.totalFee - elem.waterFee + obj.totalFee
                             elem.waterFee = obj.totalFee
-                            elem.waterFee += int(elem.waterFee)
+                            elem.changedFee = changedFee
                         elem.save()
                         break
                 
@@ -825,7 +831,6 @@ def excel_file_upload(request):
                 #os.remove(os.path.join(settings.MEDIA_ROOT, request.POST['type']) + '/' + fileInfo.filename)
             except:
                 fileInfo = ExcelFiles()
-                print('new fileInfo')
             fileInfo.type = request.POST['type']
             fileInfo.building = building_info
             fileInfo.year = int(request.POST['year'])
@@ -847,6 +852,41 @@ def excel_file_upload(request):
             return HttpResponse('file upload - SUCCESS')
         return HttpResponse('file upload - NO FILE')
     return HttpResponse('file upload - NOT POST')
+
+# 엑셀파일 입력해서 공과금에 변동이 생길 때, 변동금액 히스토리 부분에 새로 추가
+def add_eachmonth_detail_by_excelfile(type, eid, fee):
+    emd = EachMonthDetailInfo.objects.filter(eachMonth_id = int(eid)).order_by('-id')[0]
+    new = EachMonthDetailInfo()
+    new.eachMonth = emd.eachMonth
+    new.year = emd.year
+    new.month = emd.month
+    new.modifyNumber = int(emd.modifyNumber) + 1
+    new.leaseMoney = emd.leaseMoney
+    new.maintenanceFee = emd.maintenanceFee
+    new.surtax = emd.surtax
+    new.parkingFee = emd.parkingFee
+    new.etcFee = emd.etcFee
+    import datetime
+    today = datetime.datetime.now()
+    new.changeDate = str(today.year)+'-'+str(today.month)+'-'+str(today.day)
+    new.electricityFee = emd.electricityFee
+    new.gasFee = emd.gasFee
+    new.waterFee = emd.waterFee
+    if type == 'electricity':
+        new.electricityFee = int(fee)
+        new.changedFee = int(fee) - int(emd.electricityFee)
+        new.msg = "엑셀파일 업로드를 통한 공과금(전기) 변동"
+    elif type == 'gas':
+        new.gasFee = int(fee)
+        new.changedFee = int(fee) - int(emd.gasFee)
+        new.msg = "엑셀파일 업로드를 통한 공과금(가스) 변동"
+    elif type == 'water':
+        new.waterFee = int(fee)
+        new.changedFee = int(fee) - int(emd.waterFee)
+        new.msg = "엑셀파일 업로드를 통한 공과금(수도) 변동"
+    new.totalFee = int(emd.totalFee) + int(new.changedFee)
+    new.save()
+    return int(new.changedFee)
 
 def excel_file_delete(request):
     if request.method == 'POST':
@@ -1309,7 +1349,7 @@ def serialize_payment(result, bid, yy, mm):
         data['checked'] = result[i].checked
         data['roomnum'] = result[i].resident.buildingRoomNumber
         data['resident_id'] = result[i].resident.id
-        data['name'] = result[i].resident.contractorName
+        data['name'] = result[i].resident.residentName
         data['year'] = result[i].year
         data['month'] = result[i].month
         data['number'] = result[i].number
