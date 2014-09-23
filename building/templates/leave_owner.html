@@ -178,8 +178,8 @@
 									<td colspan="2">{{ result.buildingNameKor }}</td>
 									<td>{{ result.roomNumber }}</td>
 									<td>{% if result.checkOut == 'n' %}재실{% else %}퇴실{% endif %}</td>
-									<td>{{ result.contractorName }}</td>
-									<td>{{ result.contractorGender }}</td>
+									<td>{{ result.residentName }}</td>
+									<td>{{ result.residentGender }}</td>
 									<td colspan="1">{{ result.residentContactNumber1 }}{%if result.residentContactNumber2 != "" %}, {{ result.residentContactNumber2 }}{% endif %}</td>
 									<td colspan="2">{{ result.residentEmail }}</td>
 								</tr>
@@ -389,7 +389,7 @@
             <td class="textCenter"><span ng-bind="ucase.roomnum"></span></td>
             <td class="textCenter"><span ng-bind="ucase.name"></span></td>
 -->
-            <td class="textCenter"><span ng-bind="ucase.expectedDate | date:'yyyy.MM'"></span></td>
+            <td class="textCenter"><span ng-bind="ucase.year"></span>/<span ng-if="ucase.month < 10" >0</span><span ng-bind="ucase.month"></span></td>
             <td class="textCenter"><span ng-bind="ucase.number"></span></td>
             <td class="textCenter"><span ng-bind="ucase.totalFee | number:'0'"></span></td>
             <td class="textCenter" ng-attr="{ colorGreen: !isLate(ucase), colorRed: isLate(ucase) }"><span ng-bind="today | date:'yyyy.MM'"></span><span ng-bind="ucase.leasePayDate"></span></td>
