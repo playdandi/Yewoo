@@ -334,7 +334,7 @@
                                 <!--<td width="8%" class="noborderright">처리</td>-->
                             </tr>
                             <tr ng-repeat="item in data.unpaidList | limitTo: 15" class="itemcell">
-                                <td class="bold graycell"><span ng-bind="item.year"></span>년 <span ng-if="item.month < 10">0</span><span ng-bind="item.month"></span>월</td>
+                                <td class="bold graycell" style="letter-spacing:-2px !important;"><span ng-bind="item.year"></span>년 <span ng-if="item.month < 10">0</span><span ng-bind="item.month"></span>월</td>
                                 <!--<td><span ng-bind="item.number"></span></td>-->
                                 <td><span ng-bind="item.totalFee | number:0"></span></td>
                                 <td><span ng-bind="item.amountPay | number:0"></span></td>
