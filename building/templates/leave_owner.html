@@ -389,7 +389,7 @@
             <td class="textCenter"><span ng-bind="ucase.roomnum"></span></td>
             <td class="textCenter"><span ng-bind="ucase.name"></span></td>
 -->
-            <td class="textCenter"><span ng-bind="ucase.expectedDate | date:'yyyy.MM'"></span></td>
+            <td class="textCenter"><span ng-bind="ucase.year"></span>/<span ng-if="ucase.month < 10" >0</span><span ng-bind="ucase.month"></span></td>
             <td class="textCenter"><span ng-bind="ucase.number"></span></td>
             <td class="textCenter"><span ng-bind="ucase.totalFee | number:'0'"></span></td>
             <td class="textCenter" ng-attr="{ colorGreen: !isLate(ucase), colorRed: isLate(ucase) }"><span ng-bind="today | date:'yyyy.MM'"></span><span ng-bind="ucase.leasePayDate"></span></td>

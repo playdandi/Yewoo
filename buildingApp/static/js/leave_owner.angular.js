@@ -370,10 +370,24 @@ angular.module('yewooApp', ['fcsa-number'])
                             s.extraCosts = _.map(data.unpaidaddeditems, convert_fn);
                             s.feeCosts = _.map(data.feeitems, convert_fn);
 
-                            if (s.unpaidCases.length == 0) {
-                                s.unpaidCases = cases;
-                                s.toggleAllOfUnpaidCases();
+                            for (var i = 0; i < cases.length; ++i)
+                            {
+                                cases[i].checked = false;
+                                for (var j = 0; j < s.unpaidCases.length; ++j)
+                                {
+                                    if (s.unpaidCases[j].checked == true && s.unpaidCases[j].year == cases[i].year && s.unpaidCases[j].month == cases[i].month)
+                                    {
+                                        cases[i].checked = true;
+                                        cases[i].revisiedAmount = s.unpaidCases[j].revisiedAmount;
+                                        break;
+                                    }
+                                }
                             }
+
+                            s.unpaidCases = cases;
+                            if (!s.isOwnerDone)
+                                s.toggleAllOfUnpaidCases();
+
                             s.updateUnpaidCases();
                             s.updateUnpaid();
                         }).error(function() {
