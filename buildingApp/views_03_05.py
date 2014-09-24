@@ -711,13 +711,24 @@ def convert_to_dict(val):
 
 # 프린트할 때 필요한 데이터 가져오기
 def get_bill_print_data(request, rid, roomid, y, m):
-#item = get_or_create(LeaveOwner, resident_id = rid)
     resident = ResidentInfo.objects.get(id = int(rid))
     building = BuildingInfo.objects.get(id = int(resident.buildingName))
     em = EachMonthInfo.objects.get(resident_id = int(rid), room_id = int(roomid), year = int(y), month = int(m))
-    electricity = ElectricityInfo.objects.get(resident_id = int(rid), year = int(y), month = int(m))
-    gas = GasInfo.objects.get(resident_id = int(rid), year = int(y), month = int(m))
-    water = WaterInfo.objects.get(resident_id = int(rid), year = int(y), month = int(m))
+    electricity = ''
+    gas = ''
+    water = ''
+    try:
+        electricity = ElectricityInfo.objects.get(resident_id = int(rid), year = int(y), month = int(m))
+    except:
+        pass
+    try:
+        gas = GasInfo.objects.get(resident_id = int(rid), year = int(y), month = int(m))
+    except:
+        pass
+    try:
+        water = WaterInfo.objects.get(resident_id = int(rid), year = int(y), month = int(m))
+    except:
+        pass
     electricity_period = ''
     gas_period = ''
     water_period = ''
@@ -739,6 +750,9 @@ def get_bill_print_data(request, rid, roomid, y, m):
     payment = PaymentInfo.objects.filter(building_id = int(building.id), resident_id = int(rid), year__gte = int(y)-1).order_by('-year', '-month', '-id')
     payment_data = []
     for i in range(len(payment)):
+        # 해당 년/월과 같거나, 그 이후의 달에 대한 미납내역은 포함하지 않는다.
+        if payment[i].year > int(y) or (payment[i].year == int(y) and payment[i].month >= int(m)):
+            continue
         if i > 0 and payment[i].year == payment[i-1].year and payment[i].month == payment[i-1].month:
             continue
         payment_data.append(payment[i])
@@ -747,15 +761,15 @@ def get_bill_print_data(request, rid, roomid, y, m):
     result['thisyear'] = int(y)
     result['thismonth'] = int(m)
     result['nextmonth'] = int(m)+1
-    result['dueDate'] = str(resident.inDate).split('-')[2].strip()
     if int(m) == 12:
         result['nextmonth'] = int(1)
+    result['dueDate'] = str(resident.inDate).split('-')[2].strip()
     result['resident'] = convert_to_dict(resident)
     result['building'] = convert_to_dict(building)
     result['em'] = convert_to_dict(em)
-    result['electricity'] = convert_to_dict(electricity)
-    result['gas'] = convert_to_dict(gas)
-    result['water'] = convert_to_dict(water)
+    result['electricity'] = '' if electricity == '' else convert_to_dict(electricity)
+    result['gas'] = '' if gas == '' else convert_to_dict(gas)
+    result['water'] = '' if water == '' else convert_to_dict(water)
     result['e_period'] = ''
     result['g_period'] = ''
     result['w_period'] = ''
@@ -776,9 +790,9 @@ def get_bill_print_data(request, rid, roomid, y, m):
         if int(p.amountNoPay) > 0:
             result['totalNoPayMonth'] += 1
 
-    # 총합 : (임대료+관리비+주차비+부가세+기타금액) + 공과금(전기/가스/수도) + 미납금액
-    #result['totalFee'] = int(em.totalFee) + int(electricity.totalFee) + int(gas.totalFee) + int(water.totalFee) + result['totalNoPay']
-    result['totalFee'] = int(em.totalFee) + int(electricity.totalFee) + int(gas.totalFee) + int(water.totalFee) + result['totalNoPay']
+    result['totalFeeThisMonth'] = int(em.totalFee)
+    # 총합 : (임대료+관리비+주차비+부가세+공과금(전기/가스/수도)+기타금액)
+    result['totalFee'] = int(em.totalFee) + result['totalNoPay']
 
     '''
     resident = item.resident

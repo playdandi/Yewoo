@@ -162,18 +162,24 @@ angular.module('yewooApp', [])
 							s.building = data.building.fields;
 							s.thisyear = data.thisyear;
 							s.thismonth = data.thismonth;
-							s.dueDate = get_due_date(data.thisyear, data.thismonth, data.dueDate, s.resident.leasePayWay);
+							s.dueDate = get_due_date(data.thisyear, data.nextmonth, data.dueDate, s.resident.leasePayWay);
 							s.nextmonth = data.nextmonth;
 							s.electricity_period = data.e_period;
 							s.gas_period = data.g_period;
 							s.water_period = data.w_period;
 							s.em = data.em.fields;
-							s.electricity = data.electricity.fields;
-							s.gas = data.gas.fields;
-							s.water = data.water.fields;
-							s.em.electricityFee = Number(data.electricity.fields.totalFee) + Number(data.em.fields.electricityFee);
-							s.em.gasFee = Number(data.gas.fields.totalFee) + Number(data.em.fields.gasFee);
-							s.em.waterFee = Number(data.water.fields.totalFee) + Number(data.em.fields.waterFee);
+							if (data.electricity == '')	s.electricity = '';
+							else s.electricity = data.electricity.fields;
+							if (data.gas == '') s.gas = '';
+							else s.gas = data.gas.fields;
+							if (data.water == '') s.water = '';
+							else s.water = data.water.fields;
+							//s.em.electricityFee = Number(data.electricity.fields.totalFee);
+							//s.em.gasFee = Number(data.gas.fields.totalFee);
+							//s.em.waterFee = Number(data.water.fields.totalFee);
+							//s.em.electricityFee = Number(data.electricity.fields.totalFee) + Number(data.em.fields.electricityFee);
+							//s.em.gasFee = Number(data.gas.fields.totalFee) + Number(data.em.fields.gasFee);
+							//s.em.waterFee = Number(data.water.fields.totalFee) + Number(data.em.fields.waterFee);
 							
 							s.notice_each = _.map(data.notice_each, function(i) { return i.fields; });
 							s.notice_total = _.map(data.notice_total, function(i) { return i.fields; });
@@ -181,6 +187,7 @@ angular.module('yewooApp', [])
 
 							s.totalNoPay = data.totalNoPay;
 							s.totalNoPayMonth = data.totalNoPayMonth;
+							s.totalFeeThisMonth = data.totalFeeThisMonth;
 							s.totalFee = data.totalFee;
 
 							/*

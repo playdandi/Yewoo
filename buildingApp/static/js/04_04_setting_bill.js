@@ -223,6 +223,8 @@ var doAjaxAllContents = function() {
 		success : function(result) {
 			category = result[0];
 			data = result[1];
+			console.log(category);
+			console.log(data);
 
 			var template = new EJS({url : '/static/ejs/04_04_setting_bill.ejs'}).render({'category' : category, 'data' : data, 'type' : ''});
 			$('#all_content').html(template);

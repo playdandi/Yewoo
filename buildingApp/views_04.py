@@ -550,7 +550,7 @@ def setting_bill_create(request):
 def setting_bill_get_contents(request):
 	if request.method == 'POST':
 		sb = SettingBill.objects.all().values('building', 'type').distinct()
-		sb2 = SettingBill.objects.all()
+		sb2 = SettingBill.objects.all().order_by('building', 'type', 'month')
 		return toJSON(serialize_setting_bill(sb, sb2))
 	return HttpResponse('NOT POST')
 

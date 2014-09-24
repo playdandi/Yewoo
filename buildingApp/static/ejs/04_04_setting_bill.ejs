@@ -12,18 +12,28 @@
 	</tr>
 </table>
 <table id="category<%= i %>" class="table table-bordered table-condensed table-center" style="text-align:center; display:none">
+	<% var smonth = -1; %>
+	<% var sdate = ''; %>
+	<% var edate = ''; %>
+	<% for (j = 0; j < data.length; j++) { %>
+		<% if (data[j].type == category[i].type && Number(data[j].bid) == Number(category[i].bid)) { %>
+			<% if (smonth == -1) { smonth = data[j].month } %>
+			<% if (sdate == '') { sdate = data[j].startDate } %>
+			<% edate = data[j].endDate %>
+		<% } %>
+	<% } %>
 	<tr>
 		<td width="15%" style="text-align:center">시작 월분</td>
 		<td width="20%" style="text-align:center">
-			<input type="text" class="span12 margin0" value="<%= data[0].month %>월분" disabled />
+			<input type="text" class="span12 margin0" value="<%= smonth %>월분" disabled />
 		</td>
 		<td width="10%" style="text-align:center">시작</td>
 		<td width="20%" style="text-align:center">
-			<input type="text" class="span12 margin0 datedate datepicker" value="<%= data[0].startDate %>" disabled />
+			<input type="text" class="span12 margin0 datedate datepicker" value="<%= sdate %>" disabled />
 		</td>
 		<td width="10%" style="text-align:center">종료</td>
 		<td width="20%" style="text-align:center">
-			<input type="text" class="span12 margin0 datedate datepicker" value="<%= data[data.length-1].endDate %>" disabled />
+			<input type="text" class="span12 margin0 datedate datepicker" value="<%= edate %>" disabled />
 		</td>
 		<td width="5%"></td>
 	</tr>

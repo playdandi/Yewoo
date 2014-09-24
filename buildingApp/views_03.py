@@ -261,7 +261,7 @@ def get_lease_info(request):
         if is_empty == 'false':
             data = data.filter(isOccupied = True)
 
-    	return toJSON(serialize_lease(data))
+    	return toJSON(serialize_lease(data, y, m))
     return HttpResponse('NOT POST')
 
 ### 03.01 : 최종고지내역 데이터 받는 부분 ###
@@ -383,7 +383,7 @@ def prettyDate(date):
 def prettyDateWOYear(date):
     return str(date.month) + '.' + str(date.day)
 ## prettify data for lease
-def serialize_lease(result):
+def serialize_lease(result, y, m):
     serialized = []
     under = result.filter(roomnum__lt = 0).order_by('-roomnum') 
     over = result.filter(roomnum__gt = 0).order_by('roomnum')
@@ -405,7 +405,14 @@ def serialize_lease(result):
                 data['surtax'] = res.surtax
                 data['parking'] = res.parkingFee
                 data['payway'] = res.leasePayWay
-                data['paydate'] = res.leasePayDate
+                data['paydate'] = int(res.leasePayDate)
+                if data['payway'] == '후불':
+                    endday = [31, 31,28,31,30,31, 30,31,31,30,31, 30,31]
+                    if y % 4 == 0:
+                        endday[2] = 29
+                    data['paydate'] -= 1
+                    if data['paydate'] == 0:
+                        data['paydate'] = endday[m-1]
                 data['indate'] = prettyDate(res.inDate)
                 data['outdate'] = prettyDate(res.outDate)
                 data['checkOut'] = str(res.checkOut)
