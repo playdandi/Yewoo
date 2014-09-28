@@ -163,11 +163,11 @@ angular.module('yewooApp', [])
                                 }
                             }
                             
-                            if (!!($("#print").val())) {
+                            //if (!!($("#print").val())) {
                                 setTimeout(function () {
                                     window.print();
-                                }, 1000);
-                            }
+                                }, 100);
+                            //}
 
                         }).error(function() {
                             alert("서버와의 연결을 실패했습니다.");

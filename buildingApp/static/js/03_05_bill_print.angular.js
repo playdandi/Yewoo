@@ -30,23 +30,8 @@ angular.module('yewooApp', [])
             return item;
         };
 
-		/*
-        s.save = function() {
-            var item = {
-                'payoffs' : _.map(s.moneyChanges, s.convert_to_items),
-                'reads' : _.map(s.records, s.convert_to_items),
-                'isTenantDone' : true
-            };
-
-            $http.post('/lease/leave/owner/save/' + $("#rid").val() + '/', item).success(function (data) {
-                alert("저장했습니다.");
-            }).error(function() {
-                alert("서버와의 연결을 실패했습니다.");
-            });
-        };
-		*/
-
-        var doAjaxAllList = function() {
+        
+		var doAjaxAllList = function() {
             var postData = {};
             var csrftoken = $.cookie('csrftoken');
             postData['csrfmiddlewaretoken'] = csrftoken;
@@ -61,67 +46,6 @@ angular.module('yewooApp', [])
                 url : '/lease/payment/detail/getAllInfo/',
                 data : postData,
                 success : function(result) {
-				/*
-                    var today = Number(new Date().getDate());
-                    if (result.length > 0) {
-                        thisYear = result[0].year;
-                        thisMonth = result[0].month;
-                        thisNumber = result[0].number;
-                    }
-
-                    // 연체리스트, 수정사항리스트 두 가지로 분리하기
-                    for (i = 0; i < result.length; i++) {
-                        if (result[i].type == 'basic') {
-                            // 만약 이번 달 납부 내역이 아직 납부일 전이거나 완납한 경우에는 '이번 달 리스트'에 따로 담아야 한다.
-                            if (result[i].number == thisNumber && 
-                                (today <= Number(result[i].leasePayDate) || (result[i].payStatus == -1 && result[i].payDateDay <= Number(result[i].leasePayDate))) ) {
-                                while (result[i].number == thisNumber) {
-                                    result[i].isThis = Number(1);
-                                    //payments_thisMonth.push(result[i]);
-                                    payments.push(result[i]);
-                                    i++;
-                                }
-                                i--;
-                            }
-                            else {
-                                result[i].isThis = Number(0);
-                                payments.push(result[i]);
-                            }
-                        }
-                        else 
-                            paymentDetails.push(result[i]); 
-                    }
-
-                    // 미납 년/월 범위 구하기, 현재 미납 달 횟수 구하기
-                    var minym = '9999.12', maxym = '0.0', payCnt = 0;
-                    var totalAmountNoPay = 0;
-                    for (i = 0; i < payments.length; i++) {
-                        if (payments[i].payStatus != -1 && payments[i].isThis == 0) {
-                            // 직전 항목과 고지회차가 다를 때만 미납액/연체료 계산을 해야 한다.
-                            if (i == 0 || Number(payments[i-1].number) != Number(payments[i].number)) {
-                                minym = AdjustPaymentYM(minym, payments[i].year, payments[i].month, 'min');
-                                maxym = AdjustPaymentYM(maxym, payments[i].year, payments[i].month, 'max');
-                                payCnt++;
-                                totalAmountNoPay += Number(payments[i].amountNoPay);
-                            }
-                        }
-                    }
-                    if (minym == '9999.12') minym = '없음';
-                    if (maxym == '0.0') maxym = '없음';
-                    
-                    var cases = [];
-                    var lastPayment = null;
-                    
-                    for (var i = 0; i < payments.length; i++) {
-                        var payment = payments[i];
-                        //if (payment.isThis == 1 || payment.payStatus == -1) continue;
-                        payment.amount = payment.amountNoPay;
-                        payment.revisiedAmount = payment.amountNoPay;
-                        payment.expectedDate = new Date(payment.year, payment.month);
-                        payment.isPaid = payment.payStatus == -1 || (i > 0 && payment.number == payments[i - 1].number);
-                        cases.push(payment);
-                    }
-					*/
 
                     s.$apply( function() {
 						$http.get('/lease/bill/each/print/get/' + $("#rid").val()+'/'+$('#roomid').val()+'/'+$('#thisyear').val()+'/'+$('#thismonth').val()+'/').success(function (data) {
@@ -202,36 +126,15 @@ angular.module('yewooApp', [])
 							s.totalFeeThisMonth = data.totalFeeThisMonth;
 							s.totalFee = data.totalFee;
 
-							/*
-							s.data.unpaidList = _.map(data.unpaiditems, function(i) { if (i.fields.payDate) i.fields.payDate = new Date(i.fields.payDate); return i.fields; });
-							s.data.unpaidAddedList = _.map(data.unpaidaddeditems, function(i) { return i.fields; });
-							s.data.feeList = _.map(data.feeitems, function(i) { return i.fields; });
-							s.data.feeGroupList = _.groupBy(s.data.feeList, 'title');
-							s.data.feeGroupList = _.map(s.data.feeGroupList, function (i) { return { title: i[0].title, amount: _.reduce(i, function (sum, j) { return sum + j.amount;}, 0) }; });
-						
-							s.data.unpaidAddedList = _.sortBy(s.data.unpaidAddedList, function(i) { if (i.title.lastIndexOf("미납", 0) === 0) { return 0; } else { return 1; } });
+                            setTimeout(function () {
+								window.print();
+                            }, 100);
 
-							if (s.data.feeList.length < 5) {
-								var len = 5 - s.data.feeList.length;
-								for (var i = 0; i < len; i++) { 
-									s.data.feeList.push({nodata:true});
-								}
-							}
-							if (s.data.unpaidList.length == 0) {
-								s.data.unpaidList = cases;
-							}
-							*/
-                            if (!!($("#print").val())) {
-                                setTimeout(function () {
-                                    window.print();
-                                }, 1000);
-                            }           
 						}).error(function() {
 							alert("정보가 일부 부족합니다.");
 						});
                     });
                 },
-
                 error : function(msg) {
                     alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
                 },
@@ -241,49 +144,7 @@ angular.module('yewooApp', [])
         doAjaxAllList();
 
 
-                // Sample Data
-        
         s.data = {
-            /*
-            buildingName: "벨라루체 2",
-            roomNumber: "102 호",
-            name: "강민형",
-            rentStart: new Date(2014, 5, 17),
-            rentEnd: new Date(2015, 5, 18),
-            leaved: new Date(2014, 9, 18),
-            leaveReason: "만기로 퇴실함",
-            rentMethod: "선불제",
-            deposit: 10000000,
-            rent: 250000,
-            returnMoney: 299400,
-            unpaid: 250000,
-            fee: 250000,
-            bank: "국민은행",
-            account: "070-046646-01-034",
-            accountHolder: "강민형",
-            unpaidCollected: 250000,
-            unpaidAdded: 100000,
-            unpaidList: [
-                { month: 6, year: 2014, num: 1, amount: 21000, deposit: 21000, deposited: new Date(2014, 5, 26), defaultAmount: 0, stat: "처리" },
-                { month: 7, year: 2014, num: 1, amount: 21000, deposit: 21000, deposited: new Date(2014, 5, 26), defaultAmount: 0, stat: "처리" },
-                { month: 8, year: 2014, num: 1, amount: 21000, deposit: 21000, deposited: new Date(2014, 5, 26), defaultAmount: 0, stat: "처리" },
-                { month: 9, year: 2014, num: 1, amount: 21000, deposit: 21000, deposited: new Date(2014, 5, 26), defaultAmount: 0, stat: "처리" },
-                { month: 10, year: 2014, num: 1, amount: 21000, deposit: 21000, deposited: new Date(2014, 5, 26), defaultAmount: 0, stat: "처리" },
-                { month: 11, year: 2014, num: 1, amount: 21000, deposit: 21000, deposited: new Date(2014, 5, 26), defaultAmount: 0, stat: "처리" },
-            ],
-            unpaidAddedList: [
-                { title: "청소비", amount: 0 }
-            ],
-            unpaidComment: "기타사유 구구절절",
-            feeList: [
-                { title: "청소비", amount: 0 },
-                { title: "청소비", amount: 0 },
-                { title: "청소비", amount: 0 },
-                { title: "청소비", amount: 0 },
-                { title: "청소비", amount: 0 }
-            ],
-            feeComment: "",
-            */
             contact: {
                 addr: "서울시 강서구 등촌동 639-59번지 벨라루체1",
                 infoList: [

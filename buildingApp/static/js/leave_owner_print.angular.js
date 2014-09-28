@@ -177,11 +177,12 @@ angular.module('yewooApp', [])
             if (s.data.unpaidList.length == 0) {
                 s.data.unpaidList = cases;
             }
-                            if (!!($("#print").val())) {
+                           
+							//if (!!($("#print").val())) {
                                 setTimeout(function () {
                                     window.print();
-                                }, 1000);
-                            }           
+                                }, 100);
+                            //}           
         }).error(function() {
             alert("서버와의 연결을 실패했습니다.");
         });
