@@ -283,6 +283,7 @@
 {
     padding-left : 10px;
     padding-right : 10px;
+	/*margin-left : 16px;*/
 }
 
 #leave .three-columns > tbody > tr > td:first-child
@@ -334,15 +335,15 @@
 }
 #leave .paddingSmallLeft
 {
-    padding-left: 10px;
+    padding-left: 8px;
 }
 #leave .paddingLeft
 {
-    padding-left: 15px;
+    padding-left: 16px;
 }
 #leave .paddingMoreLeft
 {
-    padding-left: 20px;
+    padding-left: 24px;
 }
 
 .dotum *
@@ -350,17 +351,32 @@
     font-family:dotum, 돋움;
 }
 
+#leave .paddingSmallRight
+{
+    padding-right: 8px;
+}
 #leave .paddingRight
 {
-    padding-right: 20px;
+    padding-right: 8px;
 }
 
 #leave .titlebox
 {
-    color: rgb(27, 50, 113) !important;
+    color: rgb(35, 69, 133) !important;
     margin-top: 7px;
     margin-bottom: 5px;
     font-size: 12pt !important;
+}
+
+#leave .textSubtitle
+{
+	color: rgb(58, 72, 102); !important;
+	font-size: 12pt !important;
+}
+#leave .textBasic
+{
+	font-size: 11pt !important;
+	color: rgb(69, 69, 69); !important;
 }
 
 #leave .boldgray span
@@ -430,7 +446,7 @@
 
 #leave .textLarge
 {
-    font-size: 15pt !important;
+    font-size: 14pt !important;
 }
 
 #leave tr.whitecell > td
@@ -465,12 +481,16 @@
 {
     border-right: 0px solid white !important;
 }
+#leave .nobordertop
+{
+    border-top: 0px solid white !important;
+}
 
 #leave .contactbox td
 {
     border-bottom: 1px solid rgb(135, 135, 135) ;
     border-right: 1px solid rgb(135, 135, 135) ;
-	padding: 0px 0px 0px 0px; !important;
+	padding: 1px 1px 1px 1px; !important;
 }
 
 #leave .nopadding td
@@ -485,20 +505,25 @@
 
 #leave .layout
 {
-    display: table;
+    /*display: table;*/
     height: 100%;
     width: 100%;
 }
 
 #leave .layout-fixed
 {
-
-    display: table-row;
+    display: table;
+    /*height: 100%;        /* ...as content is added (won't scroll) */
 }
 #leave .layout-content
 {
-    display: table-row;  /* height is dynamic, and will expand... */
-    height: 100%;        /* ...as content is added (won't scroll) */
+    display: table;  /* height is dynamic, and will expand... */
+	height: 61px;
+}
+#leave .layout-content-full
+{
+	display: table;
+	height: 100%;
 }
 
 #leave .graybox

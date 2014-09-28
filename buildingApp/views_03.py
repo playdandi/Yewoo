@@ -574,6 +574,7 @@ def serialize_gas(result):
         data['roomnum'] = res.resident.buildingRoomNumber
         data['floor'] = int(data['roomnum']) / int(100)
         data['name'] = res.resident.residentName
+        data['type'] = int(res.type)
         data['date'] = prettyDate(res.resident.inDate)
         data['readIn'] = '' if res.readIn == None else res.readIn
         data['usePeriod'] = '' if res.usePeriod == None else res.usePeriod
@@ -623,6 +624,10 @@ def excel_file_upload(request):
             column = []
             for i in range(len(col)):
                 column.append(col[i].strip())
+
+            gasType = 1
+            if str(request.POST['type']) == 'gas':
+                gasType = int(request.POST['gastype'])
 
             length = int(request.POST['length'])
             data = request.POST.get('data').split(',')
@@ -737,6 +742,7 @@ def excel_file_upload(request):
             elif request.POST['type'] == 'gas':
                 for i in range(len(result)):
                     elem = GasInfo()
+                    elem.type = gasType # 1: 기본 , 2: 벨라루체형태
                     temp_roomnum = 0
                     temp_name = ''
                     for j in range(len(result[i])):
@@ -789,12 +795,11 @@ def excel_file_upload(request):
                     elem.year = int(request.POST['year'])
                     elem.month = int(request.POST['month'])
                     newObjs.append(elem)
-                    #elem.save()
 
             # delete old data
             for obj in deleteObjs:
                 for elem in em:
-                    if int(elem.resident.id) == int(obj.resident.id):
+                    if elem.resident != None and int(elem.resident.id) == int(obj.resident.id):
                         if request.POST['type'] == 'electricity':
                             elem.totalFee -= int(elem.electricityFee)
                             elem.electricityFee = 0
@@ -812,7 +817,7 @@ def excel_file_upload(request):
             for obj in newObjs:
                 obj.save()
                 for elem in em:
-                    if int(elem.resident.id) == int(obj.resident.id):
+                    if elem.resident != None and int(elem.resident.id) == int(obj.resident.id):
                         if request.POST['type'] == 'electricity':
                             changedFee = add_eachmonth_detail_by_excelfile('electricity', int(elem.id), int(obj.totalFee))
                             elem.totalFee = elem.totalFee - elem.electricityFee + obj.totalFee

@@ -233,6 +233,7 @@ $('input[id=fileInput]').change(function() {
 var parsed_result;
 var parsed_column;
 var parsed_length_each;
+var parsed_gas_type;
 function excelParser(result)
 {
 	// 파일에서 얻은 csv 결과로 적절히 parse.
@@ -271,7 +272,7 @@ function excelParser(result)
 		}
 		res.push(result[i].slice(0, pos));
 	}
-	
+
 	// 기본 정보 (년, 월, 건물명, 파일종류)
 	var basic = res[0].split(',');
 	var year = basic[0].replace('년','').trim();
@@ -335,6 +336,13 @@ function excelParser(result)
 
 	parsed_result = null;
 	parsed_result = [];
+	
+	if (curType == '가스') {
+		parsed_gas_type = null;
+		if (res[1].split(',').length <= 15) parsed_gas_type = Number(1); // 기본 타입
+		else parsed_gas_type = Number(2); // 벨라루체 건물 타입
+	}
+	
 
 	for (i = 2; i < res.length; i++) {
 		elem = [];
@@ -393,6 +401,7 @@ function saveExcelFile(fromPreview)
 	formData.append('column', parsed_column);
 	formData.append('data', parsed_result);
 	formData.append('length', parsed_length_each);
+	formData.append('gastype', parsed_gas_type);
 
 	// send
 	var xhr = new XMLHttpRequest();

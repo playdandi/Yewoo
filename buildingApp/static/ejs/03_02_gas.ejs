@@ -7,7 +7,7 @@
 		<th>입주일</th>
 		<th>입주검침</th>
 		<th>사용기간</th>
-		<% if (bid != 8) { %>
+		<% if (data.length == 0 || data[0].type == 1) { %>
 		<th>전월검침</th>
 		<th>당월검침</th>
 		<th>전월사용량</th>
@@ -36,7 +36,7 @@
 		<td style="text-align:center"><%= data[i].date %></td>
 		<td style="text-align:center"><%= data[i].readIn.toLocaleString().replace('.00','') %></td>
 		<td style="text-align:center"><%= data[i].usePeriod.toLocaleString().replace('.00','') %></td>
-		<% if (bid != 8) { %>
+		<% if (data[i].type == 1) { %>
 		<td style="text-align:center"><%= data[i].readBefore.toLocaleString().replace('.00','') %></td>
 		<td style="text-align:center"><%= data[i].readNow.toLocaleString().replace('.00','') %></td>
 		<td style="text-align:center"><%= data[i].capacityBefore.toLocaleString().replace('.00','') %></td>

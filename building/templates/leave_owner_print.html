@@ -64,34 +64,27 @@
 		margin-bottom: 0px !important;
 	}
 	select {
-		font-family : 'Malgun Gothic' !important;
 	}
     body {
 		font-size : 0.77em;
-		font-family : 'Malgun Gothic' !important;
+		line-height : 17px;
 	}
 	input {
-		font-family : 'Malgun Gothic' !important;
 	}
 	::-webkit-input-placeholder {
 		font-size : 0.8em !important;
-		font-family : 'Malgun Gothic' !important;
 	}
 	::-moz-placeholder {
 		font-size : 0.8em !important;
-		font-family : 'Malgun Gothic' !important;
 	}
 	:-moz-placeholder {
 		font-size : 0.8em !important;
-		font-family : 'Malgun Gothic' !important;
 	}
 	:-ms-input-placeholder {
 		font-size : 0.8em !important;
-		font-family : 'Malgun Gothic' !important;
 	}
 	:-input {
 		margin-bottom:0px !important;
-		font-family : 'Malgun Gothic' !important;
 	}
 
 
@@ -120,54 +113,54 @@
 			<!-- start: Content -->	
 
             <!-- first column -->
-            <td width="27%">
+            <td width="28%">
                 <!-- 임차인 -->
                 <div class="titlebox">임 차 인</div>
                 <table class="fullbox">
-                    <tr>
-                        <td width="33.33%">
-                            <span class="bold" ng-bind="data.buildingName"></span>
+                    <tr class="bold">
+                        <td width="33.33%" class="paddingSmallLeft">
+                            <span class="textSubTitle" ng-bind="data.buildingName"></span>
                         </td>
                         <td width="33.33%" class="textCenter">
-                            <span class="bold" ng-bind="data.roomNumber"></span>호
+                            <span class="" ng-bind="data.roomNumber"></span>호
                         </td>
-                        <td width="33.33%" class="textRight">
-                            <span class="bold" ng-bind="data.name"></span>님
+                        <td width="33.33%" class="textRight paddingSmallRight">
+                            <span class="" ng-bind="data.name"></span>님
                         </td>
                     </tr>
                 <table>
-                <table class="fullbox table-content">
+                <table class="fullbox table-content textBasic">
                     <colgroup>
                         <col width="30%"/>
                         <col width="5%"/>
                         <col width="65%"/>
                     </colgroup>
-                    <tr>
+                    <tr style="line-height:20px; !important;">
                         <td class="bold paddingSmallLeft">임대기간</td>
                         <td class="textCenter bold">|</td>
                         <td class="" style="letter-spacing:-1px;">
-                            <span ng-bind="data.rentStart | date:'yyyy.MM.dd'"></span> ~ <span ng-bind="data.rentEnd | date:'yyyy.MM.dd'"></span> (<span ng-bind="data.rentMethod"></span>)
+                            <span ng-bind="data.rentStart | date:'yyyyMMdd'"></span> ~ <span ng-bind="data.rentEnd | date:'yyyyMMdd'"></span> (<span ng-bind="data.rentMethod"></span>제)
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" class="bold paddingLeft">임대일</td>
-                        <td class="textRight paddingRight"><span ng-bind="data.rentStart | date:'yyyy.MM.dd'"></span></td>
+                        <td class="textRight" style="padding-right:10px"><span ng-bind="data.rentStart | date:'yyyy.MM.dd'"></span></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="bold paddingLeft">만료일</td>
-                        <td class="textRight paddingRight"><span ng-bind="data.rentEnd | date:'yyyy.MM.dd'"></span></td>
+                        <td class="textRight" style="padding-right:10px"><span ng-bind="data.rentEnd | date:'yyyy.MM.dd'"></span></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="bold paddingLeft">퇴거일</td>
-                        <td class="textRight paddingRight"><span ng-bind="data.leaved | date:'yyyy.MM.dd'"></span></td>
+                        <td class="textRight" style="padding-right:10px"><span ng-bind="data.leaved | date:'yyyy.MM.dd'"></span></td>
                     </tr>
                     <tr>
-                        <td colspan="3" class="paddingLeft">
+                        <td colspan="3" class="paddingLeft" style="line-height:200%">
                             *퇴거사유 : <span ng-bind="data.leaveReason"></span>
                         </td>
                     </tr>
                     <tr class="graycell">
-                        <td colspan="3" class="paddingSmallLeft bold">임대 보증금 및 임대료</td>
+                        <td colspan="3" class="paddingLeft bold">임대 보증금 및 임대료</td>
                     </tr>
                     <tr>
                         <td colspan="2" class="bold paddingLeft">임대 보증금</td>
@@ -178,64 +171,69 @@
                         <td class="textRight paddingRight"><span ng-bind="data.rent | number:0"></span>원</td>
                     </tr>
                 </table>
+				<br/>
+
                 <!-- 반환금 명세 -->
                 <div class="titlebox">
                     반환금 명세
                 </div>
-                <table class="fullbox">
+                <table class="fullbox" style="margin-top:8px; border-bottom:1px solid black; !important;">
                     <tr>
                         <td width="40%" style="line-height:110%">
-                            퇴거시<br />반환 받으신 금액은
+                            퇴거시<br />반환받으신 금액은
                         </td>
-                        <td width="60%" class="textRight textLarge padding5 lsSmall">
+                        <td width="60%" class="textRight textLarge paddingSmallRight lsSmall">
                             <span class="textLarge" ng-bind="data.returnMoney | number:0"></span>원
                         </td>
                     </tr>
                 </table>
 
-                <div class="bold">
+                <div class="bold paddingSmallLeft" style="margin-top:15px">
                     + 총 반환금
                 </div>
                 <table class="fullbox table-content">
                     <colgroup>
-                        <col width="55%"/>
+						<col width="30%"/>
+                        <col width="25%"/>
                         <col width="45%"/>
                     </colgroup>
                     <tr>
-                        <td class="bold paddingSmallLeft">보증금</td>
-                        <td class="bold textRight paddingRight">
+                        <td colspan="2" class="bold paddingSmallLeft">보증금</td>
+                        <td class="bold textRight paddingSmallRight">
                             <span ng-bind="data.deposit | number:0"></span>원
                         </td>
                     </tr>
                     <tr>
-                        <td class="bold paddingLeft">미납 요금 및 공과금<br/>(추가금액 포함)</td>
-                        <td class="textRight paddingRight">
+                        <td colspan="2" class="bold paddingLeft">미납 요금 및 공과금<br/>(추가금액 포함)</td>
+                        <td class="textRight paddingSmallRight">
                             <span ng-bind="data.unpaid | number:0"></span>원
                         </td>
                     </tr>
                     <tr>
-                        <td class="bold paddingLeft">시설 관리비</td>
-                        <td class="textRight paddingRight">
+                        <td colspan="2" class="bold paddingLeft">시설 관리비</td>
+                        <td class="textRight paddingSmallRight">
                             <span ng-bind="data.fee | number:0"></span>원
                         </td>
                     </tr>
                     <tr class="graycell">
-                        <td class="bold paddingSmallLeft">총 금액</td>
-                        <td class="bold textRight paddingRight">
+                        <td colspan="2" class="bold paddingSmallLeft">총 금액</td>
+                        <td class="bold textRight paddingSmallRight">
                             <span ng-bind="data.returnMoney | number:0"></span>원
                         </td>
                     </tr>
-                    <tr>
-                        <td class="paddingLeft" colspan="2">
-                            <span class="bold">입금계좌</span> <span ng-bind="data.bank"></span> <span ng-bind="data.account"></span>&nbsp;&nbsp;예금주 : <span ng-bind="data.accountHolder"></span>
+                    <tr class="lsSmall">
+                        <td class="paddingLeft bold">입금계좌</td>
+						<td colspan="2" class="textRight paddingSmallRight"><span ng-bind="data.bank"></span> <span ng-bind="data.account"></span>&nbsp;&nbsp;예금주 : <span ng-bind="data.accountHolder"></span>
                         </td>
                     </tr>
                 </table>
+				<br/>
+
                 <!-- 퇴거 정산서 확인-->
                 <div class="titlebox">
                     퇴거 정산서 확인
                 </div>
-                <div class="bold">
+                <div class="bold paddingSmallLeft">
                     + 임차인 확인 
                 </div>
                 <table class="fullbox contactbox">
@@ -258,7 +256,7 @@
                         <td class="textCenter whitecell"><span ng-bind="resident.residentContactNumber1"></span></td>
                     </tr>
                 </table>
-                <div class="bold">
+                <div class="bold paddingSmallLeft" style="margin-top:10px">
                     + 임대인 확인 
                 </div> 
                 <table class="fullbox contactbox">
@@ -281,16 +279,17 @@
                         <td class="textCenter whitecell"><span ng-bind="resident.residentContactNumber1"></span></td>
                     </tr>
                 </table>
+				<br/>
             </td>
             <!-- end first column -->
 
             <!-- second column -->
-            <td width="36.5%" height="17cm">
+            <td width="37%" height="17cm">
                 <div class="layout">
                     <div class="layout-fixed">
-                        <div class="titlebox">상세명세1/ 미납임대료 및 공과금</div>
+                        <div class="titlebox">상세 명세1/ 미납임대료 및 공과금</div>
                         <!-- 총 금액 table -->
-                        <div class="bold">
+                        <div class="bold paddingSmallLeft">
                             + 총 금액
                         </div>
                         <table class="fullbox table-content">
@@ -320,54 +319,47 @@
                         <!-- end 총 금액 table -->
                         <br />
                         <!-- 미납 내역 table -->
-                        <div class="bold">
+                        <div class="bold paddingSmallLeft">
                             + 미납내역
                         </div>
                         <table class="fullbox table-content textCenter">
-                            <tr class="graycell bold itemcell">
-                                <td width="17%">년도/월</td>
-                                <!--<td width="8%">회차</td>-->
-                                <td width="16%">납부금액</td>
-                                <td width="16%">입금액</td>
-                                <td width="20%">입금일</td>
-                                <td width="15%" class="noborderright">미납액</td>
-                                <!--<td width="8%" class="noborderright">처리</td>-->
+                            <tr class="bold itemcell">
+                                <td width="18%" class="graycell">년도/월</td>
+                                <td width="20%">납부금액</td>
+                                <td width="20%">입금액</td>
+                                <td width="21%">입금일</td>
+                                <td width="21%" class="noborderright">미납액</td>
                             </tr>
                             <tr ng-repeat="item in data.unpaidList | limitTo: 15" class="itemcell">
                                 <td class="bold graycell" style="letter-spacing:-2px !important;"><span ng-bind="item.year"></span>년 <span ng-if="item.month < 10">0</span><span ng-bind="item.month"></span>월</td>
-                                <!--<td><span ng-bind="item.number"></span></td>-->
                                 <td><span ng-bind="item.totalFee | number:0"></span></td>
                                 <td><span ng-bind="item.amountPay | number:0"></span></td>
                                 <td><span ng-bind="item.payDate | date:'yyyy.MM.dd'"></span></td>
                                 <td class="noborderright"><span ng-bind="item.amountNoPay | number:0"></span></td>
-                                <!--<td class="noborderright">
-                                    <span ng-if="item.payStatus == -1">완납</span>
-                                    <span ng-if="item.payStatus != -1">미납</span>
-                                </td>-->
                             </tr>
                         </table>
                         <!-- end 미납 내역 table -->
 
                         <br/>
                         <!-- 추가 금액 table -->
-                        <div class="bold">
+                        <div class="bold paddingSmallLeft">
                             + 추가 금액 내역
                         </div>
-                        <table class="fullbox table-content textCenter">
-                            <tr class=" bold itemcell" ng-repeat="item in data.unpaidAddedList">
-                                <td class="whitecell" width="50%"><span ng-bind="item.title"></span></td>
-                                <td class="whitecell noborderright" width="50%"><span ng-bind="item.amount | number:0"></span>원</td>
+                        <table class="fullbox table-content lsSmall">
+                            <tr class="bold itemcell" ng-repeat="item in data.unpaidAddedList">
+                                <td class="textLeft paddingLeft whitecell noborderright" width="50%"><span ng-bind="item.title"></span></td>
+                                <td class="textRight paddingRight whitecell noborderright" width="50%"><span ng-bind="item.amount | number:0"></span>원</td>
                             </tr>
                         </table>
                         <!-- end 추가 금액 table -->
 
                         <br/>
                         <!-- 기타 사유 table -->
-                        <div class="bold">
+                        <div class="bold paddingSmallLeft">
                             + 기타사유 
                         </div>
                     </div>
-                    <div class="fullbox graybox padding5 layout-content">
+                    <div class="fullbox graybox padding5 layout-content-full">
                        <span ng-bind="data.unpaidComment"></span>
                     </div>
                 </div>
@@ -377,13 +369,16 @@
             <!-- end second column -->
 
             <!-- third column -->
-            <td width="36.5%" height="18cm">
+            <td width="37%" height="18cm">
 
                 <div class="layout">
                     <div class="layout-fixed">
                         <div class="titlebox">상세명세2 / 시설관리비</div>
 
                         <!-- 총 금액 table -->
+                        <div class="bold paddingSmallLeft">
+                            + 총 금액
+                        </div>
                         <table class="fullbox table-content">
                             <colgroup>
                                 <col width="50%"/>
@@ -408,7 +403,7 @@
 
                         <br/>
                         <!-- 시설 관리비 발생 내역 table -->
-                        <div class="bold">
+                        <div class="bold paddingSmallLeft">
                             + 시설 관리비 발생 내역
                         </div>
                         <!-- end 추가 금액 table -->
@@ -418,10 +413,10 @@
                                 <col width="50%"/>
                             </colgroup>
                             <tr ng-repeat="item in data.feeList | limitTo: 10" class="itemcell">
-                                <td class="bold paddingLeft whitecell">
+                                <td class="bold paddingLeft whitecell noborderright">
                                     <span ng-bind="item.title"></span>
                                 </td>
-                                <td class="textRight paddingRight whitecell noborderright">
+                                <td class="textRight whitecell noborderright" style="padding-right:5px">
                                     <span ng-if="!item.nodata"><span ng-bind="item.amount | number:0"></span>원</span>&nbsp;
                                 </td>
                             </tr>
@@ -429,7 +424,7 @@
 
                         <br/>
                         <!-- 기타 사유 table -->
-                        <div class="bold">
+                        <div class="bold paddingSmallLeft">
                             + 기타 사유
                         </div>
                     </div>
@@ -440,6 +435,8 @@
                         <!-- end 기타 사유 table -->
                         
                         <!-- contact -->
+                        <br />
+                        <br />
                         <br />
                         <div>
                             문의 사항은 하단의 관련부서로 연락 주시기 바랍니다.

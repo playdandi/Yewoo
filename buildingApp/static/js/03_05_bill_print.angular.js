@@ -170,10 +170,22 @@ angular.module('yewooApp', [])
 							s.em = data.em.fields;
 							if (data.electricity == '')	s.electricity = '';
 							else s.electricity = data.electricity.fields;
-							if (data.gas == '') s.gas = '';
-							else s.gas = data.gas.fields;
 							if (data.water == '') s.water = '';
 							else s.water = data.water.fields;
+							if (data.gas == '') s.gas = '';
+							else {
+								if (data.gas.fields.type == 1) { // 일반
+									data.gas.fields.capacityBeforeHotWater = data.gas.fields.capacityBefore;
+									data.gas.fields.capacityNowHotWater = data.gas.fields.capacityNow;
+									data.gas.fields.capacityBeforeHeat = '';
+									data.gas.fields.capacityNowHeat = '';
+								}
+								else { // 벨라루체형태
+									// 그대로
+								}
+							   	s.gas = data.gas.fields;
+							}
+							
 							//s.em.electricityFee = Number(data.electricity.fields.totalFee);
 							//s.em.gasFee = Number(data.gas.fields.totalFee);
 							//s.em.waterFee = Number(data.water.fields.totalFee);

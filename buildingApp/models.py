@@ -263,6 +263,7 @@ class ElectricityInfo(models.Model):
 class GasInfo(models.Model):
     resident = models.ForeignKey('ResidentInfo')
     building = models.ForeignKey('BuildingInfo')
+    type = models.IntegerField()
     year = models.IntegerField()
     month = models.IntegerField()
     readIn = models.IntegerField(blank=True, null=True)
