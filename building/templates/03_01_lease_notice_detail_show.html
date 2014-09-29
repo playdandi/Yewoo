@@ -102,6 +102,7 @@
 		text-align:left !important;
 		max-width:350px;
 	}
+	@page { size: landscape; }
 	</style>
 		
 </head>
@@ -355,7 +356,7 @@
 													<div style="text-align:right">
 														<select id="leaseNumber_select_notice" class="margin0" style="width:120px">
 														{% for elem in leaseNumberList %}
-															<option value="{{ elem }}">임대 {{ elem }}회차</option>
+															<option value="{{ elem }}" {% if elem == resident.leaseNumber %}selected{% endif %}>임대 {{ elem }}회차</option>
 														{% endfor %}
 														</select>
 														<button class="btn btn-small" onclick="getContentsNotice();">조회</button>
@@ -484,7 +485,7 @@
 													<div style="text-align:right">
 														<select id="leaseNumber_select_payment" class="margin0" style="width:120px">
 														{% for elem in leaseNumberList %}
-															<option value="{{ elem }}">임대 {{ elem }}회차</option>
+															<option value="{{ elem }}" {% if elem == resident.leaseNumber %}selected{% endif %}>임대 {{ elem }}회차</option>
 														{% endfor %}
 														</select>
 														<button class="btn btn-small" onclick="getContentsPayment();">조회</button>

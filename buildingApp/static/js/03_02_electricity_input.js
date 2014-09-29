@@ -100,14 +100,37 @@ var doAjaxContents_E = function(roomnum) {
 		data : postData,
 		success : function(result) {
 			EGW_E = result;
-			var template = new EJS({url : '/static/ejs/03_02_electricity.ejs'}).render({'data' : EGW_E, 'start' : 0});
+			var template = new EJS({url : '/static/ejs/03_02_electricity.ejs'}).render({'data' : EGW_E, 'floor' : ''});
 			$('#contents').html(template);
 			$('#contents_modal').html(template);
+			
+			// 층별 검색
+			var floor = new Array();
+			for (var i = 0; i < result.length; i++)	{
+				var j;
+				for (j = 0; j < floor.length; j++) {
+					if (Number(floor[j]) == Number(result[i].floor))
+						break;
+				}
+				if (j >= floor.length)
+					floor.push(Number(result[i].floor));
+			}
+			var html = '<option value="">전체</option>';
+			for (var i = 0; i < floor.length; i++)
+				html += '<option value="'+String(floor[i])+'">'+String(floor[i])+'층</option>';
+			$('#filter_floor').html(html);
 		},
 		error : function(msg) {
 			alert('데이터를 로딩하지 못했습니다...\n페이지 새로고침을 해 보시기 바랍니다.');
 		},
 	});
+}
+
+function filterFloor(val)
+{
+	var template = new EJS({url : '/static/ejs/03_02_electricity.ejs'}).render({'data' : EGW_E, 'floor' : val});
+	$('#contents').html(template);
+	$('#contents_modal').html(template);
 }
 
 

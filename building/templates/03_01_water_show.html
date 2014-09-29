@@ -98,6 +98,7 @@
 		padding : 0px 0px 0px 0px;
 		left : 15%;
 	}
+	@page { size: landscape; }
 	</style>
 		
 </head>
@@ -289,12 +290,8 @@
 							</div>
 							<div style="text-align:right">
 								<strong>층별 보기</strong>
-								<select id="" class="margin0" style="width:70px">
+								<select id="filter_floor" class="margin0" style="width:70px" onChange="filterFloor($(this).val());">
 									<option value="">전체</option>
-									<option value="1">1층</option>
-									<option value="2">2층</option>
-									<option value="3">3층</option>
-									<option value="10">10층</option>
 								</select>
 								<button class="btn btn-small btn-danger btn-setting">미리보기</button>
 								<button class="btn btn-small btn-inverse" onclick="pagePrint();">출력</button>

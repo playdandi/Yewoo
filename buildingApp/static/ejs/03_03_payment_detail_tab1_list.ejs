@@ -68,7 +68,7 @@
 		<td style="text-align:center"><%= data[i].year %>.<%= data[i].month %></td>
 		<td style="text-align:center"><%= data[i].number %></td>
 		<td style="text-align:center"><%= data[i].totalFee.toLocaleString().replace('.00','') %></td>
-		<td style="text-align:center; color:blue"><%= data[i].year %>.<%= data[i].month %>.<%= data[i].leasePayDate %></td>
+		<td style="text-align:center; color:blue"><%= data[i].dueDate %></td>
 		<td style="text-align:center; color:red"><%= data[i].payDate %></td>
 		<td style="text-align:center"><%= data[i].amountPaySum.toLocaleString().replace('.00','') %></td>
 		<% if (data[i].amountNoPay > 0) { %>

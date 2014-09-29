@@ -1,3 +1,11 @@
+function tabshow(tab)
+{
+	var tabname = '';
+	if (tab == '0') tabname = 'noticeDetailInput_tab';
+	else if (tab == '1') tabname = 'noticeDetailCheck_tab';
+	$('.nav-tabs a[href=#' + tabname + ']').tab('show');
+}
+
 var roomNum, bid, rid;
 function setCurInfo(building_id, resident_id, roomnum)
 {

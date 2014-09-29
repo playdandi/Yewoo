@@ -1366,7 +1366,19 @@ def serialize_payment(result, bid, yy, mm):
         data['month'] = result[i].month
         data['number'] = result[i].number
         data['totalFee'] = result[i].totalFee
-        data['leasePayDate'] = result[i].resident.leasePayDate
+        yy = int(result[i].year)
+        mm = int(result[i].month)
+        dd = int(result[i].resident.leasePayDate)
+        if result[i].resident.leasePayWay == '후불':
+            dd -= 1
+            if dd <= 0:
+                day = [31, 31,28,31,30,31, 30,31,31,30,31, 30,31]
+                mm -= 1
+                dd = day[mm]
+                if mm <= 0:
+                    mm = 12
+                    yy -= 1
+        data['dueDate'] = str(yy)+'.'+str(mm)+'.'+str(dd)
         data['payStatus'] = result[i].payStatus
         data['amountPaySum'] = result[i].amountPaySum
         data['amountPay'] = result[i].amountPay
@@ -1464,7 +1476,19 @@ def serialize_payment_detail_allInfo(result, modify_result):
         data['month'] = result[i].month
         data['number'] = result[i].number
         data['totalFee'] = result[i].totalFee
-        data['leasePayDate'] = result[i].resident.leasePayDate
+        yy = int(result[i].year)
+        mm = int(result[i].month)
+        dd = int(result[i].resident.leasePayDate)
+        if result[i].resident.leasePayWay == '후불':
+            dd -= 1
+            if dd <= 0:
+                day = [31, 31,28,31,30,31, 30,31,31,30,31, 30,31]
+                mm -= 1
+                dd = day[mm]
+                if mm <= 0:
+                    mm = 12
+                    yy -= 1
+        data['dueDate'] = str(yy)+'.'+str(mm)+'.'+str(dd)
         data['amountPaySum'] = result[i].amountPaySum
         data['amountPay'] = result[i].amountPay
         data['amountNoPay'] = result[i].amountNoPay
@@ -1596,7 +1620,7 @@ def payment_detail_saveModify(request):
         elem.payStatus = int(request.POST['payStatus'])
         elem.payDate = request.POST['payDate'].replace('.', '-')
         elem.delayNumber = int(request.POST['delayNumber'])
-        elem.delayFee = int(request.POST['delayFee'])
+        elem.delayFee = int(float(request.POST['delayFee']))
         elem.amountPaySum = int(request.POST['amountPaySum'])
         elem.amountPay = int(request.POST['amountPay'])
         elem.amountNoPay = int(request.POST['amountNoPay'])

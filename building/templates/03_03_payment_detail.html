@@ -132,6 +132,7 @@
 	.modal-backdrop {
 		background : none;
 	}
+	@page { size: landscape; }
 
 	</style>
 		
@@ -404,7 +405,7 @@
 												<div style="text-align:right">
 													<select id="leaseNumber_select" class="margin0" style="width:120px">
 													{% for elem in leaseNumberList %}
-													<option value="{{ elem }}" {% if elem == leaseNumberTotal %}selected{% endif %}>임대 {{ elem }}회차</option>
+													<option value="{{ elem }}" {% if elem == resident.leaseNumber %}selected{% endif %}>임대 {{ elem }}회차</option>
 													{% endfor %}
 													</select>
 													<button class="btn btn-small" onclick="getContentsTab2();">조회</button>

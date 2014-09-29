@@ -205,10 +205,10 @@ function doModify(pid, idx)
 
 	var payment = payments[Number(idx)];
 	var param = {};
-	param['yymm'] = payment.year + '.' + payment.month // 년/월
-	param['nextPayDate'] = param['yymm'] + '.' + payment.leasePayDate // 납부예정일
-	param['noticeNumber'] = payment.number // 고지 회차
-	param['totalFee'] = payment.totalFee
+	param['yymm'] = payment.year + '.' + payment.month; // 년/월
+	param['nextPayDate'] = payment.dueDate; // 납부예정일
+	param['noticeNumber'] = payment.number; // 고지 회차
+	param['totalFee'] = payment.totalFee;
 	var template = new EJS({url : '/static/ejs/03_03_payment_detail_tab1_modify.ejs'}).render({'data' : paymentDetails, 'id' : Number(pid), 'param' : param});
 	$('#payment_modify').html(template);
 	//$('#payment_modify').show();

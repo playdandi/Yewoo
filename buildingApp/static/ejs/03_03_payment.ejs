@@ -47,9 +47,9 @@
 		<td style="text-align:center"><%= data[i].number %></td>
 		<td style="text-align:center"><%= data[i].totalFee.toLocaleString().replace('.00','') %></td>
 		<% if (data[i].payStatus == -1) { %>
-		<td style="text-align:center"><font style="color:green"><%= data[i].year %>.<%= data[i].month %>.<%= data[i].leasePayDate %></font></td>
+		<td style="text-align:center"><font style="color:green"><%= data[i].dueDate %></font></td>
 		<% } else { %>
-		<td style="text-align:center"><font style="color:red"><%= data[i].year %>.<%= data[i].month %>.<%= data[i].leasePayDate %></font></td>
+		<td style="text-align:center"><font style="color:red"><%= data[i].dueDate %></font></td>
 		<% } %>
 		<% if (data[i].payStatus == -1) { %>
 		<td style="text-align:center">완납</td>

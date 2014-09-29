@@ -20,6 +20,7 @@
 		<th>합계금액</th>
 	</tr>
 	<% for (i = 0; i < data.length; i++) { %>
+	<% if (floor != '' && data[i].floor != floor) { continue; } %>
 	<tr>
 		<td style="text-align:center"><%= data[i].floor %></td>
 		<td style="text-align:center"><%= data[i].roomnum %></td>
