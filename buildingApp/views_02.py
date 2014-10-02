@@ -219,6 +219,7 @@ def save_resident_info(request, data = None):
         if param['type'] == 'save':
             sy = int( param['inDate'].split('.')[0].strip() )
             sm = int( param['inDate'].split('.')[1].strip() )
+            noticeCount = int(1)
             for y in range(sy, int(ymd.year)+1):
                 real_sm = sm
                 real_em = 12
@@ -231,9 +232,10 @@ def save_resident_info(request, data = None):
 					em.building = BuildingInfo.objects.get(id = int(resident.buildingName))
 					em.resident = resident
 					em.room = roominfo
-					em.year = y #int(ymd.year)
-					em.month = m #int(ymd.month)
-					em.noticeNumber = int(1)
+					em.year = y
+					em.month = m
+					em.noticeNumber = noticeCount
+					noticeCount += 1
 					em.leaseMoney = resident.leaseMoney
 					em.maintenanceFee = resident.maintenanceFee
 					em.surtax = resident.surtax

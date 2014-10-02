@@ -159,7 +159,7 @@ angular.module('yewooApp', [])
                 ],
                 email: "yewoo21@hanmail.net",
                 doc: {
-                    num: new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + (new Date().getDate()) + " 문서",
+                    num: new Date().getFullYear() + '-' + (new Date().getMonth() + 1),
                     title: "임대료 및 관리비(공과금) 내역 및 입금계좌 안내",
                     written: new Date()
                 },

@@ -18,6 +18,9 @@ from django.contrib.auth.decorators import permission_required
 
 def setPostData(request, typestr = ''):
     param = {}
+    if len(BuildingInfo.objects.all()) == 0:
+        return param
+
     if request.method == 'GET':
         import datetime
         ym = datetime.datetime.now()
@@ -1291,7 +1294,7 @@ def save_notice(request):
                 if int(pretty(str(d.year), str(d.month), str(d.day))) > int(pretty(str(data.year), str(data.month), str(data.resident.leasePayDate))): 
                     pay.accumNumber = 1
                 pay.payStatus = 0
-                if pay.number == 1:
+                if pay.number == 1 or len(info) <= 0:
                     pay.delayNumber = 1
                 else:
                     if info[0].payStatus == -1:

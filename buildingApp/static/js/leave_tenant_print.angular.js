@@ -165,7 +165,7 @@ angular.module('yewooApp', [])
                             
                             //if (!!($("#print").val())) {
                                 setTimeout(function () {
-                                    window.print();
+                                    //window.print();
                                 }, 100);
                             //}
 

@@ -18,6 +18,9 @@ mimetypes.init()
 
 def setPostData(request, typestr = ''):
     param = {}
+    if len(BuildingInfo.objects.all()) == 0:
+        return param
+
     if request.method == 'GET':
         import datetime
         ym = datetime.datetime.now()
@@ -65,6 +68,9 @@ def bill_show_html(request):
     fstMonth = int(8)
 
     param = {}
+    if len(BuildingInfo.objects.all()) == 0:
+        return render(request, '03_05_bill_show.html', param)
+
     data = StandardBill.objects.all()
     if request.method == 'GET':
         param['search_type'] = int(1)

@@ -1,3 +1,6 @@
+// 전역변수
+var numOfBuildings = 0;
+
 function filter(f) // label (ㄱ,ㄴ,ㄷ,...) 클릭했을 때 검사하는 함수
 {
 	// label 색 선택

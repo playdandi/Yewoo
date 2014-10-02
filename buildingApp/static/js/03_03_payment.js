@@ -259,7 +259,7 @@ function InputCheck(type, id)
 				break;
 			}
 		}
-		if (!confirm(paymentList[idx].roomnum + '호 ' + paymentList[idx].name + ' 님의 ' + paymentList[idx].year+'.'+paymentList[idx].month + ' (' + paymentList[idx].number + '회차)\n납부예정일('+paymentList[idx].year+'.'+paymentList[idx].month+'.'+paymentList[idx].leasePayDate + '), 입금액(' + paymentList[idx].totalFee.toLocaleString().replace('.00','') + '원)\n맞습니까?')) {
+		if (!confirm(paymentList[idx].roomnum + '호 ' + paymentList[idx].name + ' 님의 ' + paymentList[idx].year+'.'+paymentList[idx].month + ' (' + paymentList[idx].number + '회차)\n납부예정일('+paymentList[idx].dueDate + '), 입금액(' + paymentList[idx].totalFee.toLocaleString().replace('.00','') + '원)\n맞습니까?')) {
 			$('#selbox_'+idx).attr('checked', false);
 			return;
 		}

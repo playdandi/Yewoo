@@ -19,7 +19,8 @@ def newmain_html(request):
         username = u"김지훈"
     else:
         username = request.user.username
-    data = {'username' : username}
+    numB = len( BuildingInfo.objects.all() )
+    data = {'username' : username, 'numbuilding' : numB}
     return render(request, 'newmain.html', data)
 
 def login_request(request, data = None):
