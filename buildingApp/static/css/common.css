@@ -29,6 +29,28 @@
 	top: 13px;
 }
 
+.sidebar-fontbig
+{
+	background-color : #ffffff;
+	border-bottom : 1px solid;
+}
+.bigmenu
+{
+	font-family : dotum, 돋움;
+	font-size : 11pt;
+	letter-spacing : -1px;
+	padding-left : 25px; !important;
+}
+.sidebar-fontnormal
+{
+    font-family : dotum, 돋움;
+    color : #105583; !important;
+	font-size : 9pt;
+	padding-left : 32px;
+	border-bottom : 1px solid;
+    letter-spacing: -1px;
+}
+
 .bordered {
     border:1px solid;
     border-color:#dddddd;

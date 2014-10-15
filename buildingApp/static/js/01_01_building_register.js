@@ -148,9 +148,54 @@ function updateSummary()
 }
 
 
+function Checkapb(val, type)
+{
+	if (type == 'krnum')
+		return (val.replace(/[^0-9ㄱ-ㅎㅏ-ㅣ가-힣\-\s]/g, '') == val);
+	else if (type == 'kr')
+		return (val.replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣]/g, '') == val);
+	else if (type == 'num')
+		return (val.replace(/[^0-9\-]/g, '') == val);
+}
+
 
 function SaveBuildingInfo()
 {	
+	// 칸 색 초기화
+	var names = ['number', 'type', 'remote', 'name', 'address', 'manager', 'bank_name', 'bank_account_holder', 'manager_number', 'lease_number', 'guard_number', 'facility_number', 'main_number', 'lease_fax', 'main_fax', 'bank_account'];
+	for (i = 0; i < names.length; i++)
+		$('#'+names[i]).css('background-color', '#ffffff');
+
+	// 문자 검사
+	var koreans_numbers = ['name', 'address'];
+	var koreans = ['manager', 'bank_name', 'bank_account_holder'];
+	var numbers = ['manager_number', 'lease_number', 'guard_number', 'facility_number', 'main_number', 'lease_fax', 'main_fax', 'bank_account'];
+	for (var i = 0; i < koreans_numbers.length; i++) {
+		if (!Checkapb($('#'+koreans_numbers[i]).val().trim(), 'krnum')) {
+			alert('한글, 숫자만 입력 가능합니다.');
+			$('#'+koreans_numbers[i]).focus();
+			$('#'+koreans_numbers[i]).css('background-color', '#00ffff');
+			return;
+		}
+	}
+	for (var i = 0; i < koreans.length; i++) {
+		if (!Checkapb($('#'+koreans[i]).val().trim(), 'kr')) {
+			alert('한글만 입력 가능합니다.');
+			$('#'+koreans[i]).focus();
+			$('#'+koreans[i]).css('background-color', '#00ffff');
+			return;
+		}
+	}
+	for (var i = 0; i < numbers.length; i++) {
+		if (!Checkapb($('#'+numbers[i]).val().trim(), 'num')) {
+			alert('숫자, 하이픈(-)만 입력 가능합니다.');
+			$('#'+numbers[i]).focus();
+			$('#'+numbers[i]).css('background-color', '#00ffff');
+			return;
+		}
+	}
+
+	// 데이터 받아오기
 	var data = {};
 	data['number'] = $('#number').val();
 	data['type'] = $('#type').val();
@@ -158,7 +203,7 @@ function SaveBuildingInfo()
 	data['name'] = $('#name').val().trim();
 	data['address'] = $('#address').val().trim();
 	
-	data['manager'] = $('#manager_name').val().trim();
+	data['manager'] = $('#manager').val().trim();
 	data['managerNumber'] = $('#manager_number').val().trim();
 	data['leaseNumber'] = $('#lease_number').val().trim();
 	data['guardNumber'] = $('#guard_number').val().trim();
@@ -186,11 +231,13 @@ function SaveBuildingInfo()
 		return;
 	}
 	// 빈 칸이 있으면 알려준다.
-	var names = new Array('number', 'type', 'remote', 'name', 'address', 'manager');
-	for (i = 0; i < names.length; i++) {
-		if (data[names[i]] == '') {
+	var nonempty = ['number', 'type', 'remote', 'name', 'address', 'manager'];
+	for (i = 0; i < nonempty.length; i++) {
+		$('#'+nonempty[i]).css('background-color', '#ffffff');
+		if (data[nonempty[i]] == '') {
 			alert('빈 칸을 입력해 주세요.');
-			$('#'+names[i]).focus();
+			$('#'+nonempty[i]).focus();
+			$('#'+nonempty[i]).css('background-color', '#00ffff');
 			return;
 		}
 	}

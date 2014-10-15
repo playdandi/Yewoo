@@ -485,29 +485,47 @@ var curMonth;
 
 
 
-function sidebar_hide3(header) {
-    if ($(header).children().text().indexOf("▼") > -1) {
-        $(header).children().text($(header).children().text().replace("▼","▲"))
+function sidebar_hide3(header)
+{
+	var color = $(header).css('background-color');
+	color = color.split('(')[1].split(')')[0];
+	color = color.split(',')[0].trim() + ',' + color.split(',')[1].trim() + ',' + color.split(',')[2].trim();
+    
+	//if ($(header).children().text().indexOf("▼") > -1) {
+	if (color == '255,255,255') {
+        //$(header).children().text($(header).children().text().replace("▼","▲"))
+		$(header).css('background-color', '#f0f0f0');
         if(!$(header).next().hasClass('noperm')) $(header).next().css('display','block')
         if(!$(header).next().next().hasClass('noperm')) $(header).next().next().css('display','block')
         if(!$(header).next().next().next().hasClass('noperm')) $(header).next().next().next().css('display','block')
-    } else {
-        $(header).children().text($(header).children().text().replace("▲","▼"))
-        $(header).next().css('display','none')
-        $(header).next().next().css('display','none')
-        $(header).next().next().next().css('display','none')
+    }
+	else {
+		$(header).css('background-color', '#ffffff');
+        //$(header).children().text($(header).children().text().replace("▲","▼"))
+        $(header).next().css('display','none');
+        $(header).next().next().css('display','none');
+        $(header).next().next().next().css('display','none');
     }
 }
 
-function sidebar_hide4(header) {
-    if ($(header).children().text().indexOf("▼") > -1) {
-        $(header).children().text($(header).children().text().replace("▼","▲"))
+function sidebar_hide4(header)
+{
+	var color = $(header).css('background-color');
+	color = color.split('(')[1].split(')')[0];
+	color = color.split(',')[0].trim() + ',' + color.split(',')[1].trim() + ',' + color.split(',')[2].trim();
+    
+    //if ($(header).children().text().indexOf("▼") > -1) {
+	if (color == '255,255,255') {
+        //$(header).children().text($(header).children().text().replace("▼","▲"))
+		$(header).css('background-color', '#f0f0f0');
         if(!$(header).next().hasClass('noperm')) $(header).next().css('display','block')
         if(!$(header).next().next().hasClass('noperm')) $(header).next().next().css('display','block')
         if(!$(header).next().next().next().hasClass('noperm')) $(header).next().next().next().css('display','block')
         if(!$(header).next().next().next().next().hasClass('noperm')) $(header).next().next().next().next().css('display','block')
-    } else {
-        $(header).children().text($(header).children().text().replace("▲","▼"))
+    }
+	else {
+        //$(header).children().text($(header).children().text().replace("▲","▼"))
+		$(header).css('background-color', '#ffffff');
         $(header).next().css('display','none')
         $(header).next().next().css('display','none')
         $(header).next().next().next().css('display','none')
@@ -515,16 +533,25 @@ function sidebar_hide4(header) {
     }
 }
 
-function sidebar_hide5(header) {
-    if ($(header).children().text().indexOf("▼") > -1) {
-        $(header).children().text($(header).children().text().replace("▼","▲"))
+function sidebar_hide5(header)
+{
+	var color = $(header).css('background-color');
+	color = color.split('(')[1].split(')')[0];
+	color = color.split(',')[0].trim() + ',' + color.split(',')[1].trim() + ',' + color.split(',')[2].trim();
+    
+    //if ($(header).children().text().indexOf("▼") > -1) {
+	if (color == '255,255,255') {
+        //$(header).children().text($(header).children().text().replace("▼","▲"))
+		$(header).css('background-color', '#f0f0f0');
         if(!$(header).next().hasClass('noperm')) $(header).next().css('display','block')
         if(!$(header).next().next().hasClass('noperm')) $(header).next().next().css('display','block')
         if(!$(header).next().next().next().hasClass('noperm')) $(header).next().next().next().css('display','block')
         if(!$(header).next().next().next().next().hasClass('noperm')) $(header).next().next().next().next().css('display','block')
         if(!$(header).next().next().next().next().next().hasClass('noperm')) $(header).next().next().next().next().next().css('display','block')
-    } else {
-        $(header).children().text($(header).children().text().replace("▲","▼"))
+    }
+	else {
+        //$(header).children().text($(header).children().text().replace("▲","▼"))
+		$(header).css('background-color', '#ffffff');
         $(header).next().css('display','none')
         $(header).next().next().css('display','none')
         $(header).next().next().next().css('display','none')

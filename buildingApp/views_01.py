@@ -180,7 +180,7 @@ def building_save(request):
 @permission_required('buildingApp.building_search_building', login_url='/login/')
 def building_search_building_html(request):
     csrf_token = get_token(request)
-    building = BuildingInfo.objects.all()
+    building = BuildingInfo.objects.all().order_by('number')
     buildings = []
     for b in building:
         buildings.append({'name' : b.name, 'number' : b.number})
@@ -196,7 +196,7 @@ def building_search(request):
         if int(param['sType']) == 2:
             # show all buildings
             result = BuildingInfo.objects.all()
-            return toJSON(serialize_building(result))
+            return toJSON(serialize_building(result.order_by('number')))
         elif int(param['sType']) == 0:
             # search
             word = param['keyword']
@@ -210,7 +210,7 @@ def building_search(request):
                 result = BuildingInfo.objects.filter(
                     Q(name=word) | Q(manager=word))
 
-            return toJSON(serialize_building(result))
+            return toJSON(serialize_building(result.order_by('number')))
         else:
             # search detail
             result = BuildingInfo.objects
@@ -231,7 +231,7 @@ def building_search(request):
                         result = result.filter(floorTo__lte = int(param[p]))
                     elif p == 'parkingNum':
                         result = result.filter(numParking = param[p])
-            return toJSON(serialize_building(result))
+            return toJSON(serialize_building(result.order_by('number')))
 
 
 @permission_required('buildingApp.building_search_building', login_url='/login/')

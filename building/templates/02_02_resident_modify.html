@@ -446,6 +446,12 @@
 													<input id="contractorAddress" class="margin0" type="text" style="width:690px" value="{{ result.contractorAddress }}" />
 												</td>
 											</tr>
+											<tr>
+												<td colspan="20">
+													<div class="optional"><strong>* 임대 계약자와 실 거주자가 같은 경우 체크해 주세요.</strong></div>
+													<input id="isContractorResidentSame" type="checkbox">	
+												</td>
+											</tr>								
 										</tbody>
 									 </table>  
 								</div>
@@ -862,6 +868,39 @@
 					var deposit = $('#leaseDeposit').val();
 					var koreanDeposit = moneyToKorean(deposit);
 					$('#leaseDeposit2').val(koreanDeposit+ '원');
+				});
+				
+				//  실거주자와 동일인물인지 체크했을 때
+				$('#isContractorResidentSame').click(function() {
+					var chk = $(this).is(':checked');
+					if (chk) {
+						$('#residentRegNumber_1').val( $('#contractorRegNumber_1').val() );
+						$('#residentRegNumber_2').val( $('#contractorRegNumber_2').val() );
+						$('#residentContactNumber1_1').val( $('#contractorContactNumber1_1').val() );
+						$('#residentContactNumber1_2').val( $('#contractorContactNumber1_2').val() );
+						$('#residentContactNumber1_3').val( $('#contractorContactNumber1_3').val() );
+						$('#residentContactNumber2_1').val( $('#contractorContactNumber2_1').val() );
+						$('#residentContactNumber2_2').val( $('#contractorContactNumber2_2').val() );
+						$('#residentContactNumber2_3').val( $('#contractorContactNumber2_3').val() );
+						$('#residentAddress').val( $('#contractorAddress').val() );
+						$('#realResidentName').val( $('#contractorName').val() );
+						$('#residentGender').val( $('#contractorGender').val() );
+						$('#relToContractor').val('본인');
+					}
+					else {
+						$('#residentRegNumber_1').val('');
+						$('#residentRegNumber_2').val('');
+						$('#residentContactNumber1_1').val('');
+						$('#residentContactNumber1_2').val('');
+						$('#residentContactNumber1_3').val('');
+						$('#residentContactNumber2_1').val('');
+						$('#residentContactNumber2_2').val('');
+						$('#residentContactNumber2_3').val('');
+						$('#residentAddress').val('');
+						$('#realResidentName').val('');
+						$('#residentGender').val('남');
+						$('#relToContractor').val('');
+					}
 				});
 				
 				// 주차 유무

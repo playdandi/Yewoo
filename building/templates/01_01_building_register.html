@@ -21,104 +21,6 @@
 	<!-- end: CSS -->
 
 
-	<!-- start: JavaScript-->
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery-1.9.1.min.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery-migrate-1.0.0.min.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery-ui-1.10.0.custom.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/bootstrap.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cookie.js"></script>
-	
-		<script src='{{ STATIC_URL }}bootstrap/js/fullcalendar.min.js'></script>
-	
-		<script src='{{ STATIC_URL }}bootstrap/js/jquery.dataTables.min.js'></script>
-
-		<script src="{{ STATIC_URL }}bootstrap/js/excanvas.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.min.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.pie.min.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.stack.js"></script>
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.resize.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.chosen.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uniform.min.js"></script>
-		
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cleditor.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.noty.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.elfinder.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.raty.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.iphone.toggle.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uploadify-3.1.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.gritter.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.imagesloaded.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/jquery.masonry.min.js"></script>
-	
-		<script src="{{ STATIC_URL }}bootstrap/js/custom.js"></script>
-
-		<script src="{{ STATIC_URL }}ejs/ejs.js"></script>
-		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
-		<script src="{{ STATIC_URL }}ejs/view.js"></script>
-
-		<script src="{{ STATIC_URL }}js/01_01_building_register.js"></script>
-		<script src="{{ STATIC_URL }}js/common.js"></script>
-		
-		<script type="text/javascript" language="JavaScript">
-			$(document).ready(function(){
-				// show sidebar
-				show_sidebar();
-                $("#side-datepicker").datepicker();
-                $("#side-datepicker2").datepicker();
-                $("#side-datepicker3").datepicker();
-
-				$('#tabmenu a').click(function(e) {
-					e.preventDefault();
-					$(this).tab('show');
-					});
-
-				// 층별 입력 form을 보여준다.
-				ShowFloorInputForm(-1, 1);
-				// 건물 층수 범위를 클릭해도 보여준다.
-				$('.floorChange').change(function() {
-					var under = $('#startFloorNumber').val();
-					if ($('#startFloor').val() == '지하')
-						under *= -1;
-					var over = $('#endFloorNumber').val();
-					if ($('#endFloor').val() == '지하')
-						over *= -1;
-
-					if (under > over) {
-						alert('층수의 순서를 정확히 맞춰주세요.');
-						$('#floors').hide();
-						return;
-					}
-					ShowFloorInputForm(under, over);
-				});
-				//updateSummary();
-
-				// 원격검침 tooltip 보여주기
-				$('#remote').change(function() {
-					var id = $('#remote').val();
-					var tooltip = '';
-					if (id == '0') // 일반
-						tooltip = '전기, 가스, 상하수도';
-					else if (id == '1') // 원격검침1
-						tooltip = '전기, 온수&난방, 상하수도';
-					else // 원격검침2
-						tooltip = '전기, 가스, 상하수도';
-						$('#remote_tooltip').html('<a href="#" title="' + tooltip + '" data-rel="tooltip" class="btn btn-small"><i class="icon-question-sign"></i></a>');
-				});
-			});	
-		</script>
-		<!-- end: JavaScript-->
 	
 	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]
@@ -274,7 +176,7 @@
 													<tbody>
 														<tr>
 															<td colspan="5">
-																<div class="labels" style="margin-right:26px"><strong>건물 번호</strong></div>
+																<div class="labels" style="margin-right:26px"><font color="red"><strong>건물 번호</strong></font></div>
 																<select id="number" class="margin0" style="width:150px">
 																	{% for b in building_info %}
 																	{% if b.name == '' %}
@@ -286,14 +188,14 @@
 																</select>
 															</td>
 															<td colspan="7">
-																<div class="labels" style="margin-right:26px"><strong>건물 형식</strong></div>
+																<div class="labels" style="margin-right:26px"><font color="red"><strong>건물 형식</strong></font></div>
 																<select id="type" class="margin0" style="width:150px">
 																	<option value="0">임대 건물</option>
 																	<option value="1">주상 복합</option>
 																</select>
 															</td>
 															<td colspan="8">
-																<div class="labels" style="margin-right:26px"><strong>원격 검침</strong></div>
+																<div class="labels" style="margin-right:26px"><font color="red"><strong>원격 검침</strong></font></div>
 																<select id="remote" class="margin0" style="width:180px">
 																	<option value="0">일반</option>
 																	<option value="1">원격 검침 1</option>
@@ -306,18 +208,18 @@
 														</tr>
 														<tr>
 															<td colspan="5">
-																<div class="labels" style="margin-right:41px"><strong>건물명</strong></div>
+																<div class="labels" style="margin-right:41px"><font color="red"><strong>건물명</strong></font></div>
 																<input id="name" class="margin0" style="width:135px" type="text" placeholder="건물명을 입력하세요." />
 															</td>
 															<td colspan="15">
-																<div class="labels" style="margin-right:26px"><strong>건물 주소</strong></div>
+																<div class="labels" style="margin-right:26px"><font color="red"><strong>건물 주소</strong></font></div>
 																<input id="address" class="margin0" style="width:320px" type="text" placeholder="건물 주소를 입력하세요." />
 															</td>
 														</tr>
 														<tr>
 															<td colspan="2" rowspan="4"><div class="labels" style="margin-right:41px"><strong>연락처</strong></div></td>
-															<td colspan="4" style="text-align:center">담당 매니저</td>
-															<td colspan="5"><input id="manager_name" type="text" class="margin0 span12" placeholder="담당자 이름 입력" /></td>
+															<td colspan="4" style="text-align:center"><font color="red">담당 매니저</font></td>
+															<td colspan="5"><input id="manager" type="text" class="margin0 span12" placeholder="담당자 이름 입력" /></td>
 															<td colspan="4" style="text-align:center">담당 연락처</td>
 															<td colspan="5"><input id="manager_number" type="text" class="margin0 span12" placeholder="전화번호" /></td>
 														</tr>
@@ -530,5 +432,104 @@
 	</footer>
 			
 </div><!--/.fluid-container-->
+	
+<!-- start: JavaScript-->
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-1.9.1.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-migrate-1.0.0.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery-ui-1.10.0.custom.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/bootstrap.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cookie.js"></script>
+	
+		<script src='{{ STATIC_URL }}bootstrap/js/fullcalendar.min.js'></script>
+	
+		<script src='{{ STATIC_URL }}bootstrap/js/jquery.dataTables.min.js'></script>
+
+		<script src="{{ STATIC_URL }}bootstrap/js/excanvas.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.pie.min.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.stack.js"></script>
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.flot.resize.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.chosen.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uniform.min.js"></script>
+		
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.cleditor.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.noty.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.elfinder.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.raty.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.iphone.toggle.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.uploadify-3.1.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.gritter.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.imagesloaded.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/jquery.masonry.min.js"></script>
+	
+		<script src="{{ STATIC_URL }}bootstrap/js/custom.js"></script>
+
+		<script src="{{ STATIC_URL }}ejs/ejs.js"></script>
+		<script src="{{ STATIC_URL }}ejs/ejs_production.js"></script>
+		<script src="{{ STATIC_URL }}ejs/view.js"></script>
+
+		<script src="{{ STATIC_URL }}js/01_01_building_register.js"></script>
+		<script src="{{ STATIC_URL }}js/common.js"></script>
+		
+		<script type="text/javascript" language="JavaScript">
+			$(document).ready(function(){
+				// show sidebar
+				show_sidebar();
+                $("#side-datepicker").datepicker();
+                $("#side-datepicker2").datepicker();
+                $("#side-datepicker3").datepicker();
+
+				$('#tabmenu a').click(function(e) {
+					e.preventDefault();
+					$(this).tab('show');
+					});
+
+				// 층별 입력 form을 보여준다.
+				ShowFloorInputForm(-1, 1);
+				// 건물 층수 범위를 클릭해도 보여준다.
+				$('.floorChange').change(function() {
+					var under = $('#startFloorNumber').val();
+					if ($('#startFloor').val() == '지하')
+						under *= -1;
+					var over = $('#endFloorNumber').val();
+					if ($('#endFloor').val() == '지하')
+						over *= -1;
+
+					if (under > over) {
+						alert('층수의 순서를 정확히 맞춰주세요.');
+						$('#floors').hide();
+						return;
+					}
+					ShowFloorInputForm(under, over);
+				});
+				//updateSummary();
+
+				// 원격검침 tooltip 보여주기
+				$('#remote').change(function() {
+					var id = $('#remote').val();
+					var tooltip = '';
+					if (id == '0') // 일반
+						tooltip = '전기, 가스, 상하수도';
+					else if (id == '1') // 원격검침1
+						tooltip = '전기, 온수&난방, 상하수도';
+					else // 원격검침2
+						tooltip = '전기, 가스, 상하수도';
+						$('#remote_tooltip').html('<a href="#" title="' + tooltip + '" data-rel="tooltip" class="btn btn-small"><i class="icon-question-sign"></i></a>');
+				});
+			});	
+		</script>
+		<!-- end: JavaScript-->
 </body>
 </html>

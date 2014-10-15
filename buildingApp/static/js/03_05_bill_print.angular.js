@@ -54,9 +54,12 @@ angular.module('yewooApp', [])
 								return new Date(parseInt(str.slice(0, 4)), parseInt(str.slice(5, 7)) - 1, parseInt(str.slice(8, 10)));
 							}
 							function get_due_date(y, m, d, way) {
-								var day = new Array(-1, 31,28,31,30,31, 30,31,31,30,31, 30,31);
+								var day = new Array(31, 31,28,31,30,31, 30,31,31,30,31, 30,31);
 								if (Number(y) % 4 == 0)
 									day[2] = 29;
+
+								if (Number(m) == 1)
+									y = Number(y)+1;
 
 								// ex) 매월 31일인데 30이나 28일 달일 때
 								if (Number(d) > day[Number(m)])

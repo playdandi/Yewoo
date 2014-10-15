@@ -441,7 +441,7 @@ def setting_companynumber_html(request):
 
 @permission_required('buildingApp.manage_setting', login_url='/login/')
 def setting_adjustment_html(request):
-	bi = BuildingInfo.objects.all()
+	bi = BuildingInfo.objects.all().order_by('number')
 	buildingList = []
 	all_sp_id = []
 	all_sp_mt = []
@@ -515,7 +515,7 @@ def setting_bill_html(request):
 	param = {}
 	si = SettingBill.objects.all()
 	buildingList = []
-	bi = BuildingInfo.objects.all()
+	bi = BuildingInfo.objects.all().order_by('number')
 	for b in bi:
 		buildingList.append( {'id' : int(b.id), 'name' : str(b.name)} )
 	param['buildingList'] = buildingList

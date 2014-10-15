@@ -26,7 +26,7 @@ def setPostData(request, typestr = ''):
         ym = datetime.datetime.now()
         param['search_year'] = int(ym.year)
         param['search_month'] = int(ym.month)
-        param['search_building_id'] = int(BuildingInfo.objects.all().order_by('id')[0].id)
+        param['search_building_id'] = int(BuildingInfo.objects.all().order_by('number')[0].id)
         param['search_room_num'] = ''
     	param['search_is_empty'] = 'false'
     elif request.method == 'POST':
@@ -36,12 +36,13 @@ def setPostData(request, typestr = ''):
         param['search_room_num'] = str(request.POST['room_num'])
     	param['search_is_empty'] = request.POST['is_empty']
 
-    building = BuildingInfo.objects.all().order_by('id')
+    building = BuildingInfo.objects.all().order_by('number')
     building_name_id = []
     for b in building:
         building_name_id.append({'name' : b.name, 'id' : b.id})
         if int(b.id) == int(param['search_building_id']):
             param['cur_building_name'] = str(b.name)
+            param['cur_building_number'] = int(b.number)
 
 	param['min_building_id'] = building_name_id[0]['id']
     param['building_name_id'] = building_name_id
@@ -233,7 +234,9 @@ def lease_notice_detail_show_html(request, bid, rid, tab):
     param = {}
     param['tab'] = int(tab)
     param['resident'] = ResidentInfo.objects.get(id = int(rid))
-    param['building_name'] = BuildingInfo.objects.get(id = int(bid)).name
+    bInfo = BuildingInfo.objects.get(id = int(bid))
+    param['building_name'] = bInfo.name
+    param['building_number'] = bInfo.number
     param['building_id'] = int(bid)
     param['simpleLeaseDeposit'] = int(param['resident'].leaseDeposit) / int(10000)
     param['simpleLeaseMoney'] = int(param['resident'].leaseMoney) / int(10000)
@@ -1180,7 +1183,9 @@ def notice_detail_input_html(request, bid, rid, eid, year, month, tab):
     param['resident'] = res
     param['simpleLeaseDeposit'] = int(param['resident'].leaseDeposit) / int(10000)
     param['simpleLeaseMoney'] = int(param['resident'].leaseMoney) / int(10000)
-    param['building_name'] = BuildingInfo.objects.get(id = int(bid)).name
+    bInfo = BuildingInfo.objects.get(id = int(bid))
+    param['building_name'] = bInfo.name
+    param['building_number'] = bInfo.number
     param['building_id'] = int(bid)
     param['year'] = int(year)
     param['month'] = int(month)
@@ -1451,7 +1456,9 @@ def payment_detail_html(request, bid, rid, year, month, tab):
     param['month'] = int(month)
 
     param['resident'] = ResidentInfo.objects.get(id = int(rid))
-    param['resident'].bName = BuildingInfo.objects.get(id = int(bid)).name
+    bInfo = BuildingInfo.objects.get(id = int(bid))
+    param['resident'].bNumber = bInfo.number
+    param['resident'].bName = bInfo.name
     inn = param['resident'].inDate
     out = param['resident'].outDate
     param['resident'].inDate = str(inn.year)+'.'+str(inn.month)+'.'+str(inn.day)

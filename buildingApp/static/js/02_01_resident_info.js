@@ -121,15 +121,22 @@ function SaveResidentInfo()
 		}
 
 		// email 형식 체크
+		// email이 빈칸이 아닐 때만 형식을 체크한다.
 		if (name == 'residentEmail') {
-			if (!IsEmailRight(data[name]))
-				return;
+			if (data[name] != '') {
+				if (!IsEmailRight(data[name]))
+					return;
+			}
+			else
+				continue;
 		}
 
 		// 그 외 나머지는 필수 영역으로, 빈 칸이 존재하면 안 된다.
+		$('#'+name).css('background-color', '#ffffff');
 		if (data[name] == '') {
 			alert('빈 칸이 존재합니다.');
 			$('#'+name).focus();
+			$('#'+name).css('background-color', '#00ffff');
 			return;
 		}
 	}
@@ -160,10 +167,12 @@ function IsRegNumberRight(name, number)
 	// 주민번호는 숫자만 입력되고, 정확히 6자여야 한다.
 	var re = new RegExp('[0-9]+');
 	var numbers = number.split('-');
-	//if (numbers[0].length != 6 || numbers[1].length != 7 || 
+	
+	$('#'+name+'_1').css('background-color', '#ffffff');
 	if (numbers[0].length != 6 || (numbers[0]+numbers[1]).replace(re, '') != '') {
 		alert ('주민번호를 잘못 입력하셨습니다.');
 		$('#'+name+'_1').focus();
+		$('#'+name+'_1').css('background-color', '#00ffff');
 		return false;
 	}
 
@@ -172,10 +181,12 @@ function IsRegNumberRight(name, number)
 
 function IsNumberRight(name, number)
 {
+	$('#'+name).css('background-color', '#ffffff');
 	var re = new RegExp('[0-9]+');
 	if (number.replace(re, '') != '') {
 		alert('숫자만 입력하세요.');
 		$('#'+name).focus();
+		$('#'+name).css('background-color', '#00ffff');
 		return false;
 	}
 
@@ -187,24 +198,30 @@ function IsContactNumberRight(name, number)
 	var re = new RegExp('[0-9]*');
 	var numbers = number.split('-');
 
+	$('#'+name+'_1').css('background-color', '#ffffff');
 	if (numbers[0].replace(re, '') != '' || numbers[1].replace(re, '') != '' || numbers[2].replace(re, '') != '') {
 		alert ('전화번호는 숫자만 입력할 수 있습니다.');
 		$('#'+name+'_1').focus();
+		$('#'+name+'_1').css('background-color', '#00ffff');
 		return false;
 	}
 
+	$('#'+name+'_1').css('background-color', '#ffffff');
 	if (numbers[0] == '' || number[1] == '' || number[2] == '') {
 		if (name == 'contractorContactNumber1' || name == 'residentContactNumber1') {
 			alert ('빈 칸이 존재합니다.');
 			$('#'+name+'_1').focus();
+			$('#'+name+'_1').css('background-color', '#00ffff');
 			return false;
 		}
 	}
 
+	$('#'+name+'_1').css('background-color', '#ffffff');
 	if ((numbers[0] == '' || numbers[1] == '' || numbers[2] == '') &&
 		(numbers[0] + numbers[1] + numbers[2] != '')) {
 		alert('전화번호는 3개의 칸에 숫자를 모두 쓰셔야 합니다.');
 		$('#'+name+'_1').focus();
+		$('#'+name+'_1').css('background-color', '#00ffff');
 		return false;
 	}
 
@@ -213,9 +230,12 @@ function IsContactNumberRight(name, number)
 
 function IsEmailRight(email)
 {
+	$('#residentEmail').css('background-color', '#ffffff');
 	var form = email.split('@');
 	if (form.length < 2 || form[1].split('.').length < 2) {
 		alert('이메일 형식이 잘못되었습니다.');
+		$('#residentEmail').focus();
+		$('#residentEmail').css('background-color', '#00ffff');
 		return false;
 	}
 

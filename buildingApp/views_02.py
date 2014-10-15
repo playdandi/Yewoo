@@ -16,7 +16,7 @@ from django.contrib.auth.decorators import permission_required
 @permission_required('buildingApp.resident_info', login_url='/login/')
 def resident_info_html(request):
     csrf_token = get_token(request)
-    building = BuildingInfo.objects.all()
+    building = BuildingInfo.objects.all().order_by('number')
     building_name_id = []
     for b in building:
         building_name_id.append({'name' : b.name, 'id' : b.id})
@@ -27,7 +27,7 @@ def resident_info_html(request):
 @permission_required('buildingApp.resident_infofile', login_url='/login/')
 def resident_infoFile_html(request):
     csrf_token = get_token(request)
-    building = BuildingInfo.objects.all()
+    building = BuildingInfo.objects.all().order_by('number')
     building_name_id = []
     for b in building:
         building_name_id.append({'name' : b.name, 'id' : b.id})
@@ -53,7 +53,7 @@ def building_get_rooms(request):
 @permission_required('buildingApp.resident_show', login_url='/login/')
 def resident_show_html(request):
     csrf_token = get_token(request)
-    building = BuildingInfo.objects.all()
+    building = BuildingInfo.objects.all().order_by('number')
     building_name_id = []
     for b in building:
         building_name_id.append({'name' : b.name, 'id' : b.id})
@@ -490,7 +490,7 @@ def show_detail_resident_info(request, uid):
         result.residentOfficeContactNumber_3 = result.residentOfficeContactNumber.split('-')[2]
 
     # 모든 건물 정보 가져오기
-    building = BuildingInfo.objects.all()
+    building = BuildingInfo.objects.all().order_by('number')
     building_name_id = []
     for b in building:
         building_name_id.append({'name' : b.name, 'id' : b.id})
