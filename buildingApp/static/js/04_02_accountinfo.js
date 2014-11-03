@@ -1,5 +1,6 @@
-function filter(f) // label (ㄱ,ㄴ,ㄷ,...) 클릭했을 때 검사하는 함수
+function filter_0402(f) // label (ㄱ,ㄴ,ㄷ,...) 클릭했을 때 검사하는 함수
 {
+	console.log(f);
     var trs = $('tr[class=datas]');
 	// label 색 선택
 	for (i = 0; i <= 14; i++)

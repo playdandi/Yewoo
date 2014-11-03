@@ -141,6 +141,7 @@ def accountinfo_detail_html(request, uid):
             username = request.user.userprofile.name
         except:
             username = ""
+
         try:
             user = User.objects.get(id=uid)
             departments = DepartmentList.objects.all()
@@ -164,9 +165,9 @@ def accountinfo_detail_html(request, uid):
                 if file_name.lower().startswith(str(uid) + '.'):
                     imgfile = file_name
                     break
-                    
+
             return render_to_response('04_02_accountinfo_detail.html', \
-                                        {'user' : user, 'username' : username, 'avail_nums' : available_companynum, \
+                                        {'users' : user, 'username' : username, 'avail_nums' : available_companynum, \
                                         'departments' : departments, 'positions' : positions , \
                                         'academics' : academics, 'works' : works, 'imgfile' : imgfile} , \
                                         context_instance=RequestContext(request))
